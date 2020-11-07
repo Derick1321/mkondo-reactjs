@@ -72,8 +72,11 @@ const Marketing = () => {
         </div>
       </div>
       <div className="row app-download-wrapper justify-content-center align-items-center">
-        <div className="col-12 col-sm-8 col-md-6">
-          <AppDownload />
+        <div className="app-download-footer" />
+        <div className="app-download-content">
+          <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+            <AppDownload />
+          </div>
         </div>
       </div>
       <div className="row never-stop-panel">

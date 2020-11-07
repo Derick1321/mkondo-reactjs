@@ -2,12 +2,30 @@
 
 .phone-mk-image {
   height: 400px;
-  margin-right: 2rem;
+  margin-right: 4rem;
 }
 
 .app-download-wrapper {
   background-color: $white;
   padding-top: 2rem;
   padding-bottom: 2rem;
+  position: relative;
+  height: 500px;
+}
+
+.app-download-content {
+  position: absolute;
+  padding-top: 4rem;
+}
+
+.app-download-footer {
+  background-color: $secondary-white;
+  position: absolute;
+  margin-top: 290px;
+  height: 220px;
+}
+
+.app-download-header {
+  color: $primary-blue;
 }
 
