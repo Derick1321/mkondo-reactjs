@@ -22,8 +22,8 @@
 }
 
 .how-it-works-pane {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
   background-color: $secondary-white;
 }
 
@@ -31,16 +31,25 @@
   font-size: $title;
   font-family: Montserrat;
   font-weight: bold;
+  &.panel-header-dark {
+    color: $tertiary-gray;
+  }
 }
 
 .never-stop-panel {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
   background: linear-gradient(93.01deg, $secondary-green 0.83%, $secondary-blue 100%);
 }
 
 .thanks-panel {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+  background-color: $white;
+}
+
+.marketing-footer {
+  height: 8rem;
+  border-top: 1px solid $light-gray;
   background-color: $white;
 }

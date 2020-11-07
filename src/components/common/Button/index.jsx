@@ -7,6 +7,7 @@ const Button = (props) => {
   // props
   const {
     children,
+    style,
     isTransparent,
     isSquare,
     onClick,
@@ -23,15 +24,13 @@ const Button = (props) => {
       customStyle = `${customStyle} mk-btn-square`;
     }
 
-    console.log('custom ', customStyle, isTransparent, isSquare)
-
     return customStyle;
   }
 
   // render
   return (
     <button
-      className={`mk-btn ${getCustomStyle()}`}
+      className={`mk-btn ${getCustomStyle()} ${style}`}
       onClick={onClick}
     >
       { children }

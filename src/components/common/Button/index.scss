@@ -6,6 +6,7 @@
   width: 140px;
   border: 0;
   background-color: $secondary-green;
+  border: 1px solid $secondary-green;
   color: $white;
   justify-content: center;
   &:focus {
@@ -17,4 +18,12 @@
   &.mk-btn-square {
     border-radius: 5px;
   }
+}
+
+.mk-btn-border-white {
+  border-color: $white;
+}
+
+.mk-btn-primary {
+  color: $secondary-green;
 }

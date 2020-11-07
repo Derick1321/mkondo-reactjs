@@ -25,6 +25,11 @@ const Marketing = () => {
     console.log('find more!!');
   }
 
+  const getCurrentYear = () => {
+    const d = new Date();
+    return d.getFullYear();
+  }
+
   // render
   return (
     <div className="wrapper container-fluid h-100">
@@ -66,11 +71,12 @@ const Marketing = () => {
         </div>
       </div>
       <div className="row never-stop-panel">
-        <div className="col-12 col-md-10 offset-md-1">
-          <p className="text-white">Never stop listening</p>
+        <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+          <p className="panel-header text-white">Never stop listening</p>
           <p className="text-white">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <Button
             onClick={handleFindMore}
+            style="mk-btn-border-white"
             isTransparent
             isSquare
           >
@@ -78,16 +84,22 @@ const Marketing = () => {
           </Button>
         </div>
       </div>
-      <div className="row thanks-panel justify-content-center">
-        <div className="col-12 col-md-10 offset-md-1">
-          <p>Thanks for listening</p>
+      <div className="row thanks-panel justify-content-center text-center">
+        <div className="col-12 col-sm-8 col-md-6">
+          <p className="panel-header panel-header-dark">Thanks for listening</p>
           <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <Button
             onClick={handleFindMore}
+            style="mk-btn-primary"
             isTransparent
           >
             FIND OUT MORE
           </Button>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-12 d-flex align-items-center justify-content-center marketing-footer">
+          <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
         </div>
       </div>
     </div>
