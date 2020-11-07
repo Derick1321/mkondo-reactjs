@@ -1,0 +1,24 @@
+@import '../../../../assets/scss/main.scss';
+
+.tab-menu {
+  color: $secondary-gray;
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: $normal-text;
+  border: none;
+  background-color: transparent;
+  padding: 0 4rem; 
+  &:focus {
+    outline: none;
+  }
+  &.active {
+    color: $white;
+    font-size: $heading;
+  }
+}
+
+.active-tab-menu {
+  background-color: $secondary-green;
+  height: 5px;
+  border-radius: 5px;
+}

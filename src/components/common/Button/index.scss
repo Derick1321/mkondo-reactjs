@@ -1,0 +1,20 @@
+@import '../../../assets/scss/main.scss';
+
+.mk-btn {
+  height: 32px;
+  border-radius: 42px;
+  width: 140px;
+  border: 0;
+  background-color: $secondary-green;
+  color: $white;
+  justify-content: center;
+  &:focus {
+    outline: none;
+  }
+  &.mk-btn-transparent {
+    background-color: transparent;
+  }
+  &.mk-btn-square {
+    border-radius: 5px;
+  }
+}

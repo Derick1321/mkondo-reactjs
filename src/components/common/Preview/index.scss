@@ -1,0 +1,36 @@
+.preview-wrapper {
+  height: 120px;
+  width: 120px;
+  margin-right: 2rem;
+  margin-bottom: 2rem;
+}
+
+.preview-wide {
+  width: 180px;
+}
+
+.preview-bkg-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.preview-action-btn {
+  background-color: transparent;
+  position: absolute;
+  z-index: 99;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+.preview-action-icon {
+  height: 50px;
+  width: 50px;
+}

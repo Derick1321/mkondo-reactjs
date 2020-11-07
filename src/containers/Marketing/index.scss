@@ -1,0 +1,46 @@
+@import '../../assets/scss/main.scss';
+
+.wrapper {
+  background-color: $primary-green;
+}
+
+.tab-line {
+  border-bottom: 1px solid $secondary-green;
+  margin-top: -2.5px;
+}
+
+.tab-content-wrapper {
+  margin-top: 2rem;
+  padding-bottom: 10rem;
+  padding-top: 2rem;
+}
+
+.top-songs-pane {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: $white;
+}
+
+.how-it-works-pane {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: $secondary-white;
+}
+
+.panel-header {
+  font-size: $title;
+  font-family: Montserrat;
+  font-weight: bold;
+}
+
+.never-stop-panel {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background: linear-gradient(93.01deg, $secondary-green 0.83%, $secondary-blue 100%);
+}
+
+.thanks-panel {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-color: $white;
+}
