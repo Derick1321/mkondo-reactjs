@@ -7,6 +7,7 @@ import Tabs from '../../components/common/Tabs';
 import Preview from '../../components/common/Preview';
 import TopSongs from '../../components/Marketing/TopSongs';
 import HowItWorks from '../../components/Marketing/HowItWorks';
+import AppDownload from '../../components/Marketing/AppDownload';
 
 import urls from './model';
 
@@ -68,6 +69,11 @@ const Marketing = () => {
       <div className="row how-it-works-pane">
         <div className="col-12 col-md-10 offset-md-1">
           <HowItWorks />
+        </div>
+      </div>
+      <div className="row app-download-wrapper justify-content-center align-items-center">
+        <div className="col-12 col-sm-8 col-md-6">
+          <AppDownload />
         </div>
       </div>
       <div className="row never-stop-panel">
