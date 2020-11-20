@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Feature from '../../common/Feature';
+import Feature from '$components/common/Feature';
 
 import './index.scss';
 
@@ -9,7 +9,6 @@ const TopSongs = () => {
   return (
     <div className="container">
       <div className="d-flex flex-column">
-        <p className="mb-4 text-center how-it-works-title">Top Free Songs of the Week</p>
         <div className="d-flex flex-wrap">
           {
             Array.apply(null, { length: 3 }).map((value, index) => (
