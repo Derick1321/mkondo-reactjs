@@ -1,0 +1,37 @@
+@import '$assets/scss/main.scss';
+
+.side-menu {
+  background-color: $black;
+  width: 220px;
+  height: 100%;
+  padding: 3rem 1rem 1rem 0rem;
+}
+
+.side-menus-wrapper {
+  margin-top: 8rem;
+}
+
+.sidemenu-item {
+  padding: 5px 1rem;
+  color: $secondary-gray;
+  &.active {
+    background-color: rgba(252, 252, 252, 0.1);
+    padding: 1rem 2rem;
+    border-left: 1px solid $secondary-green;
+    .sidemenu-item-title {
+      color: $secondary-green;
+    }
+  }
+}
+
+.sidemenu-item-icon {
+  padding: 0 1rem;
+}
+
+.sidemenu-subtitle {
+  font-family: Helvetica;
+  font-weight: 700;
+  font-size: 16px;
+  color: $white;
+  margin-left: 2rem;
+}

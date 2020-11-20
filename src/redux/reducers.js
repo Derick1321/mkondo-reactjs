@@ -1,9 +1,7 @@
-import { combineReducers } from 'redux'
+import authentication from './features/authentication';
+import modal from './features/modal';
 
-import authenticationReducer from './features/authentication';
-
-const reducers = combineReducers({
-  authentication: authenticationReducer,
-});
-
-export default reducers;
+export default {
+  authentication,
+  modal,
+};

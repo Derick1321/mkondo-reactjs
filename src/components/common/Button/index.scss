@@ -1,7 +1,7 @@
-@import '../../../assets/scss/main.scss';
+@import '$assets/scss/main.scss';
 
 .mk-btn {
-  height: 32px;
+  height: 40px;
   border-radius: 42px;
   width: 140px;
   border: 0;
@@ -14,9 +14,16 @@
   }
   &.mk-btn-transparent {
     background-color: transparent;
+    border: none;
   }
   &.mk-btn-square {
     border-radius: 5px;
+  }
+  &.mk-btn-stretch {
+    width: 100%;
+  }
+  &.no-width {
+    width: auto;
   }
 }
 
@@ -26,4 +33,12 @@
 
 .mk-btn-primary {
   color: $secondary-green;
+}
+
+.mk-btn-secondary {
+  background-color: $tertiary-blue;
+  border: none;
+  &.mk-btn-transparent {
+    color: $tertiary-blue;
+  }
 }

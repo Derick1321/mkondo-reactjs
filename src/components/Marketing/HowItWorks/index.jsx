@@ -5,6 +5,8 @@ import List from './List';
 
 import model from './model';
 
+import './index.scss';
+
 const HowItWorks = () => {
   return (
     <div className="container">
@@ -23,7 +25,7 @@ const HowItWorks = () => {
             ))
           }
         </div>
-        <div className="col-12 col-md-6">
+        <div className="col-12 col-md-6 how-it-works-feature">
           <Feature
               avatar="https://i.ibb.co/8b89DpX/image-8-1.png"
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
