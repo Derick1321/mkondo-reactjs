@@ -1,0 +1,56 @@
+@import '$assets/scss/main.scss';
+
+.player-wrapper {
+  height: 60px;
+  background-color: $primary-blue;
+  padding: 5px 2rem;
+}
+
+.player-name-wrapper {
+  color: $white;
+}
+
+.player-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+}
+
+.player-btn {
+  width: 30px;
+  background-color: transparent;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+  &.player-volume-btn {
+    height: 100%;
+    position: relative;
+    top: -5px;
+    img {
+      height: 15px;
+    }
+  } 
+}
+
+.player-slider-wrapper {
+  flex: 1;
+  height: 100%;
+  padding-top: 10px;
+}
+
+.player-duration-wrapper {
+  width: 100%;
+  max-width: 600px;
+  padding: 0 25px;
+}
+
+.player-volume-wrapper {
+  width: 100px;
+  height: 100%;
+}
+
+.player-menu-wrapper {
+  margin-left: 50px;
+}
+

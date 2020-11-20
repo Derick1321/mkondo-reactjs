@@ -1,17 +1,38 @@
 import React, { useState } from 'react';
+import Picker from 'react-simple-wheel-picker';
 
-import Button from '../../components/common/Button';
-import Header from '../../components/common/Header';
-import Hero from '../../components/common/Hero';
-import Tabs from '../../components/common/Tabs';
-import Preview from '../../components/common/Preview';
-import TopSongs from '../../components/Marketing/TopSongs';
-import HowItWorks from '../../components/Marketing/HowItWorks';
-import AppDownload from '../../components/Marketing/AppDownload';
+import Button from '$components/common/Button';
+import Header from '$components/common/Header';
+import Hero from '$components/common/Hero';
+import Tabs from '$components/common/Tabs';
+import Preview from '$components/common/Preview';
+import TopSongs from '$components/common/TopSongs';
+import HowItWorks from '$components/marketing/HowItWorks';
+import AppDownload from '$components/marketing/AppDownload';
+import ModalRoot from '$components/common/modals/ModalRoot';
 
 import urls from './model';
 
 import './index.scss';
+
+const data = [
+  {
+    id: '1',
+    value: 'Top of the week',
+  },
+  {
+    id: '2',
+    value: 'New Release - Premium',
+  },
+  {
+    id: '3',
+    value: 'Made for you',
+  },
+  {
+    id: '4',
+    value: 'Recommended'
+  },
+];
 
 const Marketing = () => {
   // state
@@ -31,6 +52,9 @@ const Marketing = () => {
     return d.getFullYear();
   }
 
+  const handleChange = (value) => {
+  }
+
   // render
   return (
     <div className="wrapper container-fluid h-100">
@@ -48,21 +72,38 @@ const Marketing = () => {
       </div>
       <div className="tab-line" />
       <div className="row">
-        <div className="col-12 col-md-8 offset-md-3">
-          <div className="d-flex flex-wrap tab-content-wrapper">
-            {
-              urls[selected].map((item, idx) => (
-                <Preview
-                  key={`${selected}-${idx}`}
-                  {...item}
-                />
-              ))
-            }
+        <div className="col-12 col-md-8 offset-md-2">
+          <div className="d-flex">
+            <Picker
+              data={data}
+              onChange={handleChange}
+              height={150}
+              width={280}
+              titleText="aria-label"
+              itemHeight={20}
+              selectedID={data[1].id}
+              color="#ccc"
+              activeColor="#ccc"
+              backgroundColor="transparent"
+              shadowColor="transparent"
+              fontSize={12}
+            />
+            <div className="d-flex flex-wrap tab-content-wrapper">
+              {
+                urls[selected].map((item, idx) => (
+                  <Preview
+                    key={`${selected}-${idx}`}
+                    {...item}
+                  />
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>
       <div className="row top-songs-pane">
         <div className="col-12 col-md-10 offset-md-1">
+          <p className="mb-4 text-center how-it-works-title">Top Free Songs of the Week</p>
           <TopSongs />
         </div>
       </div>
@@ -111,6 +152,7 @@ const Marketing = () => {
           <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
         </div>
       </div>
+      <ModalRoot />
     </div>
   );
 };

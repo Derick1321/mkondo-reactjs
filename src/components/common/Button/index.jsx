@@ -10,6 +10,7 @@ const Button = (props) => {
     style,
     isTransparent,
     isSquare,
+    isStretch,
     onClick,
   } = props;
 
@@ -22,6 +23,10 @@ const Button = (props) => {
 
     if (isSquare) {
       customStyle = `${customStyle} mk-btn-square`;
+    }
+
+    if (isStretch) {
+      customStyle = `${customStyle} mk-btn-stretch`;
     }
 
     return customStyle;
@@ -41,6 +46,8 @@ const Button = (props) => {
 Button.defaultProps = {
   isTransparent: false,
   isSquare: false,
+  isStretch: false,
+  style: '',
 };
 
 Button.propTypes = {
@@ -48,6 +55,8 @@ Button.propTypes = {
   onClick: PropTypes.func.isRequired,
   isTransparent: PropTypes.bool,
   isSquare: PropTypes.bool,
+  isStretch: PropTypes.bool,
+  style: PropTypes.string,
 }
 
 export default Button;

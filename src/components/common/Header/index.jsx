@@ -1,4 +1,7 @@
 import React, {useState} from 'react';
+import {useDispatch} from 'react-redux';
+
+import { showModal } from '$redux/features/modal';
 
 import Menu from './Menu';
 
@@ -6,10 +9,17 @@ import './index.scss';
 
 const Header = () => {
   // state
-  const [activeMenu, setActiveMenu] = useState('');
+  const [activeMenu, setActiveMenu] = useState('about');
+
+  // store
+  const dispatch = useDispatch();
 
   // handlers
   const handleClick = (value) => {
+    if (value === 'login') {
+      dispatch(showModal('LOGIN_MODAL'));
+      return;
+    }
     setActiveMenu(value);
   };
 
@@ -33,9 +43,9 @@ const Header = () => {
           onClick={handleClick}
         />
         <Menu
-          name="signup"
-          title="Sign Up"
-          isActive={activeMenu === 'signup'}
+          name="login"
+          title="Login"
+          isActive={activeMenu === 'login'}
           onClick={handleClick}
         />
       </div>
