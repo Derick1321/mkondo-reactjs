@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import gsap, { TweenMax, TimelineLite, TweenLite } from 'gsap';
+import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 
 import './index.scss';
@@ -9,13 +9,13 @@ import './index.scss';
 gsap.registerPlugin(Draggable); 
 
 // New Timeline
-const tl = new TimelineLite({
+const tl = gsap.timeline({
   paused: true,
 });
 
 const Slider = (props) => {
   // props
-  const { callbacks, isActive } = props;
+  const { callbacks, position, isVolume } = props;
   // TODO? should we use Redux?
 
   // refs
@@ -32,32 +32,33 @@ const Slider = (props) => {
       edgeResistance: 1,
       lockAxis: true,
       cursor: "pointer",
+      ease: "power1.inOut",
       onDrag: updateRange,
-      onPress: updatePosition,
+      onPressInit: updatePosition,
       onClick: updateRange,
     });
+
+    if (isVolume) {
+      update(null, true);
+    }
   }, []);
 
   useEffect(() => {
-    if (isActive) {
-      // TweenLite.ticker.addEventListener("tick", update);
-      return;
-    }
-    console.log('TweenLite.ticker ', TweenLite.ticker);
-    // TweenLite.ticker.removeEventListener("tick", update);
-  }, [isActive]);
+    update(position);
+  }, [position]);
 
   // handlers
   // To syncronise both audio and timeline
-  const update = (value) => {
+  const update = (value, useXValue) => {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
 
     tl.progress(value); // NOTE: audio.currentTime / audio.duration
-    TweenMax.set(knobRef.current, {
-      x: (progRect.width - knobRect.width) * tl.progress(),
+    console.log('ppp ', useXValue, useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value);
+    gsap.set(knobRef.current, {
+      x: useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value,
     });
-    TweenMax.set(rangeRef.current, {
+    gsap.set(rangeRef.current, {
       width: knobRect.left + knobRect.width - progRect.left
     });
   }
@@ -65,14 +66,14 @@ const Slider = (props) => {
   function updatePosition() {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
-    TweenMax.set(knobRef.current, {
-      x: this.pointerX - progRect.left - knobRect.width / 2 
+    gsap.set(knobRef.current, {
+      x: this.pointerX - progRect.left - knobRect.width / 2,
     });
 
-    TweenMax.set(rangeRef.current, {
+    gsap.set(rangeRef.current, {
       width: knobRect.left + knobRect.width - progRect.left
     });
-    // update();
+    // CALLBACK TO SEEK
   }
 
   // repositions tl + elements when user clicks on audio scrub
@@ -81,9 +82,10 @@ const Slider = (props) => {
     const progRect = progressBarRef.current.getBoundingClientRect();
 
     const currentPosition = this.x / (progRect.width - knobRect.width);
+    console.log('this.x ', currentPosition, knobRect.left + knobRect.width - progRect.left)
 
     tl.progress(currentPosition);
-    TweenMax.set(rangeRef.current, {
+    gsap.set(rangeRef.current, {
       width: knobRect.left + knobRect.width - progRect.left
     });
 
