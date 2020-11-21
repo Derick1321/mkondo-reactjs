@@ -1,5 +1,6 @@
 import {Howl, Howler} from 'howler';
-import moment from 'moment';
+
+import { shuffleArray } from './utils';
 
 // https://github.com/goldfire/howler.js/blob/master/examples/player/player.js
 // for reference
@@ -11,32 +12,28 @@ import moment from 'moment';
 class Player {
   constructor(playlist, callbacks, onAutoPlay) {
     this.playlist = playlist || [];
+    this.originalPlaylist = playlist || [];
     this.callbacks = callbacks || {};
     this.onAutoPlay = onAutoPlay || true;
     this.isPlaying = false;
+    this.isOnRepeat = false;
     this.index = 0;
-  }
-
-  formatTime(seconds) {
-    const duration = moment.duration(Math.round(seconds), 'seconds');
-    return duration.format("hh:mm:ss");
   }
 
   play(idx) {
     let sound;
     let index = typeof idx === 'number' ? idx : this.index;
     const data = this.playlist[index];
-    const self = this;
 
     if (data.howl) {
       sound = data.howl;
     } else {
       sound = data.howl = new Howl({
-        src: [`./audio/${data.file}.webm`, `./audio/${data.file}.mp3`],
+        src: [data.url],
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onplay: () => {
           if (this.callbacks.onPlay) {
-            this.callbacks.onPlay(this.formatTime(sound.duration()));
+            this.callbacks.onPlay(sound.duration());
           }
           this.isPlaying = false;
         },
@@ -49,6 +46,12 @@ class Player {
           if (this.callbacks.onEnd) {
             this.callbacks.onEnd();
           }
+
+          if (this.isOnRepeat) {
+            play(this.index);
+            return;
+          }
+
           if (this.onAutoPlay) {
             this.skip('next');
             return;
@@ -68,14 +71,14 @@ class Player {
           this.isPlaying = false;
         },
         onseek: (value) => {
-          console.log('seek ', value);
           if (this.callbacks.onSeek) {
-            this.callbacks.onSeek();
+            this.callbacks.onSeek(value);
           }
         }
       });
     }
 
+    console.log('sound ', sound);
     // Begin playing the sound.
     sound.play();
 
@@ -94,13 +97,21 @@ class Player {
 
   skip(direction) {
     if (direction === 'prev') {
-      const index = this.index === 0 ? this.playlist.length - 1 : index - 1;
-      this.skipTo(index);
+      const idx = this.index === 0 ? this.playlist.length - 1 : this.index - 1;
+      this.skipTo(idx);
       return;
     }
 
-    const index = (index >= this.playlist.length -1) ? 0 : this.index + 1;
-    this.skipTo(index);
+    const idx = (this.index >= this.playlist.length - 1) ? 0 : this.index + 1;
+    this.skipTo(idx);
+  }
+
+  repeat() {
+    this.isOnRepeat = !this.isOnRepeat;
+  }
+
+  shuffleArray() {
+    this.playlist = shuffleArray([...this.originalPlaylist]);
   }
 
   skipTo(index) {
@@ -138,3 +149,4 @@ class Player {
 } 
 
 export default Player;
+
