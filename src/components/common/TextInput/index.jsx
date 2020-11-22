@@ -11,6 +11,7 @@ const TextInput = (props) => {
     onChange,
     placeholder,
     value,
+    customWrapperClass,
   } = props;
 
   // handlers
@@ -21,7 +22,7 @@ const TextInput = (props) => {
 
   // render
   return (
-    <div className="text-input-container d-flex justify-content-center">
+    <div className={`text-input-container d-flex justify-content-center ${customWrapperClass}`}>
       <input
         name={name}
         className="text-input-wrapper"
