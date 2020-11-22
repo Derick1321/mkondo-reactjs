@@ -15,6 +15,7 @@ const MODAL_COMPONENTS = {
   'LOGIN_MODAL': LoginModal,
   'SIGNUP_MODAL': SignUpModal,
   'FORGOT_PASSWORD_MODAL': ForgotPasswordModal,
+  'EMPTY': () => <div />,
 };
 
 const ModalRoot = () => {
@@ -64,6 +65,20 @@ const ModalRoot = () => {
   }
 
   const ModalContent = MODAL_COMPONENTS[modalType];
+
+  if (modalProps && modalProps.noWrapper) {
+    return (
+      <div
+        className="modal-container"
+        onClick={handleClick}
+      >
+        <ModalContent
+          {...modalProps}
+          closeModal={closeModal}
+        />
+      </div>
+    );
+  }
 
   return (
     <div

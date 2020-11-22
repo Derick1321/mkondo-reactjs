@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 
 import Slider from '$components/common/Slider';
 
@@ -8,7 +7,8 @@ import { formatTime } from '$common/utils';
 
 import './index.scss';
 
-const avatar = require('$assets/images/player/avatar.png')
+const avatar = require('$assets/images/player/avatar.png');
+const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
 const repeatIcon = require('$assets/images/player/repeat.svg');
 const shuffleIcon = require('$assets/images/player/shuffle.svg');
@@ -20,8 +20,8 @@ const volumeFullIcon = require('$assets/images/player/volume-full.svg');
 
 // sample playlist
 const playlists = [
-  { 'name': 'Song 1', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', }, 
-  { 'name': 'Song 2', url: 'https://drive.google.com/u/0/uc?id=1ZhVuR3wVf7IYS8YM7PFrFk3cw1AvJSfs&export=download', }, 
+  { 'name': 'Song 1', album: 'Next Album', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', avatar: avatar, }, 
+  { 'name': 'Song 2', album: 'Moo', url: 'https://drive.google.com/u/0/uc?id=1ZhVuR3wVf7IYS8YM7PFrFk3cw1AvJSfs&export=download', }, 
   { 'name': 'Song 3', url: 'https://drive.google.com/u/0/uc?id=1ZhVuR3wVf7IYS8YM7PFrFk3cw1AvJSfs&export=download', }
 ];
 
@@ -40,11 +40,6 @@ const Player = () => {
   const onPlay = (dur) => {
     setIsPlaying(true);
     setDuration(dur);
-    console.log('dur ', dur);
-  }
-
-  const onSeek = (dur) => {
-    console.log('seek ', dur);
   }
 
   const onPause = (dur) => {
@@ -55,7 +50,6 @@ const Player = () => {
   useEffect(() => {
     const callbacks = {
       onPlay,
-      onSeek,
       onPause,
     }
 
@@ -85,21 +79,28 @@ const Player = () => {
   }, [isPlaying]);
 
   // handlers
+  const resetPos = () => {
+    setDuration(0);
+    setSeekPos(0);
+  }
+
   const handlePlay = () => {
     // need a way to play current index
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      audioRef.current.play(0);
+      audioRef.current.play(audioRef.current.index);
     }
   }
 
   const handleNext = () => {
     audioRef.current.skip('next');
+    resetPos();
   }
 
   const handlePrev = () => {
     audioRef.current.skip('prev');
+    resetPos();
   }
 
   const buildPlayerControls = () => {
@@ -133,23 +134,30 @@ const Player = () => {
   }
 
   const updateRange = (value) => {
-    console.log('value ', value, value * duration);
-    audioRef.current.seek(100);
-    // setSeekPos(value * duration);
+    audioRef.current.seek(value);
+    // setSeekPos(value);
+    // TODO fix bug on seek
   }
 
   const updateVolume = (value) => {
     audioRef.current.volume(value);
   }
 
+  const album = audioRef.current ? (playlists[audioRef.current.index].album || 'Unknown') : '';
+
   // render
   return (
     <div className="d-flex player-wrapper align-items-center">
       <div className="d-flex player-name-wrapper">
-        <img src={avatar} className="player-avatar mx-1" />
-        <div className="d-flex flex-column mx-2">
-          <span>Only Girl</span>
-          <span>Adekunle Gold </span>
+        <img
+          src={(audioRef.current && playlists[audioRef.current.index].avatar) || defaultAvatar}
+          className="player-avatar mx-1"
+        />
+        <div className="d-flex flex-column justify-content-center mx-2">
+          <span>{(audioRef.current && playlists[audioRef.current.index].name)|| 'None'}</span>
+          {
+            album && <span>{album}</span>
+          }
         </div>
       </div>
       <div className="player-controls-wrapper mx-4">

@@ -9,7 +9,6 @@ import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing/HowItWorks';
 import AppDownload from '$components/marketing/AppDownload';
-import ModalRoot from '$components/common/modals/ModalRoot';
 
 import urls from './model';
 
@@ -152,7 +151,6 @@ const Marketing = () => {
           <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
         </div>
       </div>
-      <ModalRoot />
     </div>
   );
 };

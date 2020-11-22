@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import AppHeader from '$components/common/AppHeader';
 import Player from '$components/common/Player';
 import Tabs from '$components/common/Tabs';
 import TopSongs from '$components/common/TopSongs';
@@ -23,6 +24,7 @@ const Home = () => {
         <SideMenu />
       </div>
       <div className="content">
+        <AppHeader />
         <div className="home-tabs-wrapper"> 
           <Tabs
             onSelect={handleSelect}

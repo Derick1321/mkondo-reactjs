@@ -1,0 +1,28 @@
+@import '$assets/scss/main.scss';
+
+.app-header-wrapper {
+  height: 40px;
+  padding: 4rem 0;
+}
+
+.app-header-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.app-header-name {
+  color: $white;
+  padding: 0 1rem;
+  span {
+    padding: 0 1rem;
+  }
+}
+
+.app-header-input {
+  background-color: $secondary-black;
+  border-color: $secondary-black;
+  input {
+    color: $white;
+  }
+}
