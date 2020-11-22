@@ -32,7 +32,7 @@ const Slider = (props) => {
       edgeResistance: 1,
       lockAxis: true,
       cursor: "pointer",
-      ease: "power1.inOut",
+      ease: "Power1.easeInOut",
       onDrag: updateRange,
       onPressInit: updatePosition,
       onClick: updateRange,
@@ -44,7 +44,8 @@ const Slider = (props) => {
   }, []);
 
   useEffect(() => {
-    update(position);
+    const pos = Number.isNaN(position) ? 0 : position;
+    update(pos);
   }, [position]);
 
   // handlers
@@ -53,8 +54,11 @@ const Slider = (props) => {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
 
+    if (value === 0) {
+      console.log('vvv ', value);
+    }
+
     tl.progress(value); // NOTE: audio.currentTime / audio.duration
-    console.log('ppp ', useXValue, useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value);
     gsap.set(knobRef.current, {
       x: useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value,
     });
@@ -82,8 +86,6 @@ const Slider = (props) => {
     const progRect = progressBarRef.current.getBoundingClientRect();
 
     const currentPosition = this.x / (progRect.width - knobRect.width);
-    console.log('this.x ', currentPosition, knobRect.left + knobRect.width - progRect.left)
-
     tl.progress(currentPosition);
     gsap.set(rangeRef.current, {
       width: knobRect.left + knobRect.width - progRect.left

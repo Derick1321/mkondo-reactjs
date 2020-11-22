@@ -25,7 +25,9 @@ const authenticationSlice = createSlice({
   name: 'authentication',
   initialState: {
     token: null,
-    user: null,
+    user: {
+      name: null,
+    },
     loginError: null,
     signupError: null,
   },
