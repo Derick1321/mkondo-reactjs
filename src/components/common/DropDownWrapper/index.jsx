@@ -60,19 +60,22 @@ const DropDownWrapper = (props) => {
   }
 
   const handleClose = useCallback((event) => {
-    if (dropdownRef.current
-      && !dropdownRef.current.contains(event.target)
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)
     ) {
-      updateBounds(bounds.top > 0);
+      updateBounds(true);
     }
   }, [bounds]);
 
   // handler
-  const handleClick = () => {
+  const handleClick = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+
     const bound = btnRef.current.getBoundingClientRect();
     dispatch(showModal('EMPTY', {
       noWrapper: true,
     }));
+
     setBounds({
       top: bound.bottom + 20,
       left: bound.left - (bound.width * 0.3),

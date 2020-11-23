@@ -11,12 +11,13 @@ import { shuffleArray } from './utils';
 
 class Player {
   constructor(playlist, callbacks, onAutoPlay) {
-    this.playlist = playlist || [];
-    this.originalPlaylist = playlist || [];
+    this.playlist = [...playlist] || [];
+    this.originalPlaylist = [...playlist] || [];
     this.callbacks = callbacks || {};
     this.onAutoPlay = onAutoPlay || true;
     this.isPlaying = false;
     this.isOnRepeat = false;
+    this.isOnShuffle = false;
     this.index = 0;
   }
 
@@ -110,8 +111,14 @@ class Player {
     this.isOnRepeat = !this.isOnRepeat;
   }
 
-  shuffleArray() {
-    this.playlist = shuffleArray([...this.originalPlaylist]);
+  shuffle() {
+    if (!this.isOnShuffle) {
+      this.playlist = shuffleArray([...this.originalPlaylist]);
+    } else {
+      this.playlist = [...this.originalPlaylist];
+    }
+    
+    this.isOnShuffle = !this.isOnShuffle;
   }
 
   skipTo(index) {
