@@ -36,15 +36,28 @@ const AlbumMenuPanel = () => {
     <div ref={arrowRightRef} />
   );
 
+  const handleNavRight = () => {
+    arrowRightRef.current.click();
+  }
+
+  const handleNavLeft = () => {
+    arrowLeftRef.current.click();
+  }
+
   // render
   return (
    <div className="scroll-menu-wrapper">
-    <div className="d-flex">
-      <div className="d-flex">
-        <span>Recomended Albums</span>
+    <div className="d-flex align-items-center my-4">
+      <div className="d-flex album-menu-title-wrapper">
+        <span className="heading">Recomended Albums</span>
       </div>
-      <div>
-
+      <div className="d-flex justify-content-end">
+        <button className="custom-btn" onClick={handleNavLeft}>
+          <img src={arrowLeftIcon} />
+        </button>
+        <button className="custom-btn" onClick={handleNavRight}>
+          <img src={arrowRightIcon} />
+        </button>
       </div>
     </div>
     <ScrollMenu
