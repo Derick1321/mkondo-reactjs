@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 
 import AlbumMenu from '../AlbumMenu';
 import './index.scss';
 
-const Arrow = ({ text, className }) => {
-  return (
-    <div
-      className={className}
-    >{text}</div>
-  );
-};
-
-const ArrowLeft = Arrow({ text: '<', className: 'arrow-prev' });
-const ArrowRight = Arrow({ text: '>', className: 'arrow-next' });
+const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
+const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
 const AlbumMenuPanel = () => {
   //state
   const [selected, setSelected] = useState(null);
 
+  // ref
+  const arrowLeftRef = useRef(null);
+  const arrowRightRef = useRef(null);
+
+  // handlers
   const buildMenu = () => {
     const results = [];
     for (let idx = 0; idx < 10; idx += 1) {
@@ -31,15 +28,31 @@ const AlbumMenuPanel = () => {
     setSelected(key);
   }
 
+  const arrowLeft = (
+    <div ref={arrowLeftRef} />
+  );
+
+  const arrowRight = (
+    <div ref={arrowRightRef} />
+  );
+
   // render
   return (
    <div className="scroll-menu-wrapper">
-     <ScrollMenu
+    <div className="d-flex">
+      <div className="d-flex">
+        <span>Recomended Albums</span>
+      </div>
+      <div>
+
+      </div>
+    </div>
+    <ScrollMenu
       data={buildMenu()}
       selected={selected}
       onSelect={onSelect}
-      arrowLeft={ArrowLeft}
-      arrowRight={ArrowRight}
+      arrowLeft={arrowLeft}
+      arrowRight={arrowRight}
       alignCenter={false}
     />
    </div>
