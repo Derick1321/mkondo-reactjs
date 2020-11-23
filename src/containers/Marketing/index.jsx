@@ -7,8 +7,8 @@ import Hero from '$components/common/Hero';
 import Tabs from '$components/common/Tabs';
 import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
-//import HowItWorks from '$components/marketing/HowItWorks';
-import AppDownload from '$components/marketing/AppDownload';
+import HowItWorks from '$components/marketing-site/HowItWorks';
+import AppDownload from '$components/marketing-site/AppDownload';
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import urls from './model';
@@ -122,6 +122,7 @@ const Marketing = () => {
       </div>
       <div className="row how-it-works-pane">
         <div className="col-12 col-md-10 offset-md-1">
+          <HowItWorks />
         </div>
       </div>
       <div className="row app-download-wrapper justify-content-center align-items-center">
