@@ -2,13 +2,13 @@
   "name": "mkondo",
   "version": "1.0.0",
   "description": "Webapp for music development app",
-  "main": "index.html",
+  "main": "dist/index.html",
   "author": "Harvey Kadyanji et al.",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "ENV=development parcel serve index.html ",
-    "build": "PARCEL_BUNDLE_ANALYZER=1 parcel build index.html --no-cache"
+    "start": "ENV=development parcel serve index.html",
+    "build": "parcel build index.html --no-cache"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -37,5 +37,10 @@
     "$components": "./src/components",
     "$containers": "./src/containers",
     "$redux": "./src/redux"
+  },
+  "targets": {
+    "default": {
+      "sourceMap": false
+    }
   }
 }
