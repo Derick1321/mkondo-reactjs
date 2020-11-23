@@ -52,7 +52,7 @@ const Feature = (props) => {
           <p>{subtitle}</p>
           <div className="d-flex">
             <img
-              src={pause}
+              src={play}
               className="feature-action-btn"
             />
             <div className="d-flex flex-column feature-summary">
