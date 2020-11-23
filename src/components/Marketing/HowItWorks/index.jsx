@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Feature from '$common/Feature';
+import Feature from '$components/common/Feature';
 import List from '../List';
 
 import model from './model';
