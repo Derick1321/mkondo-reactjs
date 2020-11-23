@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Feature from '$components/common/Feature';
-import List from '../List';
+import List from '$components/marketing/List';
 
 import model from './model';
 
