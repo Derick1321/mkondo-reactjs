@@ -3,7 +3,7 @@
 .mk-btn {
   height: 40px;
   border-radius: 42px;
-  width: 140px;
+  min-width: 140px;
   border: 0;
   background-color: $secondary-green;
   border: 1px solid $secondary-green;
@@ -14,7 +14,6 @@
   }
   &.mk-btn-transparent {
     background-color: transparent;
-    border: none;
   }
   &.mk-btn-square {
     border-radius: 5px;
@@ -25,10 +24,13 @@
   &.no-width {
     width: auto;
   }
+  &.no-border {
+    border: none;
+  }
 }
 
 .mk-btn-border-white {
-  border-color: $white;
+  border: 1px solid $white;
 }
 
 .mk-btn-primary {

@@ -9,6 +9,7 @@ import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing/HowItWorks';
 import AppDownload from '$components/marketing/AppDownload';
+import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import urls from './model';
 
@@ -52,6 +53,10 @@ const Marketing = () => {
   }
 
   const handleChange = (value) => {
+  }
+
+  const handleExploreSongs = () => {
+    console.log('VALUE');
   }
 
   // render
@@ -104,6 +109,15 @@ const Marketing = () => {
         <div className="col-12 col-md-10 offset-md-1">
           <p className="mb-4 text-center how-it-works-title">Top Free Songs of the Week</p>
           <TopSongs />
+          <AlbumMenuPanel />
+          <div className="text-center">
+            <Button
+              onClick={handleExploreSongs}
+              style="px-4"
+            >
+              Explore Top Songs
+            </Button>
+          </div>
         </div>
       </div>
       <div className="row how-it-works-pane">

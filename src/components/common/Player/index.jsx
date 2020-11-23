@@ -11,7 +11,9 @@ const avatar = require('$assets/images/player/avatar.png');
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
 const repeatIcon = require('$assets/images/player/repeat.svg');
+const repeatActiveIcon = require('$assets/images/player/repeat-active.svg');
 const shuffleIcon = require('$assets/images/player/shuffle.svg');
+const shuffleActiveIcon = require('$assets/images/player/shuffle-active.svg');
 const prevIcon = require('$assets/images/player/prev.svg');
 const nextIcon = require('$assets/images/player/next.svg');
 const playIcon = require('$assets/images/player/play.svg');
@@ -35,6 +37,8 @@ const Player = () => {
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [seekPos, setSeekPos] = useState(0);
+  const [isRepeat, setIsRepeat] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
 
   // functions
   const onPlay = (dur) => {
@@ -93,6 +97,16 @@ const Player = () => {
     }
   }
 
+  const handleRepeat = () => {
+    audioRef.current.repeat();
+    setIsRepeat(audioRef.current.isRepeat);
+  }
+
+  const handleShuffle = () => {
+    audioRef.current.shuffle();
+    setIsShuffle(audioRef.current.isOnShuffle);
+  }
+
   const handleNext = () => {
     audioRef.current.skip('next');
     resetPos();
@@ -106,8 +120,8 @@ const Player = () => {
   const buildPlayerControls = () => {
     return (
       <>
-        <button className="player-btn">
-          <img src={repeatIcon} />
+        <button className="player-btn" onClick={handleRepeat}>
+          <img src={isRepeat ? repeatActiveIcon : repeatIcon} />
         </button>
         <button className="player-btn" onClick={handlePrev}>
           <img src={prevIcon} />
@@ -126,8 +140,8 @@ const Player = () => {
         <button className="player-btn" onClick={handleNext}>
           <img src={nextIcon} />
         </button>
-        <button className="player-btn">
-          <img src={shuffleIcon} />
+        <button className="player-btn" onClick={handleShuffle}>
+          <img src={isShuffle ? shuffleActiveIcon : shuffleIcon} />
         </button>
       </>
     )
