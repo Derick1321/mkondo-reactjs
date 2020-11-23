@@ -1,5 +1,13 @@
 @import '$assets/scss/main.scss';
 
+.custom-btn {
+  background-color: transparent;
+  border: 0;
+  &:focus {
+    outline: none;
+  }
+}
+
 .mk-btn {
   height: 40px;
   border-radius: 42px;
