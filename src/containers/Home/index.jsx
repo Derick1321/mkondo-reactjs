@@ -35,7 +35,9 @@ const Home = () => {
         </div>
         <p className="home-heading py-4">New Releases</p>
         <TopSongs />
-        <AlbumMenuPanel showHeader={false} />
+        <AlbumMenuPanel
+          showHeader
+        />
       </div>
       <div className="home-footer">
         <Player />

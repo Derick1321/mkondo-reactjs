@@ -55,7 +55,7 @@ const AlbumMenuPanel = (props) => {
       showHeader && (
         <div className="d-flex align-items-center my-4">
           <div className="d-flex album-menu-title-wrapper">
-            <span className="heading">Recomended Albums</span>
+            <span className="heading-3">Recomended Albums</span>
           </div>
           <div className="d-flex justify-content-end">
             <button className="custom-btn" onClick={handleNavLeft}>
