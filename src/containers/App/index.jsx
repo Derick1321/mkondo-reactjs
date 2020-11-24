@@ -1,28 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
 } from "react-router-dom";
 
-import Marketing from '$containers/Marketing';
-import Home from '$containers/Home';
-import OnBoarding from '$containers/OnBoarding';
+import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/common/modals/ModalRoot';
 
+import { routes } from '$common/routeConfig';
+
 const App = () => {
+  // render
   return (
     <Router>
       <Switch>
-        <Route path="/app/on-boarding">
-          <OnBoarding />
-        </Route>
-        <Route path="/app">
-          <Home />
-        </Route>
-        <Route path="/">
-          <Marketing />
-        </Route>
+        {
+          routes.map((route, i) => (
+            <RouteWithSubRoutes
+              key={`route-${i}`}
+              {...route}
+            />
+          ))
+        }
       </Switch>
       <ModalRoot />
     </Router>

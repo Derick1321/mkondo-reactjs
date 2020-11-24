@@ -1,17 +1,25 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import Button from '$components/common/Button';
+
+import { showModal } from '$redux/features/modal';
 
 import './index.scss';
 
 const alertIcon = require('$assets/images/alert-icon.svg');
 
 const AlertModal = () => {
+  //store
+  const dispatch = useDispatch();
+ 
   // handlers
   const handleLogin = () => {
+    dispatch(showModal('LOGIN_MODAL'));
   };
 
   const handleSignUp = () => {
+    dispatch(showModal('SIGNUP_MODAL'));
   };
 
   // render

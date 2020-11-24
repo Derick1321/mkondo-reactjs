@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Picker from 'react-simple-wheel-picker';
+import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '$components/common/Button';
 import Header from '$components/common/Header';
@@ -11,32 +13,34 @@ import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
-import urls from './model';
+import { routePaths } from '$common/routeConfig';
+import { coldstart } from '$redux/features/authentication';
+
+import { urls, data } from './model';
 
 import './index.scss';
-
-const data = [
-  {
-    id: '1',
-    value: 'Top of the week',
-  },
-  {
-    id: '2',
-    value: 'New Release - Premium',
-  },
-  {
-    id: '3',
-    value: 'Made for you',
-  },
-  {
-    id: '4',
-    value: 'Recommended'
-  },
-];
 
 const Marketing = () => {
   // state
   const [selected, setSelected] = useState('audio');
+
+  // store
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const token = useSelector((store) => store.authentication.token);
+
+  // effects
+  useEffect(() => {
+    dispatch(coldstart());
+  }, []);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    history.replace(routePaths.home);
+  }, [token]);
 
   // handlers
   const handleSelect = (name) => {
@@ -86,11 +90,11 @@ const Marketing = () => {
               titleText="aria-label"
               itemHeight={20}
               selectedID={data[1].id}
-              color="#ccc"
-              activeColor="#ccc"
+              color="#FFF"
+              activeColor="#FFF"
               backgroundColor="transparent"
               shadowColor="transparent"
-              fontSize={12}
+              fontSize={14}
             />
             <div className="d-flex flex-wrap tab-content-wrapper">
               {

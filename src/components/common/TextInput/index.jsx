@@ -37,6 +37,7 @@ const TextInput = (props) => {
 
 TextInput.defaultProps = {
   type: 'text', 
+  customWrapperClass: '',
 };
 
 TextInput.propTypes = {
@@ -45,6 +46,7 @@ TextInput.propTypes = {
   onChange: PropTypes.func.isRequired,
   value: PropTypes.string.isRequired,
   type: PropTypes.string,
+  customWrapperClass: PropTypes.string,
 };
 
 export default TextInput;
