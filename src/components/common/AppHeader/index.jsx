@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import DropDownWrapper from '$components/common/DropDownWrapper';
 import TextInput from '$components/common/TextInput';
+import SearchResult from '$components/common/SearchResult';
 
 import { logout } from '$redux/features/authentication';
 
@@ -42,28 +43,36 @@ const AppHeader = (props) => {
 
   // render
   return (
-    <div className="d-flex align-items-center app-header-wrapper">
+    <>
+      <div className="d-flex align-items-center app-header-wrapper">
+        {
+          showSearch && (
+            <TextInput
+              name="search"
+              placeholder="Search"
+              value={search}
+              onChange={handleChange}
+              customWrapperClass="app-header-input"
+              icon="search"
+            />
+          )
+        }
+        <DropDownWrapper
+          options={headerMenus}
+          handleSelect={handleSelect}
+        >
+          <div className="d-flex align-items-center app-header-name">
+            <span>{userName || 'Name'}</span>
+            <img src={avatar || defaultAvatar} className="app-header-avatar" />
+          </div>
+        </DropDownWrapper>
+      </div>
       {
-        showSearch && (
-          <TextInput
-            name="search"
-            placeholder="Search"
-            value={search}
-            onChange={handleChange}
-            customWrapperClass="app-header-input"
-          />
+        search && (
+          <SearchResult />
         )
       }
-      <DropDownWrapper
-        options={headerMenus}
-        handleSelect={handleSelect}
-      >
-        <div className="d-flex align-items-center app-header-name">
-          <span>{userName || 'Name'}</span>
-          <img src={avatar || defaultAvatar} className="app-header-avatar" />
-        </div>
-      </DropDownWrapper>
-    </div>
+    </>
   );
 }
 

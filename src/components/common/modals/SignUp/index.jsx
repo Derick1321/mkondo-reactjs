@@ -34,7 +34,6 @@ const SignupModal = () => {
   // effects
   useEffect(() => {
     // routePaths.onBoarding
-    console.log('ppp ', signUpComplete);
     if (!signUpComplete) {
       return;
     }

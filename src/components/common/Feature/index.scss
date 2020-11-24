@@ -28,7 +28,7 @@
 
 .feature-pane {
   position: absolute;
-  z-index: 99;
+  z-index: $z-index-lift;
   bottom: 0;
   align-items: flex-end;
   padding: 0.5rem 1rem;
