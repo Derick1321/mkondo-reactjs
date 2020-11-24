@@ -77,8 +77,8 @@ const DropDownWrapper = (props) => {
     }));
 
     setBounds({
-      top: bound.bottom + 20,
-      left: bound.left - (bound.width * 0.3),
+      top: bound.bottom + 10,
+      left: bound.left - (bound.width * 1.2),
     });
   }
 

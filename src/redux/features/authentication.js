@@ -38,6 +38,7 @@ const initialState = {
   },
   loginError: null,
   signupError: null,
+  signUpComplete: false,
 };
 
 // reducers
@@ -49,11 +50,12 @@ const authenticationSlice = createSlice({
       clearUser();
       return initialState;
     },
-    coldstart: () => {
+    coldstart: (state) => {
       const { token, user } = getUser();
       return {
+        ...state,
         token,
-        user,
+        user: user || initialState.user,
       }
     }
   },
@@ -71,10 +73,12 @@ const authenticationSlice = createSlice({
       return {
         ...state,
         ...handleAuthentication(action.payload),
+        signUpComplete: true,
       };
     },
     [signup.rejected]: (state, action) => {
       state.signupError = action.error;
+      state.signUpComplete = false;
     },
   }
 });

@@ -10,6 +10,8 @@ import InfoPane from '$components/authentication/Info';
 import { showModal } from '$redux/features/modal';
 import { signup } from '$redux/features/authentication';
 
+import { routePaths } from '$common/routeConfig';
+
 const initialValues = {
   fullName: '',
   phoneNumber: '',
@@ -27,17 +29,18 @@ const SignupModal = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const signupError = useSelector((store) => store.authentication.signupError);
-  const userName = useSelector((store) => store.authentication.user.full_name);
+  const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
 
   // effects
   useEffect(() => {
     // routePaths.onBoarding
-    if (!userName) {
+    console.log('ppp ', signUpComplete);
+    if (!signUpComplete) {
       return;
     }
 
     history.replace(routePaths.onBoarding);
-  }, [userName]);
+  }, [signUpComplete]);
 
   // handlers
   const handleChange = (name, value) => {

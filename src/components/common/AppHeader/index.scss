@@ -3,6 +3,8 @@
 .app-header-wrapper {
   height: 40px;
   padding: 4rem 0;
+  position: absolute;
+  width: calc(100% - 270px);
 }
 
 .app-header-avatar {

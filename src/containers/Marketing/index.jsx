@@ -28,6 +28,7 @@ const Marketing = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const token = useSelector((store) => store.authentication.token);
+  const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
 
   // effects
   useEffect(() => {
@@ -39,7 +40,9 @@ const Marketing = () => {
       return;
     }
 
-    history.replace(routePaths.home);
+    if (!signUpComplete) {
+      history.replace(routePaths.home);
+    }
   }, [token]);
 
   // handlers
