@@ -1,7 +1,16 @@
+@import '$assets/scss/main.scss';
+
 .scroll-menu-wrapper {
   margin: 5rem 1rem;
 }
 
 .album-menu-title-wrapper {
   flex: 1;
+}
+
+.heading-3 {
+  font-weight: 400;
+  font-family: Montserrat;
+  font-size: 16px;
+  color: $white;
 }
