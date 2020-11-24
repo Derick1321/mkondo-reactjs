@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "ENV=development parcel serve index.html",
-    "build": "parcel build index.html --no-cache"
+    "build": "ENV=production parcel build index.html --no-cache"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
