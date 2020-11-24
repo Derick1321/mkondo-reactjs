@@ -158,13 +158,15 @@ const Marketing = () => {
         <div className="col-12 col-sm-8 col-md-6">
           <p className="panel-header panel-header-dark">Thanks for listening</p>
           <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
-          <Button
-            onClick={handleFindMore}
-            style="mk-btn-primary"
-            isTransparent
-          >
-            FIND OUT MORE
-          </Button>
+          <div className="d-flex justify-content-center">
+            <Button
+              onClick={handleFindMore}
+              style="mk-btn-primary"
+              isTransparent
+            >
+              FIND OUT MORE
+            </Button>
+          </div>
         </div>
       </div>
       <div className="row">

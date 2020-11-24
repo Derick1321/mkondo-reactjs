@@ -8,6 +8,10 @@ export const routePaths = {
   marketing: '/',
   onBoarding: '/app/on-boarding',
   home: '/app/home',
+  recommendation: '/app/recommendation',
+  newRelease: '/app/new-release',
+  topChart: '/app/top-chart',
+  feeds: '/app/feeds',
 };
 
 const redirectFunctions = {
@@ -48,7 +52,31 @@ export const routes = [
         path: routePaths.home,
         component: Home,
         redirect: redirectFunctions.app
-      }
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.recommendation,
+        component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.newRelease,
+        component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.topChart,
+        component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.feeds,
+        component: Home,
+        redirect: redirectFunctions.app
+      },
     ]
   }
 ];
