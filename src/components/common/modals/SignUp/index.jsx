@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Alert from '$components/authentication/Alert';
 import Button from '$components/common/Button';
@@ -24,7 +25,19 @@ const SignupModal = () => {
 
   // store
   const dispatch = useDispatch();
+  const history = useHistory();
   const signupError = useSelector((store) => store.authentication.signupError);
+  const userName = useSelector((store) => store.authentication.user.full_name);
+
+  // effects
+  useEffect(() => {
+    // routePaths.onBoarding
+    if (!userName) {
+      return;
+    }
+
+    history.replace(routePaths.onBoarding);
+  }, [userName]);
 
   // handlers
   const handleChange = (name, value) => {

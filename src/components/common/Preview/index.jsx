@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import './index.scss';
 
-const playBtn = require('../../../assets/images/icons/play.svg');
+const playBtn = require('$assets/images/icons/play.svg');
 
 const PreviewBkg = styled.div`
   height: 100%;

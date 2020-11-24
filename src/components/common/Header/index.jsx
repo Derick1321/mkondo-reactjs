@@ -20,6 +20,12 @@ const Header = () => {
       dispatch(showModal('LOGIN_MODAL'));
       return;
     }
+
+    if (value === 'signup') {
+      dispatch(showModal('SIGNUP_MODAL'));
+      return;
+    }
+
     setActiveMenu(value);
   };
 
@@ -36,16 +42,16 @@ const Header = () => {
           isActive={activeMenu === 'about'}
           onClick={handleClick}
         />
-        <Menu
+         <Menu
           name="login"
-          title="Contributors Login"
+          title="Login"
           isActive={activeMenu === 'login'}
           onClick={handleClick}
         />
         <Menu
-          name="login"
-          title="Login"
-          isActive={activeMenu === 'login'}
+          name="signup"
+          title="Sign Up"
+          isActive={activeMenu === 'signup'}
           onClick={handleClick}
         />
       </div>

@@ -31,8 +31,8 @@ const HowItWorks = () => {
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
               subtitle="Latest Release"
               title="Starboy by the Weekend"
-              numOfSongs="14"
-              duration="1hr 24min"
+              numOfSongs=""
+              duration=""
             />
         </div>
       </div>
