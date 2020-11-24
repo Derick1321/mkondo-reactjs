@@ -2,9 +2,9 @@ import React from 'react';
 
 import './index.scss';
 
-const phone = require('../../../assets/images/phone.png');
-const appstore = require('../../../assets/images/appstore.svg');
-const playstore = require('../../../assets/images/playstore.svg');
+const phone = require('$assets/images/phone.png');
+const appstore = require('$assets/images/appstore.svg');
+const playstore = require('$assets/images/playstore.svg');
 
 const AppDownload = () => {
   return (

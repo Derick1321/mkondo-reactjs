@@ -46,14 +46,18 @@ export const buildFormData = (url, data = {}) => {
 };
 
 
-export const handlePost = async (path, data) => {
-  const { url, body, headers } = buildUrl(path, data, '');
-  const response = await fetch(url, {
-    method: 'POST',
-    body,
+export const handleFetch = async (method, path, data, token='') => {
+  const { url, body, headers } = buildUrl(path, data, token);
+  const props = {
+    method,
     headers,
-  });
+  };
 
+  if (body) {
+    props.body = body;
+  }
+
+  const response = await fetch(url, props);
   const result = await response.text();
   if (response.status !== 200) {
     throw result;

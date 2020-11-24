@@ -1,4 +1,4 @@
-const urls = {
+export const urls = {
   audio: [
     { source: "https://i.ibb.co/8b89DpX/image-8-1.png", },
     { source: "https://i.ibb.co/8b89DpX/image-8-1.png", },
@@ -40,5 +40,23 @@ const urls = {
   ],
 };
 
-export default urls;
+export const data = [
+  {
+    id: '1',
+    value: 'Top of the week',
+  },
+  {
+    id: '2',
+    value: 'New Release - Premium',
+  },
+  {
+    id: '3',
+    value: 'Made for you',
+  },
+  {
+    id: '4',
+    value: 'Recommended'
+  },
+];
+
 

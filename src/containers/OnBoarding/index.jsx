@@ -1,6 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import Header from '$components/common/Header';
+import AppHeader from '$components/common/AppHeader';
+import Button from '$components/common/Button';
+
+import { routePaths } from '$common/routeConfig';
+import { updateGenre } from '$redux/features/user';
+
 import menus from './menus';
 import './index.scss';
 
@@ -9,6 +16,19 @@ const happyFace = require('$assets/images/home/happy-face.svg');
 const OnBoarding = () => {
   // state
   const [selected, setSelected] = useState([]);
+
+  // store
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const updateGenreComplete = useSelector((store) => store.user.updateGenreComplete);
+
+  // effects
+  useEffect(() => {
+    if (updateGenreComplete) {
+      history.replace(routePaths.home);
+    }
+  }, [updateGenreComplete]);
+
   // handlers
   const handleSelect = (name) => {
     if (selected.indexOf(name) > -1) {
@@ -19,10 +39,20 @@ const OnBoarding = () => {
     setSelected([...selected, name]);
   }
 
+  const handleNext = () => {
+    // dispatch(updateGenre());
+    // TEMPO
+    history.replace(routePaths.home);
+  }
+
   // render
   return (
     <div className="onboarding-wrapper">
-      <Header />
+      <div className="d-flex justify-content-end"> 
+        <AppHeader
+          showSearch={false}
+        />
+      </div>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-8 col-md-6 onboarding-content">
           <div className="d-flex justify-content-center align-items-center onboarding-header">
@@ -54,6 +84,9 @@ const OnBoarding = () => {
                 )
               })
             }
+          </div>
+          <div className="d-flex justify-content-center my-4">
+            <Button onClick={handleNext} icon="next">Continue</Button>
           </div>
         </div>
       </div>

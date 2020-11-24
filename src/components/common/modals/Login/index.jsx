@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Button from '$components/common/Button';
 import TextInput from '$components/common/TextInput';
@@ -9,7 +10,10 @@ import Alert from '$components/authentication/Alert';
 import { showModal } from '$redux/features/modal';
 import { login } from '$redux/features/authentication';
 
+import { routePaths } from '$common/routeConfig';
+
 import './index.scss';
+import { hideModal } from '$redux/features/modal';
 
 const initialValues = {
   email: '',
@@ -22,7 +26,19 @@ const LoginModal = () => {
 
   // store
   const dispatch = useDispatch();
-  const error = useSelector((store) => store.authentication.error);
+  const history = useHistory();
+  const error = useSelector((store) => store.authentication.loginError);
+  const token = useSelector((store) => store.authentication.token);
+
+  // effects
+  useEffect(() => {
+    if (token) {
+      history.push(routePaths.home);
+      return;
+    }
+
+    history.push(routePaths.marketing);
+  }, [token]);
 
   // handlers
   const handleChange = (name, value) => {

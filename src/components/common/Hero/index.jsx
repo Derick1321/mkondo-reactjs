@@ -6,8 +6,8 @@ import Button from '../Button';
 
 import './index.scss';
 
-const audioBkg = require('../../../assets/images/audio-bkg.png');
-const videoBkg = require('../../../assets/images/video-bkg.png');
+const audioBkg = require('$assets/images/audio-bkg.png');
+const videoBkg = require('$assets/images/video-bkg.png');
 
 const commonStyles = `
   height: 360px;

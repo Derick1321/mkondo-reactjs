@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 
 import AlbumMenu from '../AlbumMenu';
@@ -7,7 +8,10 @@ import './index.scss';
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
-const AlbumMenuPanel = () => {
+const AlbumMenuPanel = (props) => {
+  // props
+  const { showHeader } = props;
+
   //state
   const [selected, setSelected] = useState(null);
 
@@ -47,19 +51,23 @@ const AlbumMenuPanel = () => {
   // render
   return (
    <div className="scroll-menu-wrapper">
-    <div className="d-flex align-items-center my-4">
-      <div className="d-flex album-menu-title-wrapper">
-        <span className="heading">Recomended Albums</span>
-      </div>
-      <div className="d-flex justify-content-end">
-        <button className="custom-btn" onClick={handleNavLeft}>
-          <img src={arrowLeftIcon} />
-        </button>
-        <button className="custom-btn" onClick={handleNavRight}>
-          <img src={arrowRightIcon} />
-        </button>
-      </div>
-    </div>
+    {
+      showHeader && (
+        <div className="d-flex align-items-center my-4">
+          <div className="d-flex album-menu-title-wrapper">
+            <span className="heading">Recomended Albums</span>
+          </div>
+          <div className="d-flex justify-content-end">
+            <button className="custom-btn" onClick={handleNavLeft}>
+              <img src={arrowLeftIcon} />
+            </button>
+            <button className="custom-btn" onClick={handleNavRight}>
+              <img src={arrowRightIcon} />
+            </button>
+          </div>
+        </div>
+      )
+    }
     <ScrollMenu
       data={buildMenu()}
       selected={selected}
@@ -71,5 +79,13 @@ const AlbumMenuPanel = () => {
    </div>
   );
 }
+
+AlbumMenuPanel.defaultProps = {
+  showHeader: false,
+};
+
+AlbumMenuPanel.propTypes = {
+  showHeader: PropTypes.bool,
+};
 
 export default AlbumMenuPanel;

@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 
 import './index.scss';
 
+const icons = {
+  next: require('$assets/images/icons/arrow-next.svg'),
+}
+
 const Button = (props) => {
   // props
   const {
@@ -12,6 +16,7 @@ const Button = (props) => {
     isSquare,
     isStretch,
     onClick,
+    icon,
   } = props;
 
   // handler
@@ -38,7 +43,17 @@ const Button = (props) => {
       className={`mk-btn ${getCustomStyle()} ${style}`}
       onClick={onClick}
     >
-      { children }
+      <div className="w-100">
+        { children }
+      </div>
+      {
+        icon && (
+          <img
+            src={icons[icon]}
+            className="btn-icon"
+          />
+        )
+      }
     </button>
   );
 };
@@ -48,6 +63,7 @@ Button.defaultProps = {
   isSquare: false,
   isStretch: false,
   style: '',
+  icon: null,
 };
 
 Button.propTypes = {
@@ -57,6 +73,7 @@ Button.propTypes = {
   isSquare: PropTypes.bool,
   isStretch: PropTypes.bool,
   style: PropTypes.string,
+  icon: PropTypes.string,
 }
 
 export default Button;

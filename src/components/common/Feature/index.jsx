@@ -4,8 +4,8 @@ import styled from 'styled-components';
 
 import './index.scss';
 
-const pause = require('../../../assets/images/icons/pause-icon.svg');
-const play = require('../../../assets/images/icons/play.svg');
+const pause = require('$assets/images/icons/pause-icon.svg');
+const play = require('$assets/images/icons/play.svg');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -57,14 +57,29 @@ const Feature = (props) => {
             />
             <div className="d-flex flex-column feature-summary">
               <span>{title}</span>
-              <span>{numOfSongs} Songs, {duration}</span>
+              {
+                numOfSongs && (
+                  <span>{numOfSongs} Songs, {duration}</span>
+                )
+              }
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
+}
+
+Feature.defaultProps = {
+  numOfSongs: null,
+  duration: null,
+}
+
+Feature.propTypes = {
+  subtitle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  numOfSongs: PropTypes.string,
+  duration: PropTypes.string,
 }
 
 export default Feature;

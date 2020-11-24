@@ -54,10 +54,6 @@ const Slider = (props) => {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
 
-    if (value === 0) {
-      console.log('vvv ', value);
-    }
-
     tl.progress(value); // NOTE: audio.currentTime / audio.duration
     gsap.set(knobRef.current, {
       x: useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value,
