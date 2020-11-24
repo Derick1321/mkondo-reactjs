@@ -14,10 +14,11 @@
 .sidemenu-item {
   padding: 5px 1rem;
   color: $secondary-gray;
-  &.active {
+  text-decoration: none;
+  &.active, &:hover {
     background-color: rgba(252, 252, 252, 0.1);
-    padding: 1rem 2rem;
     border-left: 1px solid $secondary-green;
+    color: $secondary-green;
     .sidemenu-item-title {
       color: $secondary-green;
     }

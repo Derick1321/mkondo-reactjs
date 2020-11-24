@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 
 import './index.scss';
 
+const icons = {
+  search: require('$assets/images/icons/search.svg'),
+};
+
 const TextInput = (props) => {
   // props
   const {
@@ -12,6 +16,7 @@ const TextInput = (props) => {
     placeholder,
     value,
     customWrapperClass,
+    icon,
   } = props;
 
   // handlers
@@ -31,6 +36,14 @@ const TextInput = (props) => {
         value={value}
         placeholder={placeholder}
       />
+      {
+        icon && (
+          <img
+            src={icons[icon]}
+            className="text-input-icon"
+          />
+        )
+      }
     </div>
   );
 };
@@ -38,6 +51,7 @@ const TextInput = (props) => {
 TextInput.defaultProps = {
   type: 'text', 
   customWrapperClass: '',
+  icon: null,
 };
 
 TextInput.propTypes = {
@@ -47,6 +61,7 @@ TextInput.propTypes = {
   value: PropTypes.string.isRequired,
   type: PropTypes.string,
   customWrapperClass: PropTypes.string,
+  icon: PropTypes.string,
 };
 
 export default TextInput;
