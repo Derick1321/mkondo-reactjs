@@ -23,6 +23,7 @@ import './index.scss';
 const Marketing = () => {
   // state
   const [selected, setSelected] = useState('audio');
+  const [initialRoute, setInitialRoute] = useState('');
 
   // store
   const history = useHistory();
@@ -41,6 +42,7 @@ const Marketing = () => {
     }
 
     if (!signUpComplete) {
+      console.log('TF !');
       history.replace(routePaths.home);
     }
   }, [token]);

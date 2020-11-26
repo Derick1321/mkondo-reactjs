@@ -1,8 +1,7 @@
 const BASE_URL = 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
-const URL = process.env.ENV === 'development' ?
-  'http://localhost:5000' : BASE_URL;
+const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
 
 export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/api/${url}`;

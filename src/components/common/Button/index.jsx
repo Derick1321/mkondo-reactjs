@@ -16,6 +16,9 @@ const Button = (props) => {
     isSquare,
     isStretch,
     onClick,
+    onMouseEnter,
+    onMouseLeave,
+    noBorder,
     icon,
   } = props;
 
@@ -34,6 +37,10 @@ const Button = (props) => {
       customStyle = `${customStyle} mk-btn-stretch`;
     }
 
+    if (noBorder) {
+      customStyle = `${customStyle} no-border`;
+    }
+
     return customStyle;
   }
 
@@ -42,6 +49,8 @@ const Button = (props) => {
     <button
       className={`mk-btn ${getCustomStyle()} ${style}`}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="w-100">
         { children }
@@ -62,8 +71,11 @@ Button.defaultProps = {
   isTransparent: false,
   isSquare: false,
   isStretch: false,
+  noBorder: false,
   style: '',
   icon: null,
+  onMouseEnter: () => null,
+  onMouseLeave: () => null,
 };
 
 Button.propTypes = {
@@ -72,8 +84,11 @@ Button.propTypes = {
   isTransparent: PropTypes.bool,
   isSquare: PropTypes.bool,
   isStretch: PropTypes.bool,
+  noBorder: PropTypes.bool,
   style: PropTypes.string,
   icon: PropTypes.string,
+  onMouseEnter: PropTypes.func,
+  onMouseLeave: PropTypes.func,
 }
 
 export default Button;
