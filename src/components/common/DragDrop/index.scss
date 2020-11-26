@@ -1,0 +1,33 @@
+@import '$assets/scss/main.scss';
+
+.drag-and-drop-wrapper {
+  height: 200px;
+  width: 100%;
+  color: $black;
+  .drag-active {
+    background-color: $white;
+  }
+}
+
+.hr {
+  flex: 1;
+  margin: 2rem 20px;
+  height: 1px;
+  background-color: $secondary-green;
+}
+
+.drag-and-drop-inner {
+  width: 90%;
+  height: 90%;
+  &.drag-active {
+    border: 1px dashed $tertiary-gray;
+  }
+}
+
+
+.drag-title {
+  font-size: 24px;
+  font-family: Roboto;
+  color: $tertiary-gray;
+  font-weight: bold;
+}

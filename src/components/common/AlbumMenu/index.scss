@@ -11,4 +11,9 @@
   height: 100%;
   width: 100%;
   margin-bottom: 10px;
+  &.album-menu-rounded {
+    border-radius: 100%;
+    height: 140px;
+    width: 140px;
+  }
 }

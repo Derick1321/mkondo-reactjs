@@ -1,0 +1,46 @@
+@import '$assets/scss/main.scss';
+
+.page-container {
+  margin-top: $margin-top;
+}
+
+.artist-cover-wrapper {
+  height: 350px;
+  width: 100%;
+}
+
+.artist-header-wrapper {
+  position: relative;
+  top: -60px;
+  padding: 0 4rem;
+}
+
+.artist-header-infopane {
+  flex: 2;
+  padding: 0 2rem;
+}
+
+.artist-header-actionpane {
+  flex: 1;
+}
+
+.artist-title {
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 25px;
+  color: $white;
+  text-shadow: 0px 0px 2px $black;
+}
+
+.artist-subtitle {
+  font-family: Roboto;
+  font-weight: 700;
+  font-size: 18px;
+  border-bottom: 3px solid $pink;
+  color: $white;
+  text-shadow: 0px 0px $black;
+}
+
+.artist-action-icon {
+  width: 20px;
+}

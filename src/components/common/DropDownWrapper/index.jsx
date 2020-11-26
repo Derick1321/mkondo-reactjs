@@ -14,7 +14,7 @@ const Container = styled.div`
   width: 180px;
   top: ${props => props.top}px;
   left: ${props => props.left}px;
-  z-index: 999;
+  z-index: 3999;
 `;
 
 const DropDownWrapper = (props) => {
