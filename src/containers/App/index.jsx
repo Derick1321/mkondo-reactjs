@@ -10,6 +10,17 @@ import ModalRoot from '$components/common/modals/ModalRoot';
 import { routes } from '$common/routeConfig';
 
 const App = () => {
+  // handler
+  const preventDefault = (evt) => {
+    evt.preventDefault();
+  }
+
+  // effects
+  useEffect(() => {
+    window.addEventListener("dragover", preventDefault, false);
+    window.addEventListener("drop", preventDefault, false);
+  }, []);
+
   // render
   return (
     <Router>

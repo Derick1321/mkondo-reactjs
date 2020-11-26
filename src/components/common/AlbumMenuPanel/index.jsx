@@ -10,7 +10,7 @@ const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
 const AlbumMenuPanel = (props) => {
   // props
-  const { showHeader } = props;
+  const { showHeader, isRounded, title } = props;
 
   //state
   const [selected, setSelected] = useState(null);
@@ -23,7 +23,12 @@ const AlbumMenuPanel = (props) => {
   const buildMenu = () => {
     const results = [];
     for (let idx = 0; idx < 10; idx += 1) {
-      results.push(<AlbumMenu key={`album-menu-${idx}`}/>);
+      results.push(
+        <AlbumMenu
+          key={`album-menu-${idx}`}
+          isRounded={isRounded}
+        />
+      );
     }
     return results;
   };
@@ -55,7 +60,7 @@ const AlbumMenuPanel = (props) => {
       showHeader && (
         <div className="d-flex align-items-center my-4">
           <div className="d-flex album-menu-title-wrapper">
-            <span className="heading-3">Recomended Albums</span>
+            <span className="heading-3">{title}</span>
           </div>
           <div className="d-flex justify-content-end">
             <button className="custom-btn" onClick={handleNavLeft}>
@@ -81,11 +86,15 @@ const AlbumMenuPanel = (props) => {
 }
 
 AlbumMenuPanel.defaultProps = {
+  title: 'Recomended Albums',
   showHeader: false,
+  isRounded: false,
 };
 
 AlbumMenuPanel.propTypes = {
+  title: PropTypes.string,
   showHeader: PropTypes.bool,
+  isRounded: PropTypes.bool,
 };
 
 export default AlbumMenuPanel;

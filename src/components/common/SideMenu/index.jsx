@@ -38,8 +38,14 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/feeds.svg'),
       activeIcon: require('$assets/images/icons/feeds-active.svg'),
-      title: 'Feeds',
-      path: routePaths.feeds,
+      title: 'Artist',
+      path: routePaths.viewArtist,
+    },
+    {
+      icon: require('$assets/images/icons/upload.svg'),
+      activeIcon: require('$assets/images/icons/upload-active.svg'),
+      title: 'New Media',
+      path: routePaths.newMedia,
     },
   ];
 

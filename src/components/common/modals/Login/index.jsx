@@ -13,7 +13,6 @@ import { login } from '$redux/features/authentication';
 import { routePaths } from '$common/routeConfig';
 
 import './index.scss';
-import { hideModal } from '$redux/features/modal';
 
 const initialValues = {
   email: '',

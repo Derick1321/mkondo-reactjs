@@ -9,6 +9,7 @@ import SearchResult from '$components/common/SearchResult';
 import { logout } from '$redux/features/authentication';
 
 import './index.scss';
+import { hideModal } from '../../../redux/features/modal';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
@@ -27,6 +28,7 @@ const AppHeader = (props) => {
   // store
   const userName = useSelector((store) => store.authentication.user.full_name);
   const avatar = useSelector((store) => store.authentication.user.avatar_url);
+  const modalActive = useSelector((store) => store.modal.type);
   const dispatch = useDispatch();
 
   // handlers
@@ -41,10 +43,14 @@ const AppHeader = (props) => {
     }
   }
 
+  const handleFocus = () => { // hacky way to hideModal
+    dispatch(hideModal());
+  }
+
   // render
   return (
     <>
-      <div className="d-flex align-items-center app-header-wrapper">
+      <div className={`d-flex align-items-center app-header-wrapper ${modalActive ? 'search-inactive' : ''}`}>
         {
           showSearch && (
             <TextInput
@@ -54,6 +60,7 @@ const AppHeader = (props) => {
               onChange={handleChange}
               customWrapperClass="app-header-input"
               icon="search"
+              onFocus={handleFocus}
             />
           )
         }

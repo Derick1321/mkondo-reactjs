@@ -13,10 +13,12 @@ const TextInput = (props) => {
     name,
     type,
     onChange,
+    onFocus,
     placeholder,
     value,
     customWrapperClass,
     icon,
+    disabled,
   } = props;
 
   // handlers
@@ -33,8 +35,10 @@ const TextInput = (props) => {
         className="text-input-wrapper"
         type={type}
         onChange={handleChange}
+        onFocus={onFocus}
         value={value}
         placeholder={placeholder}
+        disabled={disabled}
       />
       {
         icon && (
@@ -52,6 +56,8 @@ TextInput.defaultProps = {
   type: 'text', 
   customWrapperClass: '',
   icon: null,
+  disabled: false,
+  onFocus: () => null,
 };
 
 TextInput.propTypes = {
@@ -61,7 +67,9 @@ TextInput.propTypes = {
   value: PropTypes.string.isRequired,
   type: PropTypes.string,
   customWrapperClass: PropTypes.string,
+  onFocus: PropTypes.func,
   icon: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default TextInput;
