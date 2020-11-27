@@ -19,6 +19,7 @@ const TextInput = (props) => {
     customWrapperClass,
     icon,
     disabled,
+    title,
   } = props;
 
   // handlers
@@ -30,6 +31,7 @@ const TextInput = (props) => {
   // render
   return (
     <div className={`text-input-container d-flex justify-content-center ${customWrapperClass}`}>
+      <p>{title}</p>
       <input
         name={name}
         className="text-input-wrapper"
@@ -58,6 +60,7 @@ TextInput.defaultProps = {
   icon: null,
   disabled: false,
   onFocus: () => null,
+  title: '',
 };
 
 TextInput.propTypes = {
@@ -70,6 +73,7 @@ TextInput.propTypes = {
   onFocus: PropTypes.func,
   icon: PropTypes.string,
   disabled: PropTypes.bool,
+  title: PropTypes.string,
 };
 
 export default TextInput;

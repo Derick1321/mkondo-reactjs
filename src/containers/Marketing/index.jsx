@@ -23,13 +23,14 @@ import './index.scss';
 const Marketing = () => {
   // state
   const [selected, setSelected] = useState('audio');
-  const [initialRoute, setInitialRoute] = useState('');
 
   // store
   const history = useHistory();
   const dispatch = useDispatch();
+
   const token = useSelector((store) => store.authentication.token);
   const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
+  const initialRoute = useSelector((store) => store.nav.initialRoute);
 
   // effects
   useEffect(() => {
@@ -42,8 +43,7 @@ const Marketing = () => {
     }
 
     if (!signUpComplete) {
-      console.log('TF !');
-      history.replace(routePaths.home);
+      history.replace(initialRoute || routePaths.home);
     }
   }, [token]);
 

@@ -11,7 +11,7 @@ import ArtistView from '$containers/Artist/ViewArtist';
 export const routePaths = {
   main: '/app',
   marketing: '/',
-  onBoarding: '/app/on-boarding',
+  onBoarding: '/on-boarding',
   home: '/app/home',
   recommendation: '/app/recommendation',
   newRelease: '/app/new-release',
@@ -64,16 +64,16 @@ export const routes = [
   },
   {
     ...defaultConfig,
+    path: routePaths.onBoarding,
+    component: OnBoarding,
+    redirect: redirectFunctions.app
+  },
+  {
+    ...defaultConfig,
     path: routePaths.main,
     component: Main,
     exact: false,
     routes: [
-      {
-        ...defaultConfig,
-        path: routePaths.onBoarding,
-        component: OnBoarding,
-        redirect: redirectFunctions.app
-      },
       {
         ...defaultConfig,
         path: routePaths.home,
