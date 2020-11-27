@@ -3,13 +3,21 @@ import {
   BrowserRouter as Router,
   Switch,
 } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
 
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/common/modals/ModalRoot';
 
+import { setInitialNav } from '$redux/features/nav';
+
 import { routes } from '$common/routeConfig';
 
 const App = () => {
+  const initialRoute = useSelector((store) => store.nav.initialRoute);
+  const token = useSelector((store) => store.authentication.token);
+
+  const dispatch = useDispatch();
+
   // handler
   const preventDefault = (evt) => {
     evt.preventDefault();
@@ -21,7 +29,18 @@ const App = () => {
     window.addEventListener("drop", preventDefault, false);
   }, []);
 
+  // effects
+  useEffect(() => {
+    if (!initialRoute) {
+      dispatch(setInitialNav(window.location.pathname));
+    }
+  }, [initialRoute]);
+
   // render
+  if (!initialRoute) { // get the first url
+    return null;
+  }
+
   return (
     <Router>
       <Switch>
