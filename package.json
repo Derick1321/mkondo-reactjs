@@ -5,6 +5,7 @@
   "author": "Harvey Kadyanji et al.",
   "license": "UNLICENSED",
   "private": true,
+  "browser": "dist/browser/index.html",
   "scripts": {
     "start": "parcel serve index.html",
     "build": "parcel build index.html --no-cache"
@@ -21,6 +22,7 @@
     "react-horizontal-scrolling-menu": "^0.7.8",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
+    "react-select": "^3.1.1",
     "react-simple-wheel-picker": "^1.2.0",
     "styled-components": "^5.2.1"
   },
