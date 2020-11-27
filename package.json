@@ -5,10 +5,9 @@
   "author": "Harvey Kadyanji et al.",
   "license": "UNLICENSED",
   "private": true,
-  "browser": "dist/browser/index.html",
   "scripts": {
     "start": "parcel serve index.html",
-    "build": "parcel build index.html --no-cache"
+    "build": "parcel build index.html --no-cache --no-scope-hoist"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.4.0",
@@ -24,6 +23,7 @@
     "react-router-dom": "^5.2.0",
     "react-select": "^3.1.1",
     "react-simple-wheel-picker": "^1.2.0",
+    "regenerator-runtime": "^0.13.7",
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
