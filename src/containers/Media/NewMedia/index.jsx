@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import DragDrop from '$components/common/DragDrop';
 import NewItem from '$components/common/NewItem';
+import Button from '$components/common/Button';
 
 import './index.scss';
 
@@ -40,7 +41,14 @@ const NewMedia = () => {
     ]);
   }
 
-   // handleChange
+  const handleSave = () => {
+    console.log('save')
+  }
+
+  const handleCancel = () => {
+    
+  }
+
   const handleChange = (name, value) => {
     const payload = {
       [name]: value,
@@ -64,6 +72,18 @@ const NewMedia = () => {
               onChange={handleChange}
               values={values}
             />
+          </div>
+          <p>By uploading, you confirm that your sounds comply with our Terms of Use and you don't infringe anyone else's rights.</p>
+       
+          <div className="d-flex justify-content-end">
+            <Button
+              onClick={handleCancel}
+              isTransparent
+              noBorder
+            >
+              Cancel
+            </Button>
+            <Button onClick={handleSave}>Save</Button>
           </div>
         </div>
       </div>

@@ -1,7 +1,21 @@
 @import '$assets/scss/main.scss';
 
 .form-text-area-wrapper {
+  width: 100%;
   font-size: 14px;
   color: $secondary-black;
-  height: 300px;
+  height: 120px;
+  overflow: hidden;
+  margin: 8px 0;
+  border-radius: 20px;
+  border: 1px solid $border-gray;
+  .form-text-area {
+    background-color: transparent;
+    padding: 1px 20px;
+    width: 100%;
+    border: none;
+    &:focus {
+      outline: none;
+    }
+  }
 }

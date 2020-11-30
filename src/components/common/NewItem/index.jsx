@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Tabs from '$components/common/Tabs';
-import TextInput from '$components/common/TextInput';
+import InputField from '$components/forms/InputField';
 
 const options = [
-  { name: 'basic', value: 'Basic' },
-  { name: 'metadata', value: 'Metadata' },
+  { name: 'basic', title: 'Basic' },
+  { name: 'metadata', title: 'Metadata' },
 ]
 
 const NewItem = (props) => {
@@ -19,10 +19,11 @@ const NewItem = (props) => {
   } = props;
 
   // state
-
+  const [selected, setSelected] = useState(options[0].name);
 
   // handlers
   const handleSelect = (item) => {
+    setSelected(item);
   }
 
   // render
@@ -32,6 +33,7 @@ const NewItem = (props) => {
       <Tabs
         options={options}
         onSelect={handleSelect}
+        selected={selected}
         name="newItem"
       />
       <div className="row">
@@ -42,7 +44,12 @@ const NewItem = (props) => {
         <div className="col-12 col-md-6 col-lg-8">
           {
             menus.map((menu, idx) => (
-              <div className="" />
+              <div className="" key={`new-item-menu-${idx}`}>
+                <InputField
+                  field={menu}
+                  onChange={onChange}
+                />
+              </div>
             ))
           }
         </div>
