@@ -61,13 +61,14 @@ TextInput.defaultProps = {
   disabled: false,
   onFocus: () => null,
   title: '',
+  value: '',
 };
 
 TextInput.propTypes = {
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
   type: PropTypes.string,
   customWrapperClass: PropTypes.string,
   onFocus: PropTypes.func,

@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import './index.scss';
+
 const TextArea = (props) => {
   // props
   const { value, onChange, placeholder, title } = props;
@@ -21,6 +23,7 @@ const TextArea = (props) => {
 
 TextArea.defaultProps = {
   title: '',
+  value: '',
 }
 
 TextArea.propTypes = {
