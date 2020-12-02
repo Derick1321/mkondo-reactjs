@@ -20,7 +20,7 @@ export const login = createAsyncThunk(
 export const signup = createAsyncThunk(
   SIGN_UP,
   async (data) => {
-    return await axios.post('users', data)// handleFetch('POST', 'users', data);
+    return await handleFetch('POST', 'users', data);
   }
 );
 
