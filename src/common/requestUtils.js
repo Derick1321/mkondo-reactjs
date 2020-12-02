@@ -56,6 +56,8 @@ export const handleFetch = async (method, path, data, token='') => {
     props.body = body;
   }
 
+  console.log('result =>  ', props, url);
+
   const response = await fetch(url, props);
   const result = await response.text();
   console.log('result ', result);

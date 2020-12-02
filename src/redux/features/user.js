@@ -9,7 +9,7 @@ const UPDATE_GENRE = 'user/UPDATE_GENRE';
 export const updateGenre = createAsyncThunk(
   UPDATE_GENRE,
   async (data) => {
-    return await axios.post('users/update-genre', data)//handleFetch('POST', 'users/update-genre', data);
+    return await handleFetch('POST', 'users/update-genre', data);
   }
 );
 
