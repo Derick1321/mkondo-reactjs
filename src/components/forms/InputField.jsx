@@ -35,13 +35,17 @@ const InputField = (props) => {
         return (
           <Select
             options={field.options}
-            isMulti={field.isMulti}
+            isMulti={field.multi}
             onChange={onChange}
           />
         );
       case 'checkbox':
         return (
-          <Checkbox />
+          <Checkbox
+            name={field.name}
+            title={field.title}
+            onChange={onChange}
+          />
         )
       default:
         break;
@@ -50,7 +54,7 @@ const InputField = (props) => {
 
   // render
   return (
-    <div>
+    <div className="mr-2 mb-2">
       {buildField(field)}
     </div>
   );

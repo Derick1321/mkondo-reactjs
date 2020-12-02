@@ -23,7 +23,6 @@ const Home = () => {
           onSelect={handleSelect}
           selected={selected}
         />
-        <div className="tab-line" />
       </div>
       <p className="home-heading py-4">New Releases</p>
       <TopSongs />
