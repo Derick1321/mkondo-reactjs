@@ -7,7 +7,7 @@ import Button from '$components/common/Button';
 import TextInput from '$components/common/TextInput';
 import InfoPane from '$components/authentication/Info';
 
-import { showModal } from '$redux/features/modal';
+import { showModal, hideModal } from '$redux/features/modal';
 import { signup } from '$redux/features/authentication';
 
 import { routePaths } from '$common/routeConfig';
@@ -38,6 +38,7 @@ const SignupModal = () => {
       return;
     }
 
+    dispatch(hideModal()); // Should close on route change?
     history.replace(routePaths.onBoarding);
   }, [signUpComplete]);
 
