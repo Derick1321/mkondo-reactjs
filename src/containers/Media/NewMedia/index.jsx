@@ -4,23 +4,9 @@ import DragDrop from '$components/common/DragDrop';
 import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
 
+import { menus, metamenus } from './menus';
+
 import './index.scss';
-
-const menus = [
-  { name: 'title', type: 'text', placeholder: 'Enter Title', title: 'Title' },
-  { name: 'genre', type: 'select', placeholder: 'Enter Genre', title: 'Genre' },
-  { name: 'description', type: 'area', placeholder: 'Describe your track', title: 'Description' },
-  { name: 'caption', type: 'area', placeholder: 'Add your caption', title: 'Caption' },
-];
-
-const metamenus = [
-  { name: 'artist', type: 'text', placeholder: 'Artist Name', title: 'Artist' },
-  { name: 'publisher', type: 'text', placeholder: 'Publisher Name', title: 'Publisher' },
-  { name: 'composer', type: 'text', placeholder: 'Composer Name', title: 'Composer' },
-  { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
-  { name: 'albumTitle', type: 'text', placeholder: 'Enter Album Title', title: 'Album Title' },
-  { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
-];
 
 const NewMedia = () => {
   // state
@@ -30,7 +16,7 @@ const NewMedia = () => {
     genre: '',
     description: '',
     caption: '',
-    privacy: false,
+    policy: false,
   });
 
   // handlers
@@ -46,17 +32,13 @@ const NewMedia = () => {
   }
 
   const handleCancel = () => {
-    
+
   }
 
   const handleChange = (name, value) => {
-    const payload = {
-      [name]: value,
-    };
-
     setValues({
       ...values,
-      payload,
+      [name]: value,
     });
   }
 
@@ -73,8 +55,6 @@ const NewMedia = () => {
               values={values}
             />
           </div>
-          <p>By uploading, you confirm that your sounds comply with our Terms of Use and you don't infringe anyone else's rights.</p>
-       
           <div className="d-flex justify-content-end">
             <Button
               onClick={handleCancel}

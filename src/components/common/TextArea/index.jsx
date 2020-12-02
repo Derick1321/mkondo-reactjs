@@ -5,16 +5,23 @@ import './index.scss';
 
 const TextArea = (props) => {
   // props
-  const { value, onChange, placeholder, title } = props;
+  const { name, value, onChange, placeholder, title } = props;
+
+  // handlers
+  const handleChange = (evt) => {
+    const { name, value } = evt.target;
+    onChange(name, value);
+  }
 
   // render
   return (
     <div className="form-text-area-wrapper">
       <p>{title}</p>
       <textarea
+        name={name}
         className="form-text-area"
         value={value}
-        onChange={onChange}
+        onChange={handleChange}
         placeholder={placeholder}
       />
     </div>

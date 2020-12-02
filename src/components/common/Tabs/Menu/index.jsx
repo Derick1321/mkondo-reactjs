@@ -5,12 +5,24 @@ import './index.scss';
 
 const TabMenu = (props) => {
   // props
-  const {name, isActive, title, onClick} = props;
+  const {
+    name,
+    isActive,
+    title,
+    onClick,
+    activeColor,
+  } = props;
 
   // handlers
   const handleClick = () => {
     onClick(name);
   };
+
+  const customStyle = {};
+
+  if (activeColor) {
+    customStyle.color = activeColor;
+  }
 
   // render
   return (
@@ -19,7 +31,7 @@ const TabMenu = (props) => {
       onClick={handleClick}
       type="button"
     >
-      <span>{title}</span>
+      <span style={customStyle}>{title}</span>
       <div className={`active-tab-menu ${isActive ? 'visible' : 'invisible'}`} />
     </button>
   );
@@ -27,6 +39,7 @@ const TabMenu = (props) => {
 
 TabMenu.defaultProps = {
   isActive: false,
+  activeColor: '',
 };
 
 TabMenu.propTypes = {
@@ -34,6 +47,7 @@ TabMenu.propTypes = {
   title: PropTypes.string.isRequired,
   onClick: PropTypes.func.isRequired,
   isActive: PropTypes.bool,
+  activeColor: PropTypes.string,
 };
 
 export default TabMenu;
