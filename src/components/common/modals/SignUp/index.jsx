@@ -64,7 +64,7 @@ const SignupModal = () => {
       phone_number: values.phoneNumber,
       email: values.email,
       password: values.password,
-      user_type: 'User',
+      user_type: 'user',
       country: 'TZ',
     }));
   };
