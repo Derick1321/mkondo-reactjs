@@ -83,7 +83,6 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className="tab-line" />
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2">
           <div className="d-flex">
