@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import TabMenu from './Menu';
 
+import './index.scss';
+
 const initialOptions = [
   { name: 'audio', title: 'Audios' },
   { name: 'video', title: 'Videos' },
@@ -16,10 +18,12 @@ const Tabs = (props) => {
     selected,
     onSelect,
     options,
+    activeColor,
   } = props;
 
   // render
   return (
+    <>
     <div className="d-flex">
       {
         options.map((opt, idx) => (
@@ -29,15 +33,19 @@ const Tabs = (props) => {
             name={opt.name}
             isActive={selected === opt.name}
             onClick={onSelect}
+            activeColor={activeColor}
           />
         ))
       }
     </div>
+    <div className="tab-line" />
+    </>
   );
 }
 
 Tabs.defaultProps = {
   options: initialOptions,
+  activeColor: null,
 }
 
 Tabs.propTypes = {
@@ -47,6 +55,7 @@ Tabs.propTypes = {
     name: PropTypes.string,
     title: PropTypes.string,
   })),
+  activeColor: PropTypes.string,
 }
 
 export default Tabs;
