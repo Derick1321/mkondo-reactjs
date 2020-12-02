@@ -1,0 +1,30 @@
+@import '$assets/scss/main.scss';
+
+.avatar-input-wrapper {
+  height: 200px;
+  width: 100%;
+  border: 2px solid $secondary-gray;
+  position: relative;
+  .avatar-input-wrapper-image {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+.avatar-btn {
+  position: absolute;
+  bottom: 5px;
+  border: 0;
+  background-color: #FFFFFF;
+  border-radius: 9px;
+  height: 40px;
+  padding: 0 10px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.avatar-btn-icon {
+  height: 30px;
+  padding: 0 5px;
+}
