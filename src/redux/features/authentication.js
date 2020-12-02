@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { handleFetch } from '$common/requestUtils';
 import { getUser, saveUser, clearUser } from '$common/userService';
 
 const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
+
+// yusuphiqbal21@gmail.com
 
 // actions
 export const login = createAsyncThunk(
@@ -17,7 +20,7 @@ export const login = createAsyncThunk(
 export const signup = createAsyncThunk(
   SIGN_UP,
   async (data) => {
-    return await handleFetch('POST', 'users', data);
+    return await axios.post('users', data)// handleFetch('POST', 'users', data);
   }
 );
 
