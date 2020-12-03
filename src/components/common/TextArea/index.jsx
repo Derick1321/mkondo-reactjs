@@ -15,16 +15,18 @@ const TextArea = (props) => {
 
   // render
   return (
-    <div className="form-text-area-wrapper">
+    <>
       <p>{title}</p>
-      <textarea
-        name={name}
-        className="form-text-area"
-        value={value}
-        onChange={handleChange}
-        placeholder={placeholder}
-      />
-    </div>
+      <div className="form-text-area-wrapper">
+        <textarea
+          name={name}
+          className="form-text-area"
+          value={value}
+          onChange={handleChange}
+          placeholder={placeholder}
+        />
+      </div>
+    </>
   );
 }
 
