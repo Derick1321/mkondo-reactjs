@@ -30,27 +30,29 @@ const TextInput = (props) => {
 
   // render
   return (
-    <div className={`text-input-container d-flex justify-content-center ${customWrapperClass}`}>
+    <>
       <p>{title}</p>
-      <input
-        name={name}
-        className="text-input-wrapper"
-        type={type}
-        onChange={handleChange}
-        onFocus={onFocus}
-        value={value}
-        placeholder={placeholder}
-        disabled={disabled}
-      />
-      {
-        icon && (
-          <img
-            src={icons[icon]}
-            className="text-input-icon"
-          />
-        )
-      }
-    </div>
+      <div className={`text-input-container d-flex justify-content-center ${customWrapperClass}`}>
+        <input
+          name={name}
+          className="text-input-wrapper"
+          type={type}
+          onChange={handleChange}
+          onFocus={onFocus}
+          value={value}
+          placeholder={placeholder}
+          disabled={disabled}
+        />
+        {
+          icon && (
+            <img
+              src={icons[icon]}
+              className="text-input-icon"
+            />
+          )
+        }
+      </div>
+    </>
   );
 };
 
