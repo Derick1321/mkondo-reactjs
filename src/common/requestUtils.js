@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const BASE_URL = 'https://api.mkondo.co'; //'http://localhost:5000/api'; 
+const BASE_URL = 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
 const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
@@ -9,17 +7,15 @@ export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
   };
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
-    headers.token = token;
   }
 
   return {
     url: newUrl,
-    body: JSON.stringify(data),
+    body: data && JSON.stringify(data),
     headers,
   };
 };
@@ -58,6 +54,7 @@ export const handleFetch = async (method, path, data, token='') => {
 
   const response = await fetch(url, props);
   const status = response.status;
+  console.log('body ', props, status, response);
   const result = await response.text();
 
   if (![200, 201].includes(status)) {
