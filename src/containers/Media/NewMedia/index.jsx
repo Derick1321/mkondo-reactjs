@@ -29,11 +29,10 @@ const NewMedia = () => {
 
   const handleSave = () => {
     console.log('save')
-  }
+  };
 
   const handleCancel = () => {
-
-  }
+  };
 
   const handleChange = (name, value) => {
     setValues({
@@ -58,6 +57,7 @@ const NewMedia = () => {
           <div className="d-flex justify-content-end">
             <Button
               onClick={handleCancel}
+              style="btn-cancel"
               isTransparent
               noBorder
             >

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Tabs from '$components/common/Tabs';
 import InputField from '$components/forms/InputField';
 import AvatarInput from '$components/common/AvatarInput';
+import Progress from '$components/common/Progress';
 
 const options = [
   { name: 'basic', title: 'Basic' },
@@ -34,18 +35,22 @@ const NewItem = (props) => {
       setAvatarUrl(evt.target.result);
     }
     reader.readAsDataURL(file[0]);
+    onChange('file', file);
   }
 
   // render
   return (
     <div className="">
-      <div className="mt-4">
+      <div className="d-flex flex-column mt-4">
         <Tabs
           options={options}
           onSelect={handleSelect}
           selected={selected}
           name="newItem"
           activeColor="#8C8C8C"
+        />
+        <Progress
+          values={values}
         />
       </div>
       <div className={`row mt-4 ${selected === 'basic' ? '' : 'd-none'}`}>

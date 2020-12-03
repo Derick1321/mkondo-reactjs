@@ -57,11 +57,8 @@ export const handleFetch = async (method, path, data, token='') => {
   }
 
   const response = await fetch(url, props);
-  console.log('response => ', response);
   const status = response.status;
-  console.log('status => ', response, status);
   const result = await response.text();
-  console.log('result ', result, status);
 
   if (![200, 201].includes(status)) {
     throw result;
