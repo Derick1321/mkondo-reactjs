@@ -1,9 +1,10 @@
 import React from 'react';
-import Select from 'react-select';
 
 import TextArea from '$components/common/TextArea';
 import TextInput from '$components/common/TextInput';
 import Checkbox from '$components/forms/Checkbox';
+import InputDate from '$components/forms/Date';
+import SelectInput from '$components/forms/Select';
 
 const InputField = (props) => {
   // props
@@ -16,39 +17,44 @@ const InputField = (props) => {
       case 'password':
         return (
           <TextInput
-            name={field.name}
-            placeholder={field.placeholder}
-            value={field.value}
+            {...field}
             onChange={onChange}
           />
         );
       case 'area':
         return (
           <TextArea
-            name={field.name}
-            placeholder={field.placeholder}
-            value={field.value}
+            {...field}
             onChange={onChange}
           />
         );
       case 'select':
         return (
-          <Select
-            options={field.options}
-            isMulti={field.multi}
-            onChange={onChange}
-          />
+          <div>
+            <SelectInput
+              {...field}
+              onChange={onChange}
+            />
+          </div>
         );
       case 'checkbox':
         return (
           <Checkbox
+            {...field}
+            onChange={onChange}
+          />
+        )
+      case 'date':
+        return (
+          <InputDate
             name={field.name}
+            value={field.value}
             title={field.title}
             onChange={onChange}
           />
         )
       default:
-        break;
+        return null; 
     }
   }
 

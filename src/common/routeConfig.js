@@ -7,6 +7,7 @@ import MediaNew from '$containers/Media/NewMedia';
 import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
+import ArtistStats from '$containers/Artist/StatsArtist';
 
 export const routePaths = {
   main: '/app',
@@ -22,6 +23,7 @@ export const routePaths = {
   artist: '/app/artist',
   newArtist: '/app/artist/new',
   viewArtist: '/app/artist/view',
+  statsArtist: '/app/artist/stats',
 };
 
 const roles = {
@@ -120,12 +122,18 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.newArtist,
             component: ArtistNew,
-            redirect: redirectFunctions.admin,
+            redirect: redirectFunctions.app,
           },
           {
             ...defaultConfig,
             path: routePaths.viewArtist,
             component: ArtistView,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.statsArtist,
+            component: ArtistStats,
             redirect: redirectFunctions.app,
           },
         ]

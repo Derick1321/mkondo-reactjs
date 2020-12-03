@@ -53,7 +53,7 @@ const OnBoarding = () => {
           showSearch={false}
         />
       </div>
-      <div className="row justify-content-center mt-4">
+      <div className="row justify-content-center">
         <div className="col-10 col-sm-8 col-md-6 onboarding-content">
           <div className="d-flex justify-content-center align-items-center onboarding-header">
             <img
