@@ -9,7 +9,27 @@ const SideMenu = () => {
   // store
   const history = useHistory();
 
-  // icons
+  const artistIcons = [
+    { 
+      icon: require('$assets/images/icons/add-artist.svg'),
+      activeIcon: require('$assets/images/icons/add-artist-active.svg'),
+      title: 'Add Artist',
+      path: routePaths.newArtist,
+    },
+    { 
+      icon: require('$assets/images/icons/stats.svg'),
+      activeIcon: require('$assets/images/icons/stats-active.svg'),
+      title: 'Stats',
+      path: routePaths.statsArtist,
+    },
+    {
+      icon: require('$assets/images/icons/upload.svg'),
+      activeIcon: require('$assets/images/icons/upload-active.svg'),
+      title: 'New Media',
+      path: routePaths.newMedia,
+    },
+  ];
+
   const icons = [
     { 
       icon: require('$assets/images/icons/home.svg'),
@@ -38,14 +58,8 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/feeds.svg'),
       activeIcon: require('$assets/images/icons/feeds-active.svg'),
-      title: 'Artist',
+      title: 'Artist (Dev Only)',
       path: routePaths.viewArtist,
-    },
-    {
-      icon: require('$assets/images/icons/upload.svg'),
-      activeIcon: require('$assets/images/icons/upload-active.svg'),
-      title: 'New Media',
-      path: routePaths.newMedia,
     },
   ];
 
@@ -71,6 +85,27 @@ const SideMenu = () => {
             </NavLink>
           ))
         }
+        <div className="d-flex flex-column artist-menus">
+          <p className="sidemenu-subtitle">Artist Panel</p>
+          {
+            artistIcons.map((item, idx) => (
+              <NavLink
+                to={item.path}
+                className="sidemenu-item"
+                activeClassName="active"
+                key={`sidemenu-${idx}`}
+              >
+                {
+                  <img
+                    src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                    className="sidemenu-item-icon"
+                  />
+                }
+                <span className="sidemenu-item-title">{item.title}</span>
+              </NavLink>
+            ))
+          }
+        </div>
       </div>
     </div>
   )
