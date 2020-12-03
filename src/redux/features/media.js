@@ -32,29 +32,27 @@ export const getMedia = createAsyncThunk(
 // save to s3
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
-  async (file) => {
+  async (file, param) => {
+    const { token } = param.getState().authentication;
     const fileName = `${Math.random().toString(36).substring(5)}${file.name}`;
-    const response = await handleFetch('GET', `media/presigned-get-url?file_name=${fileName}`);
+    const result = await handleFetch('GET', `media/presigned-get-url?file_name=${fileName}`, null, token);
 
-    console.log('response ', response);
-
-    const { headers, body: formData } = buildFormData(response.url, {
-      ...response.data,
+    const { headers, body: formData } = buildFormData(result.response, {
       file,
     });
     
-    let result = null;
+    let response = null;
     try {
-      result = await fetch('https://idhinisha-files.s3-eu-west-1.amazonaws.com/', {
+      response = await fetch('https://mkondo.co.fra1.digitaloceanspaces.com', {
         method: 'POST',
         body: formData,
         headers,
       });
     } catch (error) {
-      result = error;
+      throw error;
     }
 
-    return result;
+    return response;
   }
 );
 
