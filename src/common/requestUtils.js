@@ -24,7 +24,7 @@ export const buildFormData = (url, data = {}) => {
   const newUrl = `${BASE_URL}${url}`;
 
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Accept': '*/*',
   };
 
   const formData = new FormData();
@@ -32,6 +32,8 @@ export const buildFormData = (url, data = {}) => {
   for (const key in data) {
     formData.append(key, data[key]);
   }
+
+  console.log('data ', data);
 
   return {
     body: formData,
@@ -54,7 +56,6 @@ export const handleFetch = async (method, path, data, token='') => {
 
   const response = await fetch(url, props);
   const status = response.status;
-  console.log('body ', props, status, response);
   const result = await response.text();
 
   if (![200, 201].includes(status)) {

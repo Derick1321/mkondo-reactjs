@@ -5,6 +5,7 @@ import TextInput from '$components/common/TextInput';
 import Checkbox from '$components/forms/Checkbox';
 import InputDate from '$components/forms/Date';
 import SelectInput from '$components/forms/Select';
+import SocialInput from '$components/forms/SocialInput';
 
 const InputField = (props) => {
   // props
@@ -47,9 +48,14 @@ const InputField = (props) => {
       case 'date':
         return (
           <InputDate
-            name={field.name}
-            value={field.value}
-            title={field.title}
+            {...field}
+            onChange={onChange}
+          />
+        )
+      case 'social':
+        return (
+          <SocialInput
+            {...field}
             onChange={onChange}
           />
         )
