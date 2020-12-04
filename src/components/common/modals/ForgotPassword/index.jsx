@@ -7,7 +7,7 @@ import TextInput from '$components/common/TextInput';
 import InfoPane from '$components/authentication/Info';
 
 import { showModal } from '$redux/features/modal';
-import { signup } from '$redux/features/authentication';
+import { forgotPassword } from '$redux/features/authentication';
 
 const ForgotPasswordModal = () => {
   // state
@@ -18,14 +18,14 @@ const ForgotPasswordModal = () => {
 
   // handlers
   const handleForgot = () => {
+    dispatch(forgotPassword(email));
   };
 
   const handleLogin = () => {
     dispatch(showModal('LOGIN_MODAL'));
   };
 
-  const handleChange = (evt) => {
-    const { value } = evt.target;
+  const handleChange = (name, value) => {
     setEmail(value);
   }
 

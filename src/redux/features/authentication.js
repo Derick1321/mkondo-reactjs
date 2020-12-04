@@ -5,8 +5,7 @@ import { getUser, saveUser, clearUser } from '$common/userService';
 
 const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
-
-// yusuphiqbal21@gmail.com
+const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
 
 // actions
 export const login = createAsyncThunk(
@@ -20,6 +19,20 @@ export const signup = createAsyncThunk(
   SIGN_UP,
   async (data) => {
     return await handleFetch('POST', 'users', data);
+  }
+);
+
+export const forgotPassword = createAsyncThunk(
+  FORGOT_PASSWORD,
+  async (data) => {
+    return await handleFetch('POST', 'users/forgotpassword', data);
+  }
+);
+
+export const resetPassword = createAsyncThunk(
+  FORGOT_PASSWORD,
+  async (data) => {
+    return await handleFetch('POST', 'users/password/reset', data);
   }
 );
 
@@ -81,6 +94,14 @@ const authenticationSlice = createSlice({
     [signup.rejected]: (state, action) => {
       state.signupError = action.error;
       state.signUpComplete = false;
+    },
+    [forgotPassword.fulfilled]: (state, action) => {
+      state.forgotPasswordError = null;
+      state.forgotPasswordComplete = true;
+    },
+    [forgotPassword.rejected]: (state, action) => {
+      state.forgotPasswordError = action.error;
+      state.forgotPasswordComplete = false;
     },
   }
 });
