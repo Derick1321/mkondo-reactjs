@@ -7,6 +7,7 @@ export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
   };
 
   if (token) {
@@ -15,7 +16,7 @@ export const buildUrl = (url, data, token = '') => {
 
   return {
     url: newUrl,
-    body: data && JSON.stringify(data),
+    body: JSON.stringify(data),
     headers,
   };
 };
@@ -33,15 +34,12 @@ export const buildFormData = (url, data = {}) => {
     formData.append(key, data[key]);
   }
 
-  console.log('data ', data);
-
   return {
     body: formData,
     url: newUrl,
     headers,
   };
 };
-
 
 export const handleFetch = async (method, path, data, token='') => {
   const { url, body, headers } = buildUrl(path, data, token);
