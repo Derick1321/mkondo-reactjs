@@ -55,8 +55,8 @@ export const metamenus = [
   { name: 'recordingLabel', type: 'text', placeholder: 'Recording Label', title: 'Record Label' },
   { name: 'region', type: 'text', placeholder: 'Enter Region', title: 'Region' },
   { name: 'country', type: 'text', placeholder: 'Enter Country Name', title: 'Country' },
-  { name: 'fb', type: 'socials', placeholder: 'Enter Facebook Link', icon: 'fb' },
-  { name: 'instagram', type: 'socials', placeholder: 'Enter Instagram Link', icon: 'instagram' },
-  { name: 'yt', type: 'socials', placeholder: 'Enter Youtube Link', icon: 'yt' },
-  { name: 'twitter', type: 'socials', placeholder: 'Enter Twitter Link', icon: 'twitter' },
+  { name: 'fb', type: 'social', placeholder: 'Enter Facebook Link', icon: 'fb' },
+  { name: 'instagram', type: 'social', placeholder: 'Enter Instagram Link', icon: 'instagram' },
+  { name: 'yt', type: 'social', placeholder: 'Enter Youtube Link', icon: 'yt' },
+  { name: 'twitter', type: 'social', placeholder: 'Enter Twitter Link', icon: 'twitter' },
 ];
