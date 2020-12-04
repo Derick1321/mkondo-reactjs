@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 import { handleFetch, buildFormData } from '$common/requestUtils';
 
@@ -35,15 +36,17 @@ export const saveMedia = createAsyncThunk(
   async (file, param) => {
     const { token } = param.getState().authentication;
     const fileName = `${Math.random().toString(36).substring(5)}${file.name}`;
-    const result = await handleFetch('GET', `media/presigned-get-url?file_name=${fileName}`, null, token);
-
-    const { headers, body: formData } = buildFormData(result.response, {
-      file,
-    });
-    
+    const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
+    const { fields, url } = result.response;
+  
     let response = null;
     try {
-      response = await fetch('https://mkondo.co.fra1.digitaloceanspaces.com', {
+      const { headers, body: formData } = buildFormData(url, {
+        ...fields,
+        file,
+      });
+        
+      response = await fetch(url, {
         method: 'POST',
         body: formData,
         headers,
