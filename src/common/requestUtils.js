@@ -14,11 +14,16 @@ export const buildUrl = (url, data, token = '') => {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  return {
+  const props = {
     url: newUrl,
-    body: JSON.stringify(data),
     headers,
   };
+
+  if (data) {
+    props.body =  JSON.stringify(data);
+  }
+
+  return props;
 };
 
 export const buildFormData = (url, data = {}) => {
