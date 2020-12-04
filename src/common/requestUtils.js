@@ -7,17 +7,23 @@ export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
   };
 
   if (token) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  return {
+  const props = {
     url: newUrl,
-    body: data && JSON.stringify(data),
     headers,
   };
+
+  if (data) {
+    props.body =  JSON.stringify(data);
+  }
+
+  return props;
 };
 
 export const buildFormData = (url, data = {}) => {
@@ -33,15 +39,12 @@ export const buildFormData = (url, data = {}) => {
     formData.append(key, data[key]);
   }
 
-  console.log('data ', data);
-
   return {
     body: formData,
     url: newUrl,
     headers,
   };
 };
-
 
 export const handleFetch = async (method, path, data, token='') => {
   const { url, body, headers } = buildUrl(path, data, token);
