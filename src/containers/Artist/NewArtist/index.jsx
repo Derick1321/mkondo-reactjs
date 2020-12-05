@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
+
+import { routePaths } from '$common/routeConfig';
 
 import { saveMedia } from '$redux/features/media';
 import { addArtist } from '$redux/features/artist';
@@ -11,9 +14,10 @@ import { menus, metamenus } from './menus';
 
 import './index.scss';
 
+
 const initialState = {
   name: '',
-  genre: '',
+  genre: [],
   description: '',
   phoneNumber: '',
   email: '',
@@ -33,6 +37,21 @@ const NewArtist = () => {
 
   // store
   const dispatch = useDispatch();
+  const history = useHistory();
+  const addArtistComplete = useSelector((store) => store.artist.addArtistComplete);
+  const newArtistId = useSelector((store) => store.artist.newArtistId);
+
+  // effects
+  useEffect(() => {
+    if (addArtistComplete) {
+      history.push(routePaths.success, {
+        message: 'Congratulations you are all set!',
+        userId: newArtistId,
+        country: values.country,
+        name: values.name,
+      });
+    }
+  }, [addArtistComplete]);
 
   // handlers
   const handleCancel = () => {
@@ -46,7 +65,6 @@ const NewArtist = () => {
     }
 
     const res = await dispatch(saveMedia(values.file[0]));
-    
     dispatch(addArtist({
       full_name: values.name,
       email: values.email,
@@ -57,9 +75,11 @@ const NewArtist = () => {
       locality: values.region,
       facebook_link: values.fb,
       instagram_link: values.instagram,
+      youtube_link: values.yt,
       twitter_link: values.twitter,
       avatar_url: res.payload,
       password: '123456',
+      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, '')
     }));
   };
 
@@ -74,7 +94,7 @@ const NewArtist = () => {
   return (
     <div className="new-media-wrapper">
       <div className="row justify-content-center">
-        <div className="col-10 col-sm-8 col-md-6">
+        <div className="col-10 col-sm-8">
           <div className="d-flex flex-column">
             <NewItem 
               menus={menus}
@@ -83,7 +103,7 @@ const NewArtist = () => {
               values={values}
             />
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end new-item-footer">
             <Button
               onClick={handleCancel}
               style="btn-cancel"

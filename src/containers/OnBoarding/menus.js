@@ -36,7 +36,7 @@ const menus = [
     iconActive: require('$assets/images/home/dj-active.svg'),
   },
   {
-    name: 'hipHop',
+    name: 'hiphop',
     title: 'Hip Hop',
     icon: require('$assets/images/home/cap.svg'),
     iconActive: require('$assets/images/home/cap-active.svg'),

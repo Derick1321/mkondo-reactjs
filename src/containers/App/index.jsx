@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/common/modals/ModalRoot';
+import Monitor from '$components/utility/Monitor';
 
 import { setInitialNav } from '$redux/features/nav';
 
@@ -54,8 +55,9 @@ const App = () => {
         }
       </Switch>
       <ModalRoot />
+      <Monitor />
     </Router>
-  )
+  );
 };
 
 export default App;
