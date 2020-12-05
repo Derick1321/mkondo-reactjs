@@ -9,12 +9,14 @@ import AlertModal from '../Alert';
 import LoginModal from '../Login';
 import SignUpModal from '../SignUp';
 import ForgotPasswordModal from '../ForgotPassword';
+import LoaderModal from '../Loader';
 
 const MODAL_COMPONENTS = {
   'ALERT_MODAL': AlertModal,
   'LOGIN_MODAL': LoginModal,
   'SIGNUP_MODAL': SignUpModal,
   'FORGOT_PASSWORD_MODAL': ForgotPasswordModal,
+  'LOADER_MODAL': LoaderModal,
   'EMPTY': () => <div />,
 };
 
