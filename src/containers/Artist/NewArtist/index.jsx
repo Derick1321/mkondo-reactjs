@@ -5,6 +5,7 @@ import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
 
 import { saveMedia } from '$redux/features/media';
+import { addArtist } from '$redux/features/artist';
 
 import { menus, metamenus } from './menus';
 
@@ -16,8 +17,14 @@ const initialState = {
   description: '',
   phoneNumber: '',
   email: '',
+  country: '',
+  region: '',
   policy: false,
   file: null,
+  fb: '',
+  yt: '',
+  instgram: '',
+  twitter: '',
 };
 
 const NewArtist = () => {
@@ -32,13 +39,29 @@ const NewArtist = () => {
     setValues(initialState);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!values.file) {
       alert('No file submitted!');
       return;
     }
 
-    dispatch(saveMedia(values.file[0]));
+    const res = await dispatch(saveMedia(values.file[0]));
+    console.log('fileName ', res.payload, values);
+    
+    dispatch(addArtist({
+      full_name: values.name,
+      email: values.email,
+      phone_number: values.phoneNumber,
+      user_type: 'creator', // shouldn't be necessary
+      about: values.description,
+      country: values.country,
+      locality: values.region,
+      facebook_link: values.fb,
+      instagram_link: values.instagram,
+      twitter_link: values.twitter,
+      avatar_url: res.payload,
+      password: '123456',
+    }));
   };
 
   const handleChange = (name, value) => {
