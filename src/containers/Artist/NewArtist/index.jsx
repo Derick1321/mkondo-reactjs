@@ -23,7 +23,7 @@ const initialState = {
   file: null,
   fb: '',
   yt: '',
-  instgram: '',
+  instagram: '',
   twitter: '',
 };
 
@@ -41,12 +41,11 @@ const NewArtist = () => {
 
   const handleSave = async () => {
     if (!values.file) {
-      alert('No file submitted!');
+      alert('No avatar file submitted!');
       return;
     }
 
     const res = await dispatch(saveMedia(values.file[0]));
-    console.log('fileName ', res.payload, values);
     
     dispatch(addArtist({
       full_name: values.name,
