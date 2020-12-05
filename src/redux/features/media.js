@@ -18,15 +18,17 @@ export const addMedia = createAsyncThunk(
 
 export const getAllMedia = createAsyncThunk(
   GET_ALL_MEDIA,
-  async () => {
-    return await handleFetch('GET', 'media');
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'media', null, token);
   }
 );
 
 export const getMedia = createAsyncThunk(
   GET_MEDIA,
-  async (id) => {
-    return await handleFetch('GET', `media/${id}`);
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/${id}`, null, token);
   }
 );
 
@@ -39,23 +41,23 @@ export const saveMedia = createAsyncThunk(
     const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
     const { fields, url } = result.response;
   
-    let response = null;
     try {
       const { headers, body: formData } = buildFormData(url, {
         ...fields,
         file,
       });
         
-      response = await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         body: formData,
         headers,
       });
+
+      await res.text();
+      return fileName;
     } catch (error) {
       throw error;
     }
-
-    return response;
   }
 );
 
@@ -68,7 +70,6 @@ const mediaSlice = createSlice({
     getMediaComplete: false,
     saveMediaError: null,
     saveMediaComplete: false,
-    artists: [],
   },
   reducers: {},
   extraReducers: {
