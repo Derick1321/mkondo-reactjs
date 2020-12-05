@@ -1,0 +1,24 @@
+@import '$assets/scss/main.scss';
+
+.share-description-wrapper {
+  flex: 2;
+  padding: 1rem;
+}
+
+.share-socials-wrapper {
+  flex: 1;
+  padding: 1rem;
+}
+
+.share-input {
+  padding: 0 1rem;
+  &:focus {
+    outline: none;
+    padding: 0 1rem;
+  }
+}
+
+.share-region-text {
+  font-size: 16px;
+  font-weight: bold;
+}

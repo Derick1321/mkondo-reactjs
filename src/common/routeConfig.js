@@ -8,6 +8,7 @@ import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
 import ArtistStats from '$containers/Artist/StatsArtist';
+import SuccessPage from '$containers/Success';
 
 export const routePaths = {
   main: '/app',
@@ -22,8 +23,9 @@ export const routePaths = {
   newMedia: '/app/media/new',
   artist: '/app/artist',
   newArtist: '/app/artist/new',
-  viewArtist: '/app/artist/view',
   statsArtist: '/app/artist/stats',
+  viewArtist: '/app/artist/:id',
+  success: '/app/success',
 };
 
 const roles = {
@@ -43,7 +45,6 @@ const redirectFunctions = {
       return routePaths.marketing;
     }
 
-    console.log('TF!');
     if (!roles.admin.includes(role)) {
       return routePaths.home;
     }
@@ -110,6 +111,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.feeds,
         component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.success,
+        component: SuccessPage,
         redirect: redirectFunctions.app
       },
       {
