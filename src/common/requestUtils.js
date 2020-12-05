@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.mkondo.co';
+const BASE_URL = 'http://localhost:5000';
 
 // Ensure you are running a local instance
 const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
@@ -7,7 +7,6 @@ export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
   };
 
   if (token) {
@@ -20,7 +19,8 @@ export const buildUrl = (url, data, token = '') => {
   };
 
   if (data) {
-    props.body =  JSON.stringify(data);
+    props.body = JSON.stringify(data);
+    headers['Content-Type'] = 'application/json';
   }
 
   return props;

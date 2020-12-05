@@ -50,7 +50,7 @@ export const menus = [
 ];
 
 export const metamenus = [
-  { name: 'publisher', type: 'text', placeholder: 'Artist Name', title: 'Artist' },
+  { name: 'publisher', type: 'text', placeholder: 'Publlisher Name', title: 'Publish' },
  { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
   { name: 'recordingLabel', type: 'text', placeholder: 'Recording Label', title: 'Record Label' },
   { name: 'region', type: 'text', placeholder: 'Enter Region', title: 'Region' },

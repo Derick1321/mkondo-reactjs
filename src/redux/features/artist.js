@@ -8,15 +8,17 @@ const GET_ARTISTS = 'artist/GET_ARTISTS';
 // actions
 export const addArtist = createAsyncThunk(
   ADD_ARTIST,
-  async (data) => {
-    return await handleFetch('POST', 'artists', data);
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'artists', data, token);
   }
 );
 
 export const getArtists = createAsyncThunk(
   GET_ARTISTS,
-  async () => {
-    return await handleFetch('GET', 'artists');
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'artists', token);
   }
 );
 
