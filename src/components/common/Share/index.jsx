@@ -30,14 +30,14 @@ const Avatar = styled.div`
 
 const Share = (props) => {
   // props
-  const { name, country, userId } = props;
+  const { name, country, link } = props;
 
   // refs
   const linkRef = useRef(null);
 
   // state
   const [description, setDescription] = useState('I just joined Mkondo visit www.mkondo.co for checking my profile!');
-  const [link, setLink] = useState(`https//mkondo.co/app/artist/${userId}`);
+  const [link, setLink] = useState(link);
 
   // handlers
   const handleChange = (name, value) => {
@@ -114,13 +114,13 @@ const Share = (props) => {
 Share.defaultProps = {
   name: 'Artist Name',
   country: 'Tanzania',
-  userId: 'artist01'
+  link: 'https//mkondo.co/app/artist/artist01',
 };
 
 Share.propTypes = {
   name: PropTypes.string,
   country: PropTypes.string,
-  userId: PropTypes.string,
+  link: PropTypes.string,
 };
 
 export default Share;

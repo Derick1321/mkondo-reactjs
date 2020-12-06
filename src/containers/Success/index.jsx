@@ -25,7 +25,7 @@ const SuccessPage = () => {
     return null;
   }
 
-  const { message, name, country, userId } = location.state;
+  const { message, name, country, link } = location.state;
 
   // render
   return (
@@ -40,7 +40,7 @@ const SuccessPage = () => {
             <Share
               name={name}
               country={country}
-              userId={userId}
+              link={link}
             />
           </div>
         </div>
