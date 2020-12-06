@@ -46,7 +46,7 @@ const NewArtist = () => {
     if (addArtistComplete) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
-        userId: newArtistId,
+        link: `https//mkondo.co/app/artist/${newArtistId}`,
         country: values.country,
         name: values.name,
       });
