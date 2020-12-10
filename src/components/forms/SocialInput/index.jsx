@@ -15,8 +15,6 @@ const SocialInput = (props) => {
     icon,
   } = props;
 
-  console.log('socialIcons[icon] ', socialIcons, socialIcons[icon], icon);
-
   // render
   return (
     <div className="d-flex align-items-center">

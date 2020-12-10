@@ -45,7 +45,7 @@ const NewMedia = () => {
   return (
     <div className="new-media-wrapper">
       <div className="row justify-content-center">
-        <div className="col-10 col-sm-8 col-md-6">
+        <div className="col-10 col-sm-8 col-lg-6">
           <div className="d-flex flex-column">
             <NewItem 
               menus={menus}
