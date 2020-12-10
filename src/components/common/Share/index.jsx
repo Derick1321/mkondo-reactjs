@@ -30,14 +30,19 @@ const Avatar = styled.div`
 
 const Share = (props) => {
   // props
-  const { name, country, link } = props;
+  const {
+    name,
+    country,
+    link: url,
+    avatar,
+  } = props;
 
   // refs
   const linkRef = useRef(null);
 
   // state
   const [description, setDescription] = useState('I just joined Mkondo visit www.mkondo.co for checking my profile!');
-  const [link, setLink] = useState(link);
+  const [link, setLink] = useState(url);
 
   // handlers
   const handleChange = (name, value) => {
@@ -59,7 +64,7 @@ const Share = (props) => {
   return (
     <div className="row">
       <div className="col-6 col-sm-2">
-        <Avatar url={avatarSample} />
+        <Avatar url={avatar || avatarSample} />
       </div>
       <div className="col-12 col-sm-5 col-md-6">
         <p className="my-0">{name}</p>
@@ -115,12 +120,14 @@ Share.defaultProps = {
   name: 'Artist Name',
   country: 'Tanzania',
   link: 'https//mkondo.co/app/artist/artist01',
+  avatar: null,
 };
 
 Share.propTypes = {
   name: PropTypes.string,
   country: PropTypes.string,
   link: PropTypes.string,
+  avatar: PropTypes.string,
 };
 
 export default Share;

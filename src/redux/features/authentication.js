@@ -6,6 +6,7 @@ import { getUser, saveUser, clearUser } from '$common/userService';
 const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
 const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
+const RESET_PASSWORD = 'authentication/RESET_PASSWORD';
 
 // actions
 export const login = createAsyncThunk(
@@ -30,7 +31,7 @@ export const forgotPassword = createAsyncThunk(
 );
 
 export const resetPassword = createAsyncThunk(
-  FORGOT_PASSWORD,
+  RESET_PASSWORD,
   async (data) => {
     return await handleFetch('POST', 'users/password/reset', data);
   }
@@ -102,6 +103,14 @@ const authenticationSlice = createSlice({
     [forgotPassword.rejected]: (state, action) => {
       state.forgotPasswordError = action.error;
       state.forgotPasswordComplete = false;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      state.resetPasswordError = null;
+      state.resetPasswordComplete = true;
+    },
+    [resetPassword.rejected]: (state, action) => {
+      state.resetPasswordError = action.error;
+      state.resetPasswordComplete = false;
     },
   }
 });
