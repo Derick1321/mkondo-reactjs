@@ -68,6 +68,7 @@ const mediaSlice = createSlice({
     addMediaComplete: false,
     getMediaError: null,
     getMediaComplete: false,
+    saveMediaPending: false,
     saveMediaError: null,
     saveMediaComplete: false,
   },
@@ -82,7 +83,6 @@ const mediaSlice = createSlice({
       state.addMediaError = action.error;
     },
     [getMedia.fulfilled]: (state, action) => {
-      console.log('action get ', action);
       state.getMediaComplete = true;
       state.getMediaError = null;
       state.artists = action.payload;
@@ -90,14 +90,21 @@ const mediaSlice = createSlice({
     [getMedia.rejected]: (state, action) => {
       state.getMediaError = action.error;
     },
+    [saveMedia.pending]: (state, action) => {
+      state.saveMediaPending = true;
+      state.saveMediaComplete = false;
+      state.saveMediaError = null;
+    },
     [saveMedia.fulfilled]: (state, action) => {
-      console.log('media save ', action);
       state.saveMediaComplete = true;
       state.saveMediaError = null;
+      state.saveMediaPending = false,
       state.media = action.payload;
     },
     [saveMedia.rejected]: (state, action) => {
+      state.saveMediaComplete = false;
       state.saveMediaError = action.error;
+      state.saveMediaPending = false;
     },
   }
 });

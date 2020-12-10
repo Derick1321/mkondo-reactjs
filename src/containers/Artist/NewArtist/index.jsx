@@ -6,6 +6,7 @@ import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
 
 import { routePaths } from '$common/routeConfig';
+import { generatePreview } from '$common/utils';
 
 import { saveMedia } from '$redux/features/media';
 import { addArtist } from '$redux/features/artist';
@@ -17,7 +18,7 @@ import './index.scss';
 
 const initialState = {
   name: '',
-  genre: [],
+  genre: null,
   description: '',
   phoneNumber: '',
   email: '',
@@ -42,13 +43,14 @@ const NewArtist = () => {
   const newArtistId = useSelector((store) => store.artist.newArtistId);
 
   // effects
-  useEffect(() => {
+  useEffect(async () => {
     if (addArtistComplete) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
         link: `https//mkondo.co/app/artist/${newArtistId}`,
         country: values.country,
         name: values.name,
+        avatar: await generatePreview(values.file),
       });
     }
   }, [addArtistComplete]);
@@ -64,7 +66,7 @@ const NewArtist = () => {
       return;
     }
 
-    const res = await dispatch(saveMedia(values.file[0]));
+    const res = await dispatch(saveMedia(values.file));
     dispatch(addArtist({
       full_name: values.name,
       email: values.email,

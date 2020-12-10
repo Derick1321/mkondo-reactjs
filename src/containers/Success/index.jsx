@@ -25,7 +25,7 @@ const SuccessPage = () => {
     return null;
   }
 
-  const { message, name, country, link } = location.state;
+  const { message, name, country, link, avatar } = location.state;
 
   // render
   return (
@@ -41,6 +41,7 @@ const SuccessPage = () => {
               name={name}
               country={country}
               link={link}
+              avatar={avatar}
             />
           </div>
         </div>
