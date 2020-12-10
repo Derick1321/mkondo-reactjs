@@ -1,23 +1,35 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
 
+import { routePaths } from '$common/routeConfig';
+import { generatePreview } from '$common/utils';
+
 import { saveMedia } from '$redux/features/media';
+import { addArtist } from '$redux/features/artist';
 
 import { menus, metamenus } from './menus';
 
 import './index.scss';
 
+
 const initialState = {
   name: '',
-  genre: '',
+  genre: null,
   description: '',
   phoneNumber: '',
   email: '',
+  country: '',
+  region: '',
   policy: false,
   file: null,
+  fb: '',
+  yt: '',
+  instagram: '',
+  twitter: '',
 };
 
 const NewArtist = () => {
@@ -26,19 +38,56 @@ const NewArtist = () => {
 
   // store
   const dispatch = useDispatch();
+  const history = useHistory();
+  const addArtistComplete = useSelector((store) => store.artist.addArtistComplete);
+  const newArtistId = useSelector((store) => store.artist.newArtistId);
+
+  // effects
+  useEffect(async () => {
+    if (addArtistComplete) {
+      history.push(routePaths.success, {
+        message: 'Congratulations you are all set!',
+        link: `https//mkondo.co/app/artist/${newArtistId}`,
+        country: values.country,
+        name: values.name,
+        avatar: await generatePreview(values.file),
+      });
+    }
+  }, [addArtistComplete]);
 
   // handlers
   const handleCancel = () => {
     setValues(initialState);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (!values.file) {
-      alert('No file submitted!');
+      alert('No avatar file submitted!');
       return;
     }
 
-    dispatch(saveMedia(values.file[0]));
+    if (!values.policy) {
+      alert('You need to accept the terms and conditions before proceeding!');
+      return;
+    }
+
+    const res = await dispatch(saveMedia(values.file));
+    dispatch(addArtist({
+      full_name: values.name,
+      email: values.email,
+      phone_number: values.phoneNumber,
+      user_type: 'creator', // shouldn't be necessary
+      about: values.description,
+      country: values.country,
+      locality: values.region,
+      facebook_link: values.fb,
+      instagram_link: values.instagram,
+      youtube_link: values.yt,
+      twitter_link: values.twitter,
+      avatar_url: res.payload,
+      password: '123456',
+      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, '')
+    }));
   };
 
   const handleChange = (name, value) => {
@@ -52,7 +101,7 @@ const NewArtist = () => {
   return (
     <div className="new-media-wrapper">
       <div className="row justify-content-center">
-        <div className="col-10 col-sm-8 col-md-6">
+        <div className="col-10 col-sm-8">
           <div className="d-flex flex-column">
             <NewItem 
               menus={menus}
@@ -61,7 +110,7 @@ const NewArtist = () => {
               values={values}
             />
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end new-item-footer">
             <Button
               onClick={handleCancel}
               style="btn-cancel"

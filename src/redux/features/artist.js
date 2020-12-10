@@ -8,44 +8,63 @@ const GET_ARTISTS = 'artist/GET_ARTISTS';
 // actions
 export const addArtist = createAsyncThunk(
   ADD_ARTIST,
-  async (data) => {
-    return await handleFetch('POST', 'artists', data);
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'artists', data, token);
   }
 );
 
 export const getArtists = createAsyncThunk(
   GET_ARTISTS,
-  async () => {
-    return await handleFetch('GET', 'artists');
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'artists', token);
   }
 );
 
 const artistSlice = createSlice({
   name: 'artist',
   initialState: {
+    addArtistPending: false,
     addArtistError: null,
     addArtistComplete: false,
+    getArtistPending: false,
     getArtistsComplete: false,
     getArtistsError: null,
+    newArtistId: '',
     artists: [],
   },
   reducers: {},
   extraReducers: {
-    [addArtist.fulfilled]: (state, action) => {
-      console.log('action add ', action);
-      state.addArtistComplete = true;
+    [addArtist.pending]: (state, action) => {
+      state.addArtistPending = true;
+      state.addArtistComplete = false;
       state.addArtistError = null;
     },
+    [addArtist.fulfilled]: (state, action) => {
+      state.addArtistPending = false;
+      state.addArtistComplete = true;
+      state.addArtistError = null;
+      state.newArtistId = action.payload.user_id;
+    },
     [addArtist.rejected]: (state, action) => {
+      state.addArtistPending = false;
       state.addArtistError = action.error;
     },
+    [getArtists.pending]: (state, action) => {
+      state.getArtistsPending = true;
+      state.getArtistsComplete = false;
+      state.getArtistsError = null;
+    },
     [getArtists.fulfilled]: (state, action) => {
-      console.log('action get ', action);
+      state.getArtistsPending = false;
       state.getArtistsComplete = true;
       state.getArtistsError = null;
       state.artists = action.payload;
     },
     [getArtists.rejected]: (state, action) => {
+      state.getArtistsPending = false;
+      state.getArtistsComplete = false;
       state.getArtistsError = action.error;
     },
   }

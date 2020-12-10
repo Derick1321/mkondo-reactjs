@@ -48,7 +48,7 @@ const ViewArtist = () => {
 
   // render
   return (
-    <div className="page-container">
+    <div className="artist-view-container page-container">
       <div className="artist-cover-wrapper">
         <Cover source={sampleCover} />
         <div className="d-flex artist-header-wrapper">

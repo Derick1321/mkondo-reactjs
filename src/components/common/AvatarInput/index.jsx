@@ -4,8 +4,6 @@ import styled from 'styled-components';
 
 // TODO: Refractor the avatarInput with the Drag&Drop
 
-import Button from '$components/common/Button';
-
 import './index.scss';
 
 const camera = require('$assets/images/photo-camera.svg');
@@ -95,7 +93,10 @@ const AvatarInput = (props) => {
             </p>
           ))
         }
-        <button className="d-flex align-items-center avatar-btn" onClick={handleSelectFile}>
+        <button
+          className="d-flex align-items-center avatar-btn"
+          onClick={handleSelectFile}
+        >
           <img src={camera} className="avatar-btn-icon" alt=""/>
           <span>Select Image</span>
         </button>

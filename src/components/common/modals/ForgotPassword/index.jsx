@@ -18,7 +18,9 @@ const ForgotPasswordModal = () => {
 
   // handlers
   const handleForgot = () => {
-    dispatch(forgotPassword(email));
+    dispatch(forgotPassword({
+      email,
+    }));
   };
 
   const handleLogin = () => {
@@ -32,6 +34,10 @@ const ForgotPasswordModal = () => {
   return (
     <div className="row justify-content-center">
       <div className="col-10 col-md-8">
+        <Alert
+          content="Failed to login. Try again"
+          type="error"
+        />
         <div className="row justify-content-center login-modal-top">
           <InfoPane value="Yo! Forget Your Password" />
           <div className="col-12 col-sm-10 col-md-8 mt-4">
