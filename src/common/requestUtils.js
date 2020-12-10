@@ -7,7 +7,6 @@ export const buildUrl = (url, data, token = '') => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
   };
 
   if (token) {
@@ -20,7 +19,8 @@ export const buildUrl = (url, data, token = '') => {
   };
 
   if (data) {
-    props.body =  JSON.stringify(data);
+    props.body = JSON.stringify(data);
+    headers['Content-Type'] = 'application/json';
   }
 
   return props;

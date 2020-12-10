@@ -12,3 +12,17 @@ export const shuffleArray = (array) => {
 export const formatTime = (seconds) => {
   return Duration.fromObject({ seconds }).toFormat('mm:ss');
 }
+
+export const generatePreview = (file) => {
+  return new Promise( (resolve, reject) => {
+    try {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        resolve(evt.target.result);
+      }
+      reader.readAsDataURL(file);
+    } catch(err) {
+      reject(err);
+    }
+  });
+}

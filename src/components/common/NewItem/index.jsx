@@ -6,6 +6,8 @@ import InputField from '$components/forms/InputField';
 import AvatarInput from '$components/common/AvatarInput';
 import Progress from '$components/common/Progress';
 
+import { generatePreview } from '$common/utils';
+
 const options = [
   { name: 'basic', title: 'Basic' },
   { name: 'metadata', title: 'Metadata' },
@@ -29,13 +31,10 @@ const NewItem = (props) => {
     setSelected(item);
   }
 
-  const handleAvatarChange = (file) => {
-    const reader = new FileReader();
-    reader.onload = (evt) => {
-      setAvatarUrl(evt.target.result);
-    }
-    reader.readAsDataURL(file[0]);
-    onChange('file', file);
+  const handleAvatarChange = async (file) => {
+    const url = await generatePreview(file[0]);
+    setAvatarUrl(url);
+    onChange('file', file[0]);
   }
 
   // render

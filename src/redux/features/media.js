@@ -18,15 +18,17 @@ export const addMedia = createAsyncThunk(
 
 export const getAllMedia = createAsyncThunk(
   GET_ALL_MEDIA,
-  async () => {
-    return await handleFetch('GET', 'media');
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'media', null, token);
   }
 );
 
 export const getMedia = createAsyncThunk(
   GET_MEDIA,
-  async (id) => {
-    return await handleFetch('GET', `media/${id}`);
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/${id}`, null, token);
   }
 );
 
@@ -39,23 +41,23 @@ export const saveMedia = createAsyncThunk(
     const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
     const { fields, url } = result.response;
   
-    let response = null;
     try {
       const { headers, body: formData } = buildFormData(url, {
         ...fields,
         file,
       });
         
-      response = await fetch(url, {
+      const res = await fetch(url, {
         method: 'POST',
         body: formData,
         headers,
       });
+
+      await res.text();
+      return fileName;
     } catch (error) {
       throw error;
     }
-
-    return response;
   }
 );
 
@@ -66,9 +68,9 @@ const mediaSlice = createSlice({
     addMediaComplete: false,
     getMediaError: null,
     getMediaComplete: false,
+    saveMediaPending: false,
     saveMediaError: null,
     saveMediaComplete: false,
-    artists: [],
   },
   reducers: {},
   extraReducers: {
@@ -81,7 +83,6 @@ const mediaSlice = createSlice({
       state.addMediaError = action.error;
     },
     [getMedia.fulfilled]: (state, action) => {
-      console.log('action get ', action);
       state.getMediaComplete = true;
       state.getMediaError = null;
       state.artists = action.payload;
@@ -89,14 +90,21 @@ const mediaSlice = createSlice({
     [getMedia.rejected]: (state, action) => {
       state.getMediaError = action.error;
     },
+    [saveMedia.pending]: (state, action) => {
+      state.saveMediaPending = true;
+      state.saveMediaComplete = false;
+      state.saveMediaError = null;
+    },
     [saveMedia.fulfilled]: (state, action) => {
-      console.log('media save ', action);
       state.saveMediaComplete = true;
       state.saveMediaError = null;
+      state.saveMediaPending = false;
       state.media = action.payload;
     },
     [saveMedia.rejected]: (state, action) => {
+      state.saveMediaComplete = false;
       state.saveMediaError = action.error;
+      state.saveMediaPending = false;
     },
   }
 });
