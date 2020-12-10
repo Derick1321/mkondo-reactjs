@@ -98,7 +98,7 @@ const mediaSlice = createSlice({
     [saveMedia.fulfilled]: (state, action) => {
       state.saveMediaComplete = true;
       state.saveMediaError = null;
-      state.saveMediaPending = false,
+      state.saveMediaPending = false;
       state.media = action.payload;
     },
     [saveMedia.rejected]: (state, action) => {
