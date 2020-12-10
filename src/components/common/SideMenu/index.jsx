@@ -1,14 +1,18 @@
 import React from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import { routePaths } from '$common/routeConfig';
+import { getPermissions } from '$common/utils';
 
 import './index.scss';
 
 const SideMenu = () => {
   // store
   const history = useHistory();
+  const userRole = useSelector((store) => store.authentication.user.user_type);
 
+  // icons
   const artistIcons = [
     { 
       icon: require('$assets/images/icons/add-artist.svg'),
@@ -21,12 +25,14 @@ const SideMenu = () => {
       activeIcon: require('$assets/images/icons/stats-active.svg'),
       title: 'Stats',
       path: routePaths.statsArtist,
+      permission: 'media',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),
       activeIcon: require('$assets/images/icons/upload-active.svg'),
       title: 'New Media',
       path: routePaths.newMedia,
+      permission: 'media',
     },
   ];
 
@@ -63,6 +69,8 @@ const SideMenu = () => {
     },
   ];
 
+  const artistAccess = getPermissions('artist', userRole);
+
   // render
   return (
     <div className="side-menu">
@@ -85,27 +93,38 @@ const SideMenu = () => {
             </NavLink>
           ))
         }
-        <div className="d-flex flex-column artist-menus">
-          <p className="sidemenu-subtitle">Artist Panel</p>
-          {
-            artistIcons.map((item, idx) => (
-              <NavLink
-                to={item.path}
-                className="sidemenu-item"
-                activeClassName="active"
-                key={`sidemenu-${idx}`}
-              >
-                {
-                  <img
-                    src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                    className="sidemenu-item-icon"
-                  />
-                }
-                <span className="sidemenu-item-title">{item.title}</span>
-              </NavLink>
-            ))
-          }
-        </div>
+        {
+          artistAccess && (
+            <div className="d-flex flex-column artist-menus">
+              <p className="sidemenu-subtitle">Artist Panel</p>
+              {
+                artistIcons.map((item, idx) => {
+                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
+                  if (!canAccess) {
+                    return null;
+                  }
+
+                  return (
+                    <NavLink
+                      to={item.path}
+                      className="sidemenu-item"
+                      activeClassName="active"
+                      key={`sidemenu-${idx}`}
+                    >
+                      {
+                        <img
+                          src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                          className="sidemenu-item-icon"
+                        />
+                      }
+                      <span className="sidemenu-item-title">{item.title}</span>
+                    </NavLink>
+                  )
+                })
+              }
+            </div>
+          )
+        }
       </div>
     </div>
   )
