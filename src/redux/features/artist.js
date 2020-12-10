@@ -31,17 +31,21 @@ const artistSlice = createSlice({
     getArtistPending: false,
     getArtistsComplete: false,
     getArtistsError: null,
+    newArtistId: '',
     artists: [],
   },
   reducers: {},
   extraReducers: {
     [addArtist.pending]: (state, action) => {
       state.addArtistPending = true;
+      state.addArtistComplete = false;
+      state.addArtistError = null;
     },
     [addArtist.fulfilled]: (state, action) => {
       state.addArtistPending = false;
       state.addArtistComplete = true;
       state.addArtistError = null;
+      state.newArtistId = action.payload.user_id;
     },
     [addArtist.rejected]: (state, action) => {
       state.addArtistPending = false;
