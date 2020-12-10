@@ -66,6 +66,11 @@ const NewArtist = () => {
       return;
     }
 
+    if (!values.policy) {
+      alert('You need to accept the terms and conditions before proceeding!');
+      return;
+    }
+
     const res = await dispatch(saveMedia(values.file));
     dispatch(addArtist({
       full_name: values.name,
