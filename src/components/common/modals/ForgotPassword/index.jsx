@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Alert from '$components/authentication/Alert';
@@ -12,9 +12,20 @@ import { forgotPassword } from '$redux/features/authentication';
 const ForgotPasswordModal = () => {
   // state
   const [email, setEmail] = useState('');
+  const [hasError, setHasError] = useState('');
 
   // store
   const dispatch = useDispatch();
+  const forgotPasswordError = useSelector((store) => store.authentication.forgotPasswordError);
+  const forgotPasswordComplete = useSelector((store) => store.authentication.forgotPasswordComplete);
+
+  // effects
+  useEffect(() => {
+    if (forgotPasswordError && !hasError) {
+      setHasError(true);
+      return;
+    }
+  }, [forgotPasswordError]);
 
   // handlers
   const handleForgot = () => {
@@ -28,17 +39,32 @@ const ForgotPasswordModal = () => {
   };
 
   const handleChange = (name, value) => {
+    if (hasError) {
+      setHasError(false);
+    }
     setEmail(value);
   }
 
   return (
     <div className="row justify-content-center">
       <div className="col-10 col-md-8">
-        <Alert
-          content="Failed to login. Try again"
-          type="error"
-        />
         <div className="row justify-content-center login-modal-top">
+          {
+            forgotPasswordComplete && (
+              <Alert
+                content="Reset password instructions has been succesfully sent to your email address."
+                type="success"
+              />
+            )
+          }
+          {
+            hasError && (
+              <Alert
+                content="The entered email address doesn\'t exist. Please try again."
+                type="error"
+              />
+            )
+          }
           <InfoPane value="Yo! Forget Your Password" />
           <div className="col-12 col-sm-10 col-md-8 mt-4">
             <p className="text-center">No worries! Enter Your email and we will send  you a request.</p>

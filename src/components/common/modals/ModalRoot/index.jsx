@@ -9,6 +9,7 @@ import AlertModal from '../Alert';
 import LoginModal from '../Login';
 import SignUpModal from '../SignUp';
 import ForgotPasswordModal from '../ForgotPassword';
+import ResetPasswordModal from '../ResetPassword';
 import LoaderModal from '../Loader';
 
 const MODAL_COMPONENTS = {
@@ -16,6 +17,7 @@ const MODAL_COMPONENTS = {
   'LOGIN_MODAL': LoginModal,
   'SIGNUP_MODAL': SignUpModal,
   'FORGOT_PASSWORD_MODAL': ForgotPasswordModal,
+  'RESET_PASSWORD_MODAL': ResetPasswordModal,
   'LOADER_MODAL': LoaderModal,
   'EMPTY': () => <div />,
 };

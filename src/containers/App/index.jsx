@@ -15,7 +15,6 @@ import { routes } from '$common/routeConfig';
 
 const App = () => {
   const initialRoute = useSelector((store) => store.nav.initialRoute);
-  const token = useSelector((store) => store.authentication.token);
 
   const dispatch = useDispatch();
 

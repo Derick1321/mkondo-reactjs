@@ -37,7 +37,7 @@ const ViewArtist = () => {
 
   // handler
   const handlePlay = () => {
-    console.log("AAA");
+    console.log("Play");
   }
 
   const handleShare = () => {
