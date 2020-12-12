@@ -8,12 +8,14 @@ import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
 import ArtistStats from '$containers/Artist/StatsArtist';
+import ResetPassword from '$containers/ResetPassword';
 import SuccessPage from '$containers/Success';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
   onBoarding: '/on-boarding',
+  resetPassword: '/reset-password',
   home: '/app/home',
   recommendation: '/app/recommendation',
   newRelease: '/app/new-release',
@@ -70,6 +72,11 @@ export const routes = [
     path: routePaths.onBoarding,
     component: OnBoarding,
     redirect: redirectFunctions.app
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.resetPassword,
+    component: ResetPassword,
   },
   {
     ...defaultConfig,

@@ -26,3 +26,19 @@ export const generatePreview = (file) => {
     }
   });
 }
+
+const userTypes = {
+  admin: 'admin',
+  superAdmin: 'super admin',
+  creator: 'creator',
+  user: 'user',
+}
+
+export const getPermissions = (role, userRole) => {
+  if ((role === 'artist' && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
+    (role === 'media' && [userTypes.creator, userTypes.superAdmin].includes(userRole))
+  ) {
+    return true;
+  }
+  return false;
+}
