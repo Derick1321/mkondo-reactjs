@@ -15,6 +15,7 @@ import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
 
+import { setInitialNav } from '$redux/features/nav';
 import { showModal } from '$redux/features/modal';
 import { coldstart } from '$redux/features/authentication';
 
@@ -39,12 +40,13 @@ const Marketing = () => {
   useEffect(() => {
     const { state } = location;
     if (state && state.token) {
-      // launch reset modal
+      dispatch(setInitialNav(routePaths.home));
       dispatch(showModal('RESET_PASSWORD_MODAL', {
         token: state.token,
       }));
       return;
     }
+
     dispatch(coldstart());
   }, []);
 
@@ -54,7 +56,7 @@ const Marketing = () => {
     }
 
     if (!signUpComplete) {
-      history.replace(initialRoute || routePaths.home);
+      history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
     }
   }, [token]);
 

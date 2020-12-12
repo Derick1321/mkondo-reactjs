@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import Alert from '$components/authentication/Alert';
 import Button from '$components/common/Button';
@@ -8,6 +9,7 @@ import InfoPane from '$components/authentication/Info';
 
 import { showModal } from '$redux/features/modal';
 import { resetPassword } from '$redux/features/authentication';
+import { routePaths } from '../../../../common/routeConfig';
 
 const ResetPassword = (props) => {
   // props
@@ -22,6 +24,7 @@ const ResetPassword = (props) => {
 
   // store
   const dispatch = useDispatch();
+  const history = useHistory();
   const resetPasswordError = useSelector((store) => store.authentication.resetPasswordError);
   const resetPasswordComplete = useSelector((store) => store.authentication.resetPasswordComplete);
   const resetPasswordPending = useSelector((store) => store.authentication.resetPasswordPending);
@@ -32,7 +35,11 @@ const ResetPassword = (props) => {
   }, [resetPasswordError]);
 
   useEffect(() => {
-    console.log('resetPasswordComplete => ', resetPasswordComplete);
+    if (!resetPasswordComplete) {
+      return;
+    }
+
+    history.replace(routePaths.home);
   }, [resetPasswordComplete]);
 
   // handlers
