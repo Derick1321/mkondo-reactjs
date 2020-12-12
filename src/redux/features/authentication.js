@@ -55,6 +55,10 @@ const initialState = {
   loginError: null,
   signupError: null,
   signUpComplete: false,
+  forgotPasswordComplete: false,
+  forgotPasswordError: null,
+  resetPasswordComplete: false,
+  resetPasswordError: null,
 };
 
 // reducers
@@ -76,39 +80,74 @@ const authenticationSlice = createSlice({
     }
   },
   extraReducers: {
+    [login.pending]: (state, action) => {
+      state.loginPending = true;
+      state.loginComplete = false;
+      state.loginError = null;
+    },
     [login.fulfilled]: (state, action) => {
       return {
         ...state,
         ...handleAuthentication(action.payload),
+        loginPending: false,
+        loginError: false,
+        loginComplete: true,
       };
     },
     [login.rejected]: (state, action) => {
+      state.loginPending = false;
       state.loginError = action.error;
+      state.loginComplete = false;
+    },
+    [signup.pending]: (state, action) => {
+      state.signupPending = true;
+      state.signupError = null;
+      state.signUpComplete = false;
     },
     [signup.fulfilled]: (state, action) => {
       return {
         ...state,
         ...handleAuthentication(action.payload),
+        signupPending: false,
         signUpComplete: true,
       };
     },
     [signup.rejected]: (state, action) => {
+      state.signupPending = false;
       state.signupError = action.error;
       state.signUpComplete = false;
     },
+    [forgotPassword.pending]: (state, action) => {
+      state.forgotPasswordPending = true;
+      state.forgotPasswordError = null;
+      state.forgotPasswordComplete = false;
+    },
     [forgotPassword.fulfilled]: (state, action) => {
+      state.forgotPasswordPending = false;
       state.forgotPasswordError = null;
       state.forgotPasswordComplete = true;
     },
     [forgotPassword.rejected]: (state, action) => {
+      state.forgotPasswordPending = false;
       state.forgotPasswordError = action.error;
       state.forgotPasswordComplete = false;
     },
-    [resetPassword.fulfilled]: (state, action) => {
+    [resetPassword.pending]: (state, action) => {
+      state.resetPasswordPending = true;
       state.resetPasswordError = null;
-      state.resetPasswordComplete = true;
+      state.resetPasswordComplete = false;
+    },
+    [resetPassword.fulfilled]: (state, action) => {
+      return {
+        ...state,
+        ...handleAuthentication(action.payload),
+        resetPasswordPending: false,
+        resetPasswordError: false,
+        resetPasswordComplete: true,
+      };
     },
     [resetPassword.rejected]: (state, action) => {
+      state.resetPasswordPending = false;
       state.resetPasswordError = action.error;
       state.resetPasswordComplete = false;
     },
