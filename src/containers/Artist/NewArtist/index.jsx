@@ -15,7 +15,6 @@ import { menus, metamenus } from './menus';
 
 import './index.scss';
 
-
 const initialState = {
   name: '',
   genre: null,
