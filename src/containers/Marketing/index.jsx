@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Picker from 'react-simple-wheel-picker';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Button from '$components/common/Button';
@@ -14,6 +14,8 @@ import AppDownload from '$components/marketing-site/AppDownload';
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
+
+import { showModal } from '$redux/features/modal';
 import { coldstart } from '$redux/features/authentication';
 
 import { urls, data } from './model';
@@ -26,6 +28,7 @@ const Marketing = () => {
 
   // store
   const history = useHistory();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.authentication.token);
@@ -34,6 +37,14 @@ const Marketing = () => {
 
   // effects
   useEffect(() => {
+    const { state } = location;
+    if (state && state.token) {
+      // launch reset modal
+      dispatch(showModal('RESET_PASSWORD_MODAL', {
+        token: state.token,
+      }));
+      return;
+    }
     dispatch(coldstart());
   }, []);
 
