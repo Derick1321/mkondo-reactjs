@@ -29,7 +29,7 @@ const Progress = (props) => {
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <span className="mx-2">{percentage}% Upload Complete</span>
+      <span className="mx-2">{percentage}% Complete</span>
     </div>
   );
 };
