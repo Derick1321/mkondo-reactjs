@@ -11,8 +11,9 @@ const PRELOAD_MEDIA = 'media/PRELOAD_MEDIA';
 // actions
 export const addMedia = createAsyncThunk(
   ADD_MEDIA,
-  async (data) => {
-    return await handleFetch('POST', 'media', data);
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'media', data, token);
   }
 );
 
