@@ -7,6 +7,7 @@ import NewItem from '$components/common/NewItem';
 import Button from '$components/common/Button';
 
 import { routePaths } from '$common/routeConfig';
+import { generatePreview } from '$common/utils';
 
 import { saveMedia, addMedia } from '$redux/features/media';
 
@@ -62,7 +63,7 @@ const NewMedia = () => {
     const mediaRes = await dispatch(saveMedia(file));
     const avatarRes = await dispatch(saveMedia(values.file)); // avatar
     dispatch(addMedia({
-      name: values.name,
+      name: values.title,
       description: values.description,
       genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
       cover_url: avatarRes.payload,
