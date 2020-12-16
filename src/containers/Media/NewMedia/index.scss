@@ -7,3 +7,17 @@
   margin-top: 3rem;
   padding: 2rem;
 }
+
+.new-media-close-btn {
+  height: 30px;
+  border: none;
+  background-color: transparent;
+  &:focus {
+    outline: none;
+  }
+}
+
+.cancel-icon {
+  height: 20px;
+  width: 20px;
+}

@@ -22,19 +22,13 @@ export const menus = [
       { value: 'gospel', label: 'Gospel' },
       { value: 'pop', label: 'Pop' },
     ],
-    multi: true,
+    isMulti: true,
   },
   {
     name: 'description',
     type: 'area',
     placeholder: 'Describe your track',
     title: 'Description',
-  },
-  {
-    name: 'caption',
-    type: 'area',
-    placeholder: 'Add your caption',
-    title: 'Caption',
   },
   {
     name: 'policy',
@@ -44,10 +38,9 @@ export const menus = [
 ];
 
 export const metamenus = [
-  { name: 'artist', type: 'text', placeholder: 'Artist Name', title: 'Artist' },
   { name: 'publisher', type: 'text', placeholder: 'Publisher Name', title: 'Publisher' },
   { name: 'composer', type: 'text', placeholder: 'Composer Name', title: 'Composer' },
   { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
-  { name: 'albumTitle', type: 'text', placeholder: 'Enter Album Title', title: 'Album Title' },
+  { name: 'songWritter', type: 'text', placeholder: 'Enter Song Writer(s)', title: 'Song Writer(s)' },
   { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
 ];

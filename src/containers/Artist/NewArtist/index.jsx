@@ -40,6 +40,7 @@ const NewArtist = () => {
   const history = useHistory();
   const addArtistComplete = useSelector((store) => store.artist.addArtistComplete);
   const newArtistId = useSelector((store) => store.artist.newArtistId);
+  const adminId = useSelector((store) => store.authentication.user.user_id);
 
   // effects
   useEffect(async () => {
@@ -85,7 +86,8 @@ const NewArtist = () => {
       twitter_link: values.twitter,
       avatar_url: res.payload,
       password: '123456',
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, '')
+      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      admin_id: adminId,
     }));
   };
 
