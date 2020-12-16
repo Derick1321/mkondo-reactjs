@@ -1,25 +1,32 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Feature from '$components/common/Feature';
 
 import './index.scss';
 
-const TopSongs = () => {
+// temporary script
+
+
+const TopSongs = (props) => {
+  // props
+  const { media } = props;
+
   // render
   return (
     <div className="container">
       <div className="d-flex flex-column">
         <div className="d-flex flex-wrap">
           {
-            Array.apply(null, { length: 3 }).map((value, index) => (
+            media.map((item, index) => (
               <Feature
-                key={`featture-how-it-works-${index}`}
-                avatar="https://i.ibb.co/8b89DpX/image-8-1.png"
-                source="https://i.ibb.co/0G3Mbwp/image-2.png"
+                key={`feature-top-songs-${index}`}
+                mediaUrl={item.media_url}
+                mediaId={item.media_id}
+                avatar={item.cover_url}
+                source={item.cover_url}
                 subtitle="Latest Release"
-                title="Starboy by the Weekend"
-                numOfSongs=""
-                duration=""
+                title={item.name}
               />
             ))
           }
@@ -27,6 +34,14 @@ const TopSongs = () => {
       </div>
     </div>
   );
+}
+
+TopSongs.defaultProps = {
+  media: [],
+}
+
+TopSongs.propTypes = {
+  media: PropTypes.array,
 }
 
 export default TopSongs;
