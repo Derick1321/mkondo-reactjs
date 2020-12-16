@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { handleFetch } from '$common/requestUtils';
 
 import './index.scss';
 
@@ -42,12 +45,26 @@ const Feature = (props) => {
     duration
   } = props;
 
+  const token = useSelector((store) => store.authentication.token);
+
+  // state
+  const [avatarUrl, setAvatarUrl] = useState('');
+
+  // effects
+  useEffect(async () => {
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
+    console.log('avatar ', res.response);
+    setAvatarUrl(res.response);
+  }, [avatar]);
+
   // render
   return (
     <div className={'feature-wrapper'}>
       <FeatureBkg source={source} />
       <div className="d-flex feature-pane">
-        <FeatureAvatar source={avatar} />
+        <FeatureAvatar
+          source={avatarUrl}
+        />
         <div className="feature-content-wrapper">
           <p>{subtitle}</p>
           <div className="d-flex">

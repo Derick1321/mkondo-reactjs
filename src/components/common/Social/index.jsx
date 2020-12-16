@@ -30,21 +30,28 @@ const Social = (props) => {
   return (
     <div className="d-flex">
       {
-        Object.values(socialIcons).map((item, idx) => (
-          <Button
-            key={`social-btn-${idx}`}
-            onClick={() => handleClick(item.name)}
-            onMouseEnter={() => handleFocus(item.name)}
-            onMouseLeave={() => handleBlur(item.name)}
-            isTransparent
-            noBorder
-          >
-            <img
-              src={active === item.name ? item.iconActive : item.icon}
-              className="social-icon"
-            />
-          </Button>
-        ))
+        Object.values(socialIcons).map((item, idx) => {
+          
+          if (!links[item.name]) {
+            return null;
+          }
+
+          return (
+            <Button
+              key={`social-btn-${idx}`}
+              onClick={() => handleClick(item.name)}
+              onMouseEnter={() => handleFocus(item.name)}
+              onMouseLeave={() => handleBlur(item.name)}
+              isTransparent
+              noBorder
+            >
+              <img
+                src={active === item.name ? item.iconActive : item.icon}
+                className="social-icon"
+              />
+            </Button>
+          )
+        })
       }
     </div>
   )
