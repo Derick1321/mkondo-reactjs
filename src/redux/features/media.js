@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 import { handleFetch, buildFormData } from '$common/requestUtils';
 
@@ -7,12 +6,14 @@ const ADD_MEDIA = 'media/ADD_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
+const PRELOAD_MEDIA = 'media/PRELOAD_MEDIA';
 
 // actions
 export const addMedia = createAsyncThunk(
   ADD_MEDIA,
-  async (data) => {
-    return await handleFetch('POST', 'media', data);
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'media', data, token);
   }
 );
 
@@ -64,6 +65,7 @@ export const saveMedia = createAsyncThunk(
 const mediaSlice = createSlice({
   name: 'media',
   initialState: {
+    addMediaPending: false,
     addMediaError: null,
     addMediaComplete: false,
     getMediaError: null,
@@ -71,23 +73,41 @@ const mediaSlice = createSlice({
     saveMediaPending: false,
     saveMediaError: null,
     saveMediaComplete: false,
+    newMediaId: null,
+    medias: [],
   },
   reducers: {},
   extraReducers: {
+    [saveMedia.pending]: (state, action) => {
+      state.addMediaPending = true;
+      state.addMediaComplete = false;
+      state.addMediaError = null;
+      state.newMediaId = null;
+    },
     [addMedia.fulfilled]: (state, action) => {
-      console.log('action add ', action);
+      state.addMediaPending = false;
       state.addMediaComplete = true;
       state.addMediaError = null;
+      state.newMediaId = action.payload.media_id;
     },
     [addMedia.rejected]: (state, action) => {
+      state.addMediaPending = false;
+      state.addMediaComplete = false;
       state.addMediaError = action.error;
+    },
+    [getMedia.pending]: (state, action) => {
+      state.getMediaPending = true;
+      state.getMediaComplete = false;
+      state.getMediaError = null;
     },
     [getMedia.fulfilled]: (state, action) => {
       state.getMediaComplete = true;
       state.getMediaError = null;
-      state.artists = action.payload;
+      state.medias = action.payload;
     },
     [getMedia.rejected]: (state, action) => {
+      state.getMediaComplete = true;
+      state.getMediaError = null;
       state.getMediaError = action.error;
     },
     [saveMedia.pending]: (state, action) => {

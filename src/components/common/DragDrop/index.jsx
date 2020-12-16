@@ -7,7 +7,7 @@ import './index.scss';
 
 const DragDrop = (props) => {
   // props
-  const { onChange } = props;
+  const { onChange, isMulti } = props;
 
   // state
   const [active, setActive] = useState(false);
@@ -55,7 +55,7 @@ const DragDrop = (props) => {
   }
 
   const handleChange = () => {
-    console.log('log ', fileRef.current.files);
+    onChange(fileRef.current.files);
   }
 
   // render
@@ -92,12 +92,14 @@ const DragDrop = (props) => {
               <span>OR</span>
               <div className="hr" />
             </div>
-            <Button
-              onClick={handleSelectFile}
-              style="mk-btn-secondary"
-            >
-              Choose files  to upload
-            </Button>
+            <div className="d-flex justify-content-center">
+              <Button
+                onClick={handleSelectFile}
+                style="mk-btn-secondary"
+              >
+                Choose files  to upload
+              </Button>
+            </div>
           </>
         )
       }
@@ -106,14 +108,20 @@ const DragDrop = (props) => {
         type="file"
         ref={fileRef}
         onChange={handleChange}
-        multiple
+        accept=".mp3,audio/*"
+        multiple={isMulti}
       />
     </>
   );
 }
 
+DragDrop.defaultProps = {
+  isMulti: false,
+};
+
 DragDrop.propTypes = {
   onChange: PropTypes.func.isRequired,
+  isMulti: PropTypes.bool,
 }
 
 export default DragDrop;
