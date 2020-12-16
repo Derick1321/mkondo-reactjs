@@ -4,6 +4,7 @@ import { handleFetch } from '$common/requestUtils';
 
 const ADD_ARTIST = 'artist/ADD_ARTIST';
 const GET_ARTISTS = 'artist/GET_ARTISTS';
+const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
 
 // actions
 export const addArtist = createAsyncThunk(
@@ -18,7 +19,15 @@ export const getArtists = createAsyncThunk(
   GET_ARTISTS,
   async (id, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('GET', 'artists', token);
+    return await handleFetch('GET', 'artists', null, token);
+  }
+);
+
+export const getArtistById = createAsyncThunk(
+  GET_ARTIST_BY_ID,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `users/${id}`, null, token);
   }
 );
 
@@ -33,6 +42,10 @@ const artistSlice = createSlice({
     getArtistsError: null,
     newArtistId: '',
     artists: [],
+    getArtistByIdPending: false,
+    getArtistByIdComplete: false,
+    getArtistByIdError: null,
+    currentArtist: {},
   },
   reducers: {},
   extraReducers: {
@@ -66,6 +79,23 @@ const artistSlice = createSlice({
       state.getArtistsPending = false;
       state.getArtistsComplete = false;
       state.getArtistsError = action.error;
+    },
+
+    [getArtistById.pending]: (state, action) => {
+      state.getArtistByIdPending = true;
+      state.getArtistByIdComplete = false;
+      state.getArtistByIdError = null;
+    },
+    [getArtistById.fulfilled]: (state, action) => {
+      state.getArtistByIdPending = false;
+      state.getArtistByIdComplete = true;
+      state.getArtistByIdError = null;
+      state.currentArtist = action.payload.user;
+    },
+    [getArtistById.rejected]: (state, action) => {
+      state.getArtistByIdPending = false;
+      state.getArtistByIdComplete = false;
+      state.getArtistByIdError = action.error;
     },
   }
 });
