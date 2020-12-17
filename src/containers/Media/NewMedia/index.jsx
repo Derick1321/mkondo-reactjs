@@ -23,7 +23,7 @@ const initialState = {
   description: '',
   policy: false,
   recordLabel: '',
-  songWritter: '',
+  songWriter: '',
   composer: '',
   file: '',
 }
@@ -42,10 +42,11 @@ const NewMedia = () => {
 
   // effects
   useEffect(async () => {
-    if (addMediaComplete) {
+    // use prevProps
+    if (addMediaComplete && values.file) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
-        link: `https//mkondo.co/app/artist/${newMediaId}`,
+        link: `https//mkondo.co/app/media/${newMediaId}`,
         country: values.country,
         name: values.title,
         avatar: await generatePreview(values.file),
@@ -72,8 +73,8 @@ const NewMedia = () => {
       category: 'audio', // TODO
       duration: 0, // TODO
       composer: values.composer,
-      recordLabel: values.recordLabel,
-      songWritter: values.songWritter,
+      record_label: values.recordLabel,
+      song_writer: values.songWriter,
     }));
   };
 
