@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import Slider from '$components/common/Slider';
 
@@ -40,6 +41,9 @@ const Player = () => {
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
 
+  // store
+  const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
+
   // functions
   const onPlay = (dur) => {
     setIsPlaying(true);
@@ -57,8 +61,18 @@ const Player = () => {
       onPause,
     }
 
-    audioRef.current = new AudioPlayer(playlists, callbacks);
+    const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist))
+    audioRef.current = new AudioPlayer(newPlaylist, callbacks);
   }, []);
+
+  useEffect(() => {
+    const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
+    audioRef.current.updatePlaylist(newPlaylist);
+    if (newPlaylist.length < 1) {
+      return;
+    }
+    handlePlay();
+  }, [currentPlaylist]);
 
   useEffect(() => {
     const cb = () => {
@@ -157,18 +171,18 @@ const Player = () => {
     audioRef.current.volume(value);
   }
 
-  const album = audioRef.current ? (playlists[audioRef.current.index].album || 'Unknown') : '';
+  const album = audioRef.current ? (currentPlaylist[audioRef.current.index].composer || 'Unknown') : '';
 
   // render
   return (
     <div className="d-flex player-wrapper align-items-center">
       <div className="d-flex player-name-wrapper">
         <img
-          src={(audioRef.current && playlists[audioRef.current.index].avatar) || defaultAvatar}
+          src={(audioRef.current && currentPlaylist[audioRef.current.index].avatar) || defaultAvatar}
           className="player-avatar mx-1"
         />
         <div className="d-flex flex-column justify-content-center mx-2">
-          <span>{(audioRef.current && playlists[audioRef.current.index].name)|| 'None'}</span>
+          <span>{(audioRef.current && currentPlaylist[audioRef.current.index].name)|| 'None'}</span>
           {
             album && <span>{album}</span>
           }
