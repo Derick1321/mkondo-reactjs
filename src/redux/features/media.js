@@ -6,7 +6,7 @@ const ADD_MEDIA = 'media/ADD_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
-const PRELOAD_MEDIA = 'media/PRELOAD_MEDIA';
+const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -30,6 +30,14 @@ export const getMedia = createAsyncThunk(
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', `media/${id}`, null, token);
+  }
+);
+
+export const getNewReleases = createAsyncThunk(
+  GET_NEW_RELEASES,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'media/new-release', null, token);
   }
 );
 
@@ -74,7 +82,11 @@ const mediaSlice = createSlice({
     saveMediaError: null,
     saveMediaComplete: false,
     newMediaId: null,
+    getNewReleasesPending: false,
+    getNewReleasesComplete: false,
+    getNewReleasesError: null,
     medias: [],
+    newReleases: [],
   },
   reducers: {},
   extraReducers: {
@@ -125,6 +137,22 @@ const mediaSlice = createSlice({
       state.saveMediaComplete = false;
       state.saveMediaError = action.error;
       state.saveMediaPending = false;
+    },
+    [getNewReleases.pending]: (state, action) => {
+      state.getNewReleasesPending = true;
+      state.getNewReleasesComplete = false;
+      state.getNewReleasesError = null;
+    },
+    [getNewReleases.fulfilled]: (state, action) => {
+      state.getNewReleasesPending = false;
+      state.getNewReleasesComplete = true;
+      state.getNewReleasesError = null;
+      state.newReleases = action.payload.media;
+    },
+    [getNewReleases.rejected]: (state, action) => {
+      state.getNewReleasesPending = false;
+      state.getNewReleasesComplete = true;
+      state.getNewReleasesError = action.error;
     },
   }
 });

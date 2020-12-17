@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+import { handleFetch } from '$common/requestUtils';
+import { updatePlaylist } from '$redux/features/playlist';
 
 import './index.scss';
 
@@ -39,22 +43,57 @@ const Feature = (props) => {
     subtitle,
     title,
     numOfSongs,
-    duration
+    duration,
+    mediaUrl,
+    mediaId,
   } = props;
+
+  // store
+  const token = useSelector((store) => store.authentication.token);
+  const dispatch = useDispatch();
+
+  // state
+  const [avatarUrl, setAvatarUrl] = useState('');
+
+  // effects
+  useEffect(async () => {
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
+    setAvatarUrl(res.response);
+  }, []);
+
+  // handlers
+  const handlePlay = async () => {
+    // temporarily load it on player
+    // TODO: navigate to player component
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
+    dispatch(updatePlaylist({
+      url: res.response,
+      avatar: avatarUrl,
+      name: title,
+      howl: null,
+    }));
+  }
 
   // render
   return (
     <div className={'feature-wrapper'}>
       <FeatureBkg source={source} />
       <div className="d-flex feature-pane">
-        <FeatureAvatar source={avatar} />
+        <FeatureAvatar
+          source={avatarUrl}
+        />
         <div className="feature-content-wrapper">
           <p>{subtitle}</p>
           <div className="d-flex">
-            <img
-              src={play}
-              className="feature-action-btn"
-            />
+            <button
+              className="feature-play-btn"
+              onClick={handlePlay}
+            >
+              <img
+                src={play}
+                className="feature-action-btn"
+              />
+            </button>
             <div className="d-flex flex-column feature-summary">
               <span>{title}</span>
               {
@@ -80,6 +119,8 @@ Feature.propTypes = {
   title: PropTypes.string.isRequired,
   numOfSongs: PropTypes.string,
   duration: PropTypes.string,
+  mediaUrl: PropTypes.string,
+  mediaId: PropTypes.string,
 }
 
 export default Feature;

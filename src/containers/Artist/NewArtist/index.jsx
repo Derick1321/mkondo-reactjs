@@ -44,7 +44,7 @@ const NewArtist = () => {
 
   // effects
   useEffect(async () => {
-    if (addArtistComplete) {
+    if (addArtistComplete && values.file) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
         link: `https//mkondo.co/app/artist/${newArtistId}`,

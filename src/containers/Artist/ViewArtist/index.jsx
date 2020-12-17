@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from '$components/common/Button';
 import Social from '$components/common/Social';
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
+import { getArtistById } from '$redux/features/artist';
+
 import './index.scss';
+import { current } from '@reduxjs/toolkit';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const favoriteIcon = require('$assets/images/icons/favorite.svg');
@@ -31,8 +36,22 @@ const Avatar = styled.div`
 `;
 
 const ViewArtist = () => {
+  // store
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const currentArtist = useSelector((store) => store.artist.currentArtist);
+
+  const socialLinks = {
+    fb: currentArtist.facebook_link,
+    yt: currentArtist.youtube_link,
+    instagram: currentArtist.instagram_link,
+    twitter: currentArtist.instagram_link,
+  };
+
   // effects
   useEffect(() => {
+    const id = location.pathname.split('/')[3]
+    dispatch(getArtistById(id));
   }, []);
 
   // handler
@@ -55,7 +74,7 @@ const ViewArtist = () => {
           <div className="d-flex artist-header-infopane">
             <Avatar source={sampleAvatar} />
             <div className="ml-4 mt-2">
-              <p className="artist-title mt-2">Artist Name</p>
+              <p className="artist-title mt-2">{currentArtist.full_name}</p>
               <span className="artist-subtitle pb-2">About</span>
             </div>
           </div>
@@ -83,7 +102,9 @@ const ViewArtist = () => {
               <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, </p>
               <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, </p>
             </div>
-            <Social links={{}}/>
+            <Social
+              links={socialLinks}
+            />
             <AlbumMenuPanel
               showHeader
               title="Albums"
