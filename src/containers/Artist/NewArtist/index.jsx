@@ -72,24 +72,6 @@ const NewArtist = () => {
     }
 
     const res = await dispatch(saveMedia(values.file));
-
-    console.log({
-      full_name: values.name,
-      email: values.email,
-      phone_number: values.phoneNumber,
-      user_type: 'creator', // shouldn't be necessary
-      about: values.description,
-      country: values.country,
-      locality: values.region,
-      facebook_link: values.fb,
-      instagram_link: values.instagram,
-      youtube_link: values.yt,
-      twitter_link: values.twitter,
-      avatar_url: res.payload,
-      password: '123456',
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
-      admin_id: adminId,
-    });
     dispatch(addArtist({
       full_name: values.name,
       email: values.email,

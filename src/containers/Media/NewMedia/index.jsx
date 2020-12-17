@@ -23,7 +23,7 @@ const initialState = {
   description: '',
   policy: false,
   recordLabel: '',
-  songWritter: '',
+  songWriter: '',
   composer: '',
   file: '',
 }
@@ -73,8 +73,8 @@ const NewMedia = () => {
       category: 'audio', // TODO
       duration: 0, // TODO
       composer: values.composer,
-      recordLabel: values.recordLabel,
-      songWritter: values.songWritter,
+      record_label: values.recordLabel,
+      song_writer: values.songWriter,
     }));
   };
 

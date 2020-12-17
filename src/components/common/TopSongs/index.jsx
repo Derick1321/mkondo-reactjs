@@ -5,9 +5,6 @@ import Feature from '$components/common/Feature';
 
 import './index.scss';
 
-// temporary script
-
-
 const TopSongs = (props) => {
   // props
   const { media } = props;

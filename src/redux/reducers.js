@@ -4,6 +4,7 @@ import modal from './features/modal';
 import user from './features/user';
 import media from './features/media';
 import nav from './features/nav';
+import playlist from './features/playlist';
 
 export default {
   authentication,
@@ -12,4 +13,5 @@ export default {
   media,
   user,
   nav,
+  playlist,
 };
