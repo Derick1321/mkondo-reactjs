@@ -21,6 +21,11 @@ class Player {
     this.index = 0;
   }
 
+  updatePlaylist(playlist) {
+    this.playlist = playlist;
+    this.index = 0;
+  }
+
   play(idx) {
     let sound;
     let index = typeof idx === 'number' ? idx : this.index;

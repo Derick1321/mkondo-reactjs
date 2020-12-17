@@ -41,6 +41,6 @@ export const metamenus = [
   { name: 'publisher', type: 'text', placeholder: 'Publisher Name', title: 'Publisher' },
   { name: 'composer', type: 'text', placeholder: 'Composer Name', title: 'Composer' },
   { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
-  { name: 'songWritter', type: 'text', placeholder: 'Enter Song Writer(s)', title: 'Song Writer(s)' },
+  { name: 'songWriter', type: 'text', placeholder: 'Enter Song Writer(s)', title: 'Song Writer(s)' },
   { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
 ];

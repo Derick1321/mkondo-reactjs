@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
+import { updatePlaylist } from '$redux/features/playlist';
 
 import './index.scss';
 
@@ -42,10 +43,14 @@ const Feature = (props) => {
     subtitle,
     title,
     numOfSongs,
-    duration
+    duration,
+    mediaUrl,
+    mediaId,
   } = props;
 
+  // store
   const token = useSelector((store) => store.authentication.token);
+  const dispatch = useDispatch();
 
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -53,9 +58,21 @@ const Feature = (props) => {
   // effects
   useEffect(async () => {
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
-    console.log('avatar ', res.response);
     setAvatarUrl(res.response);
-  }, [avatar]);
+  }, []);
+
+  // handlers
+  const handlePlay = async () => {
+    // temporarily load it on player
+    // TODO: navigate to player component
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
+    dispatch(updatePlaylist({
+      url: res.response,
+      avatar: avatarUrl,
+      name: title,
+      howl: null,
+    }));
+  }
 
   // render
   return (
@@ -68,10 +85,15 @@ const Feature = (props) => {
         <div className="feature-content-wrapper">
           <p>{subtitle}</p>
           <div className="d-flex">
-            <img
-              src={play}
-              className="feature-action-btn"
-            />
+            <button
+              className="feature-play-btn"
+              onClick={handlePlay}
+            >
+              <img
+                src={play}
+                className="feature-action-btn"
+              />
+            </button>
             <div className="d-flex flex-column feature-summary">
               <span>{title}</span>
               {
@@ -97,6 +119,8 @@ Feature.propTypes = {
   title: PropTypes.string.isRequired,
   numOfSongs: PropTypes.string,
   duration: PropTypes.string,
+  mediaUrl: PropTypes.string,
+  mediaId: PropTypes.string,
 }
 
 export default Feature;
