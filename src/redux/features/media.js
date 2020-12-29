@@ -70,27 +70,29 @@ export const saveMedia = createAsyncThunk(
   }
 );
 
+const INITIAL_STATE = {
+  addMediaPending: false,
+  addMediaError: null,
+  addMediaComplete: false,
+  getMediaError: null,
+  getMediaComplete: false,
+  saveMediaPending: false,
+  saveMediaError: null,
+  saveMediaComplete: false,
+  newMediaId: null,
+  getNewReleasesPending: false,
+  getNewReleasesComplete: false,
+  getNewReleasesError: null,
+  medias: [],
+  newReleases: [],
+};
+
 const mediaSlice = createSlice({
   name: 'media',
-  initialState: {
-    addMediaPending: false,
-    addMediaError: null,
-    addMediaComplete: false,
-    getMediaError: null,
-    getMediaComplete: false,
-    saveMediaPending: false,
-    saveMediaError: null,
-    saveMediaComplete: false,
-    newMediaId: null,
-    getNewReleasesPending: false,
-    getNewReleasesComplete: false,
-    getNewReleasesError: null,
-    medias: [],
-    newReleases: [],
-  },
+  initialState: INITIAL_STATE,
   reducers: {},
   extraReducers: {
-    [saveMedia.pending]: (state, action) => {
+    [addMedia.pending]: (state, action) => {
       state.addMediaPending = true;
       state.addMediaComplete = false;
       state.addMediaError = null;
