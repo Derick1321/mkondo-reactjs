@@ -171,18 +171,26 @@ const Player = () => {
     audioRef.current.volume(value);
   }
 
-  const album = audioRef.current ? (currentPlaylist[audioRef.current.index].composer || 'Unknown') : '';
+  let album = 'Unknown';
+  let avatar = null;
+  let artistName = '';
+
+  if (audioRef.current && currentPlaylist[audioRef.current.index]) {
+    avatar = currentPlaylist[audioRef.current.index].avatar;
+    album = currentPlaylist[audioRef.current.index].composer;
+    artistName = currentPlaylist[audioRef.current.index].name
+  }
 
   // render
   return (
     <div className="d-flex player-wrapper align-items-center">
       <div className="d-flex player-name-wrapper">
         <img
-          src={(audioRef.current && currentPlaylist[audioRef.current.index].avatar) || defaultAvatar}
+          src={avatar || defaultAvatar}
           className="player-avatar mx-1"
         />
         <div className="d-flex flex-column justify-content-center mx-2">
-          <span>{(audioRef.current && currentPlaylist[audioRef.current.index].name)|| 'None'}</span>
+          <span>{artistName}</span>
           {
             album && <span>{album}</span>
           }
