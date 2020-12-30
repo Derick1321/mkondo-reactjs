@@ -19,12 +19,9 @@ const Home = () => {
 
   // effects
   useEffect(() => {
+    // add monitor
     dispatch(getNewReleases());
   }, []);
-
-  useEffect(() => {
-    console.log('newReleases ', newReleases);
-  }, [newReleases]);
 
   // handlers
   const handleSelect = (name) => {

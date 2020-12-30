@@ -11,6 +11,7 @@ import SignUpModal from '../SignUp';
 import ForgotPasswordModal from '../ForgotPassword';
 import ResetPasswordModal from '../ResetPassword';
 import LoaderModal from '../Loader';
+import ShareModal from '../ShareModal';
 
 const MODAL_COMPONENTS = {
   'ALERT_MODAL': AlertModal,
@@ -19,6 +20,7 @@ const MODAL_COMPONENTS = {
   'FORGOT_PASSWORD_MODAL': ForgotPasswordModal,
   'RESET_PASSWORD_MODAL': ResetPasswordModal,
   'LOADER_MODAL': LoaderModal,
+  'SHARE_MODAL': ShareModal,
   'EMPTY': () => <div />,
 };
 
@@ -47,13 +49,21 @@ const ModalRoot = () => {
 
   const handleKeydown = useCallback((evt) => {
     const { keyCode } = evt;
+    if (modalProps && modalProps.preventOutsideClick) {
+      return;
+    };
+
     // Esc key
     if (keyCode === 27) {
       closeModal();
     }
-  }, [closeModal]);
+  }, [closeModal, modalProps]);
 
   const handleClick = (evt) => {
+    if (modalProps && modalProps.preventOutsideClick) {
+      return;
+    };
+
     evt.preventDefault();
     dispatch(hideModal());
   };

@@ -7,6 +7,7 @@ const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
 const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
 const RESET_PASSWORD = 'authentication/RESET_PASSWORD';
+const RELOAD_USER = 'authentication/RELOAD_USER';
 
 // actions
 export const login = createAsyncThunk(
@@ -37,6 +38,14 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
+export const reloadUser = createAsyncThunk(
+  RELOAD_USER,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `users/${id}`, null, token);
+  }
+);
+
 // handlers
 const handleAuthentication = (data) => {
   const { access_token, user } = data;
@@ -51,6 +60,7 @@ const initialState = {
   token: null,
   user: {
     full_name: null,
+    user_id: null,
   },
   loginError: null,
   signupError: null,
@@ -150,6 +160,22 @@ const authenticationSlice = createSlice({
       state.resetPasswordPending = false;
       state.resetPasswordError = action.error;
       state.resetPasswordComplete = false;
+    },
+    [reloadUser.pending]: (state, action) => {
+      state.reloadUserPending = true;
+      state.reloadUserError = null;
+      state.reloadUserComplete = false;
+    },
+    [reloadUser.fulfilled]: (state, action) => {
+      state.reloadUserPending = false;
+      state.reloadUserError = null;
+      state.reloadUserComplete = true;
+      state.user = action.payload.user;
+    },
+    [reloadUser.rejected]: (state, action) => {
+      state.reloadUserPending = false;
+      state.reloadUserError = action.error;
+      state.reloadUserComplete = false;
     },
   }
 });

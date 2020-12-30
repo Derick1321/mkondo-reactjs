@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -14,6 +15,8 @@ import {
 
 import TextArea from '$components/common/TextArea';
 import Button from '$components/common/Button';
+
+import { updateShareCount } from '$redux/features/media';
 
 import './index.scss';
 
@@ -35,13 +38,18 @@ const Share = (props) => {
     country,
     link: url,
     avatar,
+    initialDescription,
+    mediaId,
   } = props;
 
   // refs
   const linkRef = useRef(null);
 
+  // store
+  const dispatch = useDispatch();
+
   // state
-  const [description, setDescription] = useState('I just joined Mkondo visit www.mkondo.co for checking my profile!');
+  const [description, setDescription] = useState(initialDescription);
   const [link, setLink] = useState(url);
 
   // handlers
@@ -58,6 +66,11 @@ const Share = (props) => {
     linkRef.current.select();
     document.execCommand('copy');
     alert('Copied!');
+    handleShare();
+  }
+
+  const handleShare = () => {
+    dispatch(updateShareCount(mediaId));
   }
 
   // render
@@ -81,22 +94,22 @@ const Share = (props) => {
         <p>Share your Profile</p>
         <div className="d-flex flex-wrap">
           <div className="mr-2">
-            <FacebookShareButton url={link}>
+            <FacebookShareButton url={link} onShareWindowClose={handleShare}>
               <FacebookIcon size={32} round={true} />
             </FacebookShareButton>
           </div>
           <div className="mr-2">
-            <WhatsappShareButton url={link}>
+            <WhatsappShareButton url={link} onShareWindowClose={handleShare}>
               <WhatsappIcon size={32} round={true} />
             </WhatsappShareButton>
           </div>
           <div className="mr-2">
-            <EmailShareButton url={link}>
+            <EmailShareButton url={link} onShareWindowClose={handleShare}>
               <EmailIcon size={32} round={true} />
             </EmailShareButton>
           </div>
           <div className="mr-2">
-            <TwitterShareButton url={link}>
+            <TwitterShareButton url={link} onShareWindowClose={handleShare}>
               <TwitterIcon size={32} round={true} />
             </TwitterShareButton>
           </div>
@@ -117,17 +130,21 @@ const Share = (props) => {
 }
 
 Share.defaultProps = {
+  mediaId: null,
   name: 'Artist Name',
   country: 'Tanzania',
   link: 'https//mkondo.co/app/artist/artist01',
   avatar: null,
+  initialDescription: 'I just joined Mkondo visit www.mkondo.co for checking my profile!',
 };
 
 Share.propTypes = {
+  mediaId: PropTypes.string,
   name: PropTypes.string,
   country: PropTypes.string,
   link: PropTypes.string,
   avatar: PropTypes.string,
+  initialDescription: PropTypes.string,
 };
 
 export default Share;
