@@ -5,6 +5,7 @@ import { handleFetch } from '$common/requestUtils';
 const UPDATE_GENRE = 'user/UPDATE_GENRE';
 const ADD_FAVORITE = 'user/ADD_FAVORITE';
 const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
+const ADD_HISTORY = 'user/ADD_HISTORY';
 
 // actions
 export const updateGenre = createAsyncThunk(
@@ -31,6 +32,14 @@ export const removeFavorite = createAsyncThunk(
   }
 );
 
+export const addHistory = createAsyncThunk(
+  ADD_HISTORY,
+  async (data, param) => {
+    const { token, user } = param.getState().authentication;
+    return await handleFetch('POST', `users/${user.user_id}/history`, data, token);
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -42,6 +51,9 @@ const userSlice = createSlice({
     removeFavoritePending: false,
     removeFavoriteError: null,
     removeFavoriteComplete: false,
+    addHistoryPending: false,
+    addHistoryError: null,
+    addHistoryComplete: false,
   },
   reducers: {},
   extraReducers: {
@@ -77,6 +89,21 @@ const userSlice = createSlice({
       state.removeFavoritePending = false;
       state.removeFavoriteComplete = false;
       state.removeFavoriteError = action.error;
+    },
+    [addHistory.pending]: (state, action) => {
+      state.addHistoryPending = true;
+      state.addHistoryComplete = false;
+      state.addHistoryError = null;
+    },
+    [addHistory.fulfilled]: (state, action) => {
+      state.addHistoryPending = false;
+      state.addHistoryComplete = true;
+      state.addHistoryError = null;
+    },
+    [addHistory.rejected]: (state, action) => {
+      state.addHistoryPending = false;
+      state.addHistoryComplete = false;
+      state.addHistoryError = action.error;
     },
     [updateGenre.fulfilled]: (state, action) => {
       state.updateGenreComplete = true;

@@ -50,7 +50,7 @@ export const getNewReleases = createAsyncThunk(
   }
 );
 
-// save to s3
+// save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
   async (file, param) => {

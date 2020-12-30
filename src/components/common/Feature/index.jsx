@@ -55,6 +55,7 @@ const Feature = (props) => {
     duration,
     mediaUrl,
     mediaId,
+    artistId,
     country,
   } = props;
 
@@ -114,6 +115,7 @@ const Feature = (props) => {
       avatar: avatarUrl,
       name: title,
       howl: null,
+      mediaId,
     }));
   }
 
@@ -214,6 +216,7 @@ Feature.defaultProps = {
   duration: null,
   country: '',
   mediaId: null,
+  artistId: null,
   mediaUrl: '',
 }
 
@@ -225,6 +228,7 @@ Feature.propTypes = {
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,
   country: PropTypes.string,
+  artistId: PropTypes.string,
 }
 
 export default Feature;
