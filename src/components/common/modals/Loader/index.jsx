@@ -3,6 +3,7 @@ import React from 'react';
 import './index.scss';
 
 const Loader = () => {
+  // render
   return (
     <>
       <div className="d-flex align-items-center justify-content-center spinner-border-wrapper">

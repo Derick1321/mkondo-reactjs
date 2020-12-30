@@ -21,9 +21,10 @@ const TopSongs = (props) => {
                 mediaUrl={item.media_url}
                 mediaId={item.media_id}
                 avatar={item.cover_url}
-                source={item.cover_url}
+                source={item.owner_avatar_url}
                 subtitle="Latest Release"
                 title={item.name}
+                country={item.country}
               />
             ))
           }

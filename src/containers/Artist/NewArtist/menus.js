@@ -25,10 +25,10 @@ export const menus = [
     isMulti: true,
   },
   {
-    name: 'description',
+    name: 'about',
     type: 'area',
     placeholder: 'Biography',
-    title: 'Description',
+    title: 'About',
   },
   {
     name: 'phoneNumber',
