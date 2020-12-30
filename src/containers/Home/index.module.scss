@@ -1,14 +1,15 @@
 @import '$assets/scss/main.scss';
 
-.favoritesContentTop {
-  margin-top: 4rem;
-}
-
 .homeContent {
   padding: 0 2.5rem;
   p {
     color: $white !important;
   }
+}
+
+.homeTabsWrapper {
+  margin-top: 9rem;
+  margin-bottom: 2rem;
 }
 
 .homeHeading {

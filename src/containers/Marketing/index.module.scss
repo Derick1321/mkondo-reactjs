@@ -4,47 +4,69 @@
   background-color: $primary-green;
 }
 
-.tab-content-wrapper {
+.tabContentWrapper {
   margin-top: 2rem;
   padding-bottom: 10rem;
   padding-top: 2rem;
 }
 
-.top-songs-pane {
+.topSongsPane {
   padding-top: 5rem;
   padding-bottom: 5rem;
   background-color: $white;
 }
 
-.how-it-works-pane {
+.howItWorksTitle {
   padding-top: 8rem;
   padding-bottom: 8rem;
   background-color: $secondary-white;
 }
 
-.panel-header {
+.panelHeader {
   font-size: $title;
   font-family: Montserrat;
   font-weight: bold;
-  &.panel-header-dark {
-    color: $tertiary-gray;
-  }
 }
 
-.never-stop-panel {
+.panelHeaderDark {
+  color: $tertiary-gray;
+}
+
+.neverStopPanel {
   padding-top: 8rem;
   padding-bottom: 8rem;
   background: linear-gradient(93.01deg, $secondary-green 0.83%, $secondary-blue 100%);
 }
 
-.thanks-panel {
+.thanksPanel {
   padding-top: 8rem;
   padding-bottom: 8rem;
   background-color: $white;
 }
 
-.marketing-footer {
+.marketingFooter {
   height: 8rem;
   border-top: 1px solid $light-gray;
   background-color: $white;
 }
+
+.appDownloadWrapper {
+  background-color: $white;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  position: relative;
+  height: 500px;
+}
+
+.appDownloadFooter {
+  background-color: $secondary-white;
+  position: absolute;
+  margin-top: 290px !important;
+  height: 220px;
+}
+
+.appDownloadContent {
+  position: absolute;
+  padding-top: 4rem;
+}
+

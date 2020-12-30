@@ -7,7 +7,7 @@ import TopSongs from '$components/common/TopSongs';
 
 import { getNewReleases } from '$redux/features/media';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Home = () => {
    // state
@@ -30,14 +30,14 @@ const Home = () => {
 
   // render
   return (
-    <div className="home-content">
-      <div className="home-tabs-wrapper"> 
+    <div className={styles.homeContent}>
+      <div className={styles.homeTabsWrapper}> 
         <Tabs
           onSelect={handleSelect}
           selected={selected}
         />
       </div>
-      <p className="home-heading py-4">New Releases</p>
+      <p className={`${styles.homeHeading} py-4`}>New Releases</p>
       <TopSongs
         media={newReleases}
       />

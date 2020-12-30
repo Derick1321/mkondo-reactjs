@@ -10,3 +10,13 @@
     color: $secondary-black;
   }
 }
+
+.homeFooter {
+  position: absolute;
+  z-index: $z-index-lifter;
+  width: 100%;
+  bottom: 0;
+}
+
+.sideMenuWrapper {
+}
