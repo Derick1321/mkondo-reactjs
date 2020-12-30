@@ -18,7 +18,7 @@ import './index.scss';
 const initialState = {
   name: '',
   genre: null,
-  description: '',
+  about: '',
   phoneNumber: '',
   email: '',
   country: '',
@@ -77,7 +77,8 @@ const NewArtist = () => {
       email: values.email,
       phone_number: values.phoneNumber,
       user_type: 'creator', // shouldn't be necessary
-      about: values.description,
+      about: values.about,
+      description: values.about,
       country: values.country,
       locality: values.region,
       facebook_link: values.fb,

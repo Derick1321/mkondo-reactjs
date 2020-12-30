@@ -22,7 +22,8 @@ const Main = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
-
+  
+  // effects
   useEffect(() => {
     if (location.pathname === routePaths.main) {
       history.push(routePaths.home);
@@ -34,7 +35,7 @@ const Main = (props) => {
     return () => {
       dispatch(hideModal()); // ensure the modal is hidden
     }
-  }, [history]);
+  }, [location.pathname]);
 
   // render
   return (

@@ -17,7 +17,7 @@ import { routePaths } from '$common/routeConfig';
 
 import { setInitialNav } from '$redux/features/nav';
 import { showModal } from '$redux/features/modal';
-import { coldstart } from '$redux/features/authentication';
+import { coldstart, reloadUser } from '$redux/features/authentication';
 
 import { urls, data } from './model';
 
@@ -35,6 +35,7 @@ const Marketing = () => {
   const token = useSelector((store) => store.authentication.token);
   const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
   const initialRoute = useSelector((store) => store.nav.initialRoute);
+  const userId = useSelector((store) => store.authentication.user.user_id);
 
   // effects
   useEffect(() => {
@@ -56,6 +57,7 @@ const Marketing = () => {
     }
 
     if (!signUpComplete) {
+      dispatch(reloadUser(userId));
       history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
     }
   }, [token]);

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import PropTypes from 'prop-types'; 
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { showModal } from '$redux/features/modal';
@@ -11,7 +11,7 @@ const Container = styled.div`
   position: absolute;
   background-color: #FFFFFF;
   padding: 1rem 0.5rem;
-  width: 180px;
+  min-width: 180px;
   top: ${props => props.top}px;
   left: ${props => props.left}px;
   z-index: 3999;
@@ -29,7 +29,12 @@ const DropDownWrapper = (props) => {
   });
 
   // props
-  const { children, options, handleSelect } = props;
+  const {
+    children,
+    options,
+    optionElement,
+    handleSelect,
+  } = props;
   const dispatch = useDispatch();
 
   // effects
@@ -78,33 +83,43 @@ const DropDownWrapper = (props) => {
 
     setBounds({
       top: bound.bottom + 10,
-      left: bound.left - (bound.width * 1.2),
+      left: bound.left - (bound.width),
     });
   }
 
   const buildDropDown = () => {
+    const content = optionElement ? (
+      <div className="dropdown-element-menu">
+        {optionElement}
+      </div>
+    ) : (
+      <div className="dropdown-bubble-menu">
+        {
+          options.map((opt, idx) => (
+            <a
+              key={`opt-${name}-${idx}`}
+              onClick={() => handleSelect(opt.name)}
+              className={`dropdown-option ${opt.style ? opt.style : ''}`}
+            >
+              {opt.title}
+            </a>
+          ))
+        }
+      </div>
+    );
+
     return (
       <Container
         top={bounds.top}
         left={bounds.left}
         ref={dropdownRef}
       >
-        <div className="dropdown-bubble-menu">
-          {
-            options.map((opt, idx) => (
-              <a
-                key={`opt-${name}-${idx}`}
-                onClick={() => handleSelect(opt.name)}
-                className={`dropdown-option ${opt.style ? opt.style : ''}`}
-              >
-                {opt.title}
-              </a>
-            ))
-          }
-        </div>
+        { content}
       </Container>
     );
   }
+
+  console.log('bounds.top ', bounds.top);
 
   // render
   return (
@@ -115,7 +130,7 @@ const DropDownWrapper = (props) => {
     >
       {children}
       {
-        bounds.top ? 
+        bounds.top ?
           buildDropDown() : null
       }
     </button>
@@ -125,6 +140,7 @@ const DropDownWrapper = (props) => {
 DropDownWrapper.defaultProps = {
   options: [],
   handleSelect: () => null,
+  optionElement: null,
 };
 
 DropDownWrapper.propTypes = {
@@ -134,6 +150,7 @@ DropDownWrapper.propTypes = {
     title: PropTypes.string,
   })),
   handleSelect: PropTypes.func,
+  optionElement: PropTypes.node,
 };
 
 export default DropDownWrapper;
