@@ -10,6 +10,8 @@ import ArtistView from '$containers/Artist/ViewArtist';
 import ArtistStats from '$containers/Artist/StatsArtist';
 import ResetPassword from '$containers/ResetPassword';
 import SuccessPage from '$containers/Success';
+import Favorites from '$containers/Favorites';
+import History from '$containers/History';
 
 export const routePaths = {
   main: '/app',
@@ -28,6 +30,8 @@ export const routePaths = {
   statsArtist: '/app/artist/stats',
   viewArtist: '/app/artist/:id',
   success: '/app/success',
+  history: '/app/history',
+  favorites: '/app/favorites',
 };
 
 const roles = {
@@ -116,8 +120,14 @@ export const routes = [
       },
       {
         ...defaultConfig,
-        path: routePaths.feeds,
-        component: Home,
+        path: routePaths.history,
+        component: History,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.favorites,
+        component: Favorites,
         redirect: redirectFunctions.app
       },
       {
