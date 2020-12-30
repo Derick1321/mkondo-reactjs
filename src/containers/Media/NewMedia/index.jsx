@@ -10,6 +10,7 @@ import { routePaths } from '$common/routeConfig';
 import { generatePreview } from '$common/utils';
 
 import { saveMedia, addMedia } from '$redux/features/media';
+import { showModal } from '$redux/features/modal';
 
 import { menus, metamenus } from './menus';
 
@@ -38,11 +39,12 @@ const NewMedia = () => {
   const history = useHistory();
   const addMediaComplete = useSelector((store) => store.media.addMediaComplete);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const newMediaId = useSelector((store) => store.media.newMediaId);
 
   // effects
   useEffect(async () => {
-    // use prevProps
+    // TODO: use prevProps
     if (addMediaComplete && values.file) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
@@ -56,7 +58,6 @@ const NewMedia = () => {
 
   // handlers
   const handleFileChange = (files) => {
-    console.log('files[0] ', files[0]);
     setFile(files[0]);
   }
 
@@ -75,6 +76,7 @@ const NewMedia = () => {
       composer: values.composer,
       record_label: values.recordLabel,
       song_writer: values.songWriter,
+      owner_avatar_url: userAvatarUrl,
     }));
   };
 

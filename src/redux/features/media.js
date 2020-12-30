@@ -7,6 +7,7 @@ const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
+const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -22,6 +23,14 @@ export const getAllMedia = createAsyncThunk(
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', 'media', null, token);
+  }
+);
+
+export const updateShareCount = createAsyncThunk(
+  UPDATE_SHARE_COUNT,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', `media/${id}/shares`, null, token);
   }
 );
 
@@ -41,7 +50,7 @@ export const getNewReleases = createAsyncThunk(
   }
 );
 
-// save to s3
+// save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
   async (file, param) => {
@@ -83,6 +92,9 @@ const INITIAL_STATE = {
   getNewReleasesPending: false,
   getNewReleasesComplete: false,
   getNewReleasesError: null,
+  updateShareCountPending: false,
+  updateShareCountError: null,
+  updateShareCountComplete: false,
   medias: [],
   newReleases: [],
 };
@@ -123,6 +135,21 @@ const mediaSlice = createSlice({
       state.getMediaComplete = true;
       state.getMediaError = null;
       state.getMediaError = action.error;
+    },
+    [updateShareCount.pending]: (state, action) => {
+      state.updateShareCountPending = true;
+      state.updateShareCountComplete = false;
+      state.updateShareCountError = null;
+    },
+    [updateShareCount.fulfilled]: (state, action) => {
+      state.updateShareCountPending = false;
+      state.updateShareCountComplete = true;
+      state.updateShareCountError = null;
+    },
+    [updateShareCount.rejected]: (state, action) => {
+      state.updateShareCountPending = false;
+      state.updateShareCountComplete = false;
+      state.updateShareCountError = action.error;
     },
     [saveMedia.pending]: (state, action) => {
       state.saveMediaPending = true;

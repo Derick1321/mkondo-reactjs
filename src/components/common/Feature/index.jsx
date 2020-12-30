@@ -1,15 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
+
+import DropDownWrapper from '$components/common/DropDownWrapper';
+
 import { updatePlaylist } from '$redux/features/playlist';
+import { addFavorite, removeFavorite } from '$redux/features/user';
+import { showModal } from '$redux/features/modal';
 
 import './index.scss';
 
+const defaultAvatar = require('$assets/images/profile-user.svg');
 const pause = require('$assets/images/icons/pause-icon.svg');
 const play = require('$assets/images/icons/play.svg');
+const favoriteActive = require('$assets/images/icons/favorite-active.svg');
+const favorite = require('$assets/images/icons/favorite.svg');
+const share = require('$assets/images/icons/share.svg');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -46,20 +55,55 @@ const Feature = (props) => {
     duration,
     mediaUrl,
     mediaId,
+    artistId,
+    country,
   } = props;
 
   // store
   const token = useSelector((store) => store.authentication.token);
+  const favourites = useSelector((store) => store.authentication.user.favourites);
   const dispatch = useDispatch();
 
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
+  const [sourceUrl, setSourceUrl] = useState('');
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  // ref
+  const isMounted = useRef(false);
 
   // effects
-  useEffect(async () => {
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
-    setAvatarUrl(res.response);
+  useEffect(() => {
+    isMounted.current = true;
+    return () => {
+      isMounted.current = false;
+    }
   }, []);
+
+  useEffect(() => {
+    if (!favourites) {
+      return;
+    }
+
+    const res = favourites.find((media) => media.media_id === mediaId);
+    if (!res) {
+      return;
+    }
+    setIsFavorite(true);
+  }, [favourites]);
+
+  useEffect(async () => {
+    if (!token || !isMounted.current) {
+      return;
+    }
+
+    const sourceAvatar = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token);
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
+    if (isMounted.current) {
+      setAvatarUrl(res.response);
+      setSourceUrl(sourceAvatar.response);
+    }
+  }, [token]);
 
   // handlers
   const handlePlay = async () => {
@@ -71,17 +115,75 @@ const Feature = (props) => {
       avatar: avatarUrl,
       name: title,
       howl: null,
+      mediaId,
+    }));
+  }
+
+  const handleFavorite = () => {
+    const data = {
+      media_id: mediaId,
+    };
+
+    if (!isFavorite) {
+      dispatch(addFavorite(data));
+    } else {
+      dispatch(removeFavorite(data));
+    }
+    setIsFavorite(!isFavorite);
+  }
+
+  const handleShare = () => {
+    dispatch(showModal('SHARE_MODAL', {
+      title, 
+      country,
+      mediaId,
+      avatarUrl,
     }));
   }
 
   // render
   return (
     <div className={'feature-wrapper'}>
-      <FeatureBkg source={source} />
+      <FeatureBkg source={avatarUrl} />
+      <div className="d-flex justify-content-between feature-header-wrapper mt-2 px-2">
+        <div className="feature-header-wrapper-title px-2">FEATURE</div>
+        <div className="d-flex">
+          <button
+            className="feature-play-btn"
+            onClick={handleFavorite}
+          >
+            <img
+              src={isFavorite ? favoriteActive : favorite}
+              className=""
+            />
+          </button>
+          <button
+            className="feature-play-btn"
+            onClick={handleShare}
+          >
+            <img
+              src={share}
+              className=""
+            />
+          </button>
+        </div>
+      </div>
       <div className="d-flex feature-pane">
-        <FeatureAvatar
-          source={avatarUrl}
-        />
+        {
+          !source && (
+            <img
+              src={defaultAvatar}
+              className="default-feature-avatar"
+            />
+          )
+        }
+        {
+          source && (
+            <FeatureAvatar
+              source={sourceUrl}
+            />
+          )
+        }
         <div className="feature-content-wrapper">
           <p>{subtitle}</p>
           <div className="d-flex">
@@ -112,6 +214,10 @@ const Feature = (props) => {
 Feature.defaultProps = {
   numOfSongs: null,
   duration: null,
+  country: '',
+  mediaId: null,
+  artistId: null,
+  mediaUrl: '',
 }
 
 Feature.propTypes = {
@@ -121,6 +227,8 @@ Feature.propTypes = {
   duration: PropTypes.string,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,
+  country: PropTypes.string,
+  artistId: PropTypes.string,
 }
 
 export default Feature;
