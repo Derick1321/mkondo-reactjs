@@ -14,13 +14,14 @@ const SideMenu = () => {
 
   // icons
   const artistIcons = [
-    { 
+    {
       icon: require('$assets/images/icons/add-artist.svg'),
       activeIcon: require('$assets/images/icons/add-artist-active.svg'),
       title: 'Add Artist',
       path: routePaths.newArtist,
+      permission: 'admin',
     },
-    { 
+    {
       icon: require('$assets/images/icons/stats.svg'),
       activeIcon: require('$assets/images/icons/stats-active.svg'),
       title: 'Stats',
@@ -36,8 +37,23 @@ const SideMenu = () => {
     },
   ];
 
+  const userIcons = [
+    {
+      icon: require('$assets/images/icons/favorite.svg'),
+      activeIcon: require('$assets/images/icons/favorite-active.svg'),
+      title: 'Favorites',
+      path: routePaths.favorites,
+    },
+    {
+      icon: require('$assets/images/icons/history.svg'),
+      activeIcon: require('$assets/images/icons/history-active.svg'),
+      title: 'History',
+      path: routePaths.history,
+    },
+  ];
+
   const icons = [
-    { 
+    {
       icon: require('$assets/images/icons/home.svg'),
       activeIcon: require('$assets/images/icons/home-active.svg'),
       title: 'Home',
@@ -60,12 +76,6 @@ const SideMenu = () => {
       activeIcon: require('$assets/images/icons/top-chart-active.svg'),
       title: 'Top Chart',
       path: routePaths.topChart,
-    },
-    {
-      icon: require('$assets/images/icons/feeds.svg'),
-      activeIcon: require('$assets/images/icons/feeds-active.svg'),
-      title: 'Artist (Dev Only)',
-      path: routePaths.viewArtist,
     },
   ];
 
@@ -93,6 +103,32 @@ const SideMenu = () => {
             </NavLink>
           ))
         }
+        <div className="d-flex flex-column artist-menus">
+          <p className="sidemenu-subtitle">Your Music</p>
+          {
+            userIcons.map((item, idx) => {
+              const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
+              if (!canAccess) {
+                return null;
+              }
+
+              return (
+                <NavLink
+                  to={item.path}
+                  className="sidemenu-item"
+                  activeClassName="active"
+                  key={`sidemenu-${idx}`}
+                >
+                  <img
+                    src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                    className="sidemenu-item-icon"
+                  />
+                  <span className="sidemenu-item-title">{item.title}</span>
+                </NavLink>
+              )
+            })
+          }
+        </div>
         {
           artistAccess && (
             <div className="d-flex flex-column artist-menus">
