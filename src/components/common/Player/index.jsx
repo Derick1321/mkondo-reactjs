@@ -1,10 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Slider from '$components/common/Slider';
 
 import AudioPlayer from '$common/player';
 import { formatTime } from '$common/utils';
+
+import { addHistory } from '$redux/features/user';
 
 import './index.scss';
 
@@ -40,18 +42,28 @@ const Player = () => {
   const [seekPos, setSeekPos] = useState(0);
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // store
   const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
+  const dispatch = useDispatch();
+  
 
   // functions
   const onPlay = (dur) => {
     setIsPlaying(true);
     setDuration(dur);
+    setIsLoading(false);
   }
 
   const onPause = (dur) => {
     setIsPlaying(false);
+  }
+
+  const onLoad = (mediaId) => {
+    dispatch(addHistory({
+      media_id: mediaId,
+    }));
   }
 
   // effects
@@ -59,6 +71,7 @@ const Player = () => {
     const callbacks = {
       onPlay,
       onPause,
+      onLoad,
     }
 
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist))
@@ -103,11 +116,16 @@ const Player = () => {
   }
 
   const handlePlay = () => {
+    if (isLoading) {
+      return;
+    }
+
     // need a way to play current index
     if (isPlaying) {
       audioRef.current.pause();
     } else {
       audioRef.current.play(audioRef.current.index);
+      setIsLoading(true);
     }
   }
 
@@ -132,6 +150,25 @@ const Player = () => {
   }
 
   const buildPlayerControls = () => {
+    let actionBtn = <img src={playIcon} />;
+    if (isPlaying) {
+      actionBtn = (
+        <div className="pause-btn-wrapper">
+          <img src={pauseIcon} />
+        </div>
+      );
+    }
+
+    if (isLoading) {
+      actionBtn = (
+        <span
+          className="spinner-border text-light spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        />
+      );
+    }
+
     return (
       <>
         <button className="player-btn" onClick={handleRepeat}>
@@ -141,15 +178,7 @@ const Player = () => {
           <img src={prevIcon} />
         </button>
         <button className="player-btn" onClick={handlePlay}>
-          {
-            isPlaying ? (
-              <div className="pause-btn-wrapper">
-                <img src={pauseIcon} />
-              </div>
-            ) : (
-              <img src={playIcon} />
-            )
-          }
+          { actionBtn }
         </button>
         <button className="player-btn" onClick={handleNext}>
           <img src={nextIcon} />

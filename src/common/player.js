@@ -45,7 +45,7 @@ class Player {
         },
         onload: () => {
           if (this.callbacks.onLoad) {
-            this.callbacks.onLoad();
+            this.callbacks.onLoad(this.playlist[index].mediaId);
           }
         },
         onend: () => {
@@ -84,7 +84,6 @@ class Player {
       });
     }
 
-    console.log('sound ', sound);
     // Begin playing the sound.
     sound.play();
 
