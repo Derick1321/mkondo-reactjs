@@ -41,3 +41,20 @@
     outline: 0;
   }
 }
+
+.feature-header-wrapper {
+  position: absolute;
+  width: 100%;
+}
+
+.feature-header-wrapper-title {
+  background-color: $secondary-black;
+  color: $white;
+}
+
+// TODO: 
+.default-feature-avatar {
+  height: 50px;
+  width: 50px;
+  margin-right: 10px;
+}
