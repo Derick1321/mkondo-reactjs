@@ -119,8 +119,6 @@ const DropDownWrapper = (props) => {
     );
   }
 
-  console.log('bounds.top ', bounds.top);
-
   // render
   return (
     <button
