@@ -61,5 +61,20 @@ const menus = [
   },
 ];
 
+export const newMedia = [
+  {
+    name: 'songs',
+    title: 'Songs',
+    icon: require('$assets/images/home/player.svg'),
+    iconActive: require('$assets/images/home/player-active.svg'),
+  },
+  {
+    name: 'Album',
+    title: 'Album',
+    icon: require('$assets/images/home/trumpet.svg'),
+    iconActive: require('$assets/images/home/trumpet-active.svg'),
+  },
+]
+
 export default menus;
 
