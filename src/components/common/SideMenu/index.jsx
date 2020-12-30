@@ -33,7 +33,7 @@ const SideMenu = () => {
       activeIcon: require('$assets/images/icons/upload-active.svg'),
       title: 'New Media',
       path: routePaths.newMedia,
-      permission: 'media',
+      permission: 'artist',
     },
   ];
 

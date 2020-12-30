@@ -10,8 +10,8 @@ const Favorites = () => {
 
   // render
   return (
-    <div className="home-content favorites-content-top">
-      <p className="home-heading py-4">Favorites</p>
+    <div className={`${styles.homeContent} ${styles.favoritesContentTop}`}>
+      <p className={`${styles.homeHeading} py-4`}>Favorites</p>
       {
         favorites ? (
           <TopSongs
