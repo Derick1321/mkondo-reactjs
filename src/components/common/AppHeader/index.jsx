@@ -9,7 +9,7 @@ import SearchResult from '$components/common/SearchResult';
 import { logout } from '$redux/features/authentication';
 
 import './index.scss';
-import { hideModal } from '../../../redux/features/modal';
+import { hideModal } from '$redux/features/modal';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
