@@ -1,34 +1,34 @@
 @import '$assets/scss/main.scss';
 
-.onboarding-wrapper {
+.onboardingWrapper {
   height: 100vh;
   width: 100%;
   background-color: $primary-green;
 }
 
-.onboarding-content {
+.onboardingContent {
   margin-top: 80px !important;
 }
 
-.onboarding-menus {
+.onboardingMenus {
   border-bottom: 4px solid $secondary-green;
   padding-top: 4rem;
   padding-bottom: 2rem;
 }
 
-.onboarding-header-wrapper {
+.onboardingHeaderWrapper {
   padding: 1rem 2rem;
   width: 60%;
 }
 
-.onboarding-header {
+.onboardingHeader {
   font-family: Montserrat;
   font-weight: 500;
   font-size: $heading;
   color: $white;
 }
 
-.onboarding-menu {
+.onboardingMenu {
   height: 130px;
   width: 130px;
   background-color: $white;
@@ -41,6 +41,6 @@
   }
 }
 
-.onboarding-menu-image {
+.onboardingMenuImage {
   height: 75px
 }

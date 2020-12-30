@@ -1,27 +1,19 @@
 @import '$assets/scss/main.scss';
 
-.home-content {
+.historyContentTop {
+  margin-top: 4rem;
+}
+
+.homeContent {
   padding: 0 2.5rem;
   p {
     color: $white !important;
   }
 }
 
-.home-tabs-wrapper {
-  margin-top: 9rem;
-  margin-bottom: 2rem;
-}
-
-.home-heading {
+.homeHeading {
   font-family: Montserrat;
   font-weight: 700;
   font-size: $heading;
   color: $secondary-green;
-}
-
-.home-footer {
-  position: absolute;
-  z-index: $z-index-lifter;
-  width: 100%;
-  bottom: 0;
 }

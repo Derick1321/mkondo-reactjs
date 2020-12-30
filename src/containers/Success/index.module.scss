@@ -1,19 +1,19 @@
 @import '$assets/scss/main.scss';
 
-.success-wrapper {
+.successWrapper {
   height: 100vh;
   width: 100%;
   background-color: $white;
   padding-top: 8rem;
 }
 
-.success-dialog-wrapper {
+.successDialogWrapper {
   border: 1px solid $tertiary-gray;
   min-height: 10rem;
   padding: 1rem;
 }
 
-.success-message {
+.successMessage {
   font-family: 'Helvetica Neue';
   font-size: $title;
   font-weight: bold;

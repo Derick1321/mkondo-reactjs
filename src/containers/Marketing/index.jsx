@@ -21,7 +21,7 @@ import { coldstart, reloadUser } from '$redux/features/authentication';
 
 import { urls, data } from './model';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Marketing = () => {
   // state
@@ -85,7 +85,7 @@ const Marketing = () => {
 
   // render
   return (
-    <div className="wrapper container-fluid h-100">
+    <div className={`container-fluid h-100 ${styles.wrapper}`}>
       <div className="row w-100">
         <div className="col-12 col-sm-8 offset-sm-2">
           <Header />
@@ -115,7 +115,7 @@ const Marketing = () => {
               shadowColor="transparent"
               fontSize={14}
             />
-            <div className="d-flex flex-wrap tab-content-wrapper">
+            <div className={`d-flex flex-wrap ${styles.tabContentWrapper}`}>
               {
                 urls[selected].map((item, idx) => (
                   <Preview
@@ -128,9 +128,9 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className="row top-songs-pane">
+      <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
-          <p className="mb-4 text-center how-it-works-title">Top Free Songs of the Week</p>
+          <p className={`mb-4 text-center ${styles.howItWorksTitle}`}>Top Free Songs of the Week</p>
           <TopSongs />
           <AlbumMenuPanel />
           <div className="text-center">
@@ -143,22 +143,22 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className="row how-it-works-pane">
+      <div className="row">
         <div className="col-12 col-md-10 offset-md-1">
           <HowItWorks />
         </div>
       </div>
-      <div className="row app-download-wrapper justify-content-center align-items-center">
-        <div className="app-download-footer" />
-        <div className="app-download-content">
+      <div className={`row justify-content-center align-items-center ${styles.appDownloadWrapper}`}>
+        <div className={styles.appDownloadFooter} />
+        <div className={styles.appDownloadContent}>
           <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
             <AppDownload />
           </div>
         </div>
       </div>
-      <div className="row never-stop-panel">
+      <div className={`row ${styles.neverStopPanel}`}>
         <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-          <p className="panel-header text-white">Never stop listening</p>
+          <p className={`text-white ${styles.panelHeader}`}>Never stop listening</p>
           <p className="text-white">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <Button
             onClick={handleFindMore}
@@ -170,9 +170,9 @@ const Marketing = () => {
           </Button>
         </div>
       </div>
-      <div className="row thanks-panel justify-content-center text-center">
+      <div className={`row justify-content-center text-center ${styles.thanksPanel}`}>
         <div className="col-12 col-sm-8 col-md-6">
-          <p className="panel-header panel-header-dark">Thanks for listening</p>
+          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Thanks for listening</p>
           <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <div className="d-flex justify-content-center">
             <Button
@@ -186,7 +186,7 @@ const Marketing = () => {
         </div>
       </div>
       <div className="row">
-        <div className="col-12 d-flex align-items-center justify-content-center marketing-footer">
+        <div className={`col-12 d-flex align-items-center justify-content-center ${styles.marketingFooter}`}>
           <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
         </div>
       </div>

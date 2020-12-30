@@ -10,7 +10,7 @@ import SideMenu from '$components/common/SideMenu';
 import { routePaths } from '$common/routeConfig';
 import { hideModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Main = (props) => {
   // props
@@ -40,10 +40,10 @@ const Main = (props) => {
   // render
   return (
     <div className="d-flex vh-100">
-      <div className="side-menu-wrapper">
+      <div className={styles.sideMenuWrapper}>
         <SideMenu />
       </div>
-      <div className="content">
+      <div className={styles.content}>
         <AppHeader />
         <Switch>
           {
@@ -56,7 +56,7 @@ const Main = (props) => {
           }
         </Switch>
       </div>
-      <div className="home-footer">
+      <div className={styles.homeFooter}>
         <Player />
       </div>
     </div>
