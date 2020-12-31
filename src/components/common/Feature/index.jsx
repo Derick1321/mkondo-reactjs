@@ -11,7 +11,7 @@ import { updatePlaylist } from '$redux/features/playlist';
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { showModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const pause = require('$assets/images/icons/pause-icon.svg');
@@ -143,13 +143,13 @@ const Feature = (props) => {
 
   // render
   return (
-    <div className={'feature-wrapper'}>
+    <div className={styles.featureWrapper}>
       <FeatureBkg source={avatarUrl} />
-      <div className="d-flex justify-content-between feature-header-wrapper mt-2 px-2">
-        <div className="feature-header-wrapper-title px-2">FEATURE</div>
+      <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
+        <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
         <div className="d-flex">
           <button
-            className="feature-play-btn"
+            className={styles.featurePlayBtn}
             onClick={handleFavorite}
           >
             <img
@@ -158,7 +158,7 @@ const Feature = (props) => {
             />
           </button>
           <button
-            className="feature-play-btn"
+            className={styles.featurePlayBtn}
             onClick={handleShare}
           >
             <img
@@ -168,12 +168,12 @@ const Feature = (props) => {
           </button>
         </div>
       </div>
-      <div className="d-flex feature-pane">
+      <div className={`d-flex ${styles.featurePane}`}>
         {
           !source && (
             <img
               src={defaultAvatar}
-              className="default-feature-avatar"
+              className={styles.defaultFeatureAvatar}
             />
           )
         }
@@ -184,19 +184,19 @@ const Feature = (props) => {
             />
           )
         }
-        <div className="feature-content-wrapper">
+        <div className={styles.featureContentWrapper}>
           <p>{subtitle}</p>
           <div className="d-flex">
             <button
-              className="feature-play-btn"
+              className={styles.featurePlayBtn}
               onClick={handlePlay}
             >
               <img
                 src={play}
-                className="feature-action-btn"
+                className={styles.featureActionBtn}
               />
             </button>
-            <div className="d-flex flex-column feature-summary">
+            <div className={`d-flex flex-column ${styles.featureSummary}`}>
               <span>{title}</span>
               {
                 numOfSongs && (

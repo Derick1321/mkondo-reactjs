@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.custom-btn {
+.customBtn {
   background-color: transparent;
   border: 0;
   &:focus {
@@ -8,7 +8,7 @@
   }
 }
 
-.mk-btn {
+.mkBtn {
   height: 40px;
   border-radius: 42px;
   min-width: 140px;
@@ -23,36 +23,45 @@
   &:focus {
     outline: none;
   }
-  &.mk-btn-transparent {
-    background-color: transparent;
-  }
-  &.mk-btn-square {
-    border-radius: 5px;
-  }
-  &.mk-btn-stretch {
-    width: 100%;
-  }
-  &.no-width {
-    width: auto;
-  }
-  &.no-border {
-    border: none;
-    min-width: 0;
-  }
 }
 
-.mk-btn-border-white {
+.mkBtnSquare {
+  border-radius: 5px;
+}
+
+.mkBtnStretch {
+  width: 100%;
+}
+
+.noWidth {
+  width: auto;
+}
+
+.noBorder {
+  border: none;
+  min-width: 0;
+}
+
+.mkBtnTransparent {
+  background-color: transparent;
+}
+
+.mkBtnBorderWhite {
   border: 1px solid $white;
 }
 
-.mk-btn-primary {
+.mkBtnPrimary {
   color: $secondary-green;
 }
 
-.mk-btn-secondary {
+.mkBtnSecondary {
   background-color: $tertiary-blue;
   border: none;
-  &.mk-btn-transparent {
-    color: $tertiary-blue;
-  }
+}
+
+.mkBtnSecondaryTransparent {
+  color: $tertiary-blue;
+}
+
+.btnIcon {
 }

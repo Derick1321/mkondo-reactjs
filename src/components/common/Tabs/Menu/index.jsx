@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const TabMenu = (props) => {
   // props
@@ -27,12 +27,12 @@ const TabMenu = (props) => {
   // render
   return (
     <button
-      className={`tab-menu ${isActive ? 'active' : ''}`}
+      className={`${styles.tabMenu} ${isActive ? styles.tabMenuActive : ''}`}
       onClick={handleClick}
       type="button"
     >
       <span style={customStyle}>{title}</span>
-      <div className={`active-tab-menu ${isActive ? 'visible' : 'invisible'}`} />
+      <div className={`${styles.activeTabMenu} ${isActive ? 'visible' : 'invisible'}`} />
     </button>
   );
 }

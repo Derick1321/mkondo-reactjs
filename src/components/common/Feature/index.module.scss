@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.feature-wrapper {
+.featureWrapper {
   position: relative;
   min-height: 185px;
   min-width: 300px;
@@ -11,22 +11,22 @@
   background-color: $dark-gray;
 }
 
-.feature-content-wrapper {
+.featureContentWrapper {
   height: 40%;
   width: 100%;
   bottom: 0;
 }
 
-.feature-action-btn {
+.featureActionBtn {
   height: 30px;
 }
 
-.feature-summary {
+.featureSummary {
   color: $white;
   margin: 5px;
 }
 
-.feature-pane {
+.featurePane {
   position: absolute;
   z-index: $z-index-lift;
   bottom: 0;
@@ -34,7 +34,7 @@
   padding: 0.5rem 1rem;
 }
 
-.feature-play-btn {
+.featurePlayBtn {
   background-color: transparent;
   border: none;
   &:focus {
@@ -42,18 +42,17 @@
   }
 }
 
-.feature-header-wrapper {
+.featureHeaderWrapper {
   position: absolute;
   width: 100%;
 }
 
-.feature-header-wrapper-title {
+.featureHeaderWrapperTitle {
   background-color: $secondary-black;
   color: $white;
 }
 
-// TODO: 
-.default-feature-avatar {
+.defaultFeatureAvatar{
   height: 50px;
   width: 50px;
   margin-right: 10px;

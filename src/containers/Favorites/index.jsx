@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import TopSongs from '$components/common/TopSongs';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Favorites = () => {
   const favorites = useSelector((store) => store.authentication.user.favourites);

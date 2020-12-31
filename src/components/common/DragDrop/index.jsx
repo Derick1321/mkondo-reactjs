@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 
 import Button from '$components/common/Button';
 
-import './index.scss';
+import styles from './index.module.scss';
+
+const upIcon = require('$assets/images/icons/arrow-up.svg');
 
 const DragDrop = (props) => {
   // props
@@ -32,21 +34,22 @@ const DragDrop = (props) => {
     }
 
     onChange(currentUpload);
+    setActive(false); // reset upload state
   }
 
-  const handleDragOver = (ev) => {
+  const handleDragOver = (evt) => {
     // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
+    evt.preventDefault();
   }
 
-  const handleDragEnter = (ev) => {
+  const handleDragEnter = (evt) => {
     // Prevent default behavior (Prevent file from being opened)
-    ev.preventDefault();
+    evt.preventDefault();
     setActive(true);
   }
 
-  const handleDragLeave = (ev) => {
-    ev.preventDefault();
+  const handleDragLeave = (evt) => {
+    evt.preventDefault();
     setActive(false);
   }
 
@@ -61,11 +64,9 @@ const DragDrop = (props) => {
   // render
   return (
     <>
-      <div
-        className={`d-flex justify-content-center align-items-center drag-and-drop-wrapper ${active ? 'drag-active' : ''}`}
-      >
+      <div className={`d-flex justify-content-center align-items-center ${styles.dragDropWrapper}`}>
         <div
-          className={`drag-and-drop-inner d-flex justify-content-center align-items-center ${active ? 'drag-active' : ''}`}
+          className={`d-flex justify-content-center align-items-center ${styles.dragDropInner} ${active ? styles.dragActive : ''}`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
@@ -73,36 +74,28 @@ const DragDrop = (props) => {
         >
           {
             active ? (
-              <p className="text-center drag-title">
-                Drop your Tracks Here
+              <p className={`text-center ${styles.dragTitle}`}>
+                Drop your files here
               </p>
             ) : (
-              <p className="text-center">
-                Drag and Drop your Tracks Here
-              </p>
+              <Button
+                onClick={handleSelectFile}
+                isCustom
+                hideDefault
+              >
+                <div className={`d-flex align-items-center ${styles.btnWrapper}`}>
+                  <img
+                    className={styles.fileBtnWrapper}
+                    src={upIcon}
+                    alt=""
+                  />
+                  <span>Choose or Drop files to upload</span>
+                </div>
+              </Button>
             )
           }
         </div>
       </div>
-      {
-        !active && (
-          <>
-            <div className="d-flex align-items-center">
-              <div className="hr" />
-              <span>OR</span>
-              <div className="hr" />
-            </div>
-            <div className="d-flex justify-content-center">
-              <Button
-                onClick={handleSelectFile}
-                style="mk-btn-secondary"
-              >
-                Choose files  to upload
-              </Button>
-            </div>
-          </>
-        )
-      }
       <input
         className="d-none"
         type="file"
