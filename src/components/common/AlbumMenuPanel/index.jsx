@@ -2,8 +2,10 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 
-import AlbumMenu from '../AlbumMenu';
-import './index.scss';
+import AlbumMenu from '$components/common/AlbumMenu';
+import Button from '$components/common/Button';
+
+import styles from './index.module.scss';
 
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
@@ -55,20 +57,28 @@ const AlbumMenuPanel = (props) => {
 
   // render
   return (
-   <div className="scroll-menu-wrapper">
+   <div className={styles.scrollMenuWrapper}>
     {
       showHeader && (
         <div className="d-flex align-items-center my-4">
-          <div className="d-flex album-menu-title-wrapper">
-            <span className="heading-3">{title}</span>
+          <div className={`d-flex ${styles.albumMenuTitleWrapper}`}>
+            <span className={styles.heading}>{title}</span>
           </div>
           <div className="d-flex justify-content-end">
-            <button className="custom-btn" onClick={handleNavLeft}>
+            <Button
+              onClick={handleNavLeft}
+              isCustom
+              hideDefault
+            >
               <img src={arrowLeftIcon} />
-            </button>
-            <button className="custom-btn" onClick={handleNavRight}>
+            </Button>
+            <Button
+              onClick={handleNavRight}
+              isCustom
+              hideDefault
+            >
               <img src={arrowRightIcon} />
-            </button>
+            </Button>
           </div>
         </div>
       )

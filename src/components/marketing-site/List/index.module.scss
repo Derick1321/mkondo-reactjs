@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.list-num-wrapper {
+.listNumWrapper {
   color: $secondary-green;
   font-size: $normal-text;
   border: 1px solid $secondary-green;
@@ -10,6 +10,9 @@
   margin-right: 2rem;
 }
 
-.list-header {
+.listHeader {
   color: $secondary-green;
+}
+
+.listDescription {
 }

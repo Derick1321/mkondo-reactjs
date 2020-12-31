@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.dropdown-wrapper-btn {
+.dropdownWrapperBtn {
   background-color: transparent;
   border: none;
   &:focus {
@@ -8,7 +8,7 @@
   }
 }
 
-.dropdown-bubble-menu {
+.dropdownBubbleMenu {
   margin-top: 1em;
   text-align: left;
   padding: 1rem 1.5rem;
@@ -32,7 +32,7 @@
   }
 }
 
-.dropdown-option {
+.dropdownOption {
   height: 40px;
   font-family: Helvetica;
   color: $black;
@@ -42,13 +42,6 @@
   }
 }
 
-.opt-secondary {
-  color: $secondary-green;
-  &:focus, &:active, &:hover {
-    color: $secondary-green;
-  }
-}
-
-.dropdown-element-menu {
+.dropdownElementMenu {
   width: 50rem;
 }

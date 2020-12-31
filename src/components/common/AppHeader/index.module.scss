@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.app-header-wrapper {
+.appHeaderWrapper {
   position: absolute;
   top: 0;
   height: 40px;
@@ -8,18 +8,19 @@
   width: calc(100% - 220px);
   background-color: $primary-green;
   z-index: $z-index-lifter;
-  &.search-inactive {
-    background-color: transparent;
-  }
 }
 
-.app-header-avatar {
+.searchInactive {
+  background-color: transparent;
+}
+
+.appHeaderAvatar {
   height: 40px;
   width: 40px;
   border-radius: 50%;
 }
 
-.app-header-name {
+.appHeaderName {
   color: $white;
   padding: 0 1rem;
   span {
@@ -31,10 +32,17 @@
   }
 }
 
-.app-header-input {
+.appHeaderInput {
   background-color: $secondary-black;
   border-color: $secondary-black;
   input {
     color: $white;
+  }
+}
+
+.optSecondary {
+  color: $secondary-green;
+  &:focus, &:active, &:hover {
+    color: $secondary-green;
   }
 }

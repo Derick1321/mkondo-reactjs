@@ -8,14 +8,14 @@ import SearchResult from '$components/common/SearchResult';
 
 import { logout } from '$redux/features/authentication';
 
-import './index.scss';
+import styles from './index.module.scss';
 import { hideModal } from '$redux/features/modal';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
 const headerMenus = [
   { name: 'account', title: 'My Account', },
-  { name: 'logout', title: 'Log Out', style: 'opt-secondary'},
+  { name: 'logout', title: 'Log Out', style: styles.optSecondary},
 ];
 
 const AppHeader = (props) => {
@@ -50,7 +50,7 @@ const AppHeader = (props) => {
   // render
   return (
     <>
-      <div className={`d-flex align-items-center app-header-wrapper ${modalActive ? 'search-inactive' : ''}`}>
+      <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''}`}>
         {
           showSearch && (
             <TextInput
@@ -58,7 +58,7 @@ const AppHeader = (props) => {
               placeholder="Search"
               value={search}
               onChange={handleChange}
-              customWrapperClass="app-header-input"
+              customWrapperClass={styles.appHeaderInput}
               icon="search"
               onFocus={handleFocus}
             />
@@ -68,9 +68,13 @@ const AppHeader = (props) => {
           options={headerMenus}
           handleSelect={handleSelect}
         >
-          <div className="d-flex align-items-center app-header-name">
+          <div className={`d-flex align-items-center ${styles.appHeaderName}`}>
             <span>{userName || 'Name'}</span>
-            <img src={avatar || defaultAvatar} className="app-header-avatar" />
+            <img
+              src={avatar || defaultAvatar}
+              className={styles.appHeaderAvatar}
+              alt=""
+            />
           </div>
         </DropDownWrapper>
       </div>

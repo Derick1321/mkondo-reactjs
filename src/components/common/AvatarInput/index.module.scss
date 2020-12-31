@@ -1,17 +1,18 @@
 @import '$assets/scss/main.scss';
 
-.avatar-input-wrapper {
+.avatarInputWrapper {
   height: 200px;
   width: 100%;
   border: 2px solid $secondary-gray;
   position: relative;
-  .avatar-input-wrapper-image {
-    height: 100%;
-    width: 100%;
-  }
 }
 
-.avatar-btn {
+.avatarInputWrapperImage {
+  height: 100%;
+  width: 100%;
+}
+
+.avatarBtn {
   position: absolute;
   bottom: 5px;
   border: 0;
@@ -24,7 +25,14 @@
   }
 }
 
-.avatar-btn-icon {
+.avatarBtnIcon {
   height: 30px;
   padding: 0 5px;
+}
+
+.dragTitle {
+  font-size: 24px;
+  font-family: Roboto;
+  color: $tertiary-gray;
+  font-weight: bold;
 }

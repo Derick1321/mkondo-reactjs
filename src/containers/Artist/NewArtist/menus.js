@@ -1,3 +1,5 @@
+import { genres } from '$common/utils';
+
 export const menus = [
   {
     name: 'name',
@@ -10,18 +12,7 @@ export const menus = [
     type: 'select',
     placeholder: 'Enter Genre',
     title: 'Genre',
-    options: [
-      { value: 'afro', label: 'Afro' },
-      { value: 'hiphop', label: 'Hip Hop' },
-      { value: 'rnb', label: 'R&B' },
-      { value: 'reggae', label: 'Reggae' },
-      { value: 'dance', label: 'Dance' },
-      { value: 'country', label: 'Country' },
-      { value: 'rock', label: 'Rock' },
-      { value: 'jazz', label: 'Jazz' },
-      { value: 'gospel', label: 'Gospel' },
-      { value: 'pop', label: 'Pop' },
-    ],
+    options: genres,
     isMulti: true,
   },
   {
