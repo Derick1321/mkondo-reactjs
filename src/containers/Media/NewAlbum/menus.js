@@ -2,10 +2,16 @@ import { genres } from '$common/utils';
 
 export const menus = [
   {
-    name: 'title',
+    name: 'artist',
     type: 'text',
-    placeholder: 'Enter Title',
-    title: 'Title',
+    placeholder: 'Enter Artist Name',
+    title: 'Artist',
+  },
+  {
+    name: 'album',
+    type: 'text',
+    placeholder: 'Enter Album Title',
+    title: 'Album',
   },
   {
     name: 'genre',
@@ -30,8 +36,8 @@ export const menus = [
 
 export const metamenus = [
   { name: 'publisher', type: 'text', placeholder: 'Publisher Name', title: 'Publisher' },
-  { name: 'composer', type: 'text', placeholder: 'Composer Name', title: 'Composer' },
   { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
-  { name: 'songWriter', type: 'text', placeholder: 'Enter Song Writer(s)', title: 'Song Writer(s)' },
   { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
+  { name: 'location', type: 'text', placeholder: 'Enter Region', title: 'Region' },
+  { name: 'country', type: 'text', placeholder: 'Enter Country', title: 'Country' },
 ];

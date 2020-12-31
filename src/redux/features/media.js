@@ -8,6 +8,8 @@ const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
 const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
+const ADD_ALBUM = 'media/ADD_ALBUM';
+const GET_ALBUMS = 'media/GET_ALBUMS';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -47,6 +49,14 @@ export const getNewReleases = createAsyncThunk(
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', 'media/new-release', null, token);
+  }
+);
+
+export const addAlbum = createAsyncThunk(
+  ADD_ALBUM,
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'albums', data, token);
   }
 );
 
@@ -95,6 +105,9 @@ const INITIAL_STATE = {
   updateShareCountPending: false,
   updateShareCountError: null,
   updateShareCountComplete: false,
+  addAlbumPending: false,
+  addAlbumError: null,
+  addAlbumComplete: false,
   medias: [],
   newReleases: [],
 };
@@ -150,6 +163,21 @@ const mediaSlice = createSlice({
       state.updateShareCountPending = false;
       state.updateShareCountComplete = false;
       state.updateShareCountError = action.error;
+    },
+    [addAlbum.pending]: (state, action) => {
+      state.addAlbumPending = true;
+      state.addAlbumComplete = false;
+      state.addAlbumError = null;
+    },
+    [addAlbum.fulfilled]: (state, action) => {
+      state.addAlbumPending = false;
+      state.addAlbumComplete = true;
+      state.addAlbumError = null;
+    },
+    [addAlbum.rejected]: (state, action) => {
+      state.addAlbumPending = false;
+      state.addAlbumComplete = false;
+      state.addAlbumError = action.error;
     },
     [saveMedia.pending]: (state, action) => {
       state.saveMediaPending = true;

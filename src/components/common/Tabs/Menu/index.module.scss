@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.tab-menu {
+.tabMenu {
   color: $secondary-gray;
   font-family: Roboto;
   font-weight: 700;
@@ -11,13 +11,14 @@
   &:focus {
     outline: none;
   }
-  &.active {
-    color: $white;
-    font-size: $heading;
-  }
 }
 
-.active-tab-menu {
+.tabMenuActive {
+  color: $white;
+  font-size: $heading;
+}
+
+.activeTabMenu {
   background-color: $secondary-green;
   height: 5px;
   border-radius: 5px;

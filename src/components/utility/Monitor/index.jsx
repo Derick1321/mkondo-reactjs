@@ -12,11 +12,16 @@ const Monitor = () => {
   const saveMediaPending = useSelector((store) => store.media.saveMediaPending);
   const removeFavoritePending = useSelector((store) => store.user.removeFavoritePending);
   const addFavoritePending = useSelector((store) => store.user.addFavoritePending);
+  const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
   const userId = useSelector((store) => store.authentication.user.user_id);
 
   // effects
   useEffect(() => {
-    if (getArtistPending || addArtistPending || saveMediaPending) {
+    if (getArtistPending
+      || addArtistPending
+      || saveMediaPending
+      || addAlbumPending
+    ) {
       dispatch(showModal('LOADER_MODAL', {
         preventOutsideClick: true,
       }));
@@ -24,7 +29,12 @@ const Monitor = () => {
     }
 
     dispatch(hideModal());
-  }, [getArtistPending, addArtistPending, saveMediaPending]);
+  }, [
+    getArtistPending,
+    addArtistPending,
+    saveMediaPending,
+    addAlbumPending,
+  ]);
 
   useEffect(() => {
     if (addFavoritePending || removeFavoritePending) {
@@ -32,12 +42,12 @@ const Monitor = () => {
     }
 
     dispatch(reloadUser(userId));
-  }, [addFavoritePending, removeFavoritePending])
+  }, [addFavoritePending, removeFavoritePending]);
 
   // render
   return (
     <div>
-      
+
     </div>
   );
 }

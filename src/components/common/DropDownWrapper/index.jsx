@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import { showModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Container = styled.div`
   position: absolute;
@@ -89,17 +89,17 @@ const DropDownWrapper = (props) => {
 
   const buildDropDown = () => {
     const content = optionElement ? (
-      <div className="dropdown-element-menu">
+      <div className={styles.dropdownElementMenu}>
         {optionElement}
       </div>
     ) : (
-      <div className="dropdown-bubble-menu">
+      <div className={styles.dropdownBubbleMenu}>
         {
           options.map((opt, idx) => (
             <a
               key={`opt-${name}-${idx}`}
               onClick={() => handleSelect(opt.name)}
-              className={`dropdown-option ${opt.style ? opt.style : ''}`}
+              className={`${styles.dropdownOption} ${opt.style ? opt.style : ''}`}
             >
               {opt.title}
             </a>
@@ -124,7 +124,7 @@ const DropDownWrapper = (props) => {
     <button
       ref={btnRef}
       onClick={handleClick}
-      className="dropdown-wrapper-btn"
+      className={styles.dropdownWrapperBtn}
     >
       {children}
       {

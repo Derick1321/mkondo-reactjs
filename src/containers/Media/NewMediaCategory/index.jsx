@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import GenreSelector from '$components/common/GenreSelector';
+import { routePaths } from '$common/routeConfig';
 
 import styles from './index.module.scss';
 
 const NewMediaCategory = () => {
   // state
-  const [selected, setSelected] = useState(['album']);
+  const [selected, setSelected] = useState(['Album']);
+
+  // store
+  const history = useHistory();
 
   // handlers
   const handleNext = () => {
-    console.log('next...');
+    if (selected[0] === 'Album') {
+      history.push(routePaths.newAlbum);
+      return;
+    }
+
+    history.push(routePaths.mediaUpload);
   }
 
   const handleSelect = (name) => {
@@ -28,7 +38,7 @@ const NewMediaCategory = () => {
         type="media"
       />
     </div>
-  )
+  );
 }
 
 export default NewMediaCategory;;
