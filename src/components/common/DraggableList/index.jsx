@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
-import Button from '$components/common/Button';
-
-import styles from './index.module.scss';
-
-const dragIcon = require('$assets/images/icons/drag-icon.svg');
-const settingsIcon = require('$assets/images/icons/settings.svg');
-
 // utility functions
 const grid = 8;
 
@@ -31,24 +24,17 @@ const getItemStyle = (isDragging, draggableStyle, isLast) => ({
 });
 
  const getListStyle = (isDraggingOver) => ({
-    background: isDraggingOver ? "lightblue" : "#FFFFFF",
-    padding: grid,
-  });
-
-// TEMP
-// fake data generator
-const getItems = count =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k}`,
-    content: `item ${k}`
-  }));
+  background: isDraggingOver ? "lightblue" : "#FFFFFF",
+  padding: grid,
+});
 
 const DraggableList = (props) => {
   // props
-  const { list } = props;
-
-  // state
-  const [items, setItems] = useState(getItems(15));
+  const {
+    list,
+    listElement: Element,
+    callbacks,
+  } = props;
 
   // handlers
   const onDragEnd = (result) => {
@@ -58,16 +44,12 @@ const DraggableList = (props) => {
     }
 
     const newItems = handleReorder(
-      items,
+      list,
       result.source.index,
       result.destination.index
     );
 
-    setItems(newItems);
-  }
-
-  const handleView = (item, index) => {
-    console.log('item ', item, index);
+    callbacks.onReorder(newItems);
   }
 
   // render
@@ -86,10 +68,10 @@ const DraggableList = (props) => {
               style={getListStyle(snapshot.isDraggingOver)}
             >
               {
-                items.map((item, index) => (
+                list.map((item, index) => (
                   <Draggable
-                    key={item.id}
-                    draggableId={item.id}
+                    key={`list-draggable-${index}`}
+                    draggableId={`list-draggable-${index}`}
                     index={index}
                   >
                     {
@@ -101,32 +83,14 @@ const DraggableList = (props) => {
                           style={getItemStyle(
                             innerSnapshot.isDragging,
                             innerProvided.draggableProps.style,
-                            index === items.length - 1
+                            index === list.length - 1
                           )}
                         >
-                          <div className="d-flex">
-                            <div>
-                              <img
-                                className={styles.dragIcon}
-                                src={dragIcon}
-                                alt=""
-                              />
-                            </div>
-                            <div className={`d-flex flex-column ${styles.contentWrapper}`}>{item.content}</div>
-                            <div>
-                              <Button
-                                onClick={() => handleView(item, index)}
-                                isCustom
-                                hideDefault
-                              >
-                                <img
-                                  className={styles.settingsIcon}
-                                  src={settingsIcon}
-                                  alt=""
-                                />
-                              </Button>
-                            </div>
-                          </div>
+                          <Element 
+                            {...item}
+                            {...callbacks}
+                            index={index}
+                          />
                         </div>
                       )
                     }

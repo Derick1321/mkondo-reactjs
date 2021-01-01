@@ -5,7 +5,7 @@ import './index.scss';
 
 const Progress = (props) => {
   // props
-  const { values } = props;
+  const { values, placeholder } = props;
 
   // state
   const [percentage, setPercentage] = useState(0);
@@ -29,17 +29,21 @@ const Progress = (props) => {
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <span className="mx-2">{percentage}% Complete</span>
+      <span className="mx-2">
+        {percentage}% {placeholder}
+      </span>
     </div>
   );
 };
 
 Progress.defaultProps = {
   values: {},
+  placeholder: 'Complete',
 };
 
 Progress.propTypes = {
   values: PropTypes.object,
+  placeholder: PropTypes.string,
 };
 
 export default Progress;
