@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 
+import Button from '$components/common/Button';
 import DragDrop from '$components/common/DragDrop';
 import DraggableList from '$components/common/DraggableList';
+import UploadCard from '$components/media/UploadCard';
+
+import { bytesToSize } from '$common/utils';
 
 import styles from './index.module.scss';
 
@@ -11,9 +15,22 @@ const MediaUpload = () => {
   // handlers
   const handleFileChange = (result) => {
     setFiles(result.map((res) => ({
-      ...res,
+      name: res.name,
+      size: bytesToSize(res.size),
     })));
-    console.log('files ', result);
+  }
+
+  const handleRemove = (index) => {
+    console.log('handleRemove ', index);
+    setFiles(files.slice(0, index).concat(files.slice(-index)));
+  }
+
+  const handleReorder = (list) => {
+    setFiles(list);
+  }
+
+  const handleContinue = () => {
+
   }
 
   // render
@@ -23,10 +40,28 @@ const MediaUpload = () => {
         <DragDrop
           onChange={handleFileChange}
         />
-        <p className={styles.title}>Track List</p>
-        <DraggableList
-          list={files}
-        />
+        {
+          files.length > 0 && (
+            <>
+              <p className={styles.title}>Track List</p>
+              <DraggableList
+                list={files}
+                listElement={UploadCard}
+                callbacks={{
+                  onRemove: handleRemove,
+                  onReorder: handleReorder,
+                }}
+              />
+              <div className={styles.footerWrapper}>
+                <Button
+                  onClick={handleContinue}
+                >
+                  Continue
+                </Button>
+              </div>
+            </>
+          )
+        }
       </div>
     </div>
   );
