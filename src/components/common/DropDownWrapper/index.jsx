@@ -111,7 +111,6 @@ const DropDownWrapper = (props) => {
     return (
       <Container
         top={bounds.top}
-        left={bounds.left}
         ref={dropdownRef}
       >
         { content}
@@ -121,7 +120,7 @@ const DropDownWrapper = (props) => {
 
   // render
   return (
-    <button
+    <div
       ref={btnRef}
       onClick={handleClick}
       className={styles.dropdownWrapperBtn}
@@ -129,10 +128,11 @@ const DropDownWrapper = (props) => {
       {children}
       {
         bounds.top ?
-          buildDropDown() : null
+          buildDropDown() :
+          null
       }
-    </button>
-  )
+    </div>
+  );
 }
 
 DropDownWrapper.defaultProps = {

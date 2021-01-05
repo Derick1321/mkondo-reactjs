@@ -18,6 +18,7 @@ const Button = (props) => {
     isSquare,
     isStretch,
     isCustom,
+    isLoading,
     hideDefault,
     onClick,
     onMouseEnter,
@@ -33,13 +34,13 @@ const Button = (props) => {
       { value: isTransparent, style: styles.mkBtnTransparent, },
       { value: isSquare, style: styles.mkBtnSquare, },
       { value: isStretch, style: styles.mkBtnStretch, },
-      { value: noBorder, style: styles.noBorder }, 
+      { value: noBorder, style: styles.noBorder },
       { value: noWidth, style: styles.noWidth, },
       { value: isSecondary, style: styles.isSecondary },
       { value: isCustom, style: styles.customBtn },
     ];
 
-    let customStyle = properties.reduce((acc, item) => item.value ? `${acc} ${item.style}`: acc , '');
+    let customStyle = properties.reduce((acc, item) => item.value ? `${acc} ${item.style}` : acc, '');
     if (isSecondary && isTransparent) {
       customStyle = `${customStyle} ${styles.mkBtnSecondaryTransparent}`;
     }
@@ -47,16 +48,15 @@ const Button = (props) => {
     return customStyle;
   }
 
-  // render
-  return (
-    <button
-      className={`${!hideDefault ? styles.mkBtn : '' } ${getCustomStyle()} ${style}`}
-      onClick={onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-    >
+  const content = isLoading ? (
+    <div
+      className="spinner-border text-secondary"
+      role="status"
+    />
+  ) : (
+    <>
       <div className="w-100">
-        { children }
+        {children}
       </div>
       {
         icon && (
@@ -66,6 +66,18 @@ const Button = (props) => {
           />
         )
       }
+    </>
+  );
+
+  // render
+  return (
+    <button
+      className={`${!hideDefault ? styles.mkBtn : ''} ${getCustomStyle()} ${style}`}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      { content }
     </button>
   );
 };
@@ -80,6 +92,7 @@ Button.defaultProps = {
   onMouseEnter: () => null,
   onMouseLeave: () => null,
   hideDefault: false,
+  isLoading: false,
 };
 
 Button.propTypes = {
@@ -95,6 +108,7 @@ Button.propTypes = {
   icon: PropTypes.string,
   onMouseEnter: PropTypes.func,
   onMouseLeave: PropTypes.func,
+  isLoading: PropTypes.bool,
 }
 
 export default Button;

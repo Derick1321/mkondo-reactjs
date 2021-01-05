@@ -110,6 +110,7 @@ const INITIAL_STATE = {
   addAlbumComplete: false,
   medias: [],
   newReleases: [],
+  albumId: null,
 };
 
 const mediaSlice = createSlice({
@@ -168,11 +169,13 @@ const mediaSlice = createSlice({
       state.addAlbumPending = true;
       state.addAlbumComplete = false;
       state.addAlbumError = null;
+      state.albumId = null;
     },
     [addAlbum.fulfilled]: (state, action) => {
       state.addAlbumPending = false;
       state.addAlbumComplete = true;
       state.addAlbumError = null;
+      state.albumId = action.payload;
     },
     [addAlbum.rejected]: (state, action) => {
       state.addAlbumPending = false;

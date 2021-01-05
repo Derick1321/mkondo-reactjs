@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.modal-container {
+.modalContainer {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,7 +14,7 @@
   padding-top: 5rem;
 }
 
-.modal-wrapper {
+.modalWrapper {
   position: relative;
   background-color: $white;
   border-radius: 2px;
