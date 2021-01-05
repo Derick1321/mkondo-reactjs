@@ -2,7 +2,7 @@ import React from 'react';
 
 import Share from '$components/common/Share';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const ShareModal = (props) => {
   // props
@@ -15,7 +15,7 @@ const ShareModal = (props) => {
 
   // render
   return (
-    <div className="share-modal-wrapper">
+    <div className={styles.shareModalWrapper}>
       <Share
         name={title}
         country={country}
