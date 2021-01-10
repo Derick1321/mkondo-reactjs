@@ -21,8 +21,7 @@ const MediaUpload = () => {
   }
 
   const handleRemove = (index) => {
-    console.log('handleRemove ', index);
-    setFiles(files.slice(0, index).concat(files.slice(-index)));
+    setFiles(files.filter((file, idx) => (idx !== index)));
   }
 
   const handleReorder = (list) => {

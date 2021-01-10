@@ -69,7 +69,7 @@ export const newMedia = [
     iconActive: require('$assets/images/home/player-active.svg'),
   },
   {
-    name: 'Album',
+    name: 'album',
     title: 'Album',
     icon: require('$assets/images/home/trumpet.svg'),
     iconActive: require('$assets/images/home/trumpet-active.svg'),

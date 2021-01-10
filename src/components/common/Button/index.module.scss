@@ -63,5 +63,15 @@
   color: $tertiary-blue;
 }
 
+.borderSecondary {
+  color: $white;
+  border-color: $white;
+}
+
+.borderPrimary {
+  color: $secondary-green;
+  border-color: $secondary-green;
+}
+
 .btnIcon {
 }

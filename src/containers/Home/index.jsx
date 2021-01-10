@@ -38,6 +38,11 @@ const Home = () => {
         />
       </div>
       <p className={`${styles.homeHeading} py-4`}>New Releases</p>
+      {
+        newReleases.length < 1 && (
+          <p>No new releases. Please try again later!</p>
+        )
+      }
       <TopSongs
         media={newReleases}
       />

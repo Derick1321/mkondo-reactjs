@@ -143,7 +143,7 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className="row">
+      <div className={`row ${styles.hotItWorksPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
           <HowItWorks />
         </div>
@@ -162,7 +162,7 @@ const Marketing = () => {
           <p className="text-white">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <Button
             onClick={handleFindMore}
-            style="mk-btn-border-white"
+            isBorderSecondary
             isTransparent
             isSquare
           >
@@ -177,7 +177,7 @@ const Marketing = () => {
           <div className="d-flex justify-content-center">
             <Button
               onClick={handleFindMore}
-              style="mk-btn-primary"
+              isBorderPrimary
               isTransparent
             >
               FIND OUT MORE

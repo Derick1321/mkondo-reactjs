@@ -38,7 +38,6 @@ const OnBoarding = () => {
 
   const handleNext = () => {
     // dispatch(updateGenre());
-    // TEMPO
     history.replace(routePaths.home);
   }
 
