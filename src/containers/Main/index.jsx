@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppHeader from '$components/common/AppHeader';
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
@@ -9,6 +9,7 @@ import SideMenu from '$components/common/SideMenu';
 
 import { routePaths } from '$common/routeConfig';
 import { hideModal } from '$redux/features/modal';
+import { listPlaylist } from '$redux/features/playlist';
 
 import styles from './index.module.scss';
 
@@ -22,6 +23,7 @@ const Main = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
+  const userId = useSelector((store) => store.authentication.user.user_id);
   
   // effects
   useEffect(() => {
@@ -29,6 +31,13 @@ const Main = (props) => {
       history.push(routePaths.home);
     }
   }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    dispatch(listPlaylist(userId));
+  }, [userId]);
 
   useEffect(() => {
     dispatch(hideModal());

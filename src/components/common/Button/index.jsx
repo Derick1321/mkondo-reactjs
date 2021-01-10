@@ -15,6 +15,7 @@ const Button = (props) => {
     style,
     isTransparent,
     isSecondary,
+    isTertiary,
     isSquare,
     isStretch,
     isCustom,
@@ -25,6 +26,8 @@ const Button = (props) => {
     onMouseLeave,
     noBorder,
     noWidth,
+    isBorderPrimary,
+    isBorderSecondary,
     icon,
   } = props;
 
@@ -36,8 +39,11 @@ const Button = (props) => {
       { value: isStretch, style: styles.mkBtnStretch, },
       { value: noBorder, style: styles.noBorder },
       { value: noWidth, style: styles.noWidth, },
-      { value: isSecondary, style: styles.isSecondary },
+      { value: isSecondary, style: styles.mkBtnSecondary },
+      { value: isTertiary, style: styles.mkBtnSecondaryTransparent },
       { value: isCustom, style: styles.customBtn },
+      { value: isBorderPrimary, style: styles.borderPrimary },
+      { value: isBorderSecondary, style: styles.borderSecondary },
     ];
 
     let customStyle = properties.reduce((acc, item) => item.value ? `${acc} ${item.style}` : acc, '');
@@ -48,9 +54,11 @@ const Button = (props) => {
     return customStyle;
   }
 
+  const customStyle = getCustomStyle();
+
   const content = isLoading ? (
     <div
-      className="spinner-border text-secondary"
+      className={`spinner-border ${customStyle}`}
       role="status"
     />
   ) : (
@@ -72,7 +80,7 @@ const Button = (props) => {
   // render
   return (
     <button
-      className={`${!hideDefault ? styles.mkBtn : ''} ${getCustomStyle()} ${style}`}
+      className={`${!hideDefault ? styles.mkBtn : ''} ${customStyle} ${style}`}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
