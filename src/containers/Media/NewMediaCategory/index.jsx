@@ -8,14 +8,14 @@ import styles from './index.module.scss';
 
 const NewMediaCategory = () => {
   // state
-  const [selected, setSelected] = useState(['Album']);
+  const [selected, setSelected] = useState(['songs']);
 
   // store
   const history = useHistory();
 
   // handlers
   const handleNext = () => {
-    if (selected[0] === 'Album') {
+    if (selected[0] === 'album') {
       history.push(routePaths.newAlbum);
       return;
     }

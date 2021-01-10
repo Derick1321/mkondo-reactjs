@@ -34,8 +34,11 @@ const userTypes = {
   user: 'user',
 }
 
-export const getPermissions = (role, userRole) => {
-  if ((role === 'artist' && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
+export const getPermissions = (role, userRole, params = {}) => {
+  if ((role === 'artist'
+      // && params.isPublished
+      && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)
+    ) ||
     (role === 'media' && [userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
     (role === 'admin' && [userTypes.admin, userTypes.superAdmin].includes(userRole))
   ) {

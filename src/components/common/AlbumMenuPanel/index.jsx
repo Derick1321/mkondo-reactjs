@@ -96,7 +96,7 @@ const AlbumMenuPanel = (props) => {
 }
 
 AlbumMenuPanel.defaultProps = {
-  title: 'Recomended Albums',
+  title: 'Recomended Artists',
   showHeader: false,
   isRounded: false,
 };
