@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Feature from '$components/common/Feature';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const TopSongs = (props) => {
   // props

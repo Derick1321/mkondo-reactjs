@@ -4,7 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Share from '$components/common/Share';
 import { routePaths } from '$common/routeConfig';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const checkmark = require('$assets/images/checkmark.svg');
 
@@ -29,14 +29,14 @@ const SuccessPage = () => {
 
   // render
   return (
-    <div className="d-flex flex-column success-wrapper">
+    <div className={`d-flex flex-column ${styles.successWrapper}`}>
       <div className="d-flex align-items-center justify-content-center success-message-wrapper my-4">
         <img src={checkmark} alt="" />
-        <span className="success-message mx-2">{message}</span>
+        <span className={`mx-2 ${styles.successMessage}`}>{message}</span>
       </div>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-8">
-          <div className="success-dialog-wrapper">
+          <div className={styles.successDialogWrapper}>
             <Share
               name={name}
               country={country}

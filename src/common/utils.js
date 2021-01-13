@@ -14,14 +14,14 @@ export const formatTime = (seconds) => {
 }
 
 export const generatePreview = (file) => {
-  return new Promise( (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       const reader = new FileReader();
       reader.onload = (evt) => {
         resolve(evt.target.result);
       }
       reader.readAsDataURL(file);
-    } catch(err) {
+    } catch (err) {
       reject(err);
     }
   });
@@ -34,8 +34,11 @@ const userTypes = {
   user: 'user',
 }
 
-export const getPermissions = (role, userRole) => {
-  if ((role === 'artist' && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
+export const getPermissions = (role, userRole, params = {}) => {
+  if ((role === 'artist'
+      // && params.isPublished
+      && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)
+    ) ||
     (role === 'media' && [userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
     (role === 'admin' && [userTypes.admin, userTypes.superAdmin].includes(userRole))
   ) {
@@ -43,3 +46,30 @@ export const getPermissions = (role, userRole) => {
   }
   return false;
 }
+
+// https://gist.github.com/lanqy/5193417
+export const bytesToSize = (bytes) => {
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+  if (bytes === 0) {
+    return sizes[0];
+  }
+
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+  if (i === 0) {
+    return `${bytes} ${sizes[i]})`;
+  }
+  return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`;
+}
+
+export const genres = [
+  { value: 'afro', label: 'Afro' },
+  { value: 'hiphop', label: 'Hip Hop' },
+  { value: 'rnb', label: 'R&B' },
+  { value: 'reggae', label: 'Reggae' },
+  { value: 'dance', label: 'Dance' },
+  { value: 'country', label: 'Country' },
+  { value: 'rock', label: 'Rock' },
+  { value: 'jazz', label: 'Jazz' },
+  { value: 'gospel', label: 'Gospel' },
+  { value: 'pop', label: 'Pop' },
+];

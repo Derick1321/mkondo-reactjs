@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Switch, useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AppHeader from '$components/common/AppHeader';
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
@@ -9,8 +9,9 @@ import SideMenu from '$components/common/SideMenu';
 
 import { routePaths } from '$common/routeConfig';
 import { hideModal } from '$redux/features/modal';
+import { listPlaylist } from '$redux/features/playlist';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Main = (props) => {
   // props
@@ -22,6 +23,7 @@ const Main = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
+  const userId = useSelector((store) => store.authentication.user.user_id);
   
   // effects
   useEffect(() => {
@@ -29,6 +31,13 @@ const Main = (props) => {
       history.push(routePaths.home);
     }
   }, []);
+
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    dispatch(listPlaylist(userId));
+  }, [userId]);
 
   useEffect(() => {
     dispatch(hideModal());
@@ -40,10 +49,10 @@ const Main = (props) => {
   // render
   return (
     <div className="d-flex vh-100">
-      <div className="side-menu-wrapper">
+      <div className={styles.sideMenuWrapper}>
         <SideMenu />
       </div>
-      <div className="content">
+      <div className={styles.content}>
         <AppHeader />
         <Switch>
           {
@@ -56,7 +65,7 @@ const Main = (props) => {
           }
         </Switch>
       </div>
-      <div className="home-footer">
+      <div className={styles.homeFooter}>
         <Player />
       </div>
     </div>

@@ -11,6 +11,7 @@ const SideMenu = () => {
   // store
   const history = useHistory();
   const userRole = useSelector((store) => store.authentication.user.user_type);
+  const isPublished = useSelector((store) => store.authentication.user.publish);
 
   // icons
   const artistIcons = [
@@ -31,9 +32,9 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/upload.svg'),
       activeIcon: require('$assets/images/icons/upload-active.svg'),
-      title: 'New Media',
-      path: routePaths.newMedia,
-      permission: 'media',
+      title: 'Upload Media',
+      path: routePaths.newMediaCategory,
+      permission: 'artist',
     },
   ];
 
@@ -79,7 +80,7 @@ const SideMenu = () => {
     },
   ];
 
-  const artistAccess = getPermissions('artist', userRole);
+  const artistAccess = getPermissions('artist', userRole, );
 
   // render
   return (
@@ -135,7 +136,7 @@ const SideMenu = () => {
               <p className="sidemenu-subtitle">Artist Panel</p>
               {
                 artistIcons.map((item, idx) => {
-                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
+                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
                   if (!canAccess) {
                     return null;
                   }

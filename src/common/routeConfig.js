@@ -4,6 +4,9 @@ import OnBoarding from '$containers/OnBoarding';
 import Main from '$containers/Main';
 import Media from '$containers/Media';
 import MediaNew from '$containers/Media/NewMedia';
+import MediaUpload from '$containers/Media/MediaUpload';
+import NewMediaCategory from '$containers/Media/NewMediaCategory';
+import NewAlbum from '$containers/Media/NewAlbum';
 import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
@@ -25,6 +28,9 @@ export const routePaths = {
   feeds: '/app/feeds',
   media: '/app/media',
   newMedia: '/app/media/new',
+  newAlbum: '/app/media/new-album',
+  newMediaCategory: '/app/media/select-category',
+  mediaUpload: '/app/media/upload',
   artist: '/app/artist',
   newArtist: '/app/artist/new',
   statsArtist: '/app/artist/stats',
@@ -174,8 +180,26 @@ export const routes = [
             component: MediaNew,
             redirect: redirectFunctions.app,
           },
-        ]
-      }
-    ]
+          {
+            ...defaultConfig,
+            path: routePaths.newMediaCategory,
+            component: NewMediaCategory,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.newAlbum,
+            component: NewAlbum,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.mediaUpload,
+            component: MediaUpload,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+    ],
   }
 ];

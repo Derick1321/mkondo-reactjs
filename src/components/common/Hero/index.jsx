@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-import Button from '../Button';
+import Button from '$components/common/Button';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const audioBkg = require('$assets/images/audio-bkg.png');
 const videoBkg = require('$assets/images/video-bkg.png');
@@ -39,9 +39,13 @@ const Hero = (props) => {
     <div className="row align-items-center">
       <div className="col-12 col-md-6">
         <div className="hero-text-container">
-          <p className="hero-heading">Mkondo entertainment platform</p>
-          <p className="hero-sub-heading pb-4">Bringing Entertainment to your door step</p>
-          <Button onClick={handlePlay}>Play</Button>
+          <p className={styles.heroHeading}>Mkondo entertainment platform</p>
+          <p className={`${styles.heroSubHeading} pb-4`}>Bringing Entertainment to your door step</p>
+          <Button
+            onClick={handlePlay}
+          >
+            Play
+          </Button>
         </div>
       </div>
       <div className="col-12 col-md-6">

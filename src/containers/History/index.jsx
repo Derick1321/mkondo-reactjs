@@ -3,15 +3,15 @@ import { useSelector } from 'react-redux';
 
 import TopSongs from '$components/common/TopSongs';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const History = () => {
   const userHistory = useSelector((store) => store.authentication.user.history);
 
   // render
   return (
-    <div className="home-content history-content-top">
-      <p className="home-heading py-4">History</p>
+    <div className={`${styles.homeContent} ${styles.historyContentTop}`}>
+      <p className={`${styles.homeHeading} py-4`}>History</p>
       {
         userHistory ? (
           <TopSongs
