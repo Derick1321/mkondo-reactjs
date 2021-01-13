@@ -18,7 +18,7 @@ import Button from '$components/common/Button';
 
 import { updateShareCount } from '$redux/features/media';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const avatarSample = require('$assets/images/album-sample.png');
 
@@ -30,6 +30,8 @@ const Avatar = styled.div`
   width: 100%;
   height: 100%;  
 `;
+
+// TODO: TextInput should have refForward
 
 const Share = (props) => {
   // props
@@ -77,11 +79,13 @@ const Share = (props) => {
   return (
     <div className="row">
       <div className="col-6 col-sm-2">
-        <Avatar url={avatar || avatarSample} />
+        <Avatar
+          url={avatar || avatarSample}
+        />
       </div>
       <div className="col-12 col-sm-5 col-md-6">
         <p className="my-0">{name}</p>
-        <p className="share-region-text">{country}</p>
+        <p className={styles.shareRegionText}>{country}</p>
         <p>Description</p>
         <TextArea
           name="description"
@@ -115,7 +119,7 @@ const Share = (props) => {
           </div>
         </div>
         <input
-          className="text-input-container share-input"
+          className={`${styles.textInputContainer} ${styles.shareInput}`}
           ref={linkRef}
           onChange={(evt) => handleChange('link', evt.target.value)}
           type="text"

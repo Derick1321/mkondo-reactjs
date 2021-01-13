@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 // TODO: Refractor the avatarInput with the Drag&Drop
-
-import './index.scss';
+import styles from './index.module.scss';
 
 const camera = require('$assets/images/photo-camera.svg');
 
@@ -71,7 +70,7 @@ const AvatarInput = (props) => {
   return (
     <>
       <div
-        className="d-flex flex-column justify-content-center align-items-center avatar-input-wrapper"
+        className={`d-flex flex-column justify-content-center align-items-center ${styles.avatarInputWrapper}`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -81,10 +80,10 @@ const AvatarInput = (props) => {
           url ? (
             <img
               src={url}
-              className="avatar-input-wrapper-image"
+              className={styles.avatarInputWrapperImage}
             />
           ) : (active ? (
-            <p className="text-center drag-title">
+            <p className={`text-center ${styles.dragTitle}`}>
               Drop Image
             </p>
           ) : (
@@ -94,10 +93,14 @@ const AvatarInput = (props) => {
           ))
         }
         <button
-          className="d-flex align-items-center avatar-btn"
+          className={`d-flex align-items-center ${styles.avatarBtn}`}
           onClick={handleSelectFile}
         >
-          <img src={camera} className="avatar-btn-icon" alt=""/>
+          <img
+            src={camera}
+            className={styles.avatarBtnIcon}
+            alt=""
+          />
           <span>Select Image</span>
         </button>
       </div>

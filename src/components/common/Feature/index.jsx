@@ -5,13 +5,11 @@ import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
 
-import DropDownWrapper from '$components/common/DropDownWrapper';
-
 import { updatePlaylist } from '$redux/features/playlist';
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { showModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const pause = require('$assets/images/icons/pause-icon.svg');
@@ -19,6 +17,7 @@ const play = require('$assets/images/icons/play.svg');
 const favoriteActive = require('$assets/images/icons/favorite-active.svg');
 const favorite = require('$assets/images/icons/favorite.svg');
 const share = require('$assets/images/icons/share.svg');
+const menu = require('$assets/images/icons/menu.svg');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -68,6 +67,7 @@ const Feature = (props) => {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isMenuActive, setIsMenuActive] = useState(false);
 
   // ref
   const isMounted = useRef(false);
@@ -132,9 +132,16 @@ const Feature = (props) => {
     setIsFavorite(!isFavorite);
   }
 
+  const handleMenu = () => {
+    dispatch(showModal('PLAYLIST_MODAL', {
+      mediaId,
+      title,
+    }));
+  }
+
   const handleShare = () => {
     dispatch(showModal('SHARE_MODAL', {
-      title, 
+      title,
       country,
       mediaId,
       avatarUrl,
@@ -143,13 +150,22 @@ const Feature = (props) => {
 
   // render
   return (
-    <div className={'feature-wrapper'}>
+    <div className={styles.featureWrapper}>
       <FeatureBkg source={avatarUrl} />
-      <div className="d-flex justify-content-between feature-header-wrapper mt-2 px-2">
-        <div className="feature-header-wrapper-title px-2">FEATURE</div>
+      <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
+        <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
         <div className="d-flex">
           <button
-            className="feature-play-btn"
+            className={styles.featurePlayBtn}
+            onClick={handleMenu}
+          >
+            <img
+              src={menu}
+              className={styles.menuIcon}
+            />
+          </button>
+          <button
+            className={styles.featurePlayBtn}
             onClick={handleFavorite}
           >
             <img
@@ -158,7 +174,7 @@ const Feature = (props) => {
             />
           </button>
           <button
-            className="feature-play-btn"
+            className={styles.featurePlayBtn}
             onClick={handleShare}
           >
             <img
@@ -168,12 +184,12 @@ const Feature = (props) => {
           </button>
         </div>
       </div>
-      <div className="d-flex feature-pane">
+      <div className={`d-flex ${styles.featurePane}`}>
         {
           !source && (
             <img
               src={defaultAvatar}
-              className="default-feature-avatar"
+              className={styles.defaultFeatureAvatar}
             />
           )
         }
@@ -184,19 +200,19 @@ const Feature = (props) => {
             />
           )
         }
-        <div className="feature-content-wrapper">
+        <div className={styles.featureContentWrapper}>
           <p>{subtitle}</p>
           <div className="d-flex">
             <button
-              className="feature-play-btn"
+              className={styles.featurePlayBtn}
               onClick={handlePlay}
             >
               <img
                 src={play}
-                className="feature-action-btn"
+                className={styles.featureActionBtn}
               />
             </button>
-            <div className="d-flex flex-column feature-summary">
+            <div className={`d-flex flex-column ${styles.featureSummary}`}>
               <span>{title}</span>
               {
                 numOfSongs && (

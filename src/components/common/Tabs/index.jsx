@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import TabMenu from './Menu';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const initialOptions = [
   { name: 'audio', title: 'Audios' },
@@ -38,7 +38,7 @@ const Tabs = (props) => {
         ))
       }
     </div>
-    <div className="tab-line" />
+    <div className={styles.tabLine} />
     </>
   );
 }

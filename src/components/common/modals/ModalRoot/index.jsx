@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { hideModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 import AlertModal from '../Alert';
 import LoginModal from '../Login';
@@ -11,6 +11,7 @@ import SignUpModal from '../SignUp';
 import ForgotPasswordModal from '../ForgotPassword';
 import ResetPasswordModal from '../ResetPassword';
 import LoaderModal from '../Loader';
+import PlaylistModal from '../PlaylistModal';
 import ShareModal from '../ShareModal';
 
 const MODAL_COMPONENTS = {
@@ -21,6 +22,7 @@ const MODAL_COMPONENTS = {
   'RESET_PASSWORD_MODAL': ResetPasswordModal,
   'LOADER_MODAL': LoaderModal,
   'SHARE_MODAL': ShareModal,
+  'PLAYLIST_MODAL': PlaylistModal,
   'EMPTY': () => <div />,
 };
 
@@ -83,7 +85,7 @@ const ModalRoot = () => {
   if (modalProps && modalProps.noWrapper) {
     return (
       <div
-        className="modal-container"
+        className={styles.modalContainer}
         onClick={handleClick}
       >
         <ModalContent
@@ -96,13 +98,13 @@ const ModalRoot = () => {
 
   return (
     <div
-      className="modal-container"
+      className={styles.modalContainer}
       onClick={handleClick}
     >
       <div className="row justify-content-center">
         <div className="col-10 col-md-8">
           <div
-            className="modal-wrapper"
+            className={styles.modalWrapper}
             onClick={handleInnerClick}
           >
             <ModalContent

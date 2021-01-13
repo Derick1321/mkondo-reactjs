@@ -18,6 +18,7 @@ const ForgotPasswordModal = () => {
   const dispatch = useDispatch();
   const forgotPasswordError = useSelector((store) => store.authentication.forgotPasswordError);
   const forgotPasswordComplete = useSelector((store) => store.authentication.forgotPasswordComplete);
+  const forgotPasswordPending = useSelector((store) => store.authentication.forgotPasswordPending);
 
   // effects
   useEffect(() => {
@@ -60,7 +61,7 @@ const ForgotPasswordModal = () => {
           {
             hasError && (
               <Alert
-                content="The entered email address doesn\'t exist. Please try again."
+                content="The entered email address doesn't exist. Please try again."
                 type="error"
               />
             )
@@ -76,8 +77,9 @@ const ForgotPasswordModal = () => {
             />
             <div className="d-flex justify-content-center my-2">
               <Button
-                style="mk-btn-secondary"
                 onClick={handleForgot}
+                isLoading={forgotPasswordPending}
+                isSecondary
                 isStretch
               >
                 Send Request
@@ -86,9 +88,11 @@ const ForgotPasswordModal = () => {
             <div className="d-flex align-items-center justify-content-center my-4">
               <span>Back to </span>
               <Button
-                style="mk-btn-secondary no-width"
                 onClick={handleLogin}
                 isTransparent
+                isTertiary
+                noBorder
+                noWidth
               >
                 Login
               </Button>

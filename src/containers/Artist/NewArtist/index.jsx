@@ -13,7 +13,7 @@ import { addArtist } from '$redux/features/artist';
 
 import { menus, metamenus } from './menus';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const initialState = {
   name: '',
@@ -101,7 +101,7 @@ const NewArtist = () => {
 
   // render
   return (
-    <div className="new-media-wrapper">
+    <div className={styles.newArtistWrapper}>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-8">
           <div className="d-flex flex-column">
@@ -112,16 +112,20 @@ const NewArtist = () => {
               values={values}
             />
           </div>
-          <div className="d-flex justify-content-end new-item-footer">
+          <div className={`d-flex justify-content-end ${styles.newItemFooter}`}>
             <Button
               onClick={handleCancel}
-              style="btn-cancel"
+              style={styles.btnCancel}
               isTransparent
               noBorder
             >
               Cancel
             </Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button
+              onClick={handleSave}
+            >
+              Save
+            </Button>
           </div>
         </div>
       </div>

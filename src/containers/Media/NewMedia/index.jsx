@@ -10,11 +10,10 @@ import { routePaths } from '$common/routeConfig';
 import { generatePreview } from '$common/utils';
 
 import { saveMedia, addMedia } from '$redux/features/media';
-import { showModal } from '$redux/features/modal';
 
 import { menus, metamenus } from './menus';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const closeIcon = require('$assets/images/icons/cancel.svg');
 
@@ -99,7 +98,7 @@ const NewMedia = () => {
   // render
   return (
     <>
-      <div className="new-media-wrapper">
+      <div className={styles.newMediaWrapper}>
         <div className="row justify-content-center">
           <div className="col-10 col-sm-8 col-lg-6">
             <div className={`${file ? 'd-none' : ''}`}>
@@ -113,10 +112,14 @@ const NewMedia = () => {
                 <div className="d-flex justify-content-between align-items-center">
                   <span className="mr-2">{file.name}</span>
                   <button
-                    className="new-media-close-btn"
+                    className={styles.newMediaCloseBtn}
                     onClick={handleCancel}
                   >
-                    <img className="cancel-icon" src={closeIcon} alt=""/>
+                    <img
+                      className={styles.cancelIcon}
+                      src={closeIcon}
+                      alt=""
+                    />
                   </button>
                 </div>
                 )
