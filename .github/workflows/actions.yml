@@ -29,7 +29,7 @@ jobs:
       if: github.ref == 'refs/heads/staging'
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/staging
       
-    - name: Deploy staging
+    - name: Deploy production
       if: github.ref == 'refs/heads/master'
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
     
