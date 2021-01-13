@@ -31,6 +31,7 @@ jobs:
       
     - name: Deploy production
       if: github.ref == 'refs/heads/master'
-      run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
+      working-directory: home/mwakatumbula/production
+     
     
  
