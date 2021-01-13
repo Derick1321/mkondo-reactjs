@@ -1,11 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const TextArea = (props) => {
   // props
-  const { name, value, onChange, placeholder, title } = props;
+  const {
+    name,
+    value,
+    onChange,
+    placeholder,
+    title,
+  } = props;
 
   // handlers
   const handleChange = (evt) => {
@@ -17,10 +23,10 @@ const TextArea = (props) => {
   return (
     <>
       <p>{title}</p>
-      <div className="form-text-area-wrapper">
+      <div className={styles.formTextAreaWrapper}>
         <textarea
           name={name}
-          className="form-text-area"
+          className={styles.formTextArea}
           value={value}
           onChange={handleChange}
           placeholder={placeholder}

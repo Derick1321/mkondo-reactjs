@@ -2,7 +2,7 @@ import React from 'react';
 
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const sampleSearch = [
   { name: 'Artist 1', type: 'Artist', url: require('$assets/images/sample-search-1.png') },
@@ -19,13 +19,13 @@ const SearchResult = () => {
     // is-last
     return (
       <div
-        className={`d-flex search-result-item ${isLast}`}
+        className={`d-flex ${styles.searchResultItem} ${isLast}`}
         key={`search-result-${idx}`}
       >
         <div>
           <img
             src={url}
-            className="search-result-image"
+            className={styles.searchResultImage}
           />
         </div>
         <div className="d-flex flex-column">
@@ -38,8 +38,8 @@ const SearchResult = () => {
 
   // render
   return (
-    <div className="d-flex flex-column search-result-wrapper">
-      <p className="heading-3">RECENTLY SEARCHED</p>
+    <div className={`d-flex flex-column ${styles.searchResultWrapper}`}>
+      <p className={styles.heading}>RECENTLY SEARCHED</p>
       {
         sampleSearch.map((item, idx) => buildResult(item, idx))
       }

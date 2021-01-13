@@ -26,6 +26,7 @@ const LoginModal = () => {
   // store
   const dispatch = useDispatch();
   const history = useHistory();
+  const loginPending = useSelector((store) => store.authentication.loginPending);
   const error = useSelector((store) => store.authentication.loginError);
   const token = useSelector((store) => store.authentication.token);
 
@@ -93,19 +94,20 @@ const LoginModal = () => {
             />
             <div className="d-flex justify-content-center my-2">
               <Button
-                style="mk-btn-secondary"
                 onClick={handleSignIn}
+                isLoading={loginPending}
+                isSecondary
                 isStretch
               >
-
                 Login
               </Button>
             </div>
             <div className="d-flex justify-content-center my-2">
               <Button
-                style="mk-btn-secondary"
                 onClick={handleForgotPassword}
                 isTransparent
+                isTertiary
+                noBorder
               >
                 Forgot Password?
               </Button>
@@ -113,9 +115,10 @@ const LoginModal = () => {
             <div className="d-flex align-items-center justify-content-center my-4">
               <span>Don&apos;t have an account? </span>
               <Button
-                style="mk-btn-secondary no-width"
                 onClick={handleSignUp}
                 isTransparent
+                isTertiary
+                noBorder
               >
                 Sign Up
               </Button>

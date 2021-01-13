@@ -8,6 +8,10 @@ const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
 const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
+const ADD_ALBUM = 'media/ADD_ALBUM';
+const GET_ALBUMS = 'media/GET_ALBUMS';
+const ADD_COMMENT = 'media/ADD_COMMENT';
+const GET_COMMENT = 'media/GET_COMMENT';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -47,6 +51,30 @@ export const getNewReleases = createAsyncThunk(
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', 'media/new-release', null, token);
+  }
+);
+
+export const addAlbum = createAsyncThunk(
+  ADD_ALBUM,
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'albums', data, token);
+  }
+);
+
+export const addComment = createAsyncThunk(
+  ADD_COMMENT,
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', 'comments', data, token);
+  }
+);
+
+export const getComment = createAsyncThunk(
+  GET_COMMENT,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/${id}/comments`, null, token);
   }
 );
 
@@ -95,8 +123,19 @@ const INITIAL_STATE = {
   updateShareCountPending: false,
   updateShareCountError: null,
   updateShareCountComplete: false,
+  addAlbumPending: false,
+  addAlbumError: null,
+  addAlbumComplete: false,
+  getCommentPending: false,
+  getCommentError: null,
+  getCommentComplete: false,
+  addCommentPending: false,
+  addCommentError: null,
+  addCommentComplete: false,
   medias: [],
   newReleases: [],
+  albumId: null,
+  comments: [],
 };
 
 const mediaSlice = createSlice({
@@ -151,6 +190,23 @@ const mediaSlice = createSlice({
       state.updateShareCountComplete = false;
       state.updateShareCountError = action.error;
     },
+    [addAlbum.pending]: (state, action) => {
+      state.addAlbumPending = true;
+      state.addAlbumComplete = false;
+      state.addAlbumError = null;
+      state.albumId = null;
+    },
+    [addAlbum.fulfilled]: (state, action) => {
+      state.addAlbumPending = false;
+      state.addAlbumComplete = true;
+      state.addAlbumError = null;
+      state.albumId = action.payload;
+    },
+    [addAlbum.rejected]: (state, action) => {
+      state.addAlbumPending = false;
+      state.addAlbumComplete = false;
+      state.addAlbumError = action.error;
+    },
     [saveMedia.pending]: (state, action) => {
       state.saveMediaPending = true;
       state.saveMediaComplete = false;
@@ -182,6 +238,39 @@ const mediaSlice = createSlice({
       state.getNewReleasesPending = false;
       state.getNewReleasesComplete = true;
       state.getNewReleasesError = action.error;
+    },
+    [addComment.pending]: (state, action) => {
+      state.addCommentPending = true;
+      state.addCommentComplete = false;
+      state.addCommentError = null;
+    },
+    [addComment.fulfilled]: (state, action) => {
+      state.addCommentPending = false;
+      state.addCommentComplete = true;
+      state.addCommentError = null;
+      console.log('action ', action);
+    },
+    [addComment.rejected]: (state, action) => {
+      state.addCommentPending = false;
+      state.addCommentComplete = true;
+      state.addCommentError = action.error;
+    },
+    [getComment.pending]: (state, action) => {
+      state.getCommentPending = true;
+      state.getCommentComplete = false;
+      state.getCommentError = null;
+      state.comments = [];
+    },
+    [getComment.fulfilled]: (state, action) => {
+      state.getCommentPending = false;
+      state.getCommentComplete = true;
+      state.getCommentError = null;
+      state.comments = action.payload.comments;
+    },
+    [getComment.rejected]: (state, action) => {
+      state.getCommentPending = false;
+      state.getCommentComplete = true;
+      state.getCommentError = action.error;
     },
   }
 });

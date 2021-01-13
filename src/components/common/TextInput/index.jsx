@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const icons = {
   search: require('$assets/images/icons/search.svg'),
@@ -32,10 +32,10 @@ const TextInput = (props) => {
   return (
     <>
       <p>{title}</p>
-      <div className={`text-input-container d-flex justify-content-center ${customWrapperClass}`}>
+      <div className={`d-flex justify-content-center ${styles.textInputContainer} ${customWrapperClass}`}>
         <input
           name={name}
-          className="text-input-wrapper"
+          className={styles.textInputWrapper}
           type={type}
           onChange={handleChange}
           onFocus={onFocus}
@@ -47,7 +47,7 @@ const TextInput = (props) => {
           icon && (
             <img
               src={icons[icon]}
-              className="text-input-icon"
+              className={styles.textInputIcon}
             />
           )
         }
