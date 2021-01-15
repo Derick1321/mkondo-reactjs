@@ -248,7 +248,6 @@ const mediaSlice = createSlice({
       state.addCommentPending = false;
       state.addCommentComplete = true;
       state.addCommentError = null;
-      console.log('action ', action);
     },
     [addComment.rejected]: (state, action) => {
       state.addCommentPending = false;

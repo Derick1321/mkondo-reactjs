@@ -2,17 +2,17 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
 
-const UPDATE_GENRE = 'user/UPDATE_GENRE';
+const UPDATE_USER = 'user/UPDATE_USER';
 const ADD_FAVORITE = 'user/ADD_FAVORITE';
 const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
 const ADD_HISTORY = 'user/ADD_HISTORY';
 
 // actions
-export const updateGenre = createAsyncThunk(
-  UPDATE_GENRE,
+export const updateUser = createAsyncThunk(
+  UPDATE_USER,
   async (data, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('POST', 'users/update-genre', data, token);
+    return await handleFetch('PUT', `users/${data.id}`, data.payload, token);
   }
 );
 
@@ -43,8 +43,8 @@ export const addHistory = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    updateGenreError: null,
-    updateGenreComplete: false,
+    updateUserError: null,
+    updateUserComplete: false,
     addFavoritePending: false,
     addFavoriteError: null,
     addFavoriteComplete: false,
@@ -105,12 +105,12 @@ const userSlice = createSlice({
       state.addHistoryComplete = false;
       state.addHistoryError = action.error;
     },
-    [updateGenre.fulfilled]: (state, action) => {
-      state.updateGenreComplete = true;
-      state.updateGenreError = null;
+    [updateUser.fulfilled]: (state, action) => {
+      state.updateUserComplete = true;
+      state.updateUserError = null;
     },
-    [updateGenre.rejected]: (state, action) => {
-      state.updateGenreError = action.error;
+    [updateUser.rejected]: (state, action) => {
+      state.updateUserError = action.error;
     },
   }
 });

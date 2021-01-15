@@ -6,7 +6,7 @@ import Button from '$components/common/Button';
 import InputField from '$components/forms/InputField';
 import Tabs from '$components/common/Tabs';
 
-import { createPlaylist } from '$redux/features/playlist';
+import { createPlaylist, updatePlaylist } from '$redux/features/playlist';
 
 import styles from './index.module.scss';
 
@@ -30,6 +30,8 @@ const PlaylistMenu = (props) => {
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
   const createPlaylistPending = useSelector((store) => store.playlist.createPlaylistPending);
+  const updatePlaylistPending = useSelector((store) => store.playlist.updatePlaylistPending);
+  const playlists = useSelector((store) => store.playlist.playlists);
 
   // state
   const [selected, setSelected] = useState(options[0].name);
@@ -41,13 +43,23 @@ const PlaylistMenu = (props) => {
     setSelected(item);
   }
 
+  const handleSuccess = (msg) => {
+    setMessage({
+      content: msg || 'Playlist successfully added!',
+      type: 'success',
+    });
+  }
+
+  const handleError = (msg) => {
+    setMessage({
+      content: msg || 'Incorrect playlist name!',
+      type: 'error',
+    });
+  }
+
   const handleAddPlaylist = async () => {
-    // TODO Api call
     if (!value) {
-      setMessage({
-        content: 'Playlist name missing!',
-        type: 'error',
-      });
+      handleError('Playlist name missing!');
       return;
     }
 
@@ -57,18 +69,27 @@ const PlaylistMenu = (props) => {
         owner_id: userId,
       }));
 
-      setMessage({
-        content: 'Playlist successfully added!',
-        type: 'success',
-      });
+      handleSuccess('Playlist successfully added!');
     } catch (error) {
       // show error
-      setMessage({
-        content: 'Incorrect playlist name!',
-        type: 'error',
-      });
+      handleError();
     }
   };
+
+  const handleUpdate = async (playlistId) => {
+     try {
+      await dispatch(updatePlaylist({
+        playlistId,
+        mediaId,
+        ownerId: userId,
+      }));
+
+      handleSuccess('Song was successfully added!');
+    } catch (error) {
+      // show error
+      handleError('Error. Please try again!');
+    }
+  }
 
   const onChange = (name, value) => {
     if (message) {
@@ -99,20 +120,38 @@ const PlaylistMenu = (props) => {
     </div>
   );
 
-  const buildExistingPanel = () => {
-    return (
-      <div className="d-flex flex-column">
-        <InputField
-          field={{
-            ...field,
-            placeholder: 'Existing Playlist',
-            value,
-          }}
-          onChange={onChange}
-        />
-      </div>
-    )
-  }
+  const existingPanel = (
+    <div className="d-flex flex-column">
+      <InputField
+        field={{
+          ...field,
+          placeholder: 'Existing Playlist',
+          value,
+        }}
+        onChange={onChange}
+      />
+      {
+        playlists.map((item, idx) => (
+          <div
+            className="d-flex justify-content-between"
+            key={`playlist-existing-${idx}`}
+          >
+            <div>
+              <span>{item.name}</span>
+            </div>
+            <Button
+              onClick={() => handleUpdate(item)}
+              isLoading={updatePlaylistPending}
+              hideDefault
+              isCustom
+            >
+              Add to Playlist
+            </Button>
+          </div>
+        ))
+      }
+    </div>
+  );
 
   // render
   return (
@@ -136,7 +175,7 @@ const PlaylistMenu = (props) => {
         {
           selected === 'new' ?
             newPlaylistPanel :
-            buildExistingPanel()
+            existingPanel
         }
       </div>
     </div>
