@@ -104,6 +104,7 @@ const NewMedia = () => {
             <div className={`${file ? 'd-none' : ''}`}>
               <DragDrop
                 onChange={handleFileChange}
+                isMulti
               />
             </div>
             <div className={`${file ? '' : 'd-none'}`}>

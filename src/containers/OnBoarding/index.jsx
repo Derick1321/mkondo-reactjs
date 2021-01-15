@@ -6,7 +6,7 @@ import AppHeader from '$components/common/AppHeader';
 import GenreSelector from '$components/common/GenreSelector';
 
 import { routePaths } from '$common/routeConfig';
-import { updateGenre } from '$redux/features/user';
+import { updateUser } from '$redux/features/user';
 
 import styles from './index.module.scss';
 
@@ -17,14 +17,15 @@ const OnBoarding = () => {
   // store
   const dispatch = useDispatch();
   const history = useHistory();
-  const updateGenreComplete = useSelector((store) => store.user.updateGenreComplete);
+  const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
+  const user = useSelector((store) => store.authentication.user);
 
   // effects
   useEffect(() => {
-    if (updateGenreComplete) {
+    if (updateUserComplete) {
       history.replace(routePaths.home);
     }
-  }, [updateGenreComplete]);
+  }, [updateUserComplete]);
 
   // handlers
   const handleSelect = (name) => {
@@ -37,7 +38,15 @@ const OnBoarding = () => {
   }
 
   const handleNext = () => {
-    // dispatch(updateGenre());
+    const payload = {
+      ...user,
+      genres: selected,
+    };
+
+    dispatch(updateUser({
+      id: user.user_id,
+      payload,
+    }));
     history.replace(routePaths.home);
   }
 
