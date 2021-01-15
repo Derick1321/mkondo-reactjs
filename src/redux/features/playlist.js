@@ -20,9 +20,9 @@ export const updatePlaylist = createAsyncThunk(
   UPDATE_PLAYLIST,
   async (data, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('POST', `playlists/${data.id}`, {
+    return await handleFetch('PUT', `playlists/${data.playlistId}`, {
       owner_id: data.ownerId,
-      song_id: data.songId,
+      song_id: data.mediaId,
     }, token);
   }
 );
@@ -119,7 +119,7 @@ const playlistSlice = createSlice({
       state.listPlaylistPending = false;
       state.listPlaylistComplete = true;
       state.listPlaylistError = null;
-      state.playlists = action.playlists;
+      state.playlists = action.payload.playlists;
     },
     [listPlaylist.rejected]: (state, action) => {
       state.listPlaylistPending = false;
