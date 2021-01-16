@@ -1,11 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory, generatePath } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
+import { routePaths } from '$common/routeConfig';
 
-import { updatePlaylist } from '$redux/features/playlist';
+import { updateLocalPlaylist } from '$redux/features/playlist';
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { showModal } from '$redux/features/modal';
 
@@ -62,12 +64,12 @@ const Feature = (props) => {
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isMenuActive, setIsMenuActive] = useState(false);
 
   // ref
   const isMounted = useRef(false);
@@ -110,13 +112,21 @@ const Feature = (props) => {
     // temporarily load it on player
     // TODO: navigate to player component
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
-    dispatch(updatePlaylist({
+    dispatch(updateLocalPlaylist({
       url: res.response,
       avatar: avatarUrl,
       name: title,
       howl: null,
       mediaId,
     }));
+  }
+
+  const handleView = () => {
+    history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+  }
+
+  const handleArtistView = () => {
+    history.push(generatePath(routePaths.viewArtist, { id: artistId }));
   }
 
   const handleFavorite = () => {
@@ -185,23 +195,22 @@ const Feature = (props) => {
         </div>
       </div>
       <div className={`d-flex ${styles.featurePane}`}>
-        {
-          !source && (
-            <img
-              src={defaultAvatar}
-              className={styles.defaultFeatureAvatar}
-            />
-          )
-        }
-        {
-          source && (
-            <FeatureAvatar
-              source={sourceUrl}
-            />
-          )
-        }
+        <div onClick={handleArtistView}>
+          {
+            source ? (
+              <FeatureAvatar
+                source={sourceUrl}
+              />
+            ) : (
+                <img
+                  src={defaultAvatar}
+                  className={styles.defaultFeatureAvatar}
+                />
+              )
+          }
+        </div>
         <div className={styles.featureContentWrapper}>
-          <p>{subtitle}</p>
+          <p onClick={handleView}>{subtitle}</p>
           <div className="d-flex">
             <button
               className={styles.featurePlayBtn}
@@ -212,7 +221,10 @@ const Feature = (props) => {
                 className={styles.featureActionBtn}
               />
             </button>
-            <div className={`d-flex flex-column ${styles.featureSummary}`}>
+            <div
+              className={`d-flex flex-column ${styles.featureSummary}`}
+              onClick={handleView}
+            >
               <span>{title}</span>
               {
                 numOfSongs && (

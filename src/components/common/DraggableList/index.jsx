@@ -33,7 +33,7 @@ const DraggableList = (props) => {
   const {
     list,
     listElement: Element,
-    callbacks,
+    params,
   } = props;
 
   // handlers
@@ -49,7 +49,7 @@ const DraggableList = (props) => {
       result.destination.index
     );
 
-    callbacks.onReorder(newItems);
+    params.onReorder(newItems);
   }
 
   // render
@@ -88,7 +88,7 @@ const DraggableList = (props) => {
                         >
                           <Element 
                             {...item}
-                            {...callbacks}
+                            {...params}
                             index={index}
                           />
                         </div>
