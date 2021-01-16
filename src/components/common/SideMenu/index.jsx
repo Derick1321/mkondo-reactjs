@@ -33,8 +33,8 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/stats.svg'),
       activeIcon: require('$assets/images/icons/stats-active.svg'),
-      title: 'Stats',
-      path: routePaths.statsArtist,
+      title: 'Insights',
+      path: routePaths.insights,
       permission: 'media',
     },
     {
