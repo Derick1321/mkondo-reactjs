@@ -15,6 +15,8 @@ import ResetPassword from '$containers/ResetPassword';
 import SuccessPage from '$containers/Success';
 import Favorites from '$containers/Favorites';
 import History from '$containers/History';
+import ViewMedia from '$containers/Media/ViewMedia';
+import PlaylistPage from '$containers/Playlist';
 
 export const routePaths = {
   main: '/app',
@@ -31,6 +33,7 @@ export const routePaths = {
   newAlbum: '/app/media/new-album',
   newMediaCategory: '/app/media/select-category',
   mediaUpload: '/app/media/upload',
+  viewMedia: '/app/media/:id',
   artist: '/app/artist',
   newArtist: '/app/artist/new',
   statsArtist: '/app/artist/stats',
@@ -38,6 +41,7 @@ export const routePaths = {
   success: '/app/success',
   history: '/app/history',
   favorites: '/app/favorites',
+  playlist: '/app/playlist/:id',
 };
 
 const roles = {
@@ -144,6 +148,12 @@ export const routes = [
       },
       {
         ...defaultConfig,
+        path: routePaths.playlist,
+        component: PlaylistPage,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
         path: routePaths.artist,
         component: Artist,
         exact: false,
@@ -196,6 +206,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.mediaUpload,
             component: MediaUpload,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.viewMedia,
+            component: ViewMedia,
             redirect: redirectFunctions.app,
           },
         ],

@@ -26,8 +26,6 @@ const volumeFullIcon = require('$assets/images/player/volume-full.svg');
 // sample playlist
 const playlists = [
   { 'name': 'Song 1', album: 'Next Album', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', avatar: avatar, }, 
-  { 'name': 'Song 2', album: 'Moo', url: 'https://drive.google.com/u/0/uc?id=1ZhVuR3wVf7IYS8YM7PFrFk3cw1AvJSfs&export=download', }, 
-  { 'name': 'Song 3', url: 'https://drive.google.com/u/0/uc?id=1ZhVuR3wVf7IYS8YM7PFrFk3cw1AvJSfs&export=download', }
 ];
 
 const Player = () => {
@@ -124,6 +122,7 @@ const Player = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
+      console.log('audioRef.current.index ', audioRef.current.index);
       audioRef.current.play(audioRef.current.index);
       setIsLoading(true);
     }

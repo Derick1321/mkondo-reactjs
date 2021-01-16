@@ -1,17 +1,25 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { NavLink, useHistory, generatePath } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import Button from '$components/common/Button';
 
 import { routePaths } from '$common/routeConfig';
 import { getPermissions } from '$common/utils';
 
-import './index.scss';
+import { showModal } from '$redux/features/modal';
+
+import styles from './index.module.scss';
+
+const playlistIcon = require('$assets/images/icons/playlist-icon.svg');
 
 const SideMenu = () => {
   // store
   const history = useHistory();
+  const dispatch = useDispatch();
   const userRole = useSelector((store) => store.authentication.user.user_type);
   const isPublished = useSelector((store) => store.authentication.user.publish);
+  const playlists = useSelector((store) => store.playlist.playlists);
 
   // icons
   const artistIcons = [
@@ -80,32 +88,39 @@ const SideMenu = () => {
     },
   ];
 
-  const artistAccess = getPermissions('artist', userRole, );
+  const artistAccess = getPermissions('artist', userRole,);
+
+  // handlers
+  const handleNewPlaylist = () => {
+    dispatch(showModal('PLAYLIST_MODAL'));
+  }
 
   // render
   return (
-    <div className="side-menu">
-      <p className="header-title text-center">Mkondo</p>
-      <div className="side-menus-wrapper d-flex flex-column">
-        <p className="sidemenu-subtitle">Browse</p>
+    <div className={styles.sideMenu}>
+      <div className={`text-center ${styles.logoWrapper}`}>
+        <p className={styles.headerTitle}>Mkondo</p>
+      </div>
+      <div className={`d-flex flex-column ${styles.sideMenusWrapper}`}>
+        <p className={styles.sideMenuSubtitle}>Browse</p>
         {
           icons.map((item, idx) => (
             <NavLink
               to={item.path}
-              className="sidemenu-item"
-              activeClassName="active"
+              className={styles.sideMenuItem}
+              activeClassName={styles.sideMenuItemTitle}
               key={`sidemenu-${idx}`}
             >
               <img
                 src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                className="sidemenu-item-icon"
+                className={styles.sideMenuItemIcon}
               />
-              <span className="sidemenu-item-title">{item.title}</span>
+              <span>{item.title}</span>
             </NavLink>
           ))
         }
-        <div className="d-flex flex-column artist-menus">
-          <p className="sidemenu-subtitle">Your Music</p>
+        <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+          <p className={styles.sideMenuSubtitle}>Your Music</p>
           {
             userIcons.map((item, idx) => {
               const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
@@ -116,15 +131,15 @@ const SideMenu = () => {
               return (
                 <NavLink
                   to={item.path}
-                  className="sidemenu-item"
-                  activeClassName="active"
+                  className={styles.sideMenuItem}
+                  activeClassName={styles.sideMenuItemTitle}
                   key={`sidemenu-${idx}`}
                 >
                   <img
                     src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                    className="sidemenu-item-icon"
+                    className={styles.sideMenuItemIcon}
                   />
-                  <span className="sidemenu-item-title">{item.title}</span>
+                  <span>{item.title}</span>
                 </NavLink>
               )
             })
@@ -132,8 +147,8 @@ const SideMenu = () => {
         </div>
         {
           artistAccess && (
-            <div className="d-flex flex-column artist-menus">
-              <p className="sidemenu-subtitle">Artist Panel</p>
+            <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+              <p className={styles.sideMenuSubtitle}>Artist Panel</p>
               {
                 artistIcons.map((item, idx) => {
                   const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
@@ -144,17 +159,17 @@ const SideMenu = () => {
                   return (
                     <NavLink
                       to={item.path}
-                      className="sidemenu-item"
-                      activeClassName="active"
+                      className={styles.sideMenuItem}
+                      activeClassName={styles.sideMenuItemTitle}
                       key={`sidemenu-${idx}`}
                     >
                       {
                         <img
                           src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                          className="sidemenu-item-icon"
+                          className={styles.sideMenuItemIcon}
                         />
                       }
-                      <span className="sidemenu-item-title">{item.title}</span>
+                      <span>{item.title}</span>
                     </NavLink>
                   )
                 })
@@ -162,6 +177,33 @@ const SideMenu = () => {
             </div>
           )
         }
+        <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+          <p className={styles.sideMenuSubtitle}>Your Playlists</p>
+          <div className="m-4 ">
+            <Button
+              onClick={handleNewPlaylist}
+            >
+              New Playlist
+          </Button>
+          </div>
+          {
+            playlists.map((item, idx) => (
+              <NavLink
+                key={`side-menu-playlist-${idx}`}
+                to={generatePath(routePaths.playlist, { id: item.playlist_id })}
+                className={styles.sideMenuItem}
+                activeClassName="active"
+                key={`sidemenu-playlist-${idx}`}
+              >
+                <img
+                  src={playlistIcon}
+                  className={styles.sideMenuItemIcon}
+                />
+                <span>{item.name}</span>
+              </NavLink>
+            ))
+          }
+        </div>
       </div>
     </div>
   )
