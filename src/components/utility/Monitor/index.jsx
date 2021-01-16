@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { showModal, hideModal } from '$redux/features/modal';
 import { reloadUser } from '$redux/features/authentication';
+import { listPlaylist } from '$redux/features/playlist';
 
 const Monitor = () => {
   // store
@@ -14,6 +15,8 @@ const Monitor = () => {
   const addFavoritePending = useSelector((store) => store.user.addFavoritePending);
   const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const updatePlaylistComplete = useSelector((store) => store.playlist.updatePlaylistComplete);
+  const createPlaylistComplete = useSelector((store) => store.playlist.createPlaylistComplete);
 
   // effects
   useEffect(() => {
@@ -44,11 +47,13 @@ const Monitor = () => {
     dispatch(reloadUser(userId));
   }, [addFavoritePending, removeFavoritePending]);
 
+  useEffect(() => {
+    dispatch(listPlaylist(userId));
+  }, [createPlaylistComplete, updatePlaylistComplete]);
+
   // render
   return (
-    <div>
-
-    </div>
+    <div />
   );
 }
 

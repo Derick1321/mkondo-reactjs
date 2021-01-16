@@ -37,6 +37,8 @@ const PlaylistMenu = (props) => {
   const [selected, setSelected] = useState(options[0].name);
   const [value, setValue] = useState('');
   const [message, setMessage] = useState('');
+  const [currentPlaylist, setCurrentPlaylist] = useState('');
+
 
   // handlers
   const handleSelect = (item) => {
@@ -76,15 +78,18 @@ const PlaylistMenu = (props) => {
     }
   };
 
-  const handleUpdate = async (playlistId) => {
-     try {
+  const handleUpdate = async (playlistId, status) => {
+    setCurrentPlaylist(playlistId);
+
+    try {
       await dispatch(updatePlaylist({
         playlistId,
         mediaId,
         ownerId: userId,
       }));
+      setCurrentPlaylist('');
 
-      handleSuccess('Song was successfully added!');
+      handleSuccess(`Song was successfully ${status ? 'removed!' : 'added!'}`);
     } catch (error) {
       // show error
       handleError('Error. Please try again!');
@@ -115,7 +120,7 @@ const PlaylistMenu = (props) => {
         isCustom
         hideDefault
       >
-        Add to Playlist
+        Add Playlist
       </Button>
     </div>
   );
@@ -131,27 +136,57 @@ const PlaylistMenu = (props) => {
         onChange={onChange}
       />
       {
-        playlists.map((item, idx) => (
-          <div
-            className="d-flex justify-content-between"
-            key={`playlist-existing-${idx}`}
-          >
-            <div>
-              <span>{item.name}</span>
-            </div>
-            <Button
-              onClick={() => handleUpdate(item)}
-              isLoading={updatePlaylistPending}
-              hideDefault
-              isCustom
+        playlists.map((item, idx) => {
+          const status = item.songs.find((song) => song.media_id === mediaId);
+          return (
+            <div
+              className="d-flex justify-content-between my-2"
+              key={`playlist-existing-${idx}`}
             >
-              Add to Playlist
-            </Button>
-          </div>
-        ))
+              <div>
+                <span>{item.name}</span>
+              </div>
+              <Button
+                onClick={() => handleUpdate(item.playlist_id, status)}
+                isLoading={updatePlaylistPending && currentPlaylist === item.playlist_id}
+                hideDefault
+                isCustom
+              >
+                {
+                  status ?
+                    'Remove From Playlist' :
+                    'Add to Playlist'
+                }
+              </Button>
+            </div>
+          )
+        })
       }
     </div>
   );
+
+  const buildContent = () => {
+    if (!mediaId) {
+      return newPlaylistPanel;
+    }
+
+    return (
+      <>
+        <Tabs
+          options={options}
+          onSelect={handleSelect}
+          selected={selected}
+          name="newItem"
+          activeColor="#8C8C8C"
+        />
+        {
+          selected === 'new' ?
+            newPlaylistPanel :
+            existingPanel
+        }
+      </>
+    );
+  }
 
   // render
   return (
@@ -165,18 +200,7 @@ const PlaylistMenu = (props) => {
         )
       }
       <div className={styles.container}>
-        <Tabs
-          options={options}
-          onSelect={handleSelect}
-          selected={selected}
-          name="newItem"
-          activeColor="#8C8C8C"
-        />
-        {
-          selected === 'new' ?
-            newPlaylistPanel :
-            existingPanel
-        }
+        {buildContent()}
       </div>
     </div>
   );

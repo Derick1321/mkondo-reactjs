@@ -6,6 +6,12 @@ import styles from './index.module.scss';
 const icons = {
   next: require('$assets/images/icons/arrow-next.svg'),
   arrowUp: require('$assets/images/icons/arrow-up.svg'),
+  shuffle: require('$assets/images/player/shuffle-active.svg'),
+  favorite: require('$assets/images/icons/favorite.svg'),
+  share: require('$assets/images/icons/share.svg'),
+  menu: require('$assets/images/icons/menu.svg'),
+  cancel: require('$assets/images/icons/close.svg'),
+  favoriteActive: require('$assets/images/icons/favorite-active.svg'),
 }
 
 const Button = (props) => {
@@ -62,30 +68,30 @@ const Button = (props) => {
       role="status"
     />
   ) : (
-    <>
-      <div className="w-100">
-        {children}
-      </div>
-      {
-        icon && (
-          <img
-            src={icons[icon]}
-            className={styles.btnIcon}
-          />
-        )
-      }
-    </>
-  );
+      <>
+        <div className="w-100 pr-2">
+          {children}
+        </div>
+        {
+          icon && (
+            <img
+              src={icons[icon]}
+              className={styles.btnIcon}
+            />
+          )
+        }
+      </>
+    );
 
   // render
   return (
     <button
-      className={`${!hideDefault ? styles.mkBtn : ''} ${customStyle} ${style}`}
+      className={`d-flex ${!hideDefault ? styles.mkBtn : ''} ${customStyle} ${style}`}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      { content }
+      { content}
     </button>
   );
 };
@@ -101,10 +107,11 @@ Button.defaultProps = {
   onMouseLeave: () => null,
   hideDefault: false,
   isLoading: false,
+  children: null,
 };
 
 Button.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   onClick: PropTypes.func.isRequired,
   isTransparent: PropTypes.bool,
   isSquare: PropTypes.bool,

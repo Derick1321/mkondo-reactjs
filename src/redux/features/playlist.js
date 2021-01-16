@@ -62,6 +62,12 @@ const playlistSlice = createSlice({
     currentPlaylist: [],
     playlists: [],
   },
+  reducers: {
+    updateLocalPlaylist(state, action) {
+      console.log('action ', action);
+      state.currentPlaylist.push(action.payload);
+    }
+  },
   extraReducers: {
     [createPlaylist.pending]: (state, action) => {
       state.createPlaylistPending = true;
@@ -72,7 +78,6 @@ const playlistSlice = createSlice({
       state.createPlaylistPending = false;
       state.createPlaylistComplete = true;
       state.createPlaylistError = null;
-      console.log('action ', action);
     },
     [createPlaylist.rejected]: (state, action) => {
       state.createPlaylistPending = false;
@@ -81,7 +86,7 @@ const playlistSlice = createSlice({
     },
     [updatePlaylist.pending]: (state, action) => {
       state.updatePlaylistPending = true;
-      state.updatePlaylistComplete = true;
+      state.updatePlaylistComplete = false;
       state.updatePlaylistError = null;
     },
     [updatePlaylist.fulfilled]: (state, action) => {
@@ -91,7 +96,7 @@ const playlistSlice = createSlice({
     },
     [updatePlaylist.rejected]: (state, action) => {
       state.updatePlaylistPending = false;
-      state.updatePlaylistComplete = true;
+      state.updatePlaylistComplete = false;
       state.updatePlaylistError = action.error;
     },
     [getPlaylist.pending]: (state, action) => {
@@ -128,6 +133,8 @@ const playlistSlice = createSlice({
     },
   }
 });
+
+export const { updateLocalPlaylist } = playlistSlice.actions
 
 export default playlistSlice.reducer;
 

@@ -9,7 +9,7 @@ import InfoPane from '$components/authentication/Info';
 
 import { showModal } from '$redux/features/modal';
 import { resetPassword } from '$redux/features/authentication';
-import { routePaths } from '../../../../common/routeConfig';
+import { routePaths } from '$common/routeConfig';
 
 const ResetPassword = (props) => {
   // props
