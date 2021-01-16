@@ -83,7 +83,7 @@ const DropDownWrapper = (props) => {
 
     setBounds({
       top: bound.bottom + 10,
-      left: bound.left - (bound.width),
+      // left: bound.left - (bound.width),
     });
   }
 
