@@ -19,6 +19,11 @@ const initialState = {
   songWriter: '',
   composer: '',
   file: '',
+};
+
+const initialStatus = {
+  pending: false,
+  completed: false,
 }
 
 const UploadCard = (props) => {
@@ -28,10 +33,14 @@ const UploadCard = (props) => {
     index,
     size,
     onRemove,
+    onChange,
+    values: allFields,
+    status,
   } = props;
+  const values = allFields[name];
+
   // state
   const [isOpen, setIsOpen] = useState(false);
-  const [values, setValues] = useState(initialState);
 
   // handlers
   const handleView = () => {
@@ -42,10 +51,11 @@ const UploadCard = (props) => {
     setIsOpen(false);
   }
 
-  const handleChange = (name, value) => {
-    setValues({
+  const handleChange = (itemName, value) => {
+    onChange(name, {
+      ...initialState,
       ...values,
-      [name]: value,
+      [itemName]: value,
     });
   }
 
@@ -63,10 +73,7 @@ const UploadCard = (props) => {
         <div className={`d-flex flex-column ${styles.contentWrapper}`}>
           <div>{name} | {size}</div>
           <Progress
-            values={{
-              pending: false,
-              completed: false,
-            }}
+            values={status[name] || initialStatus}
             placeholder="Uploading"
           />
         </div>
@@ -91,7 +98,7 @@ const UploadCard = (props) => {
               menus={menus}
               metamenus={metamenus}
               onChange={handleChange}
-              values={values}
+              values={values || initialState}
             />
             <div className="d-flex">
               <Button

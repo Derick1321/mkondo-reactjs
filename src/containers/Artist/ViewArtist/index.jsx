@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -10,7 +10,6 @@ import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 import { getArtistById } from '$redux/features/artist';
 
 import './index.scss';
-import { current } from '@reduxjs/toolkit';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const favoriteIcon = require('$assets/images/icons/favorite.svg');
@@ -37,8 +36,8 @@ const Avatar = styled.div`
 
 const ViewArtist = () => {
   // store
-  const location = useLocation();
   const dispatch = useDispatch();
+  const { id } = useParams();
   const currentArtist = useSelector((store) => store.artist.currentArtist);
 
   const socialLinks = {
@@ -50,9 +49,8 @@ const ViewArtist = () => {
 
   // effects
   useEffect(() => {
-    const id = location.pathname.split('/')[3]
     dispatch(getArtistById(id));
-  }, []);
+  }, [id]);
 
   // handler
   const handlePlay = () => {
@@ -60,6 +58,7 @@ const ViewArtist = () => {
   }
 
   const handleShare = () => {
+    
   }
 
   const handleFavorite = () => {
