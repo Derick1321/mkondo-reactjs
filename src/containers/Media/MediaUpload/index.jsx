@@ -7,9 +7,10 @@ import DragDrop from '$components/common/DragDrop';
 import DraggableList from '$components/common/DraggableList';
 import UploadCard from '$components/media/UploadCard';
 
-import { saveMedia, addMedia } from '$redux/features/media';
-
+import { routePaths } from '$common/routeConfig';
 import { bytesToSize } from '$common/utils';
+
+import { saveMedia, addMedia } from '$redux/features/media';
 
 import styles from './index.module.scss';
 
@@ -31,6 +32,19 @@ const MediaUpload = () => {
 
   // refs
   const currentSaved = useRef(null);
+  const completedFiles = useRef(0);
+
+  // functions
+  const handleNext = async () => {
+    const item = values[files[files.length - 1].name];
+    history.push(routePaths.success, {
+      message: 'Congratulations you are all set!',
+      link: `https//mkondo.co/app/media/${newMediaId}`,
+      country: item.recordLabel,
+      name: item.title,
+      avatar: await generatePreview(files[files.length - 1].binary),
+    });
+  }
 
   // effects
   useEffect(() => {
@@ -58,6 +72,13 @@ const MediaUpload = () => {
     });
   }, [addMediaPending, addMediaFulfilled]);
 
+  useEffect(() => {
+    completedFiles.current += 1;
+    if (completedFiles.current === files.length) {
+      handleNext();
+    }
+  }, [newMediaId]);
+
   // handlers
   const handleFileChange = (result) => {
     const fileList = [];
@@ -65,6 +86,7 @@ const MediaUpload = () => {
       fileList.push({
         name: result[index].name,
         size: bytesToSize(result[index].size),
+        binary: result[index],
       });
     }
     setFiles(fileList);
@@ -85,24 +107,12 @@ const MediaUpload = () => {
     });
   }
 
-  const handleNext = async () => {
-    console.log('YAAY!');
-    return;
-    history.push(routePaths.success, {
-      message: 'Congratulations you are all set!',
-      link: `https//mkondo.co/app/media/${newMediaId}`,
-      country: values.country,
-      name: values.title,
-      avatar: await generatePreview(values[files[0].name].file),
-    });
-  }
-
   const handleContinue = () => {
     setIsLoading(true);
     files.forEach(async (file) => {
       currentSaved.current = file.name;
       const item = values[file.name];
-      const mediaRes = await dispatch(saveMedia(file));
+      const mediaRes = await dispatch(saveMedia(file.binary));
       const avatarRes = await dispatch(saveMedia(item.file));
       await dispatch(addMedia({
         name: item.title,
@@ -118,12 +128,10 @@ const MediaUpload = () => {
         song_writer: item.songWriter,
         owner_avatar_url: userAvatarUrl,
       }));
-      console.log('file ', file.name);
-      handleNext();
     });
 
+    // handleNext();
     setIsLoading(false);
-    console.log(' I am here');
   }
 
   // render
