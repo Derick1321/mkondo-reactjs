@@ -49,6 +49,10 @@ const ViewArtist = () => {
 
   // effects
   useEffect(() => {
+    if (!id) {
+      return;
+    }
+
     dispatch(getArtistById(id));
   }, [id]);
 

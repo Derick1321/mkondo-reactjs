@@ -40,7 +40,7 @@ const Monitor = () => {
   ]);
 
   useEffect(() => {
-    if (addFavoritePending || removeFavoritePending) {
+    if (addFavoritePending || removeFavoritePending || !userId) {
       return;
     }
 
@@ -48,6 +48,9 @@ const Monitor = () => {
   }, [addFavoritePending, removeFavoritePending]);
 
   useEffect(() => {
+    if (!userId) {
+      return userId;
+    }
     dispatch(listPlaylist(userId));
   }, [createPlaylistComplete, updatePlaylistComplete]);
 
