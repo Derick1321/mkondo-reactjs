@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Tabs from '$components/common/Tabs';
+import LineChart from '$components/common/LineChart';
+
 import { kFormatter } from '$common/utils';
 import { getInsight } from '$redux/features/artist';
 
@@ -56,6 +58,9 @@ const Insights = () => {
           <div className="d-flex flex-column">
             <span className={styles.title}>{data.plays || 0} Plays</span>
             <div className={styles.titleBorder} />
+          </div>
+          <div className="mt-4 pt-4">
+            <LineChart />
           </div>
           <div className={`d-flex flex-wrap ${styles.dataWrapper}`}>
             { buildPane('Likes', kFormatter(data.likes || 0)) }
