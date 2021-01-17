@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import DropDownWrapper from '$components/common/DropDownWrapper';
 import TextInput from '$components/common/TextInput';
 import SearchResult from '$components/common/SearchResult';
+
+import { routePaths } from '$common/routeConfig';
 
 import { logout } from '$redux/features/authentication';
 
@@ -30,6 +33,7 @@ const AppHeader = (props) => {
   const avatar = useSelector((store) => store.authentication.user.avatar_url);
   const modalActive = useSelector((store) => store.modal.type);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // handlers
   const handleChange = (name, value) => {
@@ -41,8 +45,9 @@ const AppHeader = (props) => {
       dispatch(logout());
       return;
     }
-  }
 
+    history.push(routePaths.profile);
+  }
   const handleFocus = () => { // hacky way to hideModal
     dispatch(hideModal());
   }
