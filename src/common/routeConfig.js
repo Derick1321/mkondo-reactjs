@@ -10,8 +10,7 @@ import NewAlbum from '$containers/Media/NewAlbum';
 import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
-// Deprecated
-import ArtistStats from '$containers/Artist/StatsArtist';
+import ArtistStats from '$containers/Artist/StatsArtist'; // Deprecated
 import ResetPassword from '$containers/ResetPassword';
 import SuccessPage from '$containers/Success';
 import Favorites from '$containers/Favorites';
@@ -19,6 +18,7 @@ import History from '$containers/History';
 import ViewMedia from '$containers/Media/ViewMedia';
 import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
+import Profile from '$containers/Profile';
 
 export const routePaths = {
   main: '/app',
@@ -45,6 +45,7 @@ export const routePaths = {
   favorites: '/app/favorites',
   playlist: '/app/playlist/:id',
   insights: '/app/insights',
+  profile: '/app/profile',
 };
 
 const roles = {
@@ -159,6 +160,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.insights,
         component: Insights,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.profile,
+        component: Profile,
         redirect: redirectFunctions.app
       },
       {
