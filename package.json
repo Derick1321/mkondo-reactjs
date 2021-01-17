@@ -10,7 +10,9 @@
     "build": "parcel build index.html --no-cache --no-scope-hoist"
   },
   "dependencies": {
+    "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "@reduxjs/toolkit": "^1.4.0",
+    "chart.js": "^2.9.4",
     "gsap": "^3.5.1",
     "howler": "^2.2.1",
     "luxon": "^1.25.0",
