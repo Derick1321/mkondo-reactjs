@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
+import AvatarInput from '$components/common/AvatarInput';
 import Button from '$components/common/Button';
 import InputField from '$components/forms/InputField';
 import Tabs from '$components/common/Tabs';
 
-import { genres } from '$common/utils';
+import { genres, generatePreview } from '$common/utils';
+import { handleFetch } from '$common/requestUtils';
 
+import { saveMedia } from '$redux/features/media';
 import { updateUser } from '$redux/features/user';
 
 import { menus, descriptionField, socials } from './menus';
@@ -36,14 +39,17 @@ const Profile = () => {
   // state
   const [selected, setSelected] = useState(options[0].name);
   const [values, setValues] = useState(initialState);
+  const [localAvatarUrl, setLocalAvatarUrl] = useState('');
+  const [file, setFile] = useState(null);
 
   // store
   const user = useSelector((store) => store.authentication.user);
   const updateUserPending = useSelector((store) => store.user.updateUserPending);
+  const token = useSelector((store) => store.authentication.token);
   const dispatch = useDispatch();
 
   // effects
-  useEffect(() => {
+  useEffect(async () => {
     if (!user || !user.user_id) {
       return;
     }
@@ -51,7 +57,7 @@ const Profile = () => {
     setValues({
       fullName: user.full_name,
       description: user.description,
-      avatarUrl: user.avatar_url,
+      avatarUrl: user.avatar_url, // TODO: Should depricate?
       phoneNumber: user.phone_number,
       genre: (user.genres || []).map((genre) => genres.find((v) => v.value === genre)),
       email: user.email,
@@ -61,6 +67,13 @@ const Profile = () => {
       twitter: user.twitter_link,
       avatarUrl: '',
     });
+
+    if (!user.avatar_url) {
+      return;
+    }
+
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${user.avatar_url}`, null, token);
+    setLocalAvatarUrl(res.response);
   }, [user]);
 
   // handlers
@@ -71,19 +84,44 @@ const Profile = () => {
     });
   }
 
-  const handleUpdate = () => {
-    dispatch(updateUser({
+  const handleUpdate = async () => {
+    let url = null;
+    if (file) {
+      const res = await dispatch(saveMedia(file));
+      url = res.response;
+    }
+
+    await dispatch(updateUser({
       id: user.user_id,
       payload: {
         ...user,
         ...values,
+        avatarUrl: url ? url : user.avatar_url,
       },
     }));
+  }
+
+  const handleAvatarChange = async (files) => {
+    const url = await generatePreview(files[0]);
+    setLocalAvatarUrl(url);
+    setFile(files[0]);
   }
 
   // render
   return (
     <div className={styles.container}>
+      <div className={`d-flex ${styles.avatarContainer}`}>
+        <div className={styles.avatarWrapper}>
+          <AvatarInput
+            url={localAvatarUrl}
+            onChange={handleAvatarChange}
+          />
+        </div>
+        <div className="d-flex flex-column">
+          <p>Mkondo {user.user_type}</p>
+          <p className={styles.title}>{user.full_name}</p>
+        </div>
+      </div>
       <Tabs
         options={options}
         onSelect={setSelected}
