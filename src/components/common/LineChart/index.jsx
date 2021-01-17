@@ -37,6 +37,6 @@ const LineChart = () => (
       height={80}
     />
   </>
-)
+);
 
 export default LineChart;
