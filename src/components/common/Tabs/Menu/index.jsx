@@ -32,7 +32,10 @@ const TabMenu = (props) => {
       type="button"
     >
       <span style={customStyle}>{title}</span>
-      <div className={`${styles.activeTabMenu} ${isActive ? 'visible' : 'invisible'}`} />
+      <div
+        className={`${styles.activeTabMenu} ${isActive ? 'visible' : 'invisible'}`}
+        style={{ backgroundColor: activeColor }}
+      />
     </button>
   );
 }

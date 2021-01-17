@@ -17,6 +17,8 @@ const Monitor = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const updatePlaylistComplete = useSelector((store) => store.playlist.updatePlaylistComplete);
   const createPlaylistComplete = useSelector((store) => store.playlist.createPlaylistComplete);
+  const updateUserPending = useSelector((store) => store.user.updateUserPending);
+  const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
 
   // effects
   useEffect(() => {
@@ -24,6 +26,7 @@ const Monitor = () => {
       || addArtistPending
       || saveMediaPending
       || addAlbumPending
+      || updateUserPending
     ) {
       dispatch(showModal('LOADER_MODAL', {
         preventOutsideClick: true,
@@ -37,17 +40,21 @@ const Monitor = () => {
     addArtistPending,
     saveMediaPending,
     addAlbumPending,
+    updateUserPending,
   ]);
 
   useEffect(() => {
-    if (addFavoritePending || removeFavoritePending) {
+    if (addFavoritePending || removeFavoritePending || !userId) {
       return;
     }
 
     dispatch(reloadUser(userId));
-  }, [addFavoritePending, removeFavoritePending]);
+  }, [addFavoritePending, removeFavoritePending, updateUserComplete]);
 
   useEffect(() => {
+    if (!userId) {
+      return userId;
+    }
     dispatch(listPlaylist(userId));
   }, [createPlaylistComplete, updatePlaylistComplete]);
 
