@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { showModal } from '$redux/features/modal';
+import { showModal, hideModal } from '$redux/features/modal';
 
 import styles from './index.module.scss';
 
@@ -58,6 +58,7 @@ const DropDownWrapper = (props) => {
       return;
     }
 
+    dispatch(hideModal());
     setBounds({
       top: 0,
       left: 0,
@@ -98,9 +99,11 @@ const DropDownWrapper = (props) => {
           options.map((opt, idx) => (
             <a
               key={`opt-${name}-${idx}`}
-              onClick={() => {
+              onClick={(evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
                 handleSelect(opt.name);
-                 updateBounds(true);
+                updateBounds(true);
               }}
               className={`${styles.dropdownOption} ${opt.style ? opt.style : ''}`}
             >
