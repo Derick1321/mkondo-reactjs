@@ -38,7 +38,13 @@ const Tabs = (props) => {
         ))
       }
     </div>
-    <div className={styles.tabLine} />
+    <div
+      className={styles.tabLine}
+      style={{
+        backgroundColor: activeColor,
+        borderColor: activeColor,
+      }}
+    />
     </>
   );
 }

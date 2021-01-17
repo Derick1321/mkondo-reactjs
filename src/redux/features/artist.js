@@ -5,6 +5,7 @@ import { handleFetch } from '$common/requestUtils';
 const ADD_ARTIST = 'artist/ADD_ARTIST';
 const GET_ARTISTS = 'artist/GET_ARTISTS';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
+const GET_INSIGHT = 'artist/GET_INSIGHT';
 
 // actions
 export const addArtist = createAsyncThunk(
@@ -31,14 +32,25 @@ export const getArtistById = createAsyncThunk(
   }
 );
 
+export const getInsight = createAsyncThunk(
+  GET_INSIGHT,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `artists/${id}/insights`, null, token);
+  }
+);
+
 const artistSlice = createSlice({
   name: 'artist',
   initialState: {
     addArtistPending: false,
     addArtistError: null,
     addArtistComplete: false,
-    getArtistPending: false,
+    getArtistsPending: false,
     getArtistsComplete: false,
+    getInsightPending: false,
+    getInsightComplete: false,
+    getInsightError: null,
     getArtistsError: null,
     newArtistId: '',
     artists: [],
@@ -46,6 +58,7 @@ const artistSlice = createSlice({
     getArtistByIdComplete: false,
     getArtistByIdError: null,
     currentArtist: {},
+    insights: {},
   },
   reducers: {},
   extraReducers: {
@@ -80,7 +93,6 @@ const artistSlice = createSlice({
       state.getArtistsComplete = false;
       state.getArtistsError = action.error;
     },
-
     [getArtistById.pending]: (state, action) => {
       state.getArtistByIdPending = true;
       state.getArtistByIdComplete = false;
@@ -96,6 +108,22 @@ const artistSlice = createSlice({
       state.getArtistByIdPending = false;
       state.getArtistByIdComplete = false;
       state.getArtistByIdError = action.error;
+    },
+    [getInsight.pending]: (state, action) => {
+      state.getInsightPending = true;
+      state.getInsightComplete = false;
+      state.getInsightError = null;
+    },
+    [getInsight.fulfilled]: (state, action) => {
+      state.getInsightPending = false;
+      state.getInsightComplete = true;
+      state.getInsightError = null;
+      state.insights = action.payload
+    },
+    [getInsight.rejected]: (state, action) => {
+      state.getInsightPending = false;
+      state.getInsightComplete = false;
+      state.getInsightError = action.error;
     },
   }
 });
