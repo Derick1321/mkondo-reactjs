@@ -12,6 +12,7 @@ const ADD_ALBUM = 'media/ADD_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const GET_COMMENT = 'media/GET_COMMENT';
+const GET_RECOMENDED = 'media/GET_RECOMENDED';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -78,6 +79,14 @@ export const getComment = createAsyncThunk(
   }
 );
 
+export const getRecommended = createAsyncThunk(
+  GET_RECOMENDED,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/recommended/${id}/similar`, null, token);
+  }
+);
+
 // save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
@@ -86,13 +95,13 @@ export const saveMedia = createAsyncThunk(
     const fileName = `${Math.random().toString(36).substring(5)}${file.name}`;
     const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
     const { fields, url } = result.response;
-  
+
     try {
       const { headers, body: formData } = buildFormData(url, {
         ...fields,
         file,
       });
-        
+
       const res = await fetch(url, {
         method: 'POST',
         body: formData,
@@ -136,6 +145,7 @@ const INITIAL_STATE = {
   newReleases: [],
   albumId: null,
   comments: [],
+  recommendedMedia: [],
 };
 
 const mediaSlice = createSlice({
@@ -223,6 +233,23 @@ const mediaSlice = createSlice({
       state.saveMediaError = action.error;
       state.saveMediaPending = false;
     },
+    [getRecommended.pending]: (state, action) => {
+      state.getRecommendedPending = true;
+      state.getRecommendedComplete = false;
+      state.getRecommendedError = null;
+    },
+    [getRecommended.fulfilled]: (state, action) => {
+      state.getRecommendedPending = false;
+      state.getRecommendedComplete = true;
+      state.getRecommendedError = null;
+      state.recommendedMedia = action.payload;
+    },
+    [getRecommended.rejected]: (state, action) => {
+      state.getRecommendedPending = false;
+      state.getRecommendedComplete = false;
+      state.getRecommendedError = action.error;
+      console.log('action. ', action);
+    },
     [getNewReleases.pending]: (state, action) => {
       state.getNewReleasesPending = true;
       state.getNewReleasesComplete = false;
@@ -248,11 +275,13 @@ const mediaSlice = createSlice({
       state.addCommentPending = false;
       state.addCommentComplete = true;
       state.addCommentError = null;
+      console.log('action ', action);
     },
     [addComment.rejected]: (state, action) => {
       state.addCommentPending = false;
       state.addCommentComplete = true;
       state.addCommentError = action.error;
+      console.log('action ', action);
     },
     [getComment.pending]: (state, action) => {
       state.getCommentPending = true;
