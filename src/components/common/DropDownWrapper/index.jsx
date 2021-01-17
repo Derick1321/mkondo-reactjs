@@ -98,7 +98,10 @@ const DropDownWrapper = (props) => {
           options.map((opt, idx) => (
             <a
               key={`opt-${name}-${idx}`}
-              onClick={() => handleSelect(opt.name)}
+              onClick={() => {
+                handleSelect(opt.name);
+                 updateBounds(true);
+              }}
               className={`${styles.dropdownOption} ${opt.style ? opt.style : ''}`}
             >
               {opt.title}

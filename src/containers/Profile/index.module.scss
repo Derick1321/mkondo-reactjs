@@ -1,10 +1,29 @@
 @import '$assets/scss/main.scss';
 
-// TODO
+// TODO: harmonize this
 .container {
   position: relative;
   background-color: $primary-light-gray;
   min-height: 100%;
   margin-top: 4rem !important;
   padding: 4rem 2rem 10rem 2rem;
+}
+
+.avatarWrapper {
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid $secondary-gray;
+  height: 200px;
+  width: 200px;
+  margin-right: 1rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: Poppins;
+}
+
+.avatarContainer {
+  margin-bottom: 2rem;
 }
