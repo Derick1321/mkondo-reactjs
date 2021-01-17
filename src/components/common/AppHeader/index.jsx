@@ -48,6 +48,7 @@ const AppHeader = (props) => {
 
     history.push(routePaths.profile);
   }
+
   const handleFocus = () => { // hacky way to hideModal
     dispatch(hideModal());
   }
