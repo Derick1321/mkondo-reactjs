@@ -43,6 +43,7 @@ export const addHistory = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState: {
+    updateUserPending: false,
     updateUserError: null,
     updateUserComplete: false,
     addFavoritePending: false,
@@ -105,11 +106,19 @@ const userSlice = createSlice({
       state.addHistoryComplete = false;
       state.addHistoryError = action.error;
     },
+    [updateUser.pending]: (state, action) => {
+      state.updateUserPending = true;
+      state.updateUserComplete = false;
+      state.updateUserError = null;
+    },
     [updateUser.fulfilled]: (state, action) => {
+      state.updateUserPending =false;
       state.updateUserComplete = true;
       state.updateUserError = null;
     },
     [updateUser.rejected]: (state, action) => {
+      state.updateUserPending = false;
+      state.updateUserComplete = false;
       state.updateUserError = action.error;
     },
   }

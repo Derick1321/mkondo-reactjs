@@ -37,13 +37,13 @@ const OnBoarding = () => {
     setSelected([...selected, name]);
   }
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const payload = {
       ...user,
       genres: selected,
     };
 
-    dispatch(updateUser({
+    await dispatch(updateUser({
       id: user.user_id,
       payload,
     }));
