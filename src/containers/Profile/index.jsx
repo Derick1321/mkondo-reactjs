@@ -129,51 +129,59 @@ const Profile = () => {
         name="profile"
         activeColor="#EA4C89"
       />
-      <div className="row mt-4">
-        {
-          menus.map((menu, idx) => (
-            <div
-              className="col-12 col-sm-6 col-md-4"
-              key={`profile-item-menu-${idx}`}
-            >
-              <InputField
-                field={{
-                  ...menu,
-                  value: values[menu.name] || '',
-                }}
-                onChange={handleChange}
-              />
-            </div>
-          ))
-        }
+      <div className={`${selected === 'account' ? 'd-block' : 'd-none'}`}>
+        <div className="row mt-4">
+          {
+            menus.map((menu, idx) => (
+              <div
+                className="col-12 col-sm-6 col-md-4"
+                key={`profile-item-menu-${idx}`}
+              >
+                <InputField
+                  field={{
+                    ...menu,
+                    value: values[menu.name] || '',
+                  }}
+                  onChange={handleChange}
+                />
+              </div>
+            ))
+          }
+        </div>
+        <div>
+          <InputField
+            field={{
+              ...descriptionField,
+              value: values[descriptionField.name] || '',
+            }}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="row">
+          <p className="my-2">Social Media</p>
+          {
+            socials.map((social, idx) => (
+              <div
+                className="col-12 col-sm-6 col-md-4"
+                key={`social-profile-menu-${idx}`}
+              >
+                <InputField
+                  field={{
+                    ...social,
+                    value: values[social.name] || '',
+                  }}
+                  onChange={handleChange}
+                />
+              </div>
+            ))
+          }
+        </div>
       </div>
-      <div>
-        <InputField
-          field={{
-            ...descriptionField,
-            value: values[descriptionField.name] || '',
-          }}
-          onChange={handleChange}
-        />
+      <div className={`${selected === 'songs' ? 'd-block' : 'd-none'} mt-4`}>
+        <p>No Songs available!</p>
       </div>
-      <div className="row">
-        <p className="my-2">Social Media</p>
-        {
-          socials.map((social, idx) => (
-            <div
-              className="col-12 col-sm-6 col-md-4"
-              key={`social-profile-menu-${idx}`}
-            >
-              <InputField
-                field={{
-                  ...social,
-                  value: values[social.name] || '',
-                }}
-                onChange={handleChange}
-              />
-            </div>
-          ))
-        }
+      <div className={`${selected === 'videos' ? 'd-block' : 'd-none'} mt-4`}>
+        <p>No Videos available!</p>
       </div>
       <div className="d-flex mt-4 pt-4">
         <Button
