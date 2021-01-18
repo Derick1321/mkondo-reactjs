@@ -120,6 +120,7 @@ const userSlice = createSlice({
       state.updateUserPending = false;
       state.updateUserComplete = false;
       state.updateUserError = action.error;
+      console.log('action ', action);
     },
   }
 });
