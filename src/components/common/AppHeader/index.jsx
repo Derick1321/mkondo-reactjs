@@ -50,7 +50,7 @@ const AppHeader = (props) => {
     setUrl(res.response);
   }, [avatar])
 
-  // handlers
+  // handler
   const handleChange = (name, value) => {
     setSearch(value);
   }
@@ -64,7 +64,7 @@ const AppHeader = (props) => {
     history.push(routePaths.profile);
   }
 
-  const handleFocus = () => { // hacky way to hideModal
+  const handleFocus = () => { // a hacky way to hideModal
     dispatch(hideModal());
   }
 
