@@ -89,8 +89,17 @@ const Profile = () => {
     let url = null;
     if (file) {
       const res = await dispatch(saveMedia(file));
-      url = res.response;
+      url = res.payload;
     }
+
+    const newGenre = [];
+    values.genre.forEach((v) => {
+      if (!v) {
+        return;
+      }
+
+      newGenre.push(v.value);
+    });
 
     await dispatch(updateUser({
       id: user.user_id,
@@ -99,7 +108,7 @@ const Profile = () => {
         full_name: values.fullName,
         description: values.description,
         phone_number: values.phoneNumber,
-        genres: values.genre,
+        genres: newGenre,
         email: values.email,
         facebook_link: values.fb,
         youtube_link: values.yt,
