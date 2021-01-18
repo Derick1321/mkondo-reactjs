@@ -24,6 +24,8 @@ const Main = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
+  const isMobile = useSelector((store) => store.nav.isMobile);
   
   // effects
   useEffect(() => {
@@ -49,7 +51,7 @@ const Main = (props) => {
   // render
   return (
     <div className="d-flex vh-100">
-      <div className={styles.sideMenuWrapper}>
+      <div className={`d-none d-sm-block ${styles.sideMenuWrapper}`}>
         <SideMenu />
       </div>
       <div className={styles.content}>
@@ -64,6 +66,9 @@ const Main = (props) => {
             ))
           }
         </Switch>
+      </div>
+      <div className={`d-block d-sm-none ${styles.sideMenuMobile} ${isMobile && isSideMenuOpen ? styles.sideMenuActive : ''}`}>
+        <SideMenu />
       </div>
       <div className={styles.homeFooter}>
         <Player />
