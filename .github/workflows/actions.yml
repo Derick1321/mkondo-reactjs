@@ -33,6 +33,18 @@ jobs:
       if: github.ref == 'refs/heads/master'
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
       
+  notify:
+    name: Notify via Telegram
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Telegram
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          args: ${{ github.user }} The ${{ github.event_name }} event triggered first step Mkondo Web App Action Status ${{job.status}}.  
+          message: Mkondo API Action Status ${{job.status}} github
+      
      
     
  
