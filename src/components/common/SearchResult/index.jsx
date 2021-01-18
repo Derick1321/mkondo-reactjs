@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
@@ -11,6 +12,9 @@ const sampleSearch = [
 ];
 
 const SearchResult = () => {
+  // store
+  const isMobile = useSelector((store) => store.nav.isMobile);
+
   // handlers
   const buildResult = (res, idx) => {
     const { name, type, url } = res;
@@ -38,7 +42,7 @@ const SearchResult = () => {
 
   // render
   return (
-    <div className={`d-flex flex-column ${styles.searchResultWrapper}`}>
+    <div className={`d-flex flex-column ${styles.searchResultWrapper} ${isMobile ? styles.searchWrapperMobile : ''}`}>
       <p className={styles.heading}>RECENTLY SEARCHED</p>
       {
         sampleSearch.map((item, idx) => buildResult(item, idx))

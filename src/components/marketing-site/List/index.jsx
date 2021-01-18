@@ -10,7 +10,7 @@ const List = (props) => {
       <div className={`d-flex justify-content-center align-items-center ${styles.listNumWrapper}`}>
         <span>{num}</span>
       </div>
-      <div className="list-content-wrapper">
+      <div className={styles.listContentWrapper}>
         <p className={`${styles.listHeader} mb-0`}>{title}</p>
         <p className={`${styles.listDescription}`}>{description}</p>
       </div>

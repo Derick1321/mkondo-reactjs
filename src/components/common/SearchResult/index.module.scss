@@ -17,16 +17,21 @@
 }
 
 .searchResultWrapper {
+  position: absolute;
   margin-top: 50px;
   width: calc(100vw - 220px);
-  position: absolute;
   z-index: $z-index-next;
   background-color: $primary-green;
   height: calc(100vh - 120px);
   padding: 40px;
+  overflow: auto;
   p {
     color: $white;
   }
+}
+
+.searchWrapperMobile {
+  width: 100%;
 }
 
 .heading {

@@ -1,6 +1,6 @@
 @import '$assets/scss/main.scss';
 
-.menu-btn {
+.menuBtn {
   background: transparent;
   border: 0;
   justify-content: center;
@@ -10,13 +10,13 @@
   }
 }
 
-.menu-text {
+.menuText {
   font-family: Poppins;
   color: $secondary-green;
   font-size: $normal-text;
 }
 
-.active-dot {
+.activeDot {
   border-radius: 5px;
   height: 5px;
   width: 5px;
