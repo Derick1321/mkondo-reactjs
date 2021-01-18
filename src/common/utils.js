@@ -1,4 +1,4 @@
-import { Duration } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 
 // -> Fisher–Yates shuffle algorithm
 export const shuffleArray = (array) => {
@@ -11,6 +11,28 @@ export const shuffleArray = (array) => {
 
 export const formatTime = (seconds) => {
   return Duration.fromObject({ seconds }).toFormat('mm:ss');
+}
+
+export const formatDate = (value) => {
+  const units = [
+    'year',
+    'month',
+    'week',
+    'day',
+    'hour',
+    'minute',
+    'second',
+  ];
+
+  const dateTime = DateTime.fromISO(value, { zone: "utc" }).toLocal();
+  const diff = dateTime.diffNow().shiftTo(...units);
+  const unit = units.find((unit) => diff.get(unit) !== 0) || 'second';
+
+  const relativeFormatter = new Intl.RelativeTimeFormat('en', {
+    numeric: 'auto',
+  });
+
+  return relativeFormatter.format(Math.trunc(diff.as(unit)), unit);
 }
 
 export const generatePreview = (file) => {
@@ -36,9 +58,9 @@ const userTypes = {
 
 export const getPermissions = (role, userRole, params = {}) => {
   if ((role === 'artist'
-      // && params.isPublished
-      && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)
-    ) ||
+    // && params.isPublished
+    && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)
+  ) ||
     (role === 'media' && [userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
     (role === 'admin' && [userTypes.admin, userTypes.superAdmin].includes(userRole))
   ) {
@@ -62,7 +84,7 @@ export const bytesToSize = (bytes) => {
 }
 
 export function kFormatter(num) {
-  return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num);
+  return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num);
 }
 
 export const genres = [

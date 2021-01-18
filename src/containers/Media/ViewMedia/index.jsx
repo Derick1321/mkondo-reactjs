@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import Button from '$components/common/Button';
 import InputField from '$components/forms/InputField';
+import Row from '$components/media/CommentRow';
 import Tabs from '$components/common/Tabs';
 
 import { addComment, getComment, getRecommended } from '$redux/features/media';
@@ -30,9 +31,11 @@ const ViewMedia = () => {
   // store
   const dispatch = useDispatch();
   const { id: mediaId } = useParams();
+
   const userId = useSelector((store) => store.authentication.user.user_id);
   const addCommentPending = useSelector((store) => store.media.addCommentPending);
   const addCommentComplete = useSelector((store) => store.media.addCommentComplete);
+  const comments = useSelector((store) => store.media.comments);
 
   // effects
   useEffect(() => {
@@ -40,8 +43,8 @@ const ViewMedia = () => {
       return;
     }
 
-   dispatch(getComment(mediaId));
-   dispatch(getRecommended(userId));
+    dispatch(getComment(mediaId));
+    dispatch(getRecommended(userId));
   }, [addCommentComplete, mediaId]);
 
   // handlers
@@ -89,6 +92,19 @@ const ViewMedia = () => {
         >
           Comment
         </Button>
+      </div>
+      <div className="d-flex flex-column">
+        {
+          comments.map((comment, idx) => (
+            <Row
+              key={`comment-row-${idx}`}
+              name={comment.commenter_name}
+              date={comment.modified}
+              value={comment.value}
+              avatarUrl={comment.avatar_user_url}
+            />
+          ))
+        }
       </div>
     </div>
   );
