@@ -35,7 +35,7 @@ jobs:
       
   notify:
     name: Notify via Telegram
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Send message to Telegram
         uses: appleboy/telegram-action@master
