@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import styles from './index.module.scss';
@@ -12,6 +13,9 @@ const TabMenu = (props) => {
     onClick,
     activeColor,
   } = props;
+
+  // store
+  const isMobile = useSelector((store) => store.nav.isMobile);
 
   // handlers
   const handleClick = () => {
@@ -27,7 +31,7 @@ const TabMenu = (props) => {
   // render
   return (
     <button
-      className={`${styles.tabMenu} ${isActive ? styles.tabMenuActive : ''}`}
+      className={`${styles.tabMenu} ${isActive ? styles.tabMenuActive : ''} ${isMobile ? styles.mobile : ''}`}
       onClick={handleClick}
       type="button"
     >

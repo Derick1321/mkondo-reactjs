@@ -8,6 +8,7 @@
   border: none;
   background-color: transparent;
   padding: 0 4rem; 
+  margin-top: 1rem;
   &:focus {
     outline: none;
   }
@@ -22,4 +23,9 @@
   background-color: $secondary-green;
   height: 5px;
   border-radius: 5px;
+}
+
+.mobile {
+  width: 100%;
+  max-width: 360px;
 }

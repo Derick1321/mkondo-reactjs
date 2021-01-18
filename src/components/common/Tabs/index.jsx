@@ -24,7 +24,7 @@ const Tabs = (props) => {
   // render
   return (
     <>
-    <div className="d-flex">
+    <div className="d-flex flex-wrap">
       {
         options.map((opt, idx) => (
           <TabMenu

@@ -11,6 +11,7 @@ import { handleFetch } from '$common/requestUtils';
 
 import { saveMedia } from '$redux/features/media';
 import { updateUser } from '$redux/features/user';
+import { querySearch } from '$redux/features/nav';
 
 import { menus, descriptionField, socials } from './menus';
 
@@ -54,10 +55,11 @@ const Profile = () => {
       return;
     }
 
+    dispatch(querySearch('harv'));
+
     setValues({
       fullName: user.full_name,
       description: user.description,
-      avatarUrl: user.avatar_url, // TODO: Should depricate?
       phoneNumber: user.phone_number,
       genre: (user.genres || []).map((genre) => genres.find((v) => v.value === genre)),
       email: user.email,
@@ -65,7 +67,6 @@ const Profile = () => {
       yt: user.youtube_link,
       instagram: user.instagram_link,
       twitter: user.twitter_link,
-      avatarUrl: '',
     });
 
     if (!user.avatar_url) {
@@ -95,8 +96,16 @@ const Profile = () => {
       id: user.user_id,
       payload: {
         ...user,
-        ...values,
-        avatarUrl: url ? url : user.avatar_url,
+        full_name: values.fullName,
+        description: values.description,
+        phone_number: values.phoneNumber,
+        genres: values.genre,
+        email: values.email,
+        facebook_link: values.fb,
+        youtube_link: values.yt,
+        instagram_link: values.instagram,
+        twitter_link: values.twitter,
+        avatar_url: url ? url : user.avatar_url,
       },
     }));
   }

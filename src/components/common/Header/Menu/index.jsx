@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const Menu = (props) => {
   // props
@@ -15,14 +15,14 @@ const Menu = (props) => {
   // return
   return (
     <button
-      className="d-flex flex-column align-items-center menu-btn px-2"
+      className={`d-flex flex-column align-items-center ${styles.menuBtn} px-2`}
       onClick={handleClick}
       type="button"
     >
-      <span className="menu-text">{title}</span>
-      <div className={`active-dot ${isActive ? 'visible' : 'invisible'}`} />
+      <span className={styles.menuText}>{title}</span>
+      <div className={`${styles.activeDot} ${isActive ? 'visible' : 'invisible'}`} />
     </button>
-  )
+  );
 }
 
 Menu.defaultProps = {
