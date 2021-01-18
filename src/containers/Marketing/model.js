@@ -2,7 +2,7 @@ export const urls = {
   audio: [
     { source: "https://i.ibb.co/8b89DpX/image-8-1.png", },
     { source: "https://i.ibb.co/8b89DpX/image-8-1.png", },
-    { source:  "https://i.ibb.co/8b89DpX/image-8-1.png", },
+    { source: "https://i.ibb.co/8b89DpX/image-8-1.png", },
   ],
   video: [
     {
@@ -21,7 +21,7 @@ export const urls = {
       isWide: true,
     }
   ],
-  movies: [
+  movie: [
     {
       source: "https://i.ibb.co/YBzVxwk/image-2-2.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
@@ -39,6 +39,24 @@ export const urls = {
     },
   ],
 };
+
+/*
+// Picker fix
+  <Picker
+              data={data}
+              onChange={handleChange}
+              height={150}
+              width={280}
+              titleText="aria-label"
+              itemHeight={20}
+              selectedID={data[1].id}
+              color="#FFF"
+              activeColor="#FFF"
+              backgroundColor="transparent"
+              shadowColor="transparent"
+              fontSize={14}
+            />
+*/
 
 export const data = [
   {

@@ -60,14 +60,18 @@
   padding-top: 2rem;
   padding-bottom: 2rem;
   position: relative;
-  height: 500px;
+}
+
+.downloadWrapper {
+  position: relative;
 }
 
 .appDownloadFooter {
   background-color: $secondary-white;
   position: absolute;
-  margin-top: 290px !important;
+  margin-top: 210px !important;
   height: 220px;
+  width: 100%;
 }
 
 .appDownloadContent {
