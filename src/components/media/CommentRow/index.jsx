@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
+import { formatDate } from '$common/utils';
+
+import styles from './index.module.scss';
 
 const Avatar = styled.div`
   background-image: url(${props => props.source});
@@ -28,7 +31,7 @@ const CommentRow = (props) => {
   const [url, setUrl] = useState(null);
 
   // effects
-  useEffect(() => {
+  useEffect(async () => {
     if (!avatarUrl) {
       return;
     }
@@ -39,16 +42,16 @@ const CommentRow = (props) => {
 
   // render
   return (
-    <div className="d-flex">
+    <div className={`d-flex ${styles.row}`}>
       <Avatar
         source={url}
       />
-      <div class="d-flex flex-column">
-         <p>{name} <span>{date}</span></p>
-         <p>{value}</p>
+      <div className="d-flex flex-column ml-4">
+         <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
+         <p className={styles.text}>{value}</p>
       </div>
     </div>
-  )
+  );
 } 
 
 export default CommentRow;
