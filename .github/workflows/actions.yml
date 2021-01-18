@@ -42,7 +42,7 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
-          args: ${{ GITHUB_ACTOR }} just triggered ${{ github.event_name }} event on Mkondo Web App Action Status ${{job.status}}.  
+          args: ${{ github.actor }} just triggered ${{ github.event_name }} event on Mkondo Web App ${{ github.repository }} Action Status ${{job.status}}.  
 
       
      
