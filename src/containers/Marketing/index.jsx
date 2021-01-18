@@ -101,20 +101,6 @@ const Marketing = () => {
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2">
           <div className="d-flex">
-            <Picker
-              data={data}
-              onChange={handleChange}
-              height={150}
-              width={280}
-              titleText="aria-label"
-              itemHeight={20}
-              selectedID={data[1].id}
-              color="#FFF"
-              activeColor="#FFF"
-              backgroundColor="transparent"
-              shadowColor="transparent"
-              fontSize={14}
-            />
             <div className={`d-flex flex-wrap ${styles.tabContentWrapper}`}>
               {
                 urls[selected].map((item, idx) => (
@@ -149,10 +135,12 @@ const Marketing = () => {
         </div>
       </div>
       <div className={`row justify-content-center align-items-center ${styles.appDownloadWrapper}`}>
-        <div className={styles.appDownloadFooter} />
-        <div className={styles.appDownloadContent}>
-          <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-            <AppDownload />
+        <div className="col-12">
+          <div className={styles.appDownloadFooter} />
+          <div className={styles.appDownloadContent1}>
+            <div className={`col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 ${styles.downloadWrapper}`}>
+              <AppDownload />
+            </div>
           </div>
         </div>
       </div>

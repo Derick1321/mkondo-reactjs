@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import DropDownWrapper from '$components/common/DropDownWrapper';
 import TextInput from '$components/common/TextInput';
 import SearchResult from '$components/common/SearchResult';
+import HamburgerMenu from '$components/nav/HamburgerMenu';
 
 import { routePaths } from '$common/routeConfig';
 
@@ -32,6 +33,7 @@ const AppHeader = (props) => {
   const userName = useSelector((store) => store.authentication.user.full_name);
   const avatar = useSelector((store) => store.authentication.user.avatar_url);
   const modalActive = useSelector((store) => store.modal.type);
+  const isMobile = useSelector((store) => store.nav.isMobile);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -56,7 +58,10 @@ const AppHeader = (props) => {
   // render
   return (
     <>
-      <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''}`}>
+      <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
+        <div className="d-block d-sm-none">
+          <HamburgerMenu />
+        </div>
         {
           showSearch && (
             <TextInput
@@ -75,7 +80,7 @@ const AppHeader = (props) => {
           handleSelect={handleSelect}
         >
           <div className={`d-flex align-items-center ${styles.appHeaderName}`}>
-            <span>{userName || 'Name'}</span>
+            <span className="d-none d-sm-block">{userName || 'Name'}</span>
             <img
               src={avatar || defaultAvatar}
               className={styles.appHeaderAvatar}
