@@ -38,14 +38,12 @@ const App = () => {
 
   const handleResize = () => {
     const { width } = getWindowDimensions();
-    if (width <= 576 && !isMobile) {
+    if (width <= 576) {
       dispatch(toggleIsMobile(true));
       return;
     }
 
-    if (width > 576 && isMobile) {
-      dispatch(toggleIsMobile(false));
-    }
+    dispatch(toggleIsMobile(false));
   }
 
   // effects
