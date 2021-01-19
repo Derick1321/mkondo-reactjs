@@ -130,7 +130,6 @@ const Player = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      console.log('audioRef.current.index ', audioRef.current.index);
       audioRef.current.play(audioRef.current.index);
       setIsLoading(true);
     }
