@@ -19,6 +19,7 @@ const Monitor = () => {
   const createPlaylistComplete = useSelector((store) => store.playlist.createPlaylistComplete);
   const updateUserPending = useSelector((store) => store.user.updateUserPending);
   const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
+  const addHistoryComplete = useSelector((store) => store.user.addHistoryComplete);
 
   // effects
   useEffect(() => {
@@ -49,7 +50,12 @@ const Monitor = () => {
     }
 
     dispatch(reloadUser(userId));
-  }, [addFavoritePending, removeFavoritePending, updateUserComplete]);
+  }, [
+    addFavoritePending,
+    removeFavoritePending,
+    updateUserComplete,
+    addHistoryComplete,
+  ]);
 
   useEffect(() => {
     if (!userId) {
