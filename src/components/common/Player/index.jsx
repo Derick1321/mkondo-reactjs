@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Slider from '$components/common/Slider';
+// import Slider from '$components/common/Slider';
+import Slider from '$components/media/Slider';
 
 import AudioPlayer from '$common/player';
 import { formatTime } from '$common/utils';
@@ -25,7 +26,7 @@ const volumeFullIcon = require('$assets/images/player/volume-full.svg');
 
 // sample playlist
 const playlists = [
-  { 'name': 'Song 1', album: 'Next Album', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', avatar: avatar, }, 
+  { 'name': 'Song 1', album: 'Next Album', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', avatar: avatar, },
 ];
 
 const Player = () => {
@@ -41,11 +42,12 @@ const Player = () => {
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [volume, setVolume] = useState(100);
 
   // store
   const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
   const dispatch = useDispatch();
-  
+
 
   // functions
   const onPlay = (dur) => {
@@ -85,24 +87,30 @@ const Player = () => {
     handlePlay();
   }, [currentPlaylist]);
 
-  useEffect(() => {
-    const cb = () => {
-      const obj = audioRef.current;
-      const sound = obj.playlist[obj.index].howl;
-      seekPosRef.current = sound.seek();
-      setSeekPos(sound.seek());
-    };
+  const getSeekPosition = () => {
+    const obj = audioRef.current;
+    const sound = obj.playlist[obj.index].howl;
+    seekPosRef.current = sound.seek();
+    setSeekPos(sound.seek());
+  }
 
-    if (isPlaying) {
-      timerRef.current = window.setInterval(cb, 1000);
+  const loop = () => {
+    getSeekPosition();
+    cancelAnimationFrame(timerRef.current);
+    timerRef.current = requestAnimationFrame(() => loop());
+  }
+
+  useEffect(() => {
+    if (!isPlaying) {
+      cancelAnimationFrame(timerRef.current);
       return;
     }
 
-    window.clearInterval(timerRef.current);
-    timerRef.current = null;
+    loop();
+
     return () => { // Return callback to run on unmount.
       if (timerRef.current) {
-        window.clearInterval(timerRef.current);
+        cancelAnimationFrame(timerRef.current);
       }
     };
   }, [isPlaying]);
@@ -122,7 +130,6 @@ const Player = () => {
     if (isPlaying) {
       audioRef.current.pause();
     } else {
-      console.log('audioRef.current.index ', audioRef.current.index);
       audioRef.current.play(audioRef.current.index);
       setIsLoading(true);
     }
@@ -177,7 +184,7 @@ const Player = () => {
           <img src={prevIcon} />
         </button>
         <button className="player-btn" onClick={handlePlay}>
-          { actionBtn }
+          {actionBtn}
         </button>
         <button className="player-btn" onClick={handleNext}>
           <img src={nextIcon} />
@@ -196,7 +203,8 @@ const Player = () => {
   }
 
   const updateVolume = (value) => {
-    audioRef.current.volume(value);
+    setVolume(value);
+    audioRef.current.volume(value / 100);
   }
 
   let album = 'Unknown';
@@ -211,7 +219,7 @@ const Player = () => {
 
   // render
   return (
-    <div className="d-flex player-wrapper align-items-center">
+    <div className="d-flex player-wrapper align-items-center flex-wrap">
       <div className="d-flex player-name-wrapper">
         <img
           src={avatar || defaultAvatar}
@@ -233,16 +241,17 @@ const Player = () => {
             <img src={volumeFullIcon} />
           </button>
           <Slider
-            isVolume
+            value={volume}
             callbacks={{
               updateRange: updateVolume,
             }}
           />
         </div>
         <div className="player-duration-wrapper d-flex">
-          <span className="player-time">{formatTime(seekPos)}</span>
+          <span className="player-time">{formatTime(seekPosRef.current)}</span>
           <Slider
-            position={(seekPos / duration)}
+            value={seekPosRef.current}
+            maxValue={duration}
             callbacks={{
               updateRange,
             }}
@@ -255,7 +264,7 @@ const Player = () => {
           <img src={menuIcon} />
         </button>
       </div>
-    </div> 
+    </div>
   );
 };
 

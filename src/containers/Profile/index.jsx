@@ -5,12 +5,13 @@ import AvatarInput from '$components/common/AvatarInput';
 import Button from '$components/common/Button';
 import InputField from '$components/forms/InputField';
 import Tabs from '$components/common/Tabs';
+import Feature from '$components/common/Feature';
 
 import { genres, generatePreview } from '$common/utils';
 import { handleFetch } from '$common/requestUtils';
 
 import { saveMedia } from '$redux/features/media';
-import { updateUser } from '$redux/features/user';
+import { updateUser, getUserMedia } from '$redux/features/user';
 import { querySearch } from '$redux/features/nav';
 
 import { menus, descriptionField, socials } from './menus';
@@ -47,6 +48,7 @@ const Profile = () => {
   const user = useSelector((store) => store.authentication.user);
   const updateUserPending = useSelector((store) => store.user.updateUserPending);
   const token = useSelector((store) => store.authentication.token);
+  const userMedia = useSelector((store) => store.user.userMedia);
   const dispatch = useDispatch();
 
   // effects
@@ -56,6 +58,7 @@ const Profile = () => {
     }
 
     dispatch(querySearch('harv'));
+    dispatch(getUserMedia());
 
     setValues({
       fullName: user.full_name,
@@ -76,6 +79,10 @@ const Profile = () => {
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${user.avatar_url}`, null, token);
     setLocalAvatarUrl(res.response);
   }, [user]);
+
+  useEffect(() => {
+    console.log('userMedia ', userMedia);
+  }, [userMedia]);
 
   // handlers
   const handleChange = (name, value) => {
@@ -196,12 +203,33 @@ const Profile = () => {
         </div>
       </div>
       <div className={`${selected === 'songs' ? 'd-block' : 'd-none'} mt-4`}>
-        <p>No Songs available!</p>
+        {
+          (!userMedia || userMedia.length < 1) && (
+            <p>No Songs available!</p>
+          )
+        }
+        <div className="d-flex flex-wrap">
+          {
+            userMedia.map((item, index) => (
+              <Feature
+                key={`feature-top-songs-${index}`}
+                mediaUrl={item.media_url}
+                mediaId={item.media_id}
+                avatar={item.cover_url}
+                artistId={item.owner_id}
+                source={item.owner_avatar_url}
+                subtitle="Latest Release"
+                title={item.name}
+                country={item.country}
+              />
+            ))
+          }
+        </div>
       </div>
       <div className={`${selected === 'videos' ? 'd-block' : 'd-none'} mt-4`}>
         <p>No Videos available!</p>
       </div>
-      <div className="d-flex mt-4 pt-4">
+      <div className={`mt-4 pt-4 ${selected === 'account' ? 'd-flex' : 'd-none'}`}>
         <Button
           onClick={handleUpdate}
           isLoading={updateUserPending}
