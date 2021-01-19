@@ -30,6 +30,7 @@ jobs:
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/staging
       
     - name: Change permissions 
+      if: github.ref == 'refs/heads/staging'
       run: chmod -R 777 staging
  
       
@@ -38,6 +39,7 @@ jobs:
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
       
     - name: Change permissions 
+      if: github.ref == 'refs/heads/master'
       run: chmod -R 777 production
       
   notify:
