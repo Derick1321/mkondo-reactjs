@@ -151,6 +151,9 @@ class Player {
   seek(pos) {
     // Get the Howl we want to manipulate.
     const sound = this.playlist[this.index].howl;
+    if (!sound) { // sound not found
+      return;
+    }
     // Convert the percent into a seek position.
     sound.seek(sound.duration() * pos);
   }
