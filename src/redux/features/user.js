@@ -6,6 +6,7 @@ const UPDATE_USER = 'user/UPDATE_USER';
 const ADD_FAVORITE = 'user/ADD_FAVORITE';
 const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
 const ADD_HISTORY = 'user/ADD_HISTORY';
+const GET_MEDIA = 'user/GET_MEDIA';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -36,7 +37,16 @@ export const addHistory = createAsyncThunk(
   ADD_HISTORY,
   async (data, param) => {
     const { token, user } = param.getState().authentication;
+    console.log("here ", data);
     return await handleFetch('POST', `users/${user.user_id}/history`, data, token);
+  }
+);
+
+export const getUserMedia = createAsyncThunk(
+  GET_MEDIA,
+  async (data, param) => {
+    const { token, user } = param.getState().authentication;
+    return await handleFetch('GET', `users/${user.user_id}/media`, null, token);
   }
 );
 
@@ -55,6 +65,11 @@ const userSlice = createSlice({
     addHistoryPending: false,
     addHistoryError: null,
     addHistoryComplete: false,
+    getUserMediaPending: false,
+    getUserMediaError: null,
+    getUserMediaComplete: false,
+    userMedia: [],
+    currentPagination: {},
   },
   reducers: {},
   extraReducers: {
@@ -112,7 +127,7 @@ const userSlice = createSlice({
       state.updateUserError = null;
     },
     [updateUser.fulfilled]: (state, action) => {
-      state.updateUserPending =false;
+      state.updateUserPending = false;
       state.updateUserComplete = true;
       state.updateUserError = null;
     },
@@ -120,7 +135,24 @@ const userSlice = createSlice({
       state.updateUserPending = false;
       state.updateUserComplete = false;
       state.updateUserError = action.error;
-      console.log('action ', action);
+    },
+    [getUserMedia.pending]: (state, action) => {
+      state.getUserMediaPending = true;
+      state.getUserMediaComplete = false;
+      state.getUserMediaError = null;
+    },
+    [getUserMedia.fulfilled]: (state, action) => {
+      const { pagination, data } = action.payload.media;
+      state.getUserMediaPending = false;
+      state.getUserMediaComplete = true;
+      state.getUserMediaError = null;
+      state.userMedia = data;
+      state.currentPagination = pagination;
+    },
+    [getUserMedia.rejected]: (state, action) => {
+      state.getUserMediaPending = false;
+      state.getUserMediaComplete = false;
+      state.getUserMediaError = action.error;
     },
   }
 });
