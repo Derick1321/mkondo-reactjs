@@ -28,10 +28,12 @@ jobs:
     - name: Deploy staging
       if: github.ref == 'refs/heads/staging'
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/staging
+           chmod -R 777 staging
       
     - name: Deploy production
       if: github.ref == 'refs/heads/master'
       run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
+           chmod -R 777 production
       
   notify:
     name: Notify via Telegram
