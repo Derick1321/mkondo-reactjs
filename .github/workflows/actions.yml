@@ -31,7 +31,7 @@ jobs:
       
     - name: Change permissions 
       if: github.ref == 'refs/heads/staging'
-      run: chmod -R 777 staging
+      run: chmod -R 777 /home/mwakatumbula/staging
  
       
     - name: Deploy production
@@ -40,7 +40,7 @@ jobs:
       
     - name: Change permissions 
       if: github.ref == 'refs/heads/master'
-      run: chmod -R 777 production
+      run: chmod -R 777 /home/mwakatumbula/production
       
   notify:
     name: Notify via Telegram
