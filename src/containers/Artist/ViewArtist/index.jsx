@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -7,30 +7,34 @@ import Button from '$components/common/Button';
 import Social from '$components/common/Social';
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
+import { handleFetch } from '$common/requestUtils';
+
+import { showModal } from '$redux/features/modal';
 import { getArtistById } from '$redux/features/artist';
 
-import './index.scss';
+import styles from './index.module.scss';
+import { current } from '@reduxjs/toolkit';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const favoriteIcon = require('$assets/images/icons/favorite.svg');
-
-// samples
-const sampleCover = require('$assets/images/sample-cover.jpg');
-const sampleAvatar = require('$assets/images/sample-artist.jpg');
+const defaultAvatar = require('$assets/images/profile-user.svg');
 
 const Cover = styled.div`
   background-image: url(${props => props.source});
-  width: 100%;
-  height: 100%;
+  background-color: #F7F5F5;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: top;
+  width: 100%;
+  height: 100%;
 `;
 
 const Avatar = styled.div`
   background-image: url(${props => props.source});
   height: 110px;
   width: 110px;
+  background-size: cover;
+  background-position: center;
   border-radius: 50%;
 `;
 
@@ -39,6 +43,7 @@ const ViewArtist = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const currentArtist = useSelector((store) => store.artist.currentArtist);
+  const token = useSelector((store) => store.authentication.token);
 
   const socialLinks = {
     fb: currentArtist.facebook_link,
@@ -46,6 +51,10 @@ const ViewArtist = () => {
     instagram: currentArtist.instagram_link,
     twitter: currentArtist.instagram_link,
   };
+
+  // state
+  const [coverUrl, setCoverUrl] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
 
   // effects
   useEffect(() => {
@@ -56,13 +65,35 @@ const ViewArtist = () => {
     dispatch(getArtistById(id));
   }, [id]);
 
+  useEffect(async () => {
+    if (!currentArtist) {
+      return;
+    }
+
+    if (currentArtist.avatar_url) {
+      const res = await handleFetch('GET', `media/presigned-get-url?file_name=${currentArtist.avatar_url}`, null, token);
+      setAvatarUrl(res.response);
+    }
+
+    if (currentArtist.cover_url) {
+      const res = await handleFetch('GET', `media/presigned-get-url?file_name=${currentArtist.cover_url}`, null, token);
+      setCoverUrl(res.response);
+    }
+  }, [currentArtist]);
+
   // handler
   const handlePlay = () => {
     console.log("Play");
   }
 
   const handleShare = () => {
-    
+    dispatch(showModal('SHARE_MODAL', {
+      title: currentArtist.full_name,
+      country: currentArtist.country,
+      id: currentArtist.user_id,
+      avatarUrl: avatarUrl,
+      isArtist: true,
+    }));
   }
 
   const handleFavorite = () => {
@@ -70,40 +101,49 @@ const ViewArtist = () => {
 
   // render
   return (
-    <div className="artist-view-container page-container">
-      <div className="artist-cover-wrapper">
-        <Cover source={sampleCover} />
-        <div className="d-flex artist-header-wrapper">
-          <div className="d-flex artist-header-infopane">
-            <Avatar source={sampleAvatar} />
+    <div className={styles.artistViewContainer}>
+      <div className={styles.artistCoverWrapper}>
+        <Cover
+          source={coverUrl}
+        />
+        <div className={`row ${styles.artistHeaderWrapper}`}>
+          <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderInfopane}`}>
+            <Avatar
+              source={avatarUrl || defaultAvatar}
+            />
             <div className="ml-4 mt-2">
-              <p className="artist-title mt-2">{currentArtist.full_name}</p>
-              <span className="artist-subtitle pb-2">About</span>
+              <p className={`${styles.artistTitle} mt-2`}>{currentArtist.full_name}</p>
+              <span className={`d-none d-sm-block ${styles.artistSubtitle} pb-2`}>About</span>
             </div>
           </div>
-          <div className="d-flex artist-header-actionpane">
+          <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderActionpane}`}>
             <Button onClick={handlePlay}>Play</Button>
             <Button
               onClick={handleFavorite}
               isTransparent
               noBorder
             >
-              <img src={favoriteIcon} className="artist-action-icon" />
+              <img
+                className={styles.artistActionIcon}
+                src={favoriteIcon}
+              />
             </Button>
             <Button
               onClick={handleShare}
               isTransparent
               noBorder
             >
-              <img src={shareIcon} className="artist-action-icon" />
+              <img
+                src={shareIcon}
+                className={styles.artistActionIcon}
+              />
             </Button>
           </div>
         </div>
         <div className="row justify-content-center">
           <div className="col-12 col-sm-10 col-md-8">
-            <div className="artist-overview-content">
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, </p>
-              <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, </p>
+            <div className="px-2">
+              <p>{currentArtist.description}</p>
             </div>
             <Social
               links={socialLinks}

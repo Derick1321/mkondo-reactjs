@@ -153,7 +153,7 @@ const Feature = (props) => {
     dispatch(showModal('SHARE_MODAL', {
       title,
       country,
-      mediaId,
+      id: mediaId,
       avatarUrl,
     }));
   }

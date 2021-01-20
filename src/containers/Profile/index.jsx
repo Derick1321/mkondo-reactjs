@@ -43,6 +43,8 @@ const Profile = () => {
   const [values, setValues] = useState(initialState);
   const [localAvatarUrl, setLocalAvatarUrl] = useState('');
   const [file, setFile] = useState(null);
+  const [localCoverUrl, setLocalCoverUrl] = useState('');
+  const [coverFile, setCoverFile] = useState(null);
 
   // store
   const user = useSelector((store) => store.authentication.user);
@@ -72,17 +74,16 @@ const Profile = () => {
       twitter: user.twitter_link,
     });
 
-    if (!user.avatar_url) {
-      return;
+    if (user.avatar_url) {
+      const res = await handleFetch('GET', `media/presigned-get-url?file_name=${user.avatar_url}`, null, token);
+      setLocalAvatarUrl(res.response);
     }
 
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${user.avatar_url}`, null, token);
-    setLocalAvatarUrl(res.response);
+    if (user.cover_url) {
+      const res = await handleFetch('GET', `media/presigned-get-url?file_name=${user.cover_url}`, null, token);
+      setLocalCoverUrl(res.response);
+    }
   }, [user]);
-
-  useEffect(() => {
-    console.log('userMedia ', userMedia);
-  }, [userMedia]);
 
   // handlers
   const handleChange = (name, value) => {
@@ -94,9 +95,16 @@ const Profile = () => {
 
   const handleUpdate = async () => {
     let url = null;
+    let coverUrl = null;
+
     if (file) {
       const res = await dispatch(saveMedia(file));
       url = res.payload;
+    }
+
+    if (coverFile) {
+      const res = await dispatch(saveMedia(coverFile));
+      coverUrl = res.payload;
     }
 
     const newGenre = [];
@@ -122,6 +130,7 @@ const Profile = () => {
         instagram_link: values.instagram,
         twitter_link: values.twitter,
         avatar_url: url ? url : user.avatar_url,
+        cover_url: coverUrl ? coverUrl : user.cover_url,
       },
     }));
   }
@@ -132,21 +141,36 @@ const Profile = () => {
     setFile(files[0]);
   }
 
+  const handleCoverChange = async (files) => {
+    const url = await generatePreview(files[0]);
+    setLocalCoverUrl(url);
+    setCoverFile(files[0]);
+  }
+
   // render
   return (
     <div className={styles.container}>
-      <div className={`d-flex ${styles.avatarContainer}`}>
-        <div className={styles.avatarWrapper}>
+      <div className={styles.heroContainer}>
+        <div className={styles.coverWrapper}>
           <AvatarInput
-            url={localAvatarUrl}
-            onChange={handleAvatarChange}
+            url={localCoverUrl}
+            onChange={handleCoverChange}
           />
         </div>
-        <div className="d-flex flex-column">
-          <p>Mkondo {user.user_type}</p>
-          <p className={styles.title}>{user.full_name}</p>
+        <div className={`d-flex ${styles.avatarContainer}`}>
+          <div className={styles.avatarWrapper}>
+            <AvatarInput
+              url={localAvatarUrl}
+              onChange={handleAvatarChange}
+            />
+          </div>
+          <div className="d-flex flex-column">
+            <p>Mkondo {user.user_type}</p>
+            <p className={styles.title}>{user.full_name}</p>
+          </div>
         </div>
       </div>
+
       <Tabs
         options={options}
         onSelect={setSelected}

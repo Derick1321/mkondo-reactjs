@@ -9,7 +9,20 @@
   padding: 4rem 2rem 10rem 2rem;
 }
 
+.heroContainer {
+  position: relative;
+  height: 300px;
+}
+
+.coverWrapper {
+  position: absolute;
+  background-color: $tertiary-gray;
+  height: 100%;
+  width: 100%;
+}
+
 .avatarWrapper {
+  position: relative;
   border-radius: 50%;
   overflow: hidden;
   border: 1px solid $secondary-gray;
@@ -25,5 +38,7 @@
 }
 
 .avatarContainer {
+  position: relative;
   margin-bottom: 2rem;
+  padding: 2rem;
 }
