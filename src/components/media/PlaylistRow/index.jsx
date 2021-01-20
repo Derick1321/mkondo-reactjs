@@ -73,11 +73,10 @@ const Row = (props) => {
   }
 
   const handleShare = () => {
-
     dispatch(showModal('SHARE_MODAL', {
       title: name,
       country: recordLabel,
-      mediaId,
+      id: mediaId,
       avatarUrl: url,
     }));
   }
