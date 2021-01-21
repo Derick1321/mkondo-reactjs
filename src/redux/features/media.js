@@ -6,6 +6,7 @@ const ADD_MEDIA = 'media/ADD_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
+const UPDATE_MEDIA = 'media/UPDATE_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
 const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
@@ -87,6 +88,14 @@ export const getRecommended = createAsyncThunk(
   }
 );
 
+export const updateMedia = createAsyncThunk(
+  UPDATE_MEDIA,
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('PUT', `media/${data.id}`, data.payload, token);
+  }
+);
+
 // save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
@@ -141,17 +150,25 @@ const INITIAL_STATE = {
   addCommentPending: false,
   addCommentError: null,
   addCommentComplete: false,
+  updateMediaPending: false,
+  updateMediaError: null,
+  updateMediaComplete: false,
   medias: [],
   newReleases: [],
   albumId: null,
   comments: [],
   recommendedMedia: [],
+  currentMediaId: null,
 };
 
 const mediaSlice = createSlice({
   name: 'media',
   initialState: INITIAL_STATE,
-  reducers: {},
+  reducers: {
+    setCurrentMediaId(state, action) {
+      state.currentMediaId = action.payload;
+    },
+  },
   extraReducers: {
     [addMedia.pending]: (state, action) => {
       state.addMediaPending = true;
@@ -210,7 +227,7 @@ const mediaSlice = createSlice({
       state.addAlbumPending = false;
       state.addAlbumComplete = true;
       state.addAlbumError = null;
-      state.albumId = action.payload;
+      state.albumId = action.payload.album_id;
     },
     [addAlbum.rejected]: (state, action) => {
       state.addAlbumPending = false;
@@ -248,7 +265,6 @@ const mediaSlice = createSlice({
       state.getRecommendedPending = false;
       state.getRecommendedComplete = false;
       state.getRecommendedError = action.error;
-      console.log('action. ', action);
     },
     [getNewReleases.pending]: (state, action) => {
       state.getNewReleasesPending = true;
@@ -275,13 +291,11 @@ const mediaSlice = createSlice({
       state.addCommentPending = false;
       state.addCommentComplete = true;
       state.addCommentError = null;
-      console.log('action ', action);
     },
     [addComment.rejected]: (state, action) => {
       state.addCommentPending = false;
       state.addCommentComplete = true;
       state.addCommentError = action.error;
-      console.log('action ', action);
     },
     [getComment.pending]: (state, action) => {
       state.getCommentPending = true;
@@ -300,8 +314,26 @@ const mediaSlice = createSlice({
       state.getCommentComplete = true;
       state.getCommentError = action.error;
     },
+    [updateMedia.pending]: (state, action) => {
+      state.updateMediaPending = true;
+      state.updateMediaComplete = false;
+      state.updateMediaError = null;
+      state.comments = [];
+    },
+    [updateMedia.fulfilled]: (state, action) => {
+      state.updateMediaPending = false;
+      state.updateMediaComplete = true;
+      state.updateMediaError = null;
+    },
+    [updateMedia.rejected]: (state, action) => {
+      state.updateMediaPending = false;
+      state.updateMediaComplete = true;
+      state.updateMediaError = action.error;
+    },
   }
 });
+
+export const { setCurrentMediaId } = mediaSlice.actions;
 
 export default mediaSlice.reducer;
 

@@ -10,7 +10,7 @@ import Feature from '$components/common/Feature';
 import { genres, generatePreview } from '$common/utils';
 import { handleFetch } from '$common/requestUtils';
 
-import { saveMedia } from '$redux/features/media';
+import { saveMedia, updateMedia, getNewReleases } from '$redux/features/media';
 import { updateUser, getUserMedia } from '$redux/features/user';
 import { querySearch } from '$redux/features/nav';
 
@@ -133,6 +133,21 @@ const Profile = () => {
         cover_url: coverUrl ? coverUrl : user.cover_url,
       },
     }));
+
+    // userMedia
+    /*
+    userMedia.forEach(async (media) => {
+      await dispatch(updateMedia({
+        id: media.media_id,
+        payload: {
+          ...media,
+          owner_avatar_url: url ? url : user.avatar_url,
+        }
+      }));
+    });
+
+    dispatch(getNewReleases());
+    */
   }
 
   const handleAvatarChange = async (files) => {
