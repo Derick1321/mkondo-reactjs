@@ -35,7 +35,9 @@ const NewAlbum = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
   const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
+  const albumId = useSelector((store) => store.media.albumId);
 
   // refs
   const initiatedSave = useRef(false);
@@ -47,7 +49,7 @@ const NewAlbum = () => {
     }
 
     initiatedSave.current = false;
-    history.push(routePaths.mediaUpload);
+    history.push(routePaths.mediaUpload, { albumId });
   }, [addAlbumComplete]);
 
   // handlers
@@ -83,6 +85,9 @@ const NewAlbum = () => {
   }
 
   const handleCancel = () => {
+    if(addAlbumPending) {
+      return;
+    }
     setValues(initialState);
   }
 
@@ -107,6 +112,7 @@ const NewAlbum = () => {
             </Button>
           <Button
             onClick={handleSave}
+            isLoading={addAlbumPending}
           >
             Save
           </Button>
