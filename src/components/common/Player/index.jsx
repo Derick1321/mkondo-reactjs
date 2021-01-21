@@ -8,10 +8,10 @@ import AudioPlayer from '$common/player';
 import { formatTime } from '$common/utils';
 
 import { addHistory } from '$redux/features/user';
+import { setCurrentMediaId } from '$redux/features/media';
 
-import './index.scss';
+import styles from './index.module.scss';
 
-const avatar = require('$assets/images/player/avatar.png');
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
 const repeatIcon = require('$assets/images/player/repeat.svg');
@@ -23,11 +23,6 @@ const nextIcon = require('$assets/images/player/next.svg');
 const playIcon = require('$assets/images/player/play.svg');
 const pauseIcon = require('$assets/images/player/pause.svg');
 const volumeFullIcon = require('$assets/images/player/volume-full.svg');
-
-// sample playlist
-const playlists = [
-  { 'name': 'Song 1', album: 'Next Album', url: 'https://drive.google.com/u/0/uc?id=1-74MGu-MEKUg7c8QQIvp0ojpKEPXgtks&export=download', avatar: avatar, },
-];
 
 const Player = () => {
   // refs
@@ -48,16 +43,21 @@ const Player = () => {
   const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
   const dispatch = useDispatch();
 
-
   // functions
-  const onPlay = (dur) => {
+  const onPlay = (dur, mediaId) => {
     setIsPlaying(true);
     setDuration(dur);
     setIsLoading(false);
+    dispatch(setCurrentMediaId(mediaId));
   }
 
   const onPause = (dur) => {
+    onEnd();
+  }
+
+  const onEnd = () => {
     setIsPlaying(false);
+    dispatch(setCurrentMediaId(null));
   }
 
   const onLoad = (mediaId) => {
@@ -72,6 +72,7 @@ const Player = () => {
       onPlay,
       onPause,
       onLoad,
+      onEnd,
     }
 
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist))
@@ -159,7 +160,7 @@ const Player = () => {
     let actionBtn = <img src={playIcon} />;
     if (isPlaying) {
       actionBtn = (
-        <div className="pause-btn-wrapper">
+        <div className={styles.pauseBtnWrapper}>
           <img src={pauseIcon} />
         </div>
       );
@@ -177,19 +178,19 @@ const Player = () => {
 
     return (
       <>
-        <button className="player-btn" onClick={handleRepeat}>
+        <button className={styles.playerBtn} onClick={handleRepeat}>
           <img src={isRepeat ? repeatActiveIcon : repeatIcon} />
         </button>
-        <button className="player-btn" onClick={handlePrev}>
+        <button className={styles.playerBtn} onClick={handlePrev}>
           <img src={prevIcon} />
         </button>
-        <button className="player-btn" onClick={handlePlay}>
+        <button className={styles.playerBtn} onClick={handlePlay}>
           {actionBtn}
         </button>
-        <button className="player-btn" onClick={handleNext}>
+        <button className={styles.playerBtn} onClick={handleNext}>
           <img src={nextIcon} />
         </button>
-        <button className="player-btn" onClick={handleShuffle}>
+        <button className={styles.playerBtn} onClick={handleShuffle}>
           <img src={isShuffle ? shuffleActiveIcon : shuffleIcon} />
         </button>
       </>
@@ -219,11 +220,11 @@ const Player = () => {
 
   // render
   return (
-    <div className="d-flex player-wrapper align-items-center flex-wrap">
-      <div className="d-flex player-name-wrapper">
+    <div className={`d-flex align-items-center flex-wrap ${styles.playerWrapper}`}>
+      <div className={`d-flex ${styles.playerNameWrapper}`}>
         <img
           src={avatar || defaultAvatar}
-          className="player-avatar mx-1"
+          className={`${styles.playerAvatar} mx-1`}
         />
         <div className="d-flex flex-column justify-content-center mx-2">
           <span>{artistName}</span>
@@ -232,12 +233,12 @@ const Player = () => {
           }
         </div>
       </div>
-      <div className="player-controls-wrapper mx-4">
+      <div className="mx-4">
         {buildPlayerControls()}
       </div>
-      <div className="d-flex player-slider-wrapper px-2">
-        <div className="d-flex player-volume-wrapper">
-          <button className="player-btn player-volume-btn">
+      <div className={`d-flex ${styles.playerSliderWrapper} px-2`}>
+        <div className={`d-flex ${styles.playerVolumeWrapper}`}>
+          <button className={`${styles.playerBtn} ${styles.playerVolumeBtn}`}>
             <img src={volumeFullIcon} />
           </button>
           <Slider
@@ -247,8 +248,8 @@ const Player = () => {
             }}
           />
         </div>
-        <div className="player-duration-wrapper d-flex">
-          <span className="player-time">{formatTime(seekPosRef.current)}</span>
+        <div className={`d-flex ${styles.playerDurationWrapper}`}>
+          <span className={styles.playerTime}>{formatTime(seekPosRef.current)}</span>
           <Slider
             value={seekPosRef.current}
             maxValue={duration}
@@ -256,11 +257,11 @@ const Player = () => {
               updateRange,
             }}
           />
-          <span className="player-time">{formatTime(duration - seekPos)}</span>
+          <span className={styles.playerTime}>{formatTime(duration - seekPos)}</span>
         </div>
       </div>
-      <div className="player-menu-wrapper">
-        <button className="player-btn">
+      <div className={styles.playerMenuWrapper}>
+        <button className={styles.playerBtn}>
           <img src={menuIcon} />
         </button>
       </div>

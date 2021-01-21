@@ -23,7 +23,7 @@ const TopSongs = (props) => {
                 avatar={item.cover_url}
                 artistId={item.owner_id}
                 source={item.owner_avatar_url}
-                subtitle="Latest Release"
+                subtitle={item.owner_name}
                 title={item.name}
                 country={item.country}
               />
