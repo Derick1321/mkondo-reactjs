@@ -112,14 +112,12 @@ const Feature = (props) => {
   const handlePlay = async () => {
     // temporarily load it on player
     // TODO: navigate to player component
-    console.log("currentMediaId ", currentMediaId, pauseForced);
     if (currentMediaId) {
       if (!pauseForced) {
         dispatch(forcePause(true));
         return;
       }
 
-      console.log('HEREEEE');
       dispatch(forcePause(false));
       return;
     }
