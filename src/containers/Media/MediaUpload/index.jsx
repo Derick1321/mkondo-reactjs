@@ -8,9 +8,9 @@ import DraggableList from '$components/common/DraggableList';
 import UploadCard from '$components/media/UploadCard';
 
 import { routePaths } from '$common/routeConfig';
-import { bytesToSize } from '$common/utils';
+import { bytesToSize, generatePreview } from '$common/utils';
 
-import { saveMedia, addMedia } from '$redux/features/media';
+import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 
 import styles from './index.module.scss';
 
@@ -41,9 +41,12 @@ const MediaUpload = () => {
       message: 'Congratulations you are all set!',
       link: `https//mkondo.co/app/media/${newMediaId}`,
       country: item.recordLabel,
-      name: item.title,
-      avatar: await generatePreview(files[files.length - 1].binary),
+      name: item.title, 
+      avatar: await generatePreview(item.file),
     });
+
+    completedFiles.current = 0;
+    dispatch(clearNewMediaId());
   }
 
   // effects
@@ -73,6 +76,10 @@ const MediaUpload = () => {
   }, [addMediaPending, addMediaFulfilled]);
 
   useEffect(() => {
+    if (!newMediaId) {
+      return;
+    }
+
     completedFiles.current += 1;
     if (completedFiles.current === files.length) {
       handleNext();
@@ -117,7 +124,7 @@ const MediaUpload = () => {
       await dispatch(addMedia({
         name: item.title,
         description: item.description,
-        genre: item.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+        genres: item.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
         cover_url: avatarRes.payload,
         media_url: mediaRes.payload,
         owner_id: userId,
