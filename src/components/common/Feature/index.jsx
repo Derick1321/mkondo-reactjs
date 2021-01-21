@@ -52,8 +52,6 @@ const Feature = (props) => {
     source,
     subtitle,
     title,
-    numOfSongs,
-    duration,
     mediaUrl,
     mediaId,
     artistId,
@@ -63,6 +61,7 @@ const Feature = (props) => {
   // store
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
+  const currentMediaId = useSelector((store) => store.media.currentMediaId);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -210,27 +209,19 @@ const Feature = (props) => {
           }
         </div>
         <div className={styles.featureContentWrapper}>
-          <p onClick={handleView}>{subtitle}</p>
           <div className="d-flex">
             <button
               className={styles.featurePlayBtn}
               onClick={handlePlay}
             >
               <img
-                src={play}
+                src={currentMediaId === mediaId ? pause : play}
                 className={styles.featureActionBtn}
               />
             </button>
-            <div
-              className={`d-flex flex-column ${styles.featureSummary}`}
-              onClick={handleView}
-            >
-              <span>{title}</span>
-              {
-                numOfSongs && (
-                  <span>{numOfSongs} Songs, {duration}</span>
-                )
-              }
+            <div className={`d-flex flex-column ${styles.featureSummary}`}>
+              <span onClick={handleView}>{title}</span>
+              <span className={styles.subtitle} onClick={handleArtistView}>{subtitle}</span>
             </div>
           </div>
         </div>
@@ -240,8 +231,6 @@ const Feature = (props) => {
 }
 
 Feature.defaultProps = {
-  numOfSongs: null,
-  duration: null,
   country: '',
   mediaId: null,
   artistId: null,
@@ -251,8 +240,6 @@ Feature.defaultProps = {
 Feature.propTypes = {
   subtitle: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  numOfSongs: PropTypes.string,
-  duration: PropTypes.string,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,
   country: PropTypes.string,

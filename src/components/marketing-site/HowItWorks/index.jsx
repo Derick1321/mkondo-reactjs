@@ -30,8 +30,8 @@ const HowItWorks = () => {
           <Feature
               avatar="https://i.ibb.co/8b89DpX/image-8-1.png"
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
-              subtitle="Latest Release"
-              title="Starboy by the Weekend"
+              subtitle="The Weekend"
+              title="Starboy"
               numOfSongs=""
               duration=""
             />
