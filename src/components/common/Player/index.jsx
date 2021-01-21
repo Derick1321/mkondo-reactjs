@@ -8,7 +8,7 @@ import AudioPlayer from '$common/player';
 import { formatTime } from '$common/utils';
 
 import { addHistory } from '$redux/features/user';
-import { setCurrentMediaId } from '$redux/features/media';
+import { setCurrentMediaId } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
@@ -41,6 +41,8 @@ const Player = () => {
 
   // store
   const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
+  const pauseForced = useSelector((store) => store.player.pauseForced);
+  const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const dispatch = useDispatch();
 
   // functions
@@ -52,6 +54,7 @@ const Player = () => {
   }
 
   const onPause = (dur) => {
+    // TODO: fix pause
     onEnd();
   }
 
@@ -67,6 +70,19 @@ const Player = () => {
   }
 
   // effects
+  useEffect(() => {
+    if (pauseForced && currentMediaId) {
+      // pause
+      audioRef.current.pause();
+      return;
+    }
+
+    if (!pauseForced && currentMediaId) {
+      // play
+      audioRef.current.play(audioRef.current.index);
+    }
+  }, [pauseForced]);
+
   useEffect(() => {
     const callbacks = {
       onPlay,

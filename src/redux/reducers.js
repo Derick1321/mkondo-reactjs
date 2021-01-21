@@ -5,6 +5,7 @@ import user from './features/user';
 import media from './features/media';
 import nav from './features/nav';
 import playlist from './features/playlist';
+import player from './features/player';
 
 export default {
   authentication,
@@ -14,4 +15,5 @@ export default {
   user,
   nav,
   playlist,
+  player,
 };
