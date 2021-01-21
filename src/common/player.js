@@ -39,7 +39,7 @@ class Player {
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onplay: () => {
           if (this.callbacks.onPlay) {
-            this.callbacks.onPlay(sound.duration());
+            this.callbacks.onPlay(sound.duration(), this.playlist[index].mediaId);
           }
           this.isPlaying = false;
         },
