@@ -135,7 +135,6 @@ const Profile = () => {
     }));
 
     // userMedia
-    /*
     userMedia.forEach(async (media) => {
       await dispatch(updateMedia({
         id: media.media_id,
@@ -147,7 +146,6 @@ const Profile = () => {
     });
 
     dispatch(getNewReleases());
-    */
   }
 
   const handleAvatarChange = async (files) => {
@@ -257,7 +255,7 @@ const Profile = () => {
                 avatar={item.cover_url}
                 artistId={item.owner_id}
                 source={item.owner_avatar_url}
-                subtitle="Latest Release"
+                subtitle={item.owner_name}
                 title={item.name}
                 country={item.country}
               />
