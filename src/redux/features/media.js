@@ -158,16 +158,12 @@ const INITIAL_STATE = {
   albumId: null,
   comments: [],
   recommendedMedia: [],
-  currentMediaId: null,
 };
 
 const mediaSlice = createSlice({
   name: 'media',
   initialState: INITIAL_STATE,
   reducers: {
-    setCurrentMediaId(state, action) {
-      state.currentMediaId = action.payload;
-    },
   },
   extraReducers: {
     [addMedia.pending]: (state, action) => {
@@ -332,8 +328,6 @@ const mediaSlice = createSlice({
     },
   }
 });
-
-export const { setCurrentMediaId } = mediaSlice.actions;
 
 export default mediaSlice.reducer;
 

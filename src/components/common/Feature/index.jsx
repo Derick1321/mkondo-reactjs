@@ -10,6 +10,7 @@ import { routePaths } from '$common/routeConfig';
 import { updateLocalPlaylist } from '$redux/features/playlist';
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { showModal } from '$redux/features/modal';
+import { forcePause } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
@@ -61,7 +62,8 @@ const Feature = (props) => {
   // store
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
-  const currentMediaId = useSelector((store) => store.media.currentMediaId);
+  const currentMediaId = useSelector((store) => store.player.currentMediaId);
+  const pauseForced = useSelector((store) => store.player.pauseForced);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -110,6 +112,16 @@ const Feature = (props) => {
   const handlePlay = async () => {
     // temporarily load it on player
     // TODO: navigate to player component
+    if (currentMediaId) {
+      if (!pauseForced) {
+        dispatch(forcePause(true));
+        return;
+      }
+
+      dispatch(forcePause(false));
+      return;
+    }
+
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
     dispatch(updateLocalPlaylist({
       url: res.response,
@@ -215,7 +227,7 @@ const Feature = (props) => {
               onClick={handlePlay}
             >
               <img
-                src={currentMediaId === mediaId ? pause : play}
+                src={currentMediaId === mediaId && !pauseForced ? pause : play}
                 className={styles.featureActionBtn}
               />
             </button>
