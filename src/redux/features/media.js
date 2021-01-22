@@ -164,6 +164,9 @@ const mediaSlice = createSlice({
   name: 'media',
   initialState: INITIAL_STATE,
   reducers: {
+    clearNewMediaId(state) {
+      status.newMediaId = null;
+    }
   },
   extraReducers: {
     [addMedia.pending]: (state, action) => {
@@ -329,5 +332,6 @@ const mediaSlice = createSlice({
   }
 });
 
+export const { clearNewMediaId } = counterSlice.actions
 export default mediaSlice.reducer;
 
