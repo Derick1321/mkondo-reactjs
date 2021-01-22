@@ -44,7 +44,8 @@ const NewMedia = () => {
   // effects
   useEffect(async () => {
     // TODO: use prevProps
-    if (addMediaComplete && values.file) {
+    console.log('values.file ', values.file);
+    if (addMediaComplete) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
         link: `https//mkondo.co/app/media/${newMediaId}`,
@@ -66,7 +67,7 @@ const NewMedia = () => {
     dispatch(addMedia({
       name: values.title,
       description: values.description,
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      genres: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
       cover_url: avatarRes.payload,
       media_url: mediaRes.payload,
       owner_id: userId,
