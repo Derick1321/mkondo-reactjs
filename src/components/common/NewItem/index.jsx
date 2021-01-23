@@ -8,6 +8,8 @@ import Progress from '$components/common/Progress';
 
 import { generatePreview } from '$common/utils';
 
+import styles from './index.module.scss';
+
 const options = [
   { name: 'basic', title: 'Basic' },
   { name: 'metadata', title: 'Metadata' },
@@ -54,7 +56,7 @@ const NewItem = (props) => {
       </div>
       <div className={`row mt-4 ${selected === 'basic' ? '' : 'd-none'}`}>
         <div className="col-12 col-md-6 col-lg-4">
-          <div className="avatar">
+          <div className={styles.avatar}>
             <AvatarInput
               url={avatarUrl}
               onChange={handleAvatarChange}
@@ -80,7 +82,10 @@ const NewItem = (props) => {
       <div className={`d-flex flex-wrap mt-4 ${selected === 'metadata' ? '' : 'd-none'}`}>
         {
           metamenus.map((menu, idx) => (
-            <div className="" key={`new-item-menumetas-${idx}`}>
+            <div
+              className=""
+              key={`new-item-menumetas-${idx}`}
+            >
               <InputField
                 field={{
                   ...menu,
