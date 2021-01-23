@@ -45,6 +45,7 @@ const MediaUpload = () => {
       avatar: await generatePreview(item.file),
     });
 
+    console.log('HERE!!');
     completedFiles.current = 0;
     dispatch(clearNewMediaId());
   }
