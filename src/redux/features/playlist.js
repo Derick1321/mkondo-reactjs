@@ -64,8 +64,7 @@ const playlistSlice = createSlice({
   },
   reducers: {
     updateLocalPlaylist(state, action) {
-      console.log('action ', action);
-      state.currentPlaylist.push(action.payload);
+      state.currentPlaylist = [action.payload];
     }
   },
   extraReducers: {

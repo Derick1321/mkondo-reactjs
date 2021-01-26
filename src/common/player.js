@@ -14,7 +14,7 @@ class Player {
     this.playlist = [...playlist] || [];
     this.originalPlaylist = [...playlist] || [];
     this.callbacks = callbacks || {};
-    this.onAutoPlay = onAutoPlay || true;
+    this.onAutoPlay = onAutoPlay || false;
     this.isPlaying = false;
     this.isOnRepeat = false;
     this.isOnShuffle = false;
@@ -22,6 +22,10 @@ class Player {
   }
 
   updatePlaylist(playlist) {
+    if (this.playlist[this.index] && this.playlist[this.index].howl) {
+      this.playlist[this.index].howl.stop();
+    }
+    
     this.playlist = playlist;
     this.index = 0;
   }
@@ -36,6 +40,7 @@ class Player {
     } else {
       sound = data.howl = new Howl({
         src: [data.url],
+        loop: false,
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         onplay: () => {
           if (this.callbacks.onPlay) {
@@ -54,7 +59,7 @@ class Player {
           }
 
           if (this.isOnRepeat) {
-            play(this.index);
+            // play(this.index);
             return;
           }
 
@@ -96,7 +101,10 @@ class Player {
    */
   pause() {
     const sound = this.playlist[this.index].howl;
-    sound.pause();
+    console.log('sound ', sound);
+    if (sound) {
+      sound.pause();
+    }
     this.isPaused = true;
   }
 
