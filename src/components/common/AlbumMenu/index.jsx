@@ -1,21 +1,50 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import './index.scss';
+import { handleFetch } from '$common/requestUtils';
 
-const sample = require('$assets/images/album-sample.png');
+import styles from './index.module.scss';
+
+const singer = require('$assets/images/singer.svg');
 
 const AlbumMenu = (props) => {
   // props
-  const { description, url, isRounded } = props;
+  const {
+    description,
+    url,
+    isRounded,
+    handleClick,
+  } = props;
+
+  // store
+  const token = useSelector((store) => store.authentication.token);
+
+  // state
+  const [avatarUrl, setAvatarUrl] = useState('');
+
+  // effects
+  useEffect(async () => {
+    if (!url) {
+      return;
+    }
+
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${url}`, null, token);
+    setAvatarUrl(res.response);
+  }, [url]);
 
   // render
   return (
-    <div className="album-menu">
-      <img
-        src={url || sample}
-        className={`album-menu-avatar ${isRounded ? 'album-menu-rounded': ''}`}
-      />
+    <div
+      onClick={handleClick}
+      className={styles.albumMenu}
+    >
+      <div className={`${styles.albumMenuAvatar} ${isRounded ? styles.albumMenuAvatarRounded : ''}`}>
+        <img
+          src={avatarUrl || singer}
+          className={styles.img}
+        />
+      </div>
       <p>{description}</p>
     </div>
   );

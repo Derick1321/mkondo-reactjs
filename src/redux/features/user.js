@@ -38,7 +38,6 @@ export const addHistory = createAsyncThunk(
   ADD_HISTORY,
   async (data, param) => {
     const { token, user } = param.getState().authentication;
-    console.log("here ", data);
     return await handleFetch('POST', `users/${user.user_id}/history`, data, token);
   }
 );

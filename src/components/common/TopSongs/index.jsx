@@ -9,8 +9,6 @@ const TopSongs = (props) => {
   // props
   const { media } = props;
 
-  console.log('media ', media);
-
   // render
   return (
     <div className="container">
