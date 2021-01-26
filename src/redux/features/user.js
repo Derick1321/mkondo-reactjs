@@ -7,6 +7,7 @@ const ADD_FAVORITE = 'user/ADD_FAVORITE';
 const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
 const ADD_HISTORY = 'user/ADD_HISTORY';
 const GET_MEDIA = 'user/GET_MEDIA';
+const GET_HISTORY = 'user/GET_HISTORY';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -50,6 +51,14 @@ export const getUserMedia = createAsyncThunk(
   }
 );
 
+export const getHistory = createAsyncThunk(
+  GET_HISTORY,
+  async (data, param) => {
+    const { token, user } = param.getState().authentication;
+    return await handleFetch('GET', `users/${user.user_id}/history`, null, token);
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState: {
@@ -65,6 +74,9 @@ const userSlice = createSlice({
     addHistoryPending: false,
     addHistoryError: null,
     addHistoryComplete: false,
+    getHistoryPending: false,
+    getHistoryError: null,
+    getHistoryComplete: false,
     getUserMediaPending: false,
     getUserMediaError: null,
     getUserMediaComplete: false,
@@ -120,6 +132,22 @@ const userSlice = createSlice({
       state.addHistoryPending = false;
       state.addHistoryComplete = false;
       state.addHistoryError = action.error;
+    },
+    [getHistory.pending]: (state, action) => {
+      state.getHistoryPending = true;
+      state.getHistoryComplete = false;
+      state.getHistoryError = null;
+    },
+    [getHistory.fulfilled]: (state, action) => {
+      state.getHistoryPending = false;
+      state.getHistoryComplete = true;
+      state.getHistoryError = null;
+      state.history = action.payload.media;
+    },
+    [getHistory.rejected]: (state, action) => {
+      state.getHistoryPending = false;
+      state.getHistoryComplete = false;
+      state.getHistoryError = action.error;
     },
     [updateUser.pending]: (state, action) => {
       state.updateUserPending = true;
