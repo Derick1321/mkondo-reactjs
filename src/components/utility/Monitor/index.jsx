@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { showModal, hideModal } from '$redux/features/modal';
 import { reloadUser } from '$redux/features/authentication';
 import { listPlaylist } from '$redux/features/playlist';
+import { getHistory } from '$redux/features/user';
 
 const Monitor = () => {
   // store
@@ -54,13 +55,21 @@ const Monitor = () => {
     addFavoritePending,
     removeFavoritePending,
     updateUserComplete,
-    addHistoryComplete,
   ]);
+
+  useEffect(() => {
+    if (!addHistoryComplete || !userId) {
+      return;
+    }
+
+    dispatch(getHistory());
+  }, [addHistoryComplete]);
 
   useEffect(() => {
     if (!userId) {
       return userId;
     }
+
     dispatch(listPlaylist(userId));
   }, [createPlaylistComplete, updatePlaylistComplete]);
 

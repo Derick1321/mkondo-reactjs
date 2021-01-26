@@ -15,6 +15,7 @@
     "chart.js": "^2.9.4",
     "gsap": "^3.5.1",
     "howler": "^2.2.1",
+    "lodash.debounce": "^4.0.8",
     "luxon": "^1.25.0",
     "moment": "^2.29.1",
     "query-string": "^6.13.7",

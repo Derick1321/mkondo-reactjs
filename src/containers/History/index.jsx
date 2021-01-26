@@ -6,7 +6,7 @@ import TopSongs from '$components/common/TopSongs';
 import styles from './index.module.scss';
 
 const History = () => {
-  const userHistory = useSelector((store) => store.authentication.user.history);
+  const userHistory = useSelector((store) => store.user.history);
 
   // render
   return (
