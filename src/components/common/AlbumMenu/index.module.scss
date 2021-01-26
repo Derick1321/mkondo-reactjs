@@ -1,0 +1,28 @@
+@import '$assets/scss/main.scss';
+
+.albumMenu {
+  height: 150px;
+  width: 200px;
+  margin-right: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+.albumMenuAvatar {
+  user-select: none;
+  -webkit-user-drag: none;
+  height: 100%;
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: $primary-gray;
+}
+
+.albumMenuRounded {
+  border-radius: 100%;
+  height: 140px;
+  width: 140px;
+}
+
+.img {
+  height: 100%;
+  width: 100%;
+}
