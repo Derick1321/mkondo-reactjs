@@ -13,14 +13,21 @@ export const querySearch = createAsyncThunk(
   }
 );
 
+const initialState = {
+  initialRoute: null,
+  isSideMenuOpen: false,
+  isMobile: false,
+  searchResults: {
+    media: [],
+    users: [],
+    albums: [],
+  },
+  forceClearSearch: false,
+};
+
 const navSlice = createSlice({
   name: 'nav',
-  initialState: {
-    initialRoute: null,
-    searchResults: {},
-    isSideMenuOpen: false,
-    isMobile: false,
-  },
+  initialState,
   reducers: {
     setInitialNav: (state, action) => {
       state.initialRoute = action.payload;
@@ -30,7 +37,11 @@ const navSlice = createSlice({
     },
     toggleIsMobile: (state, action) => {
       state.isMobile = action.payload;
-    }
+    },
+    clearSearch: (state) => {
+      state.searchResults = initialState.searchResults;
+      state.forceClearSearch = true;
+    },
   },
   extraReducers: {
     [querySearch.pending]: (state, action) => {
@@ -44,6 +55,7 @@ const navSlice = createSlice({
       state.querySearchComplete = true;
       state.querySearchError = null;
       state.searchResults = action.payload;
+      state.forceClearSearch = false;
     },
     [querySearch.rejected]: (state, action) => {
       state.querySearchPending = false;
@@ -58,6 +70,7 @@ export const {
   setInitialNav,
   toggleSideMenu,
   toggleIsMobile,
+  clearSearch,
 } = navSlice.actions;
 
 // reducer

@@ -32,7 +32,7 @@ const TextInput = (props) => {
   return (
     <>
       <p>{title}</p>
-      <div className={`d-flex justify-content-center ${styles.textInputContainer} ${customWrapperClass}`}>
+      <div className={`d-flex justify-content-center align-items-center ${styles.textInputContainer} ${customWrapperClass}`}>
         <input
           name={name}
           className={styles.textInputWrapper}

@@ -12,7 +12,6 @@ import { handleFetch } from '$common/requestUtils';
 
 import { saveMedia, updateMedia, getNewReleases } from '$redux/features/media';
 import { updateUser, getUserMedia } from '$redux/features/user';
-import { querySearch } from '$redux/features/nav';
 
 import { menus, descriptionField, socials } from './menus';
 
@@ -59,7 +58,6 @@ const Profile = () => {
       return;
     }
 
-    dispatch(querySearch('harv'));
     dispatch(getUserMedia());
 
     setValues({

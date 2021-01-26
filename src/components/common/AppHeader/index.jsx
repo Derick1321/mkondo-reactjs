@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 
 import DropDownWrapper from '$components/common/DropDownWrapper';
@@ -13,6 +14,7 @@ import { routePaths } from '$common/routeConfig';
 
 import { logout } from '$redux/features/authentication';
 import { hideModal } from '$redux/features/modal';
+import { querySearch } from '$redux/features/nav';
 
 import styles from './index.module.scss';
 
@@ -37,6 +39,7 @@ const AppHeader = (props) => {
   const token = useSelector((store) => store.authentication.token);
   const modalActive = useSelector((store) => store.modal.type);
   const isMobile = useSelector((store) => store.nav.isMobile);
+  const forceClearSearch = useSelector((store) => store.nav.forceClearSearch);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -48,11 +51,27 @@ const AppHeader = (props) => {
 
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
     setUrl(res.response);
-  }, [avatar])
+  }, [avatar]);
+
+  useEffect(() => {
+    if (!forceClearSearch) {
+      return;
+    }
+
+    setSearch('');
+  }, [forceClearSearch]);
+
+  // This remains same across renders
+	// highlight-starts
+	const debouncedSave = useRef(debounce(nextValue => dispatch(querySearch(nextValue)), 1000)).current;
+	// highlight-ends
 
   // handler
   const handleChange = (name, value) => {
     setSearch(value);
+		// Even though handleChange is created on each render and executed
+		// it references the same debouncedSave that was created initially
+		debouncedSave(value);
   }
 
   const handleSelect = (name) => {

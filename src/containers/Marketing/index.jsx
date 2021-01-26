@@ -120,7 +120,6 @@ const Marketing = () => {
         <div className="col-12 col-md-10 offset-md-1">
           <p className={`mb-4 text-center ${styles.howItWorksTitle}`}>Top Free Songs of the Week</p>
           <TopSongs />
-          <AlbumMenuPanel />
           <div className="text-center">
             <Button
               onClick={handleExploreSongs}
