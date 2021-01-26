@@ -98,10 +98,14 @@ const Player = () => {
   useEffect(() => {
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
     audioRef.current.updatePlaylist(newPlaylist);
+    setIsPlaying(false);
+
     if (newPlaylist.length < 1) {
       return;
     }
-    handlePlay();
+
+    audioRef.current.play(audioRef.current.index);
+    setIsLoading(true);
   }, [currentPlaylist]);
 
   const getSeekPosition = () => {
@@ -145,6 +149,10 @@ const Player = () => {
 
     // need a way to play current index
     if (isPlaying) {
+      if (!audioRef.current) {
+        console.log("NOT GOOD!");
+        return;
+      }
       audioRef.current.pause();
     } else {
       audioRef.current.play(audioRef.current.index);
