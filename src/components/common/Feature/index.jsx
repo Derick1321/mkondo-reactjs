@@ -112,16 +112,16 @@ const Feature = (props) => {
   const handlePlay = async () => {
     // temporarily load it on player
     // TODO: navigate to player component
-    /*
     // BUGGY!!
-    if (currentMediaId) {
+    if (currentMediaId === mediaId) {
       if (!pauseForced) {
         dispatch(forcePause(true));
-      } else {
-         dispatch(forcePause(false));
+        return;
       }
+      dispatch(forcePause(false));
+      return;
     }
-    */
+
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
     dispatch(updateLocalPlaylist({
       url: res.response,
