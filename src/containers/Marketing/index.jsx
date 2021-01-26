@@ -18,6 +18,7 @@ import { routePaths } from '$common/routeConfig';
 import { setInitialNav } from '$redux/features/nav';
 import { showModal } from '$redux/features/modal';
 import { coldstart, reloadUser } from '$redux/features/authentication';
+import { getHistory } from '$redux/features/user';
 
 import { urls, data } from './model';
 
@@ -58,6 +59,7 @@ const Marketing = () => {
 
     if (!signUpComplete) {
       dispatch(reloadUser(userId));
+      dispatch(getHistory());
       history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
     }
   }, [token]);
