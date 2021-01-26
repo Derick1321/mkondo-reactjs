@@ -1,55 +1,96 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
+import TopSongs from '$components/common/TopSongs';
+import Button from '$components/common/Button';
 
 import styles from './index.module.scss';
-
-const sampleSearch = [
-  { name: 'Artist 1', type: 'Artist', url: require('$assets/images/sample-search-1.png') },
-  { name: 'Artist 2', type: 'Artist', url: require('$assets/images/sample-search-2.png') },
-  { name: 'Artist 3', type: 'Artist', url: require('$assets/images/sample-search-3.png') },
-];
 
 const SearchResult = () => {
   // store
   const isMobile = useSelector((store) => store.nav.isMobile);
+  const users = useSelector((store) => store.nav.searchResults.users);
+  const media = useSelector((store) => store.nav.searchResults.media);
+  const albums = useSelector((store) => store.nav.searchResults.albums);
+  const querySearchPending = useSelector((store) => store.nav.querySearchPending);
+  const querySearchComplete = useSelector((store) => store.nav.querySearchComplete);
+
+  const [active, setActive] = useState('all');
 
   // handlers
-  const buildResult = (res, idx) => {
-    const { name, type, url } = res;
-    const isLast = sampleSearch.length -1 === idx ? 'is-last' : '';
+  const handleAll = () => {
+    setActive('all');
+  }
 
-    // is-last
-    return (
-      <div
-        className={`d-flex ${styles.searchResultItem} ${isLast}`}
-        key={`search-result-${idx}`}
-      >
-        <div>
-          <img
-            src={url}
-            className={styles.searchResultImage}
-          />
-        </div>
-        <div className="d-flex flex-column">
-          <p>{name}</p>
-          <p>{type}</p>
-        </div>
-      </div>
-    );
+  const handleMedia = () => {
+    setActive('media');
+  }
+
+  const handleUsers = () => {
+    setActive('users');
   }
 
   // render
   return (
     <div className={`d-flex flex-column ${styles.searchResultWrapper} ${isMobile ? styles.searchWrapperMobile : ''}`}>
-      <p className={styles.heading}>RECENTLY SEARCHED</p>
+      <div className="d-flex flex-wrap">
+        <div className="mr-4 mb-4">
+          <Button
+            style={`${active !== 'all' ? styles.isNotActive : ''}`}
+            onClick={handleAll}
+          >
+            All
+          </Button>
+        </div>
+        <div className="mr-4">
+           <Button
+            style={`${active !== 'media' ? styles.isNotActive : ''}`}
+            onClick={handleMedia}
+          >
+            Media
+          </Button>
+        </div>
+        <Button
+          style={`${active !== 'users' ? styles.isNotActive : ''}`}
+          onClick={handleUsers}
+        >
+          Artists
+        </Button>
+      </div>
       {
-        sampleSearch.map((item, idx) => buildResult(item, idx))
+        querySearchPending  && <p className="pl-4">Searching...</p>
       }
-      <AlbumMenuPanel
-        showHeader
-      />
+      {
+        (['all', 'media'].includes(active)) && (
+          <>
+            <p className={styles.heading}>Songs</p>
+            <TopSongs
+              media={media}
+            />
+            {
+              querySearchComplete && media.length < 1 && (
+                <p>No Media preset!</p>
+              )
+            }
+          </>
+        )
+      }
+      {
+        (['all', 'users'].includes(active)) && (
+          <>
+            <p className={styles.heading}>Artists</p>
+            {
+              querySearchComplete && users.length < 1 && (
+                <p>No Artists preset!</p>
+              )
+            }
+            <AlbumMenuPanel
+              values={users}
+            />
+          </>
+        )
+      }
     </div>
   );
 }
