@@ -150,10 +150,6 @@ const ViewArtist = () => {
             />
             <AlbumMenuPanel
               showHeader
-              title="Albums"
-            />
-            <AlbumMenuPanel
-              showHeader
               title="Similar Artists"
               isRounded
             />

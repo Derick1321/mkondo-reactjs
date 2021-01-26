@@ -46,9 +46,6 @@ const Home = () => {
       <TopSongs
         media={newReleases}
       />
-      <AlbumMenuPanel
-        showHeader
-      />
     </div>
   );
 };
