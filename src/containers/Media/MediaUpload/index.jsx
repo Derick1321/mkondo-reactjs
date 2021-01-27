@@ -45,7 +45,6 @@ const MediaUpload = () => {
       avatar: await generatePreview(item.file),
     });
 
-    console.log('HERE!!');
     completedFiles.current = 0;
     dispatch(clearNewMediaId());
   }
@@ -122,10 +121,11 @@ const MediaUpload = () => {
       const item = values[file.name];
       const mediaRes = await dispatch(saveMedia(file.binary));
       const avatarRes = await dispatch(saveMedia(item.file));
-      await dispatch(addMedia({
+
+      const data = {
         name: item.title,
         description: item.description,
-        genres: item.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+        genres: item.genre.map((item) => item.value),
         cover_url: avatarRes.payload,
         media_url: mediaRes.payload,
         owner_id: userId,
@@ -135,7 +135,15 @@ const MediaUpload = () => {
         record_label: item.recordLabel,
         song_writer: item.songWriter,
         owner_avatar_url: userAvatarUrl,
-      }));
+      };
+      
+      const { state } = history.location;
+
+      if (state && state.albumId) {
+        data.album_id = state.albumId;
+      }
+
+      await dispatch(addMedia(data));
     });
 
     // handleNext();

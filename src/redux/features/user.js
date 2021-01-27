@@ -8,6 +8,8 @@ const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
 const ADD_HISTORY = 'user/ADD_HISTORY';
 const GET_MEDIA = 'user/GET_MEDIA';
 const GET_HISTORY = 'user/GET_HISTORY';
+const ADD_FOLLOWERS = 'user/ADD_FOLLOWERS';
+const REMOVE_FOLLOWERS = 'user/REMOVE_FOLLOWERS';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -31,6 +33,22 @@ export const removeFavorite = createAsyncThunk(
   async (data, param) => {
     const { token, user } = param.getState().authentication;
     return await handleFetch('DELETE', `users/${user.user_id}/favourites`, data, token);
+  }
+);
+
+export const addFollowers = createAsyncThunk(
+  ADD_FOLLOWERS,
+  async (data, param) => {
+    const { token, user } = param.getState().authentication;
+    return await handleFetch('POST', `users/${user.user_id}/followers`, data, token);
+  }
+);
+
+export const removeFollowers = createAsyncThunk(
+  REMOVE_FOLLOWERS,
+  async (data, param) => {
+    const { token, user } = param.getState().authentication;
+    return await handleFetch('DELETE', `users/${user.user_id}/followers`, data, token);
   }
 );
 
@@ -70,6 +88,12 @@ const userSlice = createSlice({
     removeFavoritePending: false,
     removeFavoriteError: null,
     removeFavoriteComplete: false,
+    addFollowersPending: false,
+    addFollowersError: null,
+    addFollowersComplete: false,
+    removeFollowersPending: false,
+    removeFollowersError: null,
+    removeFollowersComplete: false,
     addHistoryPending: false,
     addHistoryError: null,
     addHistoryComplete: false,
@@ -116,6 +140,38 @@ const userSlice = createSlice({
       state.removeFavoritePending = false;
       state.removeFavoriteComplete = false;
       state.removeFavoriteError = action.error;
+    },
+    [addFollowers.pending]: (state, action) => {
+      state.addFollowersPending = true;
+      state.addFollowersComplete = false;
+      state.addFollowersError = null;
+      state.newMediaId = null;
+    },
+    [addFollowers.fulfilled]: (state, action) => {
+      state.addFollowersPending = false;
+      state.addFollowersComplete = true;
+      state.addFollowersError = null;
+    },
+    [addFollowers.rejected]: (state, action) => {
+      state.addFollowersPending = false;
+      state.addFollowersComplete = false;
+      state.addFollowersError = action.error;
+    },
+    [removeFollowers.pending]: (state, action) => {
+      state.removeFollowersPending = true;
+      state.removeFollowersComplete = false;
+      state.removeFollowersError = null;
+      state.newMediaId = null;
+    },
+    [removeFollowers.fulfilled]: (state, action) => {
+      state.removeFollowersPending = false;
+      state.removeFollowersComplete = true;
+      state.removeFollowersError = null;
+    },
+    [removeFollowers.rejected]: (state, action) => {
+      state.removeFollowersPending = false;
+      state.removeFollowersComplete = false;
+      state.removeFollowersError = action.error;
     },
     [addHistory.pending]: (state, action) => {
       state.addHistoryPending = true;
