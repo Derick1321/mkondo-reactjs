@@ -11,11 +11,12 @@ import { handleFetch } from '$common/requestUtils';
 
 import { showModal } from '$redux/features/modal';
 import { getArtistById } from '$redux/features/artist';
+import { addFollowers, removeFollowers } from '$redux/features/user';
 
 import styles from './index.module.scss';
-import { current } from '@reduxjs/toolkit';
 
 const shareIcon = require('$assets/images/icons/share.svg');
+const favoriteActive = require('$assets/images/icons/favorite-active.svg');
 const favoriteIcon = require('$assets/images/icons/favorite.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
@@ -44,6 +45,9 @@ const ViewArtist = () => {
   const { id } = useParams();
   const currentArtist = useSelector((store) => store.artist.currentArtist);
   const token = useSelector((store) => store.authentication.token);
+  const followers = useSelector((store) => store.authentication.user.followers);
+  const isFavorite = followers.find((item) => item === id);
+
 
   const socialLinks = {
     fb: currentArtist.facebook_link,
@@ -97,6 +101,15 @@ const ViewArtist = () => {
   }
 
   const handleFavorite = () => {
+    const data = {
+      follower_id: id,
+    };
+
+    if (isFavorite) {
+      dispatch(removeFollowers(data));
+    } else {
+      dispatch(addFollowers(data));
+    }
   }
 
   // render
@@ -125,7 +138,7 @@ const ViewArtist = () => {
             >
               <img
                 className={styles.artistActionIcon}
-                src={favoriteIcon}
+                src={isFavorite ? favoriteActive : favoriteIcon}
               />
             </Button>
             <Button
