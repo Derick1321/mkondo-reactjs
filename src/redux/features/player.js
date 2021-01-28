@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import AudioPlayer from '$common/player';
+
 const INITIAL_STATE = {
   currentMediaId: null,
   isPlaying: false,
@@ -36,6 +38,9 @@ const playerSlider = createSlice({
     goNext(state, action) {
       // handle prev
     },
+    updateRange(state, action) {
+      // range
+    },
     // TO BE DEPRECATED
     forcePause(state, action) {
       state.pauseForced = action.payload;
@@ -48,6 +53,7 @@ export const {
   play,
   pause,
   clearId,
+  updateRange,
   // DEPRECATED
   forcePause,
 } = playerSlider.actions;

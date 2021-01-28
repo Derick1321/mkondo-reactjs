@@ -105,7 +105,7 @@ const Player = () => {
     }
 
     audioRef.current.play(audioRef.current.index);
-    setIsLoading(true);
+      setIsLoading(true);
   }, [currentPlaylist]);
 
   const getSeekPosition = () => {
