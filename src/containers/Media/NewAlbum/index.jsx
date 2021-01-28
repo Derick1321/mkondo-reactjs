@@ -76,7 +76,7 @@ const NewAlbum = () => {
     dispatch(addAlbum({
       name: values.album,
       description: values.description,
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      genres: values.genre.map((item) => item.value),
       country: values.country,
       region: values.region,
       cover_image: res.payload,
