@@ -6,10 +6,17 @@ import Button from '$components/common/Button';
 import InputField from '$components/forms/InputField';
 import Row from '$components/media/CommentRow';
 import Tabs from '$components/common/Tabs';
+import Player from '$components/media/IndividualPlayer';
 
-import { addComment, getComment, getRecommended } from '$redux/features/media';
+import {
+  addComment,
+  getComment,
+  getRecommended,
+  getMedia,
+} from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { current } from '@reduxjs/toolkit';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -36,6 +43,7 @@ const ViewMedia = () => {
   const addCommentPending = useSelector((store) => store.media.addCommentPending);
   const addCommentComplete = useSelector((store) => store.media.addCommentComplete);
   const comments = useSelector((store) => store.media.comments);
+  const currentMedia = useSelector((store) => store.media.currentMedia);
 
   // effects
   useEffect(() => {
@@ -43,6 +51,7 @@ const ViewMedia = () => {
       return;
     }
 
+    dispatch(getMedia(mediaId));
     dispatch(getComment(mediaId));
     dispatch(getRecommended(userId));
   }, [addCommentComplete, mediaId]);
@@ -64,16 +73,8 @@ const ViewMedia = () => {
     }));
   }
 
-  // render
-  return (
-    <div className={styles.container}>
-      <Tabs
-        options={options}
-        onSelect={handleSelect}
-        selected={selected}
-        name="viewMedia"
-        activeColor="#EA4C89"
-      />
+  const commentPane = (
+    <div className={selected === 'comments' ? '' : 'd-none'}>
       <div className="d-flex align-items-center mt-4">
         <div className={styles.commentsWrapper}>
           <InputField
@@ -106,6 +107,37 @@ const ViewMedia = () => {
           ))
         }
       </div>
+    </div>
+  );
+
+  const descriptionPane = (
+    <div className={selected === 'description' ? '' : 'd-none'}>
+      <div className={styles.descriptionWrapper}>
+        { currentMedia.description }
+      </div>
+    </div>
+  );
+
+  // render
+  return (
+    <div className={styles.container}>
+      <Player
+        mediaUrl={currentMedia.media_url}
+        coverUrl={currentMedia.cover_url}
+        avatarUrl={currentMedia.owner_avatar_url}
+        title={currentMedia.name}
+        artistName={currentMedia.owner_name}
+        mediaId={currentMedia.media_id}
+      />
+      <Tabs
+        options={options}
+        onSelect={handleSelect}
+        selected={selected}
+        name="viewMedia"
+        activeColor="#EA4C89"
+      />
+      { commentPane}
+      { descriptionPane}
     </div>
   );
 }

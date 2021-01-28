@@ -44,11 +44,10 @@ const NewMedia = () => {
   // effects
   useEffect(async () => {
     // TODO: use prevProps
-    console.log('values.file ', values.file);
     if (addMediaComplete) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
-        link: `https//mkondo.co/app/media/${newMediaId}`,
+        link: `https://mkondo.co/app/media/${newMediaId}`,
         country: values.country,
         name: values.title,
         avatar: await generatePreview(values.file),

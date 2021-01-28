@@ -21,6 +21,7 @@ const Insights = () => {
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
   const data = useSelector((store) => store.artist.insights);
+  const followers = useSelector((store) => store.authentication.user.followers);
 
   // effects
   useEffect(() => {
@@ -66,6 +67,7 @@ const Insights = () => {
             { buildPane('Likes', kFormatter(data.likes || 0)) }
             { buildPane('Shares', kFormatter(data.shares || 0)) }
             { buildPane('Comments', kFormatter(data.comments || 0)) }
+            { buildPane('Followers', kFormatter(followers.length || 0)) }
           </div>
         </div>
       </div>
