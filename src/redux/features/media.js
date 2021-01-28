@@ -14,6 +14,7 @@ const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const GET_COMMENT = 'media/GET_COMMENT';
 const GET_RECOMENDED = 'media/GET_RECOMENDED';
+const UPDATE_LIKE = 'media/UPDATE_LIKE';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -96,6 +97,16 @@ export const updateMedia = createAsyncThunk(
   }
 );
 
+export const updateLike = createAsyncThunk(
+  UPDATE_LIKE,
+  async (mediaId, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('POST', `media/${mediaId}/like`, null, token);
+  }
+);
+
+
+
 // save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
   SAVE_MEDIA,
@@ -129,8 +140,9 @@ const INITIAL_STATE = {
   addMediaPending: false,
   addMediaError: null,
   addMediaComplete: false,
-  getMediaError: null,
+  getMediaPending: false,
   getMediaComplete: false,
+  getMediaError: null,
   saveMediaPending: false,
   saveMediaError: null,
   saveMediaComplete: false,
@@ -153,7 +165,12 @@ const INITIAL_STATE = {
   updateMediaPending: false,
   updateMediaError: null,
   updateMediaComplete: false,
-  medias: [],
+  currentMedia: {
+    media_id: null,
+    name: '',
+    cover_url: null,
+    owner_avatar_url: null,
+  },
   newReleases: [],
   albumId: null,
   comments: [],
@@ -192,13 +209,14 @@ const mediaSlice = createSlice({
       state.getMediaError = null;
     },
     [getMedia.fulfilled]: (state, action) => {
+      state.getMediaPending = false;
       state.getMediaComplete = true;
       state.getMediaError = null;
-      state.medias = action.payload;
+      state.currentMedia = action.payload.media;
     },
     [getMedia.rejected]: (state, action) => {
+      state.getMediaPending = false;
       state.getMediaComplete = true;
-      state.getMediaError = null;
       state.getMediaError = action.error;
     },
     [updateShareCount.pending]: (state, action) => {

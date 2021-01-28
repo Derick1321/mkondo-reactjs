@@ -47,7 +47,7 @@ const NewArtist = () => {
     if (addArtistComplete && values.file) {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
-        link: `https//mkondo.co/app/artist/${newArtistId}`,
+        link: `https//:mkondo.co/app/artist/${newArtistId}`,
         country: values.country,
         name: values.name,
         avatar: await generatePreview(values.file),

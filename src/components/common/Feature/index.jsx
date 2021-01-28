@@ -100,12 +100,20 @@ const Feature = (props) => {
       return;
     }
 
-    const sourceAvatar = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token);
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
-    if (isMounted.current) {
-      setAvatarUrl(res.response);
-      setSourceUrl(sourceAvatar.response);
-    }
+    handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token)
+      .then((res) => {
+         if (!isMounted.current) {
+          return;
+        }
+        setSourceUrl(res.response);
+      });
+    handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token)
+      .then((res) => {
+        if (!isMounted.current) {
+          return;
+        }
+        setAvatarUrl(res.response);
+      });
   }, [token]);
 
   // handlers
