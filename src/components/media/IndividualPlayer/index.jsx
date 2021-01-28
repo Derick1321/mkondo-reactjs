@@ -4,11 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import Button from '$components/common/Button';
+import ProgressSlider from '$components/media/ProgressSlider';
+
+import { handleFetch } from '$common/requestUtils';
 
 import { showModal } from '$redux/features/modal';
 import { addFavorite, removeFavorite } from '$redux/features/user';
-
-import { handleFetch } from '$common/requestUtils';
 
 import styles from './index.module.scss';
 
@@ -196,7 +197,9 @@ const IndividualPlayer = (props) => {
           </div>
         </div>
       </div>
-      <div className={styles.playerWrapper}></div>
+      <div className={styles.playerWrapper}>
+        <ProgressSlider />
+      </div>
     </div>
   );
 }

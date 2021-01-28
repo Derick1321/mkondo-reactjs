@@ -1,11 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import AudioPlayer from '$common/player';
-
 const INITIAL_STATE = {
   currentMediaId: null,
   isPlaying: false,
-  currentPlaylist: false,
+  currentPlaylist: [],
   isAutoPlay: false,
   isRepeat: false,
   isShuffle: false,
@@ -19,17 +17,19 @@ const playerSlider = createSlice({
   reducers: {
     setCurrentMediaId(state, action) {
       state.currentMediaId = action.payload;
+      // DEPRECATED
       state.pauseForced = false;
     },
+    setCurrentPlaylist(state, action) {
+      state.currentPlaylist = action.payload;
+    },
     pause(state, action) {
-      // handle pause
       state.isPlaying = false;
     },
     clearId(state, action) {
       // handle clear id
     },
     play(state, action) {
-      // handle play
       state.isPlaying = true;
     },
     goPrev(state, action) {
