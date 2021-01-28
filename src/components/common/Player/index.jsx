@@ -1,3 +1,5 @@
+// TO BE DEPRECATED
+
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 

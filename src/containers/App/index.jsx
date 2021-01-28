@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/common/modals/ModalRoot';
 import Monitor from '$components/utility/Monitor';
+import Player from '$components/utility/Player';
 
 import { setInitialNav, toggleIsMobile } from '$redux/features/nav';
 
@@ -86,6 +87,7 @@ const App = () => {
       </Switch>
       <ModalRoot />
       <Monitor />
+      <Player />
     </Router>
   );
 };
