@@ -137,7 +137,7 @@ Share.defaultProps = {
   mediaId: null,
   name: 'Artist Name',
   country: 'Tanzania',
-  link: 'https//mkondo.co/app/artist/artist01',
+  link: 'https//:mkondo.co/app/artist/artist01',
   avatar: null,
   initialDescription: 'I just joined Mkondo visit www.mkondo.co for checking my profile!',
 };

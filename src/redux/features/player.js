@@ -30,6 +30,12 @@ const playerSlider = createSlice({
       // handle play
       state.isPlaying = true;
     },
+    goPrev(state, action) {
+      // handle prev
+    },
+    goNext(state, action) {
+      // handle prev
+    },
     // TO BE DEPRECATED
     forcePause(state, action) {
       state.pauseForced = action.payload;

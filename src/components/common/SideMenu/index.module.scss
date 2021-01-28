@@ -27,6 +27,9 @@
   padding: 5px 1rem;
   color: $secondary-gray;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   &.active, &:hover {
     background-color: rgba(252, 252, 252, 0.1);
     border-left: 1px solid $secondary-green;
