@@ -39,7 +39,7 @@ const MediaUpload = () => {
     const item = values[files[files.length - 1].name];
     history.push(routePaths.success, {
       message: 'Congratulations you are all set!',
-      link: `https//mkondo.co/app/media/${newMediaId}`,
+      link: `https//:mkondo.co/app/media/${newMediaId}`,
       country: item.recordLabel,
       name: item.title, 
       avatar: await generatePreview(item.file),
