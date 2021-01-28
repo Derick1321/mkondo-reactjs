@@ -138,6 +138,7 @@ const IndividualPlayer = (props) => {
             noBorder
           >
             <img
+              className={styles.headerIcon}
               src={isFavorite ? favoriteActive : favoriteIcon}
             />
           </Button>
@@ -147,6 +148,7 @@ const IndividualPlayer = (props) => {
             noBorder
           >
             <img
+              className={styles.headerIcon}
               src={shareIcon}
             />
           </Button>
