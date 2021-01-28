@@ -2,6 +2,7 @@
 
 .wrapper {
   height: 240px;
+  margin-bottom: 2rem;
 }
 
 .contentWrapper {
@@ -15,7 +16,7 @@
 }
 
 .playerWrapper {
-  height: 40px;
+  height: 60px;
   padding: 5px 2rem;
   background-color: $primary-blue;
 }
@@ -40,7 +41,7 @@
 .artistName {
   margin-top: 1rem;
   color: $white;
-  text-shadow: 2px 2px $secondary-black;
+  text-shadow: 0.5px 0.5px $secondary-black;
   margin-bottom: 0.5rem;
   line-height: 0;
 }
