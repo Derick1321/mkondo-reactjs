@@ -18,7 +18,6 @@ const Slider = (props) => {
   const {
     callbacks,
     position,
-    isVolume,
   } = props;
 
   // refs
@@ -35,15 +34,11 @@ const Slider = (props) => {
       edgeResistance: 1,
       lockAxis: true,
       cursor: "pointer",
-      ease: "Power1.easeInOut",
+      ease: "Power0.easeNone",
       onDrag: updateRange,
       onPressInit: updatePosition,
       onClick: updateRange,
     });
-
-    if (isVolume) {
-      update(null, true);
-    }
   }, []);
 
   useEffect(() => {
@@ -53,17 +48,17 @@ const Slider = (props) => {
 
   // handlers
   // To syncronise both audio and timeline
-  const update = (value, useXValue) => {
+  const update = (value) => {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
 
-    tl.progress(1); // NOTE: audio.currentTime / audio.duration
-    // console.log('value ', value, position);
+    tl.progress(value); // NOTE: audio.currentTime / audio.duration
     gsap.set(knobRef.current, {
-      x: useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value,
+      x: (progRect.width - knobRect.width) * value,
     });
+
     gsap.set(rangeRef.current, {
-      width: knobRect.left + knobRect.width - progRect.left
+      width: progRect.width * value,
     });
   }
 
@@ -112,14 +107,3 @@ Slider.propTypes = {
 };
 
 export default Slider;
-
-/*
-// controle the sound
-function updateSound() {
-  // need to add back the loss in which the knob takes off - beter way of doing this
-  audio.volume = this.x * 1.11111111 / 100;
-
-  // needs re-calculating not working
-  TweenMax.set(range2, { width: this.x });
-}
-*/

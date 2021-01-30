@@ -1,11 +1,9 @@
-// TO BE DEPRECATED
-
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PlayBtn from '$components/media/PlayBtn';
 import ProgressSlider from '$components/media/ProgressSlider';
-import Slider from '$components/common/Slider';
+import VolumeSlider from '$components/media/VolumeSlider';
 
 import { play, pause } from '$redux/features/player';
 
@@ -19,16 +17,11 @@ const shuffleIcon = require('$assets/images/player/shuffle.svg');
 const shuffleActiveIcon = require('$assets/images/player/shuffle-active.svg');
 const prevIcon = require('$assets/images/player/prev.svg');
 const nextIcon = require('$assets/images/player/next.svg');
-const volumeFullIcon = require('$assets/images/player/volume-full.svg');
 
 const Player = () => {
-  // refs
-  const audioRef = useRef(null);
-
   // state
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
-  const [volume, setVolume] = useState(100);
 
   // store
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
@@ -36,6 +29,7 @@ const Player = () => {
   const isLoading = useSelector((store) => store.player.isLoading);
   const position = useSelector((store) => store.player.position);
   const duration = useSelector((store) => store.player.duration);
+  const volume = useSelector((store) => store.player.volume);
   const dispatch = useDispatch();
 
   // handlers
@@ -48,21 +42,15 @@ const Player = () => {
   }
 
   const handleRepeat = () => {
-    // audioRef.current.repeat();
-    // setIsRepeat(audioRef.current.isRepeat);
   }
 
   const handleShuffle = () => {
-    // audioRef.current.shuffle();
-    // setIsShuffle(audioRef.current.isOnShuffle);
   }
 
   const handleNext = () => {
-    // audioRef.current.skip('next');
   }
 
   const handlePrev = () => {
-    // audioRef.current.skip('prev');
   }
 
   const playerControls = (
@@ -90,17 +78,6 @@ const Player = () => {
       </button>
     </>
   );
-
-  const updateRange = (value) => {
-    audioRef.current.seek(value);
-    // setSeekPos(value);
-    // TODO fix bug on seek
-  }
-
-  const updateVolume = (value) => {
-    setVolume(value);
-    audioRef.current.volume(value / 100);
-  }
 
   let album = 'Unknown';
   let avatar = null;
@@ -131,23 +108,13 @@ const Player = () => {
         {playerControls}
       </div>
       <div className={`d-flex ${styles.playerSliderWrapper} px-2`}>
-        <div className={`d-flex ${styles.playerVolumeWrapper}`}>
-          <button className={`${styles.playerBtn} ${styles.playerVolumeBtn}`}>
-            <img src={volumeFullIcon} />
-          </button>
-          <Slider
-            value={volume}
-            callbacks={{
-              updateRange: updateVolume,
-            }}
-          />
-        </div>
-        <div className={`d-flex ${styles.playerDurationWrapper}`}>
-          <ProgressSlider
-            position={position}
-            duration={duration}
-          />
-        </div>
+        <VolumeSlider
+          position={volume}
+        />
+        <ProgressSlider
+          position={position}
+          duration={duration}
+        />
       </div>
       <div className={styles.playerMenuWrapper}>
         <button className={styles.playerBtn}>
