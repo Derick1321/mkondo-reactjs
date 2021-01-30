@@ -118,7 +118,6 @@ const userSlice = createSlice({
       state.addFavoritePending = false;
       state.addFavoriteComplete = true;
       state.addFavoriteError = null;
-      console.log('action ', action);
     },
     [addFavorite.rejected]: (state, action) => {
       state.addFavoritePending = false;

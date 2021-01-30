@@ -1,16 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import AudioPlayer from '$common/player';
+import { handleFetch } from '$common/requestUtils';
+
+const LOAD_MEDIA = 'player/LOAD_MEDIA';
 
 const INITIAL_STATE = {
   currentMediaId: null,
   isPlaying: false,
-  currentPlaylist: false,
+  currentPlaylist: [],
   isAutoPlay: false,
   isRepeat: false,
   isShuffle: false,
-  // DEPRECATED
-  pauseForced: false,
+  isLoading: false,
+  position: 0,
+  duration: 0,
+  volume: 1,
+  newPosition: -1,
 };
 
 const playerSlider = createSlice({
@@ -19,17 +24,18 @@ const playerSlider = createSlice({
   reducers: {
     setCurrentMediaId(state, action) {
       state.currentMediaId = action.payload;
-      state.pauseForced = false;
     },
-    pause(state, action) {
-      // handle pause
+    pause(state) {
       state.isPlaying = false;
     },
-    clearId(state, action) {
-      // handle clear id
+    seek(state, action) {
+      state.newPosition = action.payload;
     },
     play(state, action) {
-      // handle play
+      if (action.payload) {
+        state.currentMediaId = action.payload.mediaId; // TODO: media id fix
+        state.currentPlaylist = [action.payload];
+      }
       state.isPlaying = true;
     },
     goPrev(state, action) {
@@ -38,12 +44,17 @@ const playerSlider = createSlice({
     goNext(state, action) {
       // handle prev
     },
-    updateRange(state, action) {
-      // range
+    updateVolume(state, action) {
+      state.volume = action.payload;
     },
-    // TO BE DEPRECATED
-    forcePause(state, action) {
-      state.pauseForced = action.payload;
+    updateRange(state, action) {
+      state.position = action.payload;
+    },
+    updateDuration(state, action) {
+      state.duration = action.payload;
+    },
+    updateLoading(state, action) {
+      state.isLoading = action.payload;
     },
   },
 });
@@ -52,10 +63,37 @@ export const {
   setCurrentMediaId,
   play,
   pause,
-  clearId,
+  seek,
   updateRange,
-  // DEPRECATED
-  forcePause,
+  updateLoading,
+  updateDuration,
+  updateVolume,
 } = playerSlider.actions;
+
+// actions
+export const loadMedia = createAsyncThunk(
+  LOAD_MEDIA,
+  async (data, param) => {
+    const { currentMediaId, isPlaying } = param.getState().player;
+
+    if (currentMediaId === data.mediaId) {
+      if (isPlaying) {
+        param.dispatch(pause());
+        return;
+      }
+      param.dispatch(play());
+      return;
+    }
+
+    param.dispatch(updateLoading(true));
+    param.dispatch(setCurrentMediaId(data.mediaId));
+    const { token } = param.getState().authentication;
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.url}`, null, token);
+    param.dispatch(play({
+      ...data,
+      url: res.response,
+    }));
+  }
+);
 
 export default playerSlider.reducer;
