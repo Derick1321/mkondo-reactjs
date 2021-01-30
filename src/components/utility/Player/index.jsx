@@ -18,6 +18,7 @@ const Player = () => {
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
   const newPosition = useSelector((store) => store.player.newPosition);
+  const volume = useSelector((store) => store.player.volume);
 
   // refs
   const audioRef = useRef(null);
@@ -101,13 +102,16 @@ const Player = () => {
   }, [isPlaying]);
 
   useEffect(() => {
-    console.log('newPosition ', newPosition);
     if (newPosition === -1) {
       return;
     }
     audioRef.current.seek(newPosition);
     // should revert to -1?
   }, [newPosition]);
+
+  useEffect(() => {
+    audioRef.current.volume(volume);
+  }, [volume]);
 
   // render
   return null;
