@@ -15,8 +15,11 @@ const tl = gsap.timeline({
 
 const Slider = (props) => {
   // props
-  const { callbacks, position, isVolume } = props;
-  // TODO? should we use Redux?
+  const {
+    callbacks,
+    position,
+    isVolume,
+  } = props;
 
   // refs
   const knobRef = useRef(null);
@@ -54,7 +57,8 @@ const Slider = (props) => {
     const knobRect = knobRef.current.getBoundingClientRect();
     const progRect = progressBarRef.current.getBoundingClientRect();
 
-    tl.progress(value); // NOTE: audio.currentTime / audio.duration
+    tl.progress(1); // NOTE: audio.currentTime / audio.duration
+    // console.log('value ', value, position);
     gsap.set(knobRef.current, {
       x: useXValue ? (progRect.width - progRect.left) : (progRect.width - knobRect.width) * value,
     });
