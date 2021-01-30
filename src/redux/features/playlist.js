@@ -97,7 +97,6 @@ const playlistSlice = createSlice({
       state.updatePlaylistPending = false;
       state.updatePlaylistComplete = false;
       state.updatePlaylistError = action.error;
-      console.log('act ', action);
     },
     [getPlaylist.pending]: (state, action) => {
       state.getPlaylistPending = true;

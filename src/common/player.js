@@ -22,7 +22,8 @@ class Player {
   }
 
   updatePlaylist(playlist) {
-    if (this.playlist[this.index] && this.playlist[this.index].howl) {
+    if (this.playlist[this.index]
+      && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
     
@@ -100,8 +101,11 @@ class Player {
    * Pause the currently playing track.
    */
   pause() {
+    if (!this.playlist[this.index]) {
+      return;
+    }
+
     const sound = this.playlist[this.index].howl;
-    console.log('sound ', sound);
     if (sound) {
       sound.pause();
     }
@@ -158,6 +162,10 @@ class Player {
    */
   seek(pos) {
     // Get the Howl we want to manipulate.
+    if (!this.playlist[this.index]) {
+      return;
+    }
+
     const sound = this.playlist[this.index].howl;
     if (!sound) { // sound not found
       return;

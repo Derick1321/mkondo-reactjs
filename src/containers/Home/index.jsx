@@ -10,7 +10,7 @@ import { getNewReleases } from '$redux/features/media';
 import styles from './index.module.scss';
 
 const Home = () => {
-   // state
+  // state
   const [selected, setSelected] = useState('audio');
 
   // store
@@ -31,21 +31,29 @@ const Home = () => {
   // render
   return (
     <div className={styles.homeContent}>
-      <div className={styles.homeTabsWrapper}> 
+      <div className={styles.homeTabsWrapper}>
         <Tabs
           onSelect={handleSelect}
           selected={selected}
         />
       </div>
-      <p className={`${styles.homeHeading} py-4`}>New Releases</p>
-      {
-        newReleases.length < 1 && (
-          <p>No new releases. Please try again later!</p>
-        )
-      }
-      <TopSongs
-        media={newReleases}
-      />
+      <div className={selected !== 'audio' ? 'd-none' : ''}>
+        <p className={`${styles.homeHeading} py-4`}>New Releases</p>
+        {
+          newReleases.length < 1 && (
+            <p>No new releases. Please try again later!</p>
+          )
+        }
+        <TopSongs
+          media={newReleases}
+        />
+      </div>
+      <div className={selected !== 'video' ? 'd-none' : ''}>
+        <p>No Videos available! Please try again later!</p>
+      </div>
+      <div className={selected !== 'movie' ? 'd-none' : ''}>
+        <p>No Movies available! Please try again later!</p>
+      </div>
     </div>
   );
 };

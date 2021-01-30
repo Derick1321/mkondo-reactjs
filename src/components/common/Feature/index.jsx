@@ -7,16 +7,17 @@ import styled from 'styled-components';
 import { handleFetch } from '$common/requestUtils';
 import { routePaths } from '$common/routeConfig';
 
-import { updateLocalPlaylist } from '$redux/features/playlist';
+import PlayBtn from '$components/media/PlayBtn';
+
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { showModal } from '$redux/features/modal';
-import { forcePause } from '$redux/features/player';
+import {
+  loadMedia,
+} from '$redux/features/player';
 
 import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
-const pause = require('$assets/images/icons/pause-icon.svg');
-const play = require('$assets/images/icons/play.svg');
 const favoriteActive = require('$assets/images/icons/favorite-active.svg');
 const favorite = require('$assets/images/icons/favorite.svg');
 const share = require('$assets/images/icons/share.svg');
@@ -63,7 +64,8 @@ const Feature = (props) => {
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
-  const pauseForced = useSelector((store) => store.player.pauseForced);
+  const isLoading = useSelector((store) => store.player.isLoading);
+  const isPlaying = useSelector((store) => store.player.isPlaying);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -118,25 +120,13 @@ const Feature = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    // temporarily load it on player
-    // TODO: navigate to player component
-    // BUGGY!!
-    if (currentMediaId === mediaId) {
-      if (!pauseForced) {
-        dispatch(forcePause(true));
-        return;
-      }
-      dispatch(forcePause(false));
-      return;
-    }
-
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
-    dispatch(updateLocalPlaylist({
-      url: res.response,
+    dispatch(loadMedia({
+      mediaId,
+      url: mediaUrl,
+      howl: null,
       avatar: avatarUrl,
       name: title,
-      howl: null,
-      mediaId,
+      artistName: subtitle,
     }));
   }
 
@@ -234,9 +224,9 @@ const Feature = (props) => {
               className={styles.featurePlayBtn}
               onClick={handlePlay}
             >
-              <img
-                src={currentMediaId === mediaId && !pauseForced ? pause : play}
-                className={styles.featureActionBtn}
+              <PlayBtn
+                isLoading={isLoading && currentMediaId === mediaId}
+                isPlaying={isPlaying && currentMediaId === mediaId}
               />
             </button>
             <div className={`d-flex flex-column ${styles.featureSummary}`}>
