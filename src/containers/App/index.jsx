@@ -2,17 +2,21 @@ import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
 } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
+import { ErrorBoundary } from 'react-error-boundary';
 
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/common/modals/ModalRoot';
 import Monitor from '$components/utility/Monitor';
 import Player from '$components/utility/Player';
 
+import NotFound from '$containers/NotFound';
+
 import { setInitialNav, toggleIsMobile } from '$redux/features/nav';
 
-import { routes } from '$common/routeConfig';
+import { routes, routePaths } from '$common/routeConfig';
 
 const App = () => {
   // store
@@ -75,16 +79,21 @@ const App = () => {
 
   return (
     <Router>
-      <Switch>
-        {
-          routes.map((route, i) => (
-            <RouteWithSubRoutes
-              key={`route-${i}`}
-              {...route}
-            />
-          ))
-        }
-      </Switch>
+      <ErrorBoundary
+        FallbackComponent={NotFound}
+      >
+        <Switch>
+          {
+            routes.map((route, i) => (
+              <RouteWithSubRoutes
+                key={`route-${i}`}
+                {...route}
+              />
+            ))
+          }
+          <Redirect to={routePaths.notFound} />
+        </Switch>
+      </ErrorBoundary>
       <ModalRoot />
       <Monitor />
       <Player />

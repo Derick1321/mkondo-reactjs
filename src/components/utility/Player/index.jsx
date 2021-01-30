@@ -4,35 +4,37 @@ import { useSelector, useDispatch } from 'react-redux';
 import AudioPlayer from '$common/player';
 
 import { addHistory } from '$redux/features/user';
-import { setCurrentMediaId } from '$redux/features/player';
+import {
+  updateLoading,
+  pause,
+  updateRange,
+  updateDuration,
+} from '$redux/features/player';
 
 // hook for handing Audio related commands
 const Player = () => {
   // store
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.player.isPlaying);
-  const currentPlaylist = useSelector((store) => store.playlist.currentPlaylist);
+  const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
+  const newPosition = useSelector((store) => store.player.newPosition);
 
   // refs
   const audioRef = useRef(null);
   const timerRef = useRef(null);
 
   // functions
-  const onPlay = (dur, mediaId) => {
-    // setIsPlaying(true);
-    // setDuration(dur);
-    // setIsLoading(false);
-    dispatch(setCurrentMediaId(mediaId));
+  const onPlay = (dur) => {
+    dispatch(updateDuration(dur));
+    dispatch(updateLoading(false));
   }
 
-  const onPause = (dur) => {
-    // TODO: fix pause
+  const onPause = () => {
     onEnd();
   }
 
   const onEnd = () => {
-    setIsPlaying(false);
-    dispatch(setCurrentMediaId(null));
+    dispatch(pause());
   }
 
   const onLoad = (mediaId) => {
@@ -47,8 +49,8 @@ const Player = () => {
     if (!sound) {
       return;
     }
-    // UPDATE POSITION
-    sound.seek();
+
+    dispatch(updateRange(sound.seek()));
   }
 
   const loop = () => {
@@ -71,6 +73,18 @@ const Player = () => {
   }, []);
 
   useEffect(() => {
+    const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
+    audioRef.current.updatePlaylist(newPlaylist);
+
+    if (newPlaylist.length < 1) {
+      return;
+    }
+
+    audioRef.current.play(audioRef.current.index);
+    dispatch(updateLoading(true));
+  }, [currentPlaylist]);
+
+  useEffect(() => {
     if (!isPlaying) {
       audioRef.current.pause();
       cancelAnimationFrame(timerRef.current);
@@ -85,6 +99,15 @@ const Player = () => {
       }
     };
   }, [isPlaying]);
+
+  useEffect(() => {
+    console.log('newPosition ', newPosition);
+    if (newPosition === -1) {
+      return;
+    }
+    audioRef.current.seek(newPosition);
+    // should revert to -1?
+  }, [newPosition]);
 
   // render
   return null;

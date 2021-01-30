@@ -19,11 +19,13 @@ import ViewMedia from '$containers/Media/ViewMedia';
 import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
 import Profile from '$containers/Profile';
+import NotFound from '../containers/NotFound';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
   onBoarding: '/on-boarding',
+  notFound: '/not-found',
   resetPassword: '/reset-password',
   home: '/app/home',
   recommendation: '/app/recommendation',
@@ -95,6 +97,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.resetPassword,
     component: ResetPassword,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.notFound,
+    component: NotFound,
   },
   {
     ...defaultConfig,

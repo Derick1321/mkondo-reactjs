@@ -10,7 +10,9 @@ const camera = require('$assets/images/photo-camera.svg');
 const Pic = styled.div`
   display: inline-block;
   border-radius: 3px;
-  background-image: url(${props => props.url})
+  background-image: url(${props => props.url});;
+  background-size: cover;
+  background-position: top;
 `;
 
 const AvatarInput = (props) => {
@@ -78,9 +80,9 @@ const AvatarInput = (props) => {
       >
         {
           url ? (
-            <img
-              src={url}
+            <Pic
               className={styles.avatarInputWrapperImage}
+              url={url}
             />
           ) : (active ? (
             <p className={`text-center ${styles.dragTitle}`}>

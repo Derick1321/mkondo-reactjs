@@ -5,18 +5,18 @@ import styled from 'styled-components';
 
 import Button from '$components/common/Button';
 import ProgressSlider from '$components/media/ProgressSlider';
+import PlayBtn from '$components/media/PlayBtn';
 
 import { handleFetch } from '$common/requestUtils';
 
 import { showModal } from '$redux/features/modal';
 import { addFavorite, removeFavorite } from '$redux/features/user';
+import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
 const prevIcon = require('$assets/images/player/prev.svg');
 const nextIcon = require('$assets/images/player/next.svg');
-const playIcon = require('$assets/images/player/play.svg');
-const pauseIcon = require('$assets/images/player/pause.svg');
 const favoriteActive = require('$assets/images/icons/favorite-active.svg');
 const favoriteIcon = require('$assets/images/icons/favorite.svg');
 const shareIcon = require('$assets/images/icons/share.svg');
@@ -64,6 +64,10 @@ const IndividualPlayer = (props) => {
   const dispatch = useDispatch();
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
+  const isLoading = useSelector((store) => store.player.isLoading);
+  const isPlaying = useSelector((store) => store.player.isPlaying);
+  const position = useSelector((store) => store.player.position);
+  const duration = useSelector((store) => store.player.duration);
 
   const isFavorite = favourites.find((media) => media.media_id === mediaId);
 
@@ -92,6 +96,14 @@ const IndividualPlayer = (props) => {
   // handlers
   const handlePlay = () => {
     // play
+    dispatch(loadMedia({
+      mediaId,
+      url: mediaUrl,
+      howl: null,
+      avatar: avatarSrc,
+      name: title,
+      artistName,
+    }));
   }
 
   const handlePrev = () => {
@@ -125,6 +137,13 @@ const IndividualPlayer = (props) => {
       id: mediaId,
       avatarUrl: avatarSrc,
     }));
+  }
+
+  // panel
+  const playPanel = () => {
+    if (isLoading) {
+
+    }
   }
 
   // render
@@ -172,10 +191,9 @@ const IndividualPlayer = (props) => {
               isCustom
               hideDefault
             >
-              <img
-                className={styles.playIcon}
-                src={playIcon}
-                alt=""
+              <PlayBtn
+                isLoading={isLoading}
+                isPlaying={isPlaying}
               />
             </Button>
             <Button
@@ -198,7 +216,10 @@ const IndividualPlayer = (props) => {
         </div>
       </div>
       <div className={styles.playerWrapper}>
-        <ProgressSlider />
+        <ProgressSlider
+          position={position}
+          duration={duration}
+        />
       </div>
     </div>
   );

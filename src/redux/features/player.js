@@ -1,4 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { handleFetch } from '$common/requestUtils';
+
+const LOAD_MEDIA = 'player/LOAD_MEDIA';
 
 const INITIAL_STATE = {
   currentMediaId: null,
@@ -7,8 +11,10 @@ const INITIAL_STATE = {
   isAutoPlay: false,
   isRepeat: false,
   isShuffle: false,
-  // DEPRECATED
-  pauseForced: false,
+  isLoading: false,
+  position: 0,
+  duration: 0,
+  newPosition: -1,
 };
 
 const playerSlider = createSlice({
@@ -17,19 +23,18 @@ const playerSlider = createSlice({
   reducers: {
     setCurrentMediaId(state, action) {
       state.currentMediaId = action.payload;
-      // DEPRECATED
-      state.pauseForced = false;
     },
-    setCurrentPlaylist(state, action) {
-      state.currentPlaylist = action.payload;
-    },
-    pause(state, action) {
+    pause(state) {
       state.isPlaying = false;
     },
-    clearId(state, action) {
-      // handle clear id
+    seek(state, action) {
+      state.newPosition = action.payload;
     },
     play(state, action) {
+      if (action.payload) {
+        state.currentMediaId = action.payload.mediaId; // TODO: media id fix
+        state.currentPlaylist = [action.payload];
+      }
       state.isPlaying = true;
     },
     goPrev(state, action) {
@@ -39,11 +44,13 @@ const playerSlider = createSlice({
       // handle prev
     },
     updateRange(state, action) {
-      // range
+      state.position = action.payload;
     },
-    // TO BE DEPRECATED
-    forcePause(state, action) {
-      state.pauseForced = action.payload;
+    updateDuration(state, action) {
+      state.duration = action.payload;
+    },
+    updateLoading(state, action) {
+      state.isLoading = action.payload;
     },
   },
 });
@@ -52,10 +59,36 @@ export const {
   setCurrentMediaId,
   play,
   pause,
-  clearId,
+  seek,
   updateRange,
-  // DEPRECATED
-  forcePause,
+  updateLoading,
+  updateDuration,
 } = playerSlider.actions;
+
+// actions
+export const loadMedia = createAsyncThunk(
+  LOAD_MEDIA,
+  async (data, param) => {
+    const { currentMediaId, isPlaying } = param.getState().player;
+
+    if (currentMediaId === data.mediaId) {
+      if (isPlaying) {
+        param.dispatch(pause());
+        return;
+      }
+      param.dispatch(play());
+      return;
+    }
+
+    param.dispatch(updateLoading(true));
+    param.dispatch(setCurrentMediaId(data.mediaId));
+    const { token } = param.getState().authentication;
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.url}`, null, token);
+    param.dispatch(play({
+      ...data,
+      url: res.response,
+    }));
+  }
+);
 
 export default playerSlider.reducer;
