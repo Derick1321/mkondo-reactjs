@@ -14,7 +14,6 @@ const ProgressSlider = (props) => {
     duration,
   } = props;
 
-console.log('zz ', position, duration);
   // store
   const dispatch = useDispatch();
 

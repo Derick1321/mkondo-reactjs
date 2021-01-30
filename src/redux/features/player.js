@@ -14,6 +14,7 @@ const INITIAL_STATE = {
   isLoading: false,
   position: 0,
   duration: 0,
+  volume: 1,
   newPosition: -1,
 };
 
@@ -43,6 +44,9 @@ const playerSlider = createSlice({
     goNext(state, action) {
       // handle prev
     },
+    updateVolume(state, action) {
+      state.volume = action.payload;
+    },
     updateRange(state, action) {
       state.position = action.payload;
     },
@@ -63,6 +67,7 @@ export const {
   updateRange,
   updateLoading,
   updateDuration,
+  updateVolume,
 } = playerSlider.actions;
 
 // actions

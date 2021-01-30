@@ -162,6 +162,10 @@ class Player {
    */
   seek(pos) {
     // Get the Howl we want to manipulate.
+    if (!this.playlist[this.index]) {
+      return;
+    }
+
     const sound = this.playlist[this.index].howl;
     if (!sound) { // sound not found
       return;
