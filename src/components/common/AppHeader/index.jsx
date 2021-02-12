@@ -5,6 +5,7 @@ import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 
 import DropDownWrapper from '$components/common/DropDownWrapper';
+import DropDown from '$components/common/DropDown';
 import TextInput from '$components/common/TextInput';
 import SearchResult from '$components/common/SearchResult';
 import HamburgerMenu from '$components/nav/HamburgerMenu';
@@ -107,7 +108,7 @@ const AppHeader = (props) => {
             />
           )
         }
-        <DropDownWrapper
+        <DropDown
           options={headerMenus}
           handleSelect={handleSelect}
         >
@@ -119,7 +120,7 @@ const AppHeader = (props) => {
               alt=""
             />
           </div>
-        </DropDownWrapper>
+        </DropDown>
       </div>
       {
         search && (
