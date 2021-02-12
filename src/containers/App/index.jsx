@@ -93,10 +93,10 @@ const App = () => {
           }
           <Redirect to={routePaths.notFound} />
         </Switch>
+        <Monitor />
+        <Player />
       </ErrorBoundary>
       <ModalRoot />
-      <Monitor />
-      <Player />
     </Router>
   );
 };
