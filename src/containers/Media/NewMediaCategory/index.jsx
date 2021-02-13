@@ -20,6 +20,11 @@ const NewMediaCategory = () => {
       return;
     }
 
+    if (selected[0] === 'video' || selected[0] === 'movie') {
+      history.push(routePaths.newVideo, { type: selected[0] });
+      return;
+    }
+
     history.push(routePaths.mediaUpload);
   }
 

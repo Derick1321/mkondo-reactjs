@@ -108,25 +108,21 @@ const NewMedia = () => {
               />
             </div>
             <div className={`${file ? '' : 'd-none'}`}>
-              {
-                file && (
-                <div className="d-flex justify-content-between align-items-center">
-                  <span className="mr-2">{file.name}</span>
-                  <button
-                    className={styles.newMediaCloseBtn}
-                    onClick={handleCancel}
-                  >
-                    <img
-                      className={styles.cancelIcon}
-                      src={closeIcon}
-                      alt=""
-                    />
-                  </button>
-                </div>
-                )
-              }
+              <div className="d-flex justify-content-between align-items-center">
+                <span className="mr-2">{file.name}</span>
+                <button
+                  className={styles.newMediaCloseBtn}
+                  onClick={handleCancel}
+                >
+                  <img
+                    className={styles.cancelIcon}
+                    src={closeIcon}
+                    alt=""
+                  />
+                </button>
+              </div>
               <div className="d-flex flex-column">
-                <NewItem 
+                <NewItem
                   menus={menus}
                   metamenus={metamenus}
                   onChange={handleChange}
