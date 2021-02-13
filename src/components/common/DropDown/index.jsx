@@ -51,7 +51,7 @@ const DropDown = (props) => {
               evt.preventDefault();
               evt.stopPropagation();
               handleSelect(opt.name);
-              updateBounds(true);
+              dispatch(hideModal());
             }}
             className={`${styles.dropdownOption} ${opt.style ? opt.style : ''}`}
           >
