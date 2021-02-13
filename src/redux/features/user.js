@@ -19,7 +19,8 @@ export const updateUser = createAsyncThunk(
   UPDATE_USER,
   async (data, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('PUT', `users/${data.id}`, data, token);
+    console.log('data ', data.payload);
+    return await handleFetch('PUT', `users/${data.id}`, data.payload, token);
   }
 );
 
