@@ -24,6 +24,9 @@ const Monitor = () => {
   const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
   const updateSystemUserPending = useSelector((store) => store.user.updateSystemUserPending);
   const addHistoryComplete = useSelector((store) => store.user.addHistoryComplete);
+  const userType = useSelector((store) => store.authentication.user.user_type);
+
+  const isSuperAdmin = userType === 'super admin';
 
   // effects
   useEffect(() => {
@@ -85,10 +88,12 @@ const Monitor = () => {
   }, [createPlaylistComplete, updatePlaylistComplete]);
 
   useEffect(() => {
-    if (updateSystemUserPending) {
-      dispatch(searchUsers());
+    if (updateUserComplete) {
+      if (isSuperAdmin) {
+        dispatch(searchUsers());
+      }
     }
-  }, [updateSystemUserPending]);
+  }, [updateUserComplete]);
 
   // render
   return (

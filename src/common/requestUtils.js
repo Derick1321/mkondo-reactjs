@@ -3,15 +3,11 @@ const BASE_URL = 'https://api.mkondo.co';
 // Ensure you are running a local instance
 const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
 
-export const buildUrl = (url, data, token = '') => {
+const buildUrl = (url, data) => {
   const newUrl = `${URL}/${url}`;
   const headers = {
     'Access-Control-Allow-Origin': '*',
   };
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
 
   const props = {
     url: newUrl,
@@ -28,6 +24,8 @@ export const buildUrl = (url, data, token = '') => {
 
 export const buildFormData = (url, data = {}) => {
   const newUrl = `${BASE_URL}${url}`;
+
+  console.log('newUrl ', newUrl);
 
   const headers = {
     'Accept': '*/*',
@@ -46,18 +44,35 @@ export const buildFormData = (url, data = {}) => {
   };
 };
 
-export const handleFetch = async (method, path, data, token='') => {
-  const { url, body, headers } = buildUrl(path, data, token);
-  const props = {
-    headers,
-    method,
-  };
+export const handleFetch = async (method, path, data, token = '') => {
+  let url, headers;
 
-  if (body) {
-    props.body = body;
+  const props = {};
+
+  if (data && data.file) {
+    const res = buildFormData(`/${path}`, data);
+    url = res.url;
+    headers = res.headers;
+    props.body = res.body;
+  } else {
+    const res = buildUrl(path, data);
+    url = res.url;
+    headers = res.headers;
+
+    if (res.body) {
+      props.body = res.body;
+    }
   }
 
-  const response = await fetch(url, props);
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, {
+    ...props,
+    headers,
+    method,
+  });
   const status = response.status;
   const result = await response.text();
 

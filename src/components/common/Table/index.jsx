@@ -6,7 +6,7 @@ import DropDown from '$components/common/DropDown';
 import Row from '$components/common/Row';
 
 import { formatDate, capitalize } from '$common/utils';
-import { updateSystemUser } from '$redux/features/user';
+import { updateUser } from '$redux/features/user';
 
 import styles from './index.module.scss';
 
@@ -24,28 +24,31 @@ const Table = (props) => {
   // store
   const dispatch = useDispatch();
 
-  const handleEdit = (value) => {
+  const handleEdit = (value, opt) => {
     // launch edit modal
     const item = {
-      ...data,
+      ...value,
     };
 
 
-    if (value === 'activate') {
+    if (opt === 'activate') {
       item.publish = true;
     }
 
-    if (value === 'delete') {
+    if (opt === 'delete') {
       item.archived = true;
     }
 
-    dispatch(updateSystemUser(item));
+    dispatch(updateUser({
+      id: item.user_id,
+      payload: item,
+    }));
   };
 
   const btn = (data) => (
     <DropDown
       options={headerMenus}
-      handleSelect={() => handleEdit(data)}
+      handleSelect={(opt) => handleEdit(data, opt)}
     >
       <span className={styles.btn}>Edit</span>
     </DropDown>
