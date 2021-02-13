@@ -74,7 +74,19 @@ export const newMedia = [
     icon: require('$assets/images/home/trumpet.svg'),
     iconActive: require('$assets/images/home/trumpet-active.svg'),
   },
-]
+  {
+    name: 'video',
+    title: 'Videos',
+    icon: require('$assets/images/home/videos.svg'),
+    iconActive: require('$assets/images/home/videos-active.svg'),
+  },
+  {
+    name: 'movie',
+    title: 'Movies',
+    icon: require('$assets/images/home/movies.svg'),
+    iconActive: require('$assets/images/home/movies-active.svg'),
+  },
+];
 
 export default menus;
 
