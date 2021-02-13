@@ -66,7 +66,7 @@ const NewMedia = () => {
     dispatch(addMedia({
       name: values.title,
       description: values.description,
-      genres: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      genres: item.genre.map((item) => item.value),
       cover_url: avatarRes.payload,
       media_url: mediaRes.payload,
       owner_id: userId,
