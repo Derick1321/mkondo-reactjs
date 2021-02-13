@@ -21,6 +21,9 @@ export const addMedia = createAsyncThunk(
   ADD_MEDIA,
   async (data, param) => {
     const { token } = param.getState().authentication;
+    if (data.file) {
+      return await handleFetch('POST', 'media', data, token);
+    }
     return await handleFetch('POST', 'media', data, token);
   }
 );
@@ -104,8 +107,6 @@ export const updateLike = createAsyncThunk(
     return await handleFetch('POST', `media/${mediaId}/like`, null, token);
   }
 );
-
-
 
 // save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
