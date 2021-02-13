@@ -18,6 +18,10 @@ export const capitalize = (s) => {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
+export const getFileURL = (file) => {
+  return URL.createObjectURL(file);
+}
+
 export const formatDate = (value) => {
   const units = [
     'year',

@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { showModal, hideModal } from '$redux/features/modal';
 import { reloadUser } from '$redux/features/authentication';
 import { listPlaylist } from '$redux/features/playlist';
-import { getHistory } from '$redux/features/user';
+import { getHistory, searchUsers } from '$redux/features/user';
 
 const Monitor = () => {
   // store
@@ -22,7 +22,11 @@ const Monitor = () => {
   const createPlaylistComplete = useSelector((store) => store.playlist.createPlaylistComplete);
   const updateUserPending = useSelector((store) => store.user.updateUserPending);
   const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
+  const updateSystemUserPending = useSelector((store) => store.user.updateSystemUserPending);
   const addHistoryComplete = useSelector((store) => store.user.addHistoryComplete);
+  const userType = useSelector((store) => store.authentication.user.user_type);
+
+  const isSuperAdmin = userType === 'super admin';
 
   // effects
   useEffect(() => {
@@ -31,6 +35,7 @@ const Monitor = () => {
       || saveMediaPending
       || addAlbumPending
       || updateUserPending
+      || updateSystemUserPending
     ) {
       dispatch(showModal('LOADER_MODAL', {
         preventOutsideClick: true,
@@ -45,6 +50,7 @@ const Monitor = () => {
     saveMediaPending,
     addAlbumPending,
     updateUserPending,
+    updateSystemUserPending,
   ]);
 
   useEffect(() => {
@@ -80,6 +86,14 @@ const Monitor = () => {
 
     dispatch(listPlaylist(userId));
   }, [createPlaylistComplete, updatePlaylistComplete]);
+
+  useEffect(() => {
+    if (updateUserComplete) {
+      if (isSuperAdmin) {
+        dispatch(searchUsers());
+      }
+    }
+  }, [updateUserComplete]);
 
   // render
   return (
