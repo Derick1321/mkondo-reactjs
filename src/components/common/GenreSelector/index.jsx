@@ -47,7 +47,11 @@ const GenreSelector = (props) => {
                   onClick={() => handleSelect(menu.name)}
                 >
                   <div className={`d-flex justify-content-center align-items-center ${styles.genreSelectorMenuImage}`}>
-                    <img src={icon} />
+                    <img
+                      src={icon}
+                      className={styles.icon}
+                      alt=""
+                    />
                   </div>
                   <span>{menu.title}</span>
                 </div>

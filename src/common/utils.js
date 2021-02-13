@@ -13,6 +13,11 @@ export const formatTime = (seconds) => {
   return Duration.fromObject({ seconds }).toFormat('mm:ss');
 }
 
+export const capitalize = (s) => {
+  if (typeof s !== 'string') return ''
+  return s.charAt(0).toUpperCase() + s.slice(1)
+}
+
 export const formatDate = (value) => {
   const units = [
     'year',

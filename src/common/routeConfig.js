@@ -7,6 +7,7 @@ import MediaNew from '$containers/Media/NewMedia';
 import MediaUpload from '$containers/Media/MediaUpload';
 import NewMediaCategory from '$containers/Media/NewMediaCategory';
 import NewAlbum from '$containers/Media/NewAlbum';
+import NewVideo from '$containers/Media/NewVideo';
 import Artist from '$containers/Artist';
 import ArtistNew from '$containers/Artist/NewArtist';
 import ArtistView from '$containers/Artist/ViewArtist';
@@ -35,6 +36,7 @@ export const routePaths = {
   media: '/app/media',
   newMedia: '/app/media/new',
   newAlbum: '/app/media/new-album',
+  newVideo: '/app/media/new-video',
   newMediaCategory: '/app/media/select-category',
   mediaUpload: '/app/media/upload',
   viewMedia: '/app/media/:id',
@@ -223,6 +225,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.newAlbum,
             component: NewAlbum,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.newVideo,
+            component: NewVideo,
             redirect: redirectFunctions.app,
           },
           {
