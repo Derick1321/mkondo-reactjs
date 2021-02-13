@@ -4,6 +4,7 @@
   min-height: 100vh;
   background-color: $secondary-white;
   padding-top: 100px;
+  padding-bottom: 5rem;
 }
 
 .inputFormWrapper {
@@ -22,19 +23,13 @@
   color: $black;
 }
 
-.playerWrapper {
-  position: relative;
-  padding-top: 56.25% /* Player ratio: 100 / (1280 / 720) */
-}
-
-.reactPlayer {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
 .paneTitle {
   font-size: 1.8rem;
   color: $secondary-gray;
   font-weight: bold;
+}
+
+.cover {
+  height: 200px;
+  margin-top: 1.5rem;
 }
