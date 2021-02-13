@@ -12,13 +12,14 @@ const ADD_FOLLOWERS = 'user/ADD_FOLLOWERS';
 const REMOVE_FOLLOWERS = 'user/REMOVE_FOLLOWERS';
 const GET_SYSTEM_INSIGHT = 'user/GET_SYSTEM_INSIGHT';
 const SEARCH_USERS = 'user/SEARCH_USERS';
+const UPDATE_SYSTEM_USER = 'user/UPDATE_SYSTEM_USER';
 
 // actions
 export const updateUser = createAsyncThunk(
   UPDATE_USER,
   async (data, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('PUT', `users/${data.id}`, data.payload, token);
+    return await handleFetch('PUT', `users/${data.id}`, data, token);
   }
 );
 
@@ -95,6 +96,15 @@ export const searchUsers = createAsyncThunk(
   }
 );
 
+export const updateSystemUser = createAsyncThunk(
+  UPDATE_SYSTEM_USER,
+  async (data, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('PUT', 'users', data, token);
+  }
+);
+
+
 const initialState = {
   updateUserPending: false,
   updateUserError: null,
@@ -111,6 +121,9 @@ const initialState = {
   removeFollowersPending: false,
   removeFollowersError: null,
   removeFollowersComplete: false,
+  updateSystemUserPending: false,
+  updateSystemUserError: null,
+  updateSystemUserComplete: false,
   addHistoryPending: false,
   addHistoryError: null,
   addHistoryComplete: false,
@@ -298,6 +311,22 @@ const userSlice = createSlice({
       state.searchUsersPending = false;
       state.searchUsersComplete = false;
       state.searchUsersError = action.error;
+    },
+    [updateSystemUser.pending]: (state, action) => {
+      state.updateSystemUserPending = true;
+      state.updateSystemUserComplete = false;
+      state.updateSystemUserError = null;
+      state.newMediaId = null;
+    },
+    [updateSystemUser.fulfilled]: (state, action) => {
+      state.updateSystemUserPending = false;
+      state.updateSystemUserComplete = true;
+      state.updateSystemUserError = null;
+    },
+    [updateSystemUser.rejected]: (state, action) => {
+      state.updateSystemUserPending = false;
+      state.updateSystemUserComplete = false;
+      state.updateSystemUserError = action.error;
     },
   }
 });

@@ -1,16 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
 import DropDown from '$components/common/DropDown';
-import Button from '$components/common/Button';
 import Row from '$components/common/Row';
+
 import { formatDate, capitalize } from '$common/utils';
+import { updateSystemUser } from '$redux/features/user';
 
 import styles from './index.module.scss';
 
 const headerMenus = [
   { name: 'activate', title: 'Activate', },
-  { name: 'delete', title: 'Delete', style: styles.optSecondary},
+  { name: 'delete', title: 'Delete', style: styles.optSecondary },
 ];
 
 const Table = (props) => {
@@ -19,22 +21,35 @@ const Table = (props) => {
     data,
   } = props;
 
+  // store
+  const dispatch = useDispatch();
+
   const handleEdit = (value) => {
     // launch edit modal
-    // 
-    console.log('edit! ', value);
+    const item = {
+      ...data,
+    };
+
+
+    if (value === 'activate') {
+      item.publish = true;
+    }
+
+    if (value === 'delete') {
+      item.archived = true;
+    }
+
+    dispatch(updateSystemUser(item));
   };
 
-  const btn = (
+  const btn = (data) => (
     <DropDown
       options={headerMenus}
-      handleSelect={handleEdit}
+      handleSelect={() => handleEdit(data)}
     >
       <span className={styles.btn}>Edit</span>
     </DropDown>
   );
-
-  console.log('data ', data);
 
   // render
   return (
@@ -65,7 +80,7 @@ const Table = (props) => {
               new Date(cols.joined).toLocaleDateString(),
               capitalize(formatDate(cols.last_active)),
             ]}
-            actionBtn={btn}
+            actionBtn={btn(cols)}
           />
         ))
       }
