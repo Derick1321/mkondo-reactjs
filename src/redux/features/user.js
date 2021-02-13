@@ -10,6 +10,8 @@ const GET_MEDIA = 'user/GET_MEDIA';
 const GET_HISTORY = 'user/GET_HISTORY';
 const ADD_FOLLOWERS = 'user/ADD_FOLLOWERS';
 const REMOVE_FOLLOWERS = 'user/REMOVE_FOLLOWERS';
+const GET_SYSTEM_INSIGHT = 'user/GET_SYSTEM_INSIGHT';
+const SEARCH_USERS = 'user/SEARCH_USERS';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -76,36 +78,65 @@ export const getHistory = createAsyncThunk(
   }
 );
 
+
+export const getSystemInsight = createAsyncThunk(
+  GET_SYSTEM_INSIGHT,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'insights/audio/users', null, token);
+  }
+);
+
+export const searchUsers = createAsyncThunk(
+  SEARCH_USERS,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', 'users', null, token);
+  }
+);
+
+const initialState = {
+  updateUserPending: false,
+  updateUserError: null,
+  updateUserComplete: false,
+  addFavoritePending: false,
+  addFavoriteError: null,
+  addFavoriteComplete: false,
+  removeFavoritePending: false,
+  removeFavoriteError: null,
+  removeFavoriteComplete: false,
+  addFollowersPending: false,
+  addFollowersError: null,
+  addFollowersComplete: false,
+  removeFollowersPending: false,
+  removeFollowersError: null,
+  removeFollowersComplete: false,
+  addHistoryPending: false,
+  addHistoryError: null,
+  addHistoryComplete: false,
+  getHistoryPending: false,
+  getHistoryError: null,
+  getHistoryComplete: false,
+  getUserMediaPending: false,
+  getUserMediaError: null,
+  getUserMediaComplete: false,
+  searchUsersPending: false,
+  searchUsersError: null,
+  searchUsersComplete: false,
+  getSystemInsightPending: false,
+  getSystemInsightError: null,
+  getSystemInsightComplete: false,
+  userMedia: [],
+  currentPagination: {},
+  insights: {},
+  users: {
+    data: [],
+  },
+};
+
 const userSlice = createSlice({
   name: 'user',
-  initialState: {
-    updateUserPending: false,
-    updateUserError: null,
-    updateUserComplete: false,
-    addFavoritePending: false,
-    addFavoriteError: null,
-    addFavoriteComplete: false,
-    removeFavoritePending: false,
-    removeFavoriteError: null,
-    removeFavoriteComplete: false,
-    addFollowersPending: false,
-    addFollowersError: null,
-    addFollowersComplete: false,
-    removeFollowersPending: false,
-    removeFollowersError: null,
-    removeFollowersComplete: false,
-    addHistoryPending: false,
-    addHistoryError: null,
-    addHistoryComplete: false,
-    getHistoryPending: false,
-    getHistoryError: null,
-    getHistoryComplete: false,
-    getUserMediaPending: false,
-    getUserMediaError: null,
-    getUserMediaComplete: false,
-    userMedia: [],
-    currentPagination: {},
-  },
+  initialState,
   reducers: {},
   extraReducers: {
     [addFavorite.pending]: (state, action) => {
@@ -235,6 +266,38 @@ const userSlice = createSlice({
       state.getUserMediaPending = false;
       state.getUserMediaComplete = false;
       state.getUserMediaError = action.error;
+    },
+    [getSystemInsight.pending]: (state, action) => {
+      state.getSystemInsightPending = true;
+      state.getSystemInsightComplete = false;
+      state.getSystemInsightError = null;
+    },
+    [getSystemInsight.fulfilled]: (state, action) => {
+      state.getSystemInsightPending = false;
+      state.getSystemInsightComplete = true;
+      state.getSystemInsightError = null;
+      state.insights = action.payload
+    },
+    [getSystemInsight.rejected]: (state, action) => {
+      state.getSystemInsightPending = false;
+      state.getSystemInsightComplete = false;
+      state.getSystemInsightError = action.error;
+    },
+    [searchUsers.pending]: (state, action) => {
+      state.searchUsersPending = true;
+      state.searchUsersComplete = false;
+      state.searchUsersError = null;
+      state.users = initialState.users;
+    },
+    [searchUsers.fulfilled]: (state, action) => {
+      state.searchUsersPending = false;
+      state.searchUsersComplete = true;
+      state.users = action.payload.users;
+    },
+    [searchUsers.rejected]: (state, action) => {
+      state.searchUsersPending = false;
+      state.searchUsersComplete = false;
+      state.searchUsersError = action.error;
     },
   }
 });

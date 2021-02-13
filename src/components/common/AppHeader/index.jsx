@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 
-import DropDownWrapper from '$components/common/DropDownWrapper';
 import DropDown from '$components/common/DropDown';
 import TextInput from '$components/common/TextInput';
 import SearchResult from '$components/common/SearchResult';
@@ -91,7 +90,7 @@ const AppHeader = (props) => {
   // render
   return (
     <>
-      <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
+      <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
         <div className="d-block d-sm-none">
           <HamburgerMenu />
         </div>
