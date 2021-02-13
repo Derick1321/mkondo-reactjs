@@ -9,7 +9,11 @@ const upIcon = require('$assets/images/icons/arrow-up.svg');
 
 const DragDrop = (props) => {
   // props
-  const { onChange, isMulti } = props;
+  const {
+    onChange,
+    isMulti,
+    acceptedFiles,
+  } = props;
 
   // state
   const [active, setActive] = useState(false);
@@ -97,11 +101,12 @@ const DragDrop = (props) => {
         </div>
       </div>
       <input
+        id="file-input"
         className="d-none"
         type="file"
         ref={fileRef}
         onChange={handleChange}
-        accept=".mp3,audio/*"
+        accept={acceptedFiles}
         multiple={isMulti}
       />
     </>
@@ -110,11 +115,13 @@ const DragDrop = (props) => {
 
 DragDrop.defaultProps = {
   isMulti: false,
+  acceptedFiles: ".mp3,audio/*",
 };
 
 DragDrop.propTypes = {
   onChange: PropTypes.func.isRequired,
   isMulti: PropTypes.bool,
+  acceptedFiles:PropTypes.string,
 }
 
 export default DragDrop;
