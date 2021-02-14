@@ -44,6 +44,11 @@ export const formatDate = (value) => {
   return relativeFormatter.format(Math.trunc(diff.as(unit)), unit);
 }
 
+export const getCurrentYear = () => {
+  const d = new Date();
+  return d.getFullYear();
+}
+
 export const generatePreview = (file) => {
   return new Promise((resolve, reject) => {
     try {

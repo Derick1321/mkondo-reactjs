@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import Button from '$components/common/Button';
 import { socialIcons } from '$common/icons';
 
+import styles from './index.module.scss';
+
 const Social = (props) => {
   // props
   const {
@@ -28,7 +30,7 @@ const Social = (props) => {
 
   // socials
   return (
-    <div className="d-flex">
+    <div className={`d-flex ${styles.socialWrapper}`}>
       {
         Object.values(socialIcons).map((item, idx) => {
           
@@ -47,7 +49,7 @@ const Social = (props) => {
             >
               <img
                 src={active === item.name ? item.iconActive : item.icon}
-                className="social-icon"
+                className={styles.socialIcon}
               />
             </Button>
           )

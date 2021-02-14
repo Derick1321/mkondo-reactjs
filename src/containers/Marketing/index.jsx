@@ -10,9 +10,11 @@ import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
+import Social from '$components/common/Social';
 // import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
+import { getCurrentYear } from '$common/utils';
 
 import {
   coldstart,
@@ -28,6 +30,8 @@ import { urls, data } from './model';
 
 import styles from './index.module.scss';
 
+const artists = require('$assets/images/marketing/artist.png');
+
 const Marketing = () => {
   // state
   const [selected, setSelected] = useState('audio');
@@ -38,6 +42,7 @@ const Marketing = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.authentication.token);
+  const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
   const initialRoute = useSelector((store) => store.nav.initialRoute);
   const userId = useSelector((store) => store.authentication.user.user_id);
@@ -63,14 +68,22 @@ const Marketing = () => {
       return;
     }
 
-    if (!signUpComplete && userType !== 'visitor') {
-      dispatch(reloadUser(userId));
-      dispatch(getHistory());
-      history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
+    if (signUpComplete) {
+      return
+    }
+
+    dispatch(reloadUser(userId));
+    dispatch(getHistory());
+    history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
+  }, [token]);
+
+  useEffect(() => {
+    if (!visitorToken) {
+      return;
     }
 
     dispatch(getNewReleases());
-  }, [token]);
+  }, [visitorToken])
 
   useEffect(() => {
     if (userType === 'visitor') {
@@ -87,13 +100,12 @@ const Marketing = () => {
     console.log('find more!!');
   }
 
-  const getCurrentYear = () => {
-    const d = new Date();
-    return d.getFullYear();
+  const handleExploreSongs = () => {
+    dispatch(showModal('ALERT_MODAL'));
   }
 
-  const handleExploreSongs = () => {
-    console.log('VALUE');
+  const handleClick = () => {
+    dispatch(showModal('ALERT_MODAL'));
   }
 
   // render
@@ -102,7 +114,9 @@ const Marketing = () => {
       <div className="row w-100">
         <div className="col-12 col-sm-8 offset-sm-2">
           <Header />
-          <Hero source={selected} />
+          <Hero
+            source={selected}
+          />
           <div className="mt-4">
             <Tabs
               onSelect={handleSelect}
@@ -119,6 +133,7 @@ const Marketing = () => {
                 <Preview
                   key={`${selected}-${idx}`}
                   {...item}
+                  onClick={handleClick}
                 />
               ))
             }
@@ -168,20 +183,28 @@ const Marketing = () => {
           >
             FIND OUT MORE
           </Button>
+          <div className="d-none d-md-block">
+            <img
+              className={styles.artistPlaceholder}
+              src={artists}
+              alt=""
+            />
+          </div>
         </div>
       </div>
       <div className={`row justify-content-center text-center ${styles.thanksPanel}`}>
         <div className="col-12 col-sm-8 col-md-6">
-          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Thanks for listening</p>
-          <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
-          <div className="d-flex justify-content-center">
-            <Button
-              onClick={handleFindMore}
-              isBorderPrimary
-              isTransparent
-            >
-              FIND OUT MORE
-            </Button>
+          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Connect with us</p>
+          <p>Follow us on.</p>
+          <div className={`d-flex flex-wrap justify-content-center ${styles.socialWrapper}`}>
+            <Social
+              links={{
+                fb: '#',
+                instagram: '#',
+                yt: '#',
+                twitter: '#',
+              }}
+            />
           </div>
         </div>
       </div>
