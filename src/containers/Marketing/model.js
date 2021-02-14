@@ -8,34 +8,28 @@ export const urls = {
     {
       source: "https://i.ibb.co/kGMpzrb/image-2-1.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
     },
     {
       source: "https://i.ibb.co/kGMpzrb/image-2-1.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
     },
     {
       source: "https://i.ibb.co/kGMpzrb/image-2-1.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
     }
   ],
   movie: [
     {
       source: "https://i.ibb.co/YBzVxwk/image-2-2.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
     },
     {
       source: "https://i.ibb.co/BNDx0Jw/image-2-4.png",
-      description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
+      description: "Lorem ipsum dolor sit amet, consectetuer, Lorem ipsum dolor sit amet, consectetuer, Lorem ipsum dolor sit amet, consectetuer, Lorem ipsum dolor sit amet, consectetuer, Lorem ipsum dolor sit amet, consectetuer",
     },
     {
       source: "https://i.ibb.co/5YDYzds/image-2-5.png",
       description: "Lorem ipsum dolor sit amet, consectetuer",
-      isWide: true,
     },
   ],
 };
