@@ -8,6 +8,7 @@ const SIGN_UP = 'authentication/SIGN_UP';
 const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
 const RESET_PASSWORD = 'authentication/RESET_PASSWORD';
 const RELOAD_USER = 'authentication/RELOAD_USER';
+const VISITOR_COLD_START = 'authentication/VISITOR_COLD_START';
 
 // actions
 export const login = createAsyncThunk(
@@ -46,6 +47,13 @@ export const reloadUser = createAsyncThunk(
   }
 );
 
+export const visitorColdStart = createAsyncThunk(
+  VISITOR_COLD_START,
+  async () => {
+    return await handleFetch('GET', `users/visitor-token`, null);
+  }
+);
+
 // handlers
 const handleAuthentication = (data) => {
   const { access_token, user } = data;
@@ -58,10 +66,12 @@ const handleAuthentication = (data) => {
 
 const initialState = {
   token: null,
+  visitorToken: null,
   user: {
     full_name: null,
     user_id: null,
     publish: false,
+    user_type: null,
   },
   loginPending: false,
   loginComplete: false,
@@ -91,7 +101,11 @@ const authenticationSlice = createSlice({
       return {
         ...state,
         token,
-        user: user || initialState.user,
+        user: user || {
+          ...initialState.user,
+          user_type: 'visitor',
+        },
+        isVistor: false,
       }
     }
   },
@@ -182,6 +196,22 @@ const authenticationSlice = createSlice({
       state.reloadUserPending = false;
       state.reloadUserError = action.error;
       state.reloadUserComplete = false;
+    },
+    [visitorColdStart.pending]: (state, action) => {
+      state.visitorColdStartPending = true;
+      state.visitorColdStartError = null;
+      state.visitorColdStartComplete = false;
+    },
+    [visitorColdStart.fulfilled]: (state, action) => {
+      state.visitorColdStartPending = false;
+      state.visitorColdStartError = null;
+      state.visitorColdStartComplete = true;
+      state.visitorToken = action.payload.token;
+    },
+    [visitorColdStart.rejected]: (state, action) => {
+      state.visitorColdStartPending = false;
+      state.visitorColdStartError = action.error;
+      state.visitorColdStartComplete = false;
     },
   }
 });

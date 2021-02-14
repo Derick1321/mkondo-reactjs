@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import Feature from '$components/common/Feature';
 
-import styles from './index.module.scss';
-
 const TopSongs = (props) => {
   // props
   const { media } = props;
@@ -14,6 +12,11 @@ const TopSongs = (props) => {
     <div className="container">
       <div className="d-flex flex-column">
         <div className="d-flex flex-wrap">
+          {
+            media.length < 1 && (
+              <p></p>
+            )
+          }
           {
             media.map((item, index) => (
               <Feature
@@ -37,10 +40,12 @@ const TopSongs = (props) => {
 
 TopSongs.defaultProps = {
   media: [],
+  errorMsg: 'No new releases. Please try again later!',
 }
 
 TopSongs.propTypes = {
   media: PropTypes.array,
+  errorMsg: PropTypes.string,
 }
 
 export default TopSongs;

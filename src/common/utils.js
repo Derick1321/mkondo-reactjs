@@ -44,6 +44,11 @@ export const formatDate = (value) => {
   return relativeFormatter.format(Math.trunc(diff.as(unit)), unit);
 }
 
+export const getCurrentYear = () => {
+  const d = new Date();
+  return d.getFullYear();
+}
+
 export const generatePreview = (file) => {
   return new Promise((resolve, reject) => {
     try {
@@ -107,4 +112,16 @@ export const genres = [
   { value: 'jazz', label: 'Jazz' },
   { value: 'gospel', label: 'Gospel' },
   { value: 'pop', label: 'Pop' },
+];
+
+export const movieGenres = [
+  { value: 'action', label: 'Action' },
+  { value: 'comedy', label: 'Comedy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'fantasy', label: 'Fantasy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'horror', label: 'Horror' },
+  { value: 'mystery', label: 'Mystery' },
+  { value: 'romance', label: 'Romance' },
+  { value: 'thriller', label: 'Thriller' },
 ];
