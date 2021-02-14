@@ -5,14 +5,14 @@ import Button from '$components/common/Button';
 
 import { showModal } from '$redux/features/modal';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const alertIcon = require('$assets/images/alert-icon.svg');
 
 const AlertModal = () => {
   //store
   const dispatch = useDispatch();
- 
+
   // handlers
   const handleLogin = () => {
     dispatch(showModal('LOGIN_MODAL'));
@@ -24,26 +24,32 @@ const AlertModal = () => {
 
   // render
   return (
-    <div className="d-flex">
-      <img
-        className="alert-icon"
-        src={alertIcon}
-        alt=""
-      />
-      <div className="d-flex flex-column">
+    <div className="row p-4">
+      <div className="col-12 col-md-4 col-lg-3">
+        <img
+          className={styles.alertIcon}
+          src={alertIcon}
+          alt=""
+        />
+      </div>
+      <div className="col-12 col-md-8 col-lg-9">
         <p className="heading-1 mt-2">OOps</p>
         <p className="mt-2">To access premium contents you must first.</p>
         <Button onClick={handleLogin}>Login</Button>
-        <p className="mt-2">
-          <span>Don&apos;t have an account?</span>
-          <Button
-            style="alert-sign-mk"
-            onClick={handleSignUp}
-            isTransparent
-          >
-            Sign Up
-          </Button>
-        </p>
+        <div className="row mt-2 justify-content-center align-items-center">
+          <div className="col">
+            Don&apos;t have an account?
+          </div>
+          <div className="col-9">
+            <Button
+              style={styles.alertSignMk}
+              onClick={handleSignUp}
+              isTransparent
+            >
+              Sign Up
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

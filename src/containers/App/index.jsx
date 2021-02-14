@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
-import ModalRoot from '$components/common/modals/ModalRoot';
+import ModalRoot from '$components/modals/ModalRoot';
 import Monitor from '$components/utility/Monitor';
 import Player from '$components/utility/Player';
 

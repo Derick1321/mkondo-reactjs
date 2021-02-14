@@ -5,14 +5,14 @@ import { hideModal } from '$redux/features/modal';
 
 import styles from './index.module.scss';
 
-import AlertModal from '../Alert';
-import LoginModal from '../Login';
-import SignUpModal from '../SignUp';
-import ForgotPasswordModal from '../ForgotPassword';
-import ResetPasswordModal from '../ResetPassword';
-import LoaderModal from '../Loader';
-import PlaylistModal from '../PlaylistModal';
-import ShareModal from '../ShareModal';
+import AlertModal from '$components/modals/Alert';
+import LoginModal from '$components/modals/Login';
+import SignUpModal from '$components/modals/SignUp';
+import ForgotPasswordModal from '$components/modals/ForgotPassword';
+import ResetPasswordModal from '$components/modals/ResetPassword';
+import LoaderModal from '$components/modals/Loader';
+import PlaylistModal from '$components/modals/PlaylistModal';
+import ShareModal from '$components/modals/ShareModal';
 
 const MODAL_COMPONENTS = {
   'ALERT_MODAL': AlertModal,
