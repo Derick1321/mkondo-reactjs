@@ -3,7 +3,7 @@ import React from 'react';
 import TextInput from '$components/common/TextInput';
 import { socialIcons } from '$common/icons';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const SocialInput = (props) => {
   // props
@@ -20,12 +20,12 @@ const SocialInput = (props) => {
     <div className="d-flex align-items-center">
       <img
         src={socialIcons[icon].iconActive}
-        className="social-input-icon"
+        className={styles.socialInputIcon}
         alt=""
       />
       <TextInput
         name={name}
-        customWrapperClass="social-input-text"
+        customWrapperClass={styles.socialInputText}
         placeholder={placeholder}
         onChange={onChange}
         value={value}

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Picker from 'react-simple-wheel-picker';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,18 +10,27 @@ import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
-import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
+import Social from '$components/common/Social';
+// import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
+import { getCurrentYear } from '$common/utils';
 
+import {
+  coldstart,
+  reloadUser,
+  visitorColdStart,
+} from '$redux/features/authentication';
 import { setInitialNav } from '$redux/features/nav';
 import { showModal } from '$redux/features/modal';
-import { coldstart, reloadUser } from '$redux/features/authentication';
 import { getHistory } from '$redux/features/user';
+import { getNewReleases } from '$redux/features/media';
 
 import { urls, data } from './model';
 
 import styles from './index.module.scss';
+
+const artists = require('$assets/images/marketing/artist.png');
 
 const Marketing = () => {
   // state
@@ -34,9 +42,12 @@ const Marketing = () => {
   const dispatch = useDispatch();
 
   const token = useSelector((store) => store.authentication.token);
+  const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
   const initialRoute = useSelector((store) => store.nav.initialRoute);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const userType = useSelector((store) => store.authentication.user.user_type);
+  const newReleases = useSelector((store) => store.media.newReleases);
 
   // effects
   useEffect(() => {
@@ -57,12 +68,28 @@ const Marketing = () => {
       return;
     }
 
-    if (!signUpComplete) {
-      dispatch(reloadUser(userId));
-      dispatch(getHistory());
-      history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
+    if (signUpComplete) {
+      return
     }
+
+    dispatch(reloadUser(userId));
+    dispatch(getHistory());
+    history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
   }, [token]);
+
+  useEffect(() => {
+    if (!visitorToken) {
+      return;
+    }
+
+    dispatch(getNewReleases());
+  }, [visitorToken])
+
+  useEffect(() => {
+    if (userType === 'visitor') {
+      dispatch(visitorColdStart());
+    }
+  }, [userType]);
 
   // handlers
   const handleSelect = (name) => {
@@ -73,16 +100,12 @@ const Marketing = () => {
     console.log('find more!!');
   }
 
-  const getCurrentYear = () => {
-    const d = new Date();
-    return d.getFullYear();
-  }
-
-  const handleChange = (value) => {
-  }
-
   const handleExploreSongs = () => {
-    console.log('VALUE');
+    dispatch(showModal('ALERT_MODAL'));
+  }
+
+  const handleClick = () => {
+    dispatch(showModal('ALERT_MODAL'));
   }
 
   // render
@@ -91,7 +114,9 @@ const Marketing = () => {
       <div className="row w-100">
         <div className="col-12 col-sm-8 offset-sm-2">
           <Header />
-          <Hero source={selected} />
+          <Hero
+            source={selected}
+          />
           <div className="mt-4">
             <Tabs
               onSelect={handleSelect}
@@ -102,24 +127,25 @@ const Marketing = () => {
       </div>
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2">
-          <div className="d-flex">
-            <div className={`d-flex flex-wrap ${styles.tabContentWrapper}`}>
-              {
-                urls[selected].map((item, idx) => (
-                  <Preview
-                    key={`${selected}-${idx}`}
-                    {...item}
-                  />
-                ))
-              }
-            </div>
+          <div className={`row ${styles.tabContentWrapper}`}>
+            {
+              urls[selected].map((item, idx) => (
+                <Preview
+                  key={`${selected}-${idx}`}
+                  {...item}
+                  onClick={handleClick}
+                />
+              ))
+            }
           </div>
         </div>
       </div>
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
           <p className={`mb-4 text-center ${styles.howItWorksTitle}`}>Top Free Songs of the Week</p>
-          <TopSongs />
+          <TopSongs
+            media={newReleases}
+          />
           <div className="text-center">
             <Button
               onClick={handleExploreSongs}
@@ -157,20 +183,28 @@ const Marketing = () => {
           >
             FIND OUT MORE
           </Button>
+          <div className="d-none d-md-block">
+            <img
+              className={styles.artistPlaceholder}
+              src={artists}
+              alt=""
+            />
+          </div>
         </div>
       </div>
       <div className={`row justify-content-center text-center ${styles.thanksPanel}`}>
         <div className="col-12 col-sm-8 col-md-6">
-          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Thanks for listening</p>
-          <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
-          <div className="d-flex justify-content-center">
-            <Button
-              onClick={handleFindMore}
-              isBorderPrimary
-              isTransparent
-            >
-              FIND OUT MORE
-            </Button>
+          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Connect with us</p>
+          <p>Follow us on.</p>
+          <div className={`d-flex flex-wrap justify-content-center ${styles.socialWrapper}`}>
+            <Social
+              links={{
+                fb: '#',
+                instagram: '#',
+                yt: '#',
+                twitter: '#',
+              }}
+            />
           </div>
         </div>
       </div>
