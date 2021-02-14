@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 const playBtn = require('$assets/images/icons/play.svg');
 
@@ -10,7 +10,7 @@ const PreviewBkg = styled.div`
   height: 100%;
   width: 100%;
   background-position: center;
-  background-size: ${props => props.isActive ? '150%;' : '110%'};
+  background-size: ${props => props.isActive ? '160%;' : 'cover'};
   background-repeat: no-repeat;
   transition: background-size 150ms linear;
   background-image: url(${props => props.source}); 
@@ -18,8 +18,8 @@ const PreviewBkg = styled.div`
 
 const Preview = (props) => {
   // props
-  const { isWide, description, source } = props;
-  
+  const { description, source } = props;
+
   // state
   const [isActive, setIsActive] = useState(false);
 
@@ -34,9 +34,9 @@ const Preview = (props) => {
 
   // render
   return (
-    <div className={`preview-wrapper ${isWide ? 'preview-wide' : ''}`}>
+    <div className="col-12 col-md-4 col-lg-3">
       <div
-        className="preview-bkg-wrapper"
+        className={styles.previewBkgWrapper}
         onMouseEnter={handleFocus}
         onMouseLeave={handleBlur}
       >
@@ -44,25 +44,25 @@ const Preview = (props) => {
           source={source}
           isActive={isActive}
         />
-        <button className="preview-action-btn">
+        <button className={styles.previewActionBtn}>
           <img
-            className="preview-action-icon"
+            className={styles.previewActionIcon}
             src={playBtn}
           />
         </button>
       </div>
-      { description && <p className="text-left">{description}</p> }
+      {
+        description && <p className={`${styles.description} text-left`}>{description}</p>
+      }
     </div>
   );
 };
 
 Preview.defaultProps = {
-  isWide: false,
   description: null,
 };
 
 Preview.propTypes = {
-  isWide: PropTypes.bool,
   description: PropTypes.string,
 };
 

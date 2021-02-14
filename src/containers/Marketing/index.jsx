@@ -102,17 +102,15 @@ const Marketing = () => {
       </div>
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2">
-          <div className="d-flex">
-            <div className={`d-flex flex-wrap ${styles.tabContentWrapper}`}>
-              {
-                urls[selected].map((item, idx) => (
-                  <Preview
-                    key={`${selected}-${idx}`}
-                    {...item}
-                  />
-                ))
-              }
-            </div>
+          <div className={`row ${styles.tabContentWrapper}`}>
+            {
+              urls[selected].map((item, idx) => (
+                <Preview
+                  key={`${selected}-${idx}`}
+                  {...item}
+                />
+              ))
+            }
           </div>
         </div>
       </div>
