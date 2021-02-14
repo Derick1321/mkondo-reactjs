@@ -99,7 +99,6 @@ const Insights = () => {
         <LineChart />
       </div>
       <div className={`d-flex flex-wrap ${styles.dataWrapper}`}>
-        {buildPane('Likes', kFormatter(data.likes || 0))}
         {buildPane('Shares', kFormatter(data.shares || 0))}
         {buildPane('Comments', kFormatter(data.comments || 0))}
         {buildPane('Followers', kFormatter(followers.length || 0))}

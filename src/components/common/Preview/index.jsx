@@ -18,7 +18,11 @@ const PreviewBkg = styled.div`
 
 const Preview = (props) => {
   // props
-  const { description, source } = props;
+  const {
+    description,
+    source, 
+    onClick,
+  } = props;
 
   // state
   const [isActive, setIsActive] = useState(false);
@@ -44,7 +48,10 @@ const Preview = (props) => {
           source={source}
           isActive={isActive}
         />
-        <button className={styles.previewActionBtn}>
+        <button
+          className={styles.previewActionBtn}
+          onClick={onClick}
+        >
           <img
             className={styles.previewActionIcon}
             src={playBtn}
@@ -60,10 +67,12 @@ const Preview = (props) => {
 
 Preview.defaultProps = {
   description: null,
+  onClick: () => null,
 };
 
 Preview.propTypes = {
   description: PropTypes.string,
+  onClick: PropTypes.func,
 };
 
 export default Preview;

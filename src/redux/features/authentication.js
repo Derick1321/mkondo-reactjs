@@ -66,6 +66,7 @@ const handleAuthentication = (data) => {
 
 const initialState = {
   token: null,
+  visitorToken: null,
   user: {
     full_name: null,
     user_id: null,
@@ -205,7 +206,7 @@ const authenticationSlice = createSlice({
       state.visitorColdStartPending = false;
       state.visitorColdStartError = null;
       state.visitorColdStartComplete = true;
-      state.token = action.payload.token;
+      state.visitorToken = action.payload.token;
     },
     [visitorColdStart.rejected]: (state, action) => {
       state.visitorColdStartPending = false;
