@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Picker from 'react-simple-wheel-picker';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,14 +10,19 @@ import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
-import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
+// import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
 
+import {
+  coldstart,
+  reloadUser,
+  visitorColdStart,
+} from '$redux/features/authentication';
 import { setInitialNav } from '$redux/features/nav';
 import { showModal } from '$redux/features/modal';
-import { coldstart, reloadUser } from '$redux/features/authentication';
 import { getHistory } from '$redux/features/user';
+import { getNewReleases } from '$redux/features/media';
 
 import { urls, data } from './model';
 
@@ -37,6 +41,8 @@ const Marketing = () => {
   const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
   const initialRoute = useSelector((store) => store.nav.initialRoute);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const userType = useSelector((store) => store.authentication.user.user_type);
+  const newReleases = useSelector((store) => store.media.newReleases);
 
   // effects
   useEffect(() => {
@@ -57,12 +63,20 @@ const Marketing = () => {
       return;
     }
 
-    if (!signUpComplete) {
+    if (!signUpComplete && userType !== 'visitor') {
       dispatch(reloadUser(userId));
       dispatch(getHistory());
       history.replace((initialRoute !== routePaths.marketing && initialRoute) || routePaths.home);
     }
+
+    dispatch(getNewReleases());
   }, [token]);
+
+  useEffect(() => {
+    if (userType === 'visitor') {
+      dispatch(visitorColdStart());
+    }
+  }, [userType]);
 
   // handlers
   const handleSelect = (name) => {
@@ -76,9 +90,6 @@ const Marketing = () => {
   const getCurrentYear = () => {
     const d = new Date();
     return d.getFullYear();
-  }
-
-  const handleChange = (value) => {
   }
 
   const handleExploreSongs = () => {
@@ -117,7 +128,9 @@ const Marketing = () => {
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
           <p className={`mb-4 text-center ${styles.howItWorksTitle}`}>Top Free Songs of the Week</p>
-          <TopSongs />
+          <TopSongs
+            media={newReleases}
+          />
           <div className="text-center">
             <Button
               onClick={handleExploreSongs}

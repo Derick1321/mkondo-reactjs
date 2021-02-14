@@ -108,3 +108,15 @@ export const genres = [
   { value: 'gospel', label: 'Gospel' },
   { value: 'pop', label: 'Pop' },
 ];
+
+export const movieGenres = [
+  { value: 'action', label: 'Action' },
+  { value: 'comedy', label: 'Comedy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'fantasy', label: 'Fantasy' },
+  { value: 'drama', label: 'Drama' },
+  { value: 'horror', label: 'Horror' },
+  { value: 'mystery', label: 'Mystery' },
+  { value: 'romance', label: 'Romance' },
+  { value: 'thriller', label: 'Thriller' },
+];
