@@ -3,7 +3,7 @@
 .appHeaderWrapper {
   position: absolute;
   top: 0;
-  height: 60px;
+  height: 70px;
   padding: 0.5rem 2.5rem;
   width: calc(100% - 220px);
   background-color: $primary-green;
@@ -49,5 +49,9 @@
   &:focus, &:active, &:hover {
     color: $secondary-green;
   }
+}
+
+.menuWrapper {
+  margin-top: 1rem;
 }
 
