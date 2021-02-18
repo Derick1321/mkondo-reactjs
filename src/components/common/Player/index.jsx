@@ -104,7 +104,7 @@ const Player = () => {
           }
         </div>
       </div>
-      <div className="d-flex align-items-center h-100 mx-4">
+      <div className="d-flex align-items-center mx-2">
         {playerControls}
       </div>
       <div className={`d-flex ${styles.playerSliderWrapper} px-2`}>

@@ -49,7 +49,6 @@ const NewVideo = () => {
 
   const handleSave = async () => {
     const mediaRes = await dispatch(saveMedia(coverFile));
-    // file
     dispatch(addMedia({
       name: values.title,
       description: values.description,
@@ -60,11 +59,10 @@ const NewVideo = () => {
       category: 'video',
       duration: 0, // TODO
       owner_avatar_url: userAvatarUrl,
-
       production_company: values.productionCompany,
       movie_director: values.director,
       staring: values.starring,
-      starting_date: values.startingDate,
+      release_date: new Date(values.startingDate).toISOString(),
       file,
     }));
   }

@@ -40,27 +40,34 @@ export const getInsight = createAsyncThunk(
   }
 );
 
+const initialState = {
+  addArtistPending: false,
+  addArtistError: null,
+  addArtistComplete: false,
+  getArtistsPending: false,
+  getArtistsComplete: false,
+  getInsightPending: false,
+  getInsightComplete: false,
+  getInsightError: null,
+  getArtistsError: null,
+  newArtistId: '',
+  artists: [],
+  getArtistByIdPending: false,
+  getArtistByIdComplete: false,
+  getArtistByIdError: null,
+  currentArtist: {},
+  insights: {},
+};
+
+// slice
 const artistSlice = createSlice({
   name: 'artist',
-  initialState: {
-    addArtistPending: false,
-    addArtistError: null,
-    addArtistComplete: false,
-    getArtistsPending: false,
-    getArtistsComplete: false,
-    getInsightPending: false,
-    getInsightComplete: false,
-    getInsightError: null,
-    getArtistsError: null,
-    newArtistId: '',
-    artists: [],
-    getArtistByIdPending: false,
-    getArtistByIdComplete: false,
-    getArtistByIdError: null,
-    currentArtist: {},
-    insights: {},
+  initialState,
+  reducers: {
+    clearArtist(state) {
+      state = initialState;
+    },
   },
-  reducers: {},
   extraReducers: {
     [addArtist.pending]: (state, action) => {
       state.addArtistPending = true;
@@ -128,5 +135,6 @@ const artistSlice = createSlice({
   }
 });
 
+export const { clearArtist } = artistSlice.actions;
 export default artistSlice.reducer;
 

@@ -3,7 +3,6 @@ import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 
 import { routePaths } from '$common/routeConfig';
-import { logout } from '$redux/features/authentication';
 
 const ResetPassword = () => {
   // store
