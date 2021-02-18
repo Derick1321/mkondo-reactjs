@@ -1,4 +1,4 @@
-const BASE_URL = 'https://api.mkondo.co';
+const BASE_URL = 'http://127.0.0.1:5000';
 
 // Ensure you are running a local instance
 const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
@@ -22,10 +22,8 @@ const buildUrl = (url, data) => {
   return props;
 };
 
-export const buildFormData = (url, data = {}) => {
-  const newUrl = `${BASE_URL}${url}`;
-
-  console.log('newUrl ', newUrl);
+export const buildFormData = (url, data = {}, baseUrl=BASE_URL) => {
+  const newUrl = `${baseUrl}${url}`;
 
   const headers = {
     'Accept': '*/*',
@@ -44,13 +42,13 @@ export const buildFormData = (url, data = {}) => {
   };
 };
 
-export const handleFetch = async (method, path, data, token = '') => {
+export const handleFetch = async (method, path, data, token = '', baseUrl) => {
   let url, headers;
 
   const props = {};
 
   if (data && data.file) {
-    const res = buildFormData(`/${path}`, data);
+    const res = buildFormData(`/${path}`, data, baseUrl);
     url = res.url;
     headers = res.headers;
     props.body = res.body;

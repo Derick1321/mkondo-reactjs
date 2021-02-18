@@ -24,7 +24,7 @@ export const addMedia = createAsyncThunk(
     if (data.file) {
       return await handleFetch('POST', 'media', data, token);
     }
-    return await handleFetch('POST', 'media', data, token);
+    return await handleFetch('POST', 'media', data, token, '');
   }
 );
 
@@ -55,8 +55,8 @@ export const getMedia = createAsyncThunk(
 export const getNewReleases = createAsyncThunk(
   GET_NEW_RELEASES,
   async (id, param) => {
-    const { token } = param.getState().authentication;
-    return await handleFetch('GET', 'media/new-release', null, token);
+    const { token, visitorToken } = param.getState().authentication;
+    return await handleFetch('GET', 'media/new-release', null, token || visitorToken);
   }
 );
 
@@ -137,7 +137,7 @@ export const saveMedia = createAsyncThunk(
   }
 );
 
-const INITIAL_STATE = {
+const initialState = {
   addMediaPending: false,
   addMediaError: null,
   addMediaComplete: false,
@@ -180,10 +180,13 @@ const INITIAL_STATE = {
 
 const mediaSlice = createSlice({
   name: 'media',
-  initialState: INITIAL_STATE,
+  initialState,
   reducers: {
     clearNewMediaId(state) {
       state.newMediaId = null;
+    },
+    clearMedia(state) {
+      state = initialState;
     }
   },
   extraReducers: {
@@ -351,6 +354,6 @@ const mediaSlice = createSlice({
   }
 });
 
-export const { clearNewMediaId } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia } = mediaSlice.actions;
 export default mediaSlice.reducer;
 

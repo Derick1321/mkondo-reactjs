@@ -91,7 +91,7 @@ const AppHeader = (props) => {
   return (
     <>
       <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
-        <div className="d-block d-sm-none">
+        <div className={`d-block d-sm-none ${styles.menuWrapper}`}>
           <HamburgerMenu />
         </div>
         {

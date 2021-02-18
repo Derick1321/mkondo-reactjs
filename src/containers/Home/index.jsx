@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 import Tabs from '$components/common/Tabs';
 import TopSongs from '$components/common/TopSongs';
 

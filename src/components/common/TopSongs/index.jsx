@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import Feature from '$components/common/Feature';
 
+import styles from './index.module.scss';
+
 const TopSongs = (props) => {
   // props
   const { media } = props;
@@ -14,7 +16,7 @@ const TopSongs = (props) => {
         <div className="d-flex flex-wrap">
           {
             media.length < 1 && (
-              <p></p>
+              <p className={`mb-4 text-center ${styles.topSongsEmpty}`}>No New Free Top Songs!</p>
             )
           }
           {
