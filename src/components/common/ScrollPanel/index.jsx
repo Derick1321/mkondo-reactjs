@@ -16,7 +16,7 @@ import styles from './index.module.scss';
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
-const AlbumMenuPanel = (props) => {
+const ScrollPanel = (props) => {
   // props
   const {
     showHeader,
@@ -114,18 +114,18 @@ const AlbumMenuPanel = (props) => {
   );
 }
 
-AlbumMenuPanel.defaultProps = {
+ScrollPanel.defaultProps = {
   title: '',
   showHeader: false,
   isRounded: false,
   values: [],
 };
 
-AlbumMenuPanel.propTypes = {
+ScrollPanel.propTypes = {
   title: PropTypes.string,
   showHeader: PropTypes.bool,
   isRounded: PropTypes.bool,
   values: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default AlbumMenuPanel;
+export default ScrollPanel;

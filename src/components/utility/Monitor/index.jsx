@@ -3,7 +3,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { showModal, hideModal } from '$redux/features/modal';
 import { reloadUser } from '$redux/features/authentication';
-import { listPlaylist } from '$redux/features/playlist';
+import { listPlaylist, clearPlaylist } from '$redux/features/playlist';
+import { clearMedia } from '$redux/features/media';
+import { clearArtist } from '$redux/features/artist';
 import { getHistory, searchUsers } from '$redux/features/user';
 
 const Monitor = () => {
@@ -25,6 +27,7 @@ const Monitor = () => {
   const updateSystemUserPending = useSelector((store) => store.user.updateSystemUserPending);
   const addHistoryComplete = useSelector((store) => store.user.addHistoryComplete);
   const userType = useSelector((store) => store.authentication.user.user_type);
+  const token = useSelector((store) => store.authentication.token);
 
   const isSuperAdmin = userType === 'super admin';
 
@@ -94,6 +97,15 @@ const Monitor = () => {
       }
     }
   }, [updateUserComplete]);
+
+  useEffect((token) => {
+    if (!token) {
+      dispatch(clearMedia());
+      dispatch(clearPlaylist());
+      dispatch(clearArtist());
+      return;
+    }
+  }, [token]);
 
   // render
   return (

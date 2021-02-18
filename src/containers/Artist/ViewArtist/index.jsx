@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Button from '$components/common/Button';
 import Social from '$components/common/Social';
-import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
+import ScrollPanel from '$components/common/ScrollPanel';
 
 import { handleFetch } from '$common/requestUtils';
 
@@ -86,10 +86,6 @@ const ViewArtist = () => {
   }, [currentArtist]);
 
   // handler
-  const handlePlay = () => {
-    console.log("Play");
-  }
-
   const handleShare = () => {
     dispatch(showModal('SHARE_MODAL', {
       title: currentArtist.full_name,
@@ -130,16 +126,10 @@ const ViewArtist = () => {
             </div>
           </div>
           <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderActionpane}`}>
-            <Button onClick={handlePlay}>Play</Button>
             <Button
               onClick={handleFavorite}
-              isTransparent
-              noBorder
             >
-              <img
-                className={styles.artistActionIcon}
-                src={isFavorite ? favoriteActive : favoriteIcon}
-              />
+              { isFavorite ? 'Following' : 'Follow' }
             </Button>
             <Button
               onClick={handleShare}
@@ -161,9 +151,9 @@ const ViewArtist = () => {
             <Social
               links={socialLinks}
             />
-            <AlbumMenuPanel
-              showHeader
+            <ScrollPanel
               title="Similar Artists"
+              showHeader
               isRounded
             />
           </div>

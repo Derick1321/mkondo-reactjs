@@ -4,7 +4,7 @@ const data = [
     description: 'adipiscing elit. Aeneancommodo ligula eget dolor.',
   },
   {
-    title: 'Seach your fav music',
+    title: 'Search your fav music',
     description: 'adipiscing elit. Aeneancommodo ligula eget dolor.',
   },
   {

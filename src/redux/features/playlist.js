@@ -43,29 +43,34 @@ export const listPlaylist = createAsyncThunk(
   }
 );
 
+const initialState = {
+  createPlaylistPending: false,
+  createPlaylistError: null,
+  createPlaylistComplete: false,
+  listPlaylistPending: false,
+  listPlaylistError: null,
+  listPlaylistComplete: false,
+  getPlaylistPending: false,
+  getPlaylistError: null,
+  getPlaylistComplete: false,
+  updatePlaylistPending: false,
+  updatePlaylistError: null,
+  updatePlaylistComplete: false,
+  currentPlaylist: [],
+  playlists: [],
+};
+
 // reducer
 const playlistSlice = createSlice({
   name: 'playlist',
-  initialState: {
-    createPlaylistPending: false,
-    createPlaylistError: null,
-    createPlaylistComplete: false,
-    listPlaylistPending: false,
-    listPlaylistError: null,
-    listPlaylistComplete: false,
-    getPlaylistPending: false,
-    getPlaylistError: null,
-    getPlaylistComplete: false,
-    updatePlaylistPending: false,
-    updatePlaylistError: null,
-    updatePlaylistComplete: false,
-    currentPlaylist: [],
-    playlists: [],
-  },
+  initialState,
   reducers: {
     updateLocalPlaylist(state, action) {
       state.currentPlaylist = [action.payload];
-    }
+    },
+    clearPlaylist(state) {
+      state = initialState;
+    },
   },
   extraReducers: {
     [createPlaylist.pending]: (state, action) => {
@@ -133,7 +138,7 @@ const playlistSlice = createSlice({
   }
 });
 
-export const { updateLocalPlaylist } = playlistSlice.actions
+export const { updateLocalPlaylist, clearPlaylist } = playlistSlice.actions
 
 export default playlistSlice.reducer;
 
