@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
+import ScrollPanel from '$components/common/ScrollPanel';
 import TopSongs from '$components/common/TopSongs';
 import Button from '$components/common/Button';
 
@@ -85,7 +85,7 @@ const SearchResult = () => {
                 <p>No Artists preset!</p>
               )
             }
-            <AlbumMenuPanel
+            <ScrollPanel
               values={users}
             />
           </>

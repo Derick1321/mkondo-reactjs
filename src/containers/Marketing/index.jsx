@@ -11,7 +11,6 @@ import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
 import Social from '$components/common/Social';
-// import AlbumMenuPanel from '$components/common/AlbumMenuPanel';
 
 import { routePaths } from '$common/routeConfig';
 import { getCurrentYear } from '$common/utils';
@@ -142,7 +141,6 @@ const Marketing = () => {
       </div>
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
-          <p className={`mb-4 text-center ${styles.howItWorksTitle}`}>Top Free Songs of the Week</p>
           <TopSongs
             media={newReleases}
           />
@@ -156,7 +154,7 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className={`row ${styles.hotItWorksPane}`}>
+      <div className="row">
         <div className="col-12 col-md-10 offset-md-1">
           <HowItWorks />
         </div>

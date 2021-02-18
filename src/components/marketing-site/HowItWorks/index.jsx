@@ -6,14 +6,14 @@ import List from '$components/marketing-site/List';
 import model from './model';
 
 import styles from './index.module.scss';
-import marketingStyles from '$containers/Marketing/index.module.scss';
 
 const HowItWorks = () => {
+  // render
   return (
-    <div className="container">
+    <div className={`container ${styles.panel}`}>
       <div className="row">
         <div className="col-12 col-md-6">
-          <p className={marketingStyles.panelHeader}>How It Works</p>
+          <p className={styles.panelHeader}>How It Works</p>
           <p>consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
           {
             model.map((datum, idx) => (
