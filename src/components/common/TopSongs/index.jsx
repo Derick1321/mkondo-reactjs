@@ -31,6 +31,7 @@ const TopSongs = (props) => {
                 subtitle={item.owner_name}
                 title={item.name}
                 country={item.country}
+                category={item.category}
               />
             ))
           }
