@@ -1,7 +1,7 @@
-const BASE_URL = 'https://api.mkondo.co';
-
+const BASE_URL = document.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://api.mkondo.co';
+console.log('document.location.hostname ', document.location.hostname)
 // Ensure you are running a local instance
-const URL = BASE_URL; // process.env.ENV === 'development' ? 'http://localhost:5000' : BASE_URL;
+const URL = BASE_URL;
 
 const buildUrl = (url, data) => {
   const newUrl = `${URL}/${url}`;
