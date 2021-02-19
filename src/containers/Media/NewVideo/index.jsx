@@ -26,6 +26,7 @@ const NewVideo = () => {
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
+  const addMediaPending = useSelector((store) => store.media.addMediaPending);
 
   const type = history.location.state && getType[history.location.state.type] || getType['video'];
 
@@ -146,20 +147,34 @@ const NewVideo = () => {
     );
   }
 
+  const getContent = () => {
+    if (addMediaPending) {
+      return (
+        <div className="d-flex">
+          <div className="spinner-border" role="status" />
+          <p>Your {type} is getting uploaded. Please don&apos;t refresh your browser.</p>
+        </div>
+      );
+    }
+
+    if (file) {
+      return buildInputPanel();
+    }
+
+    return (
+      <DragDrop
+        onChange={handleFileChange}
+        acceptedFiles="video/mp4,video/x-m4v,video/*"
+      />
+    )
+  }
+
   // render
   return (
     <div className={styles.panelContainer}>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-10 col-lg-8">
-          {
-            file ?
-              buildInputPanel() : (
-                <DragDrop
-                  onChange={handleFileChange}
-                  acceptedFiles="video/mp4,video/x-m4v,video/*"
-                />
-              )
-          }
+          {getContent()}
         </div>
       </div>
     </div>
