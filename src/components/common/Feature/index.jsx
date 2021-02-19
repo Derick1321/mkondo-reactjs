@@ -58,6 +58,7 @@ const Feature = (props) => {
     mediaId,
     artistId,
     country,
+    category,
   } = props;
 
   // store
@@ -120,6 +121,11 @@ const Feature = (props) => {
 
   // handlers
   const handlePlay = async () => {
+    if (category !== 'audio') {
+      handleView();
+      return;
+    }
+
     dispatch(loadMedia({
       mediaId,
       url: mediaUrl,
