@@ -7,6 +7,7 @@ import InputField from '$components/forms/InputField';
 import Row from '$components/media/CommentRow';
 import Tabs from '$components/common/Tabs';
 import Player from '$components/media/IndividualPlayer';
+import VideoPlayer from '$components/media/VideoPlayer';
 
 import {
   addComment,
@@ -16,7 +17,6 @@ import {
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
-import { current } from '@reduxjs/toolkit';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -113,7 +113,7 @@ const ViewMedia = () => {
   const descriptionPane = (
     <div className={selected === 'description' ? '' : 'd-none'}>
       <div className={styles.descriptionWrapper}>
-        { currentMedia.description }
+        {currentMedia.description}
       </div>
     </div>
   );
@@ -121,14 +121,22 @@ const ViewMedia = () => {
   // render
   return (
     <div className={styles.container}>
-      <Player
-        mediaUrl={currentMedia.media_url}
-        coverUrl={currentMedia.cover_url}
-        avatarUrl={currentMedia.owner_avatar_url}
-        title={currentMedia.name}
-        artistName={currentMedia.owner_name}
-        mediaId={currentMedia.media_id}
-      />
+      {
+        currentMedia.category === 'audio' ? (
+          <Player
+            mediaUrl={currentMedia.media_url}
+            coverUrl={currentMedia.cover_url}
+            avatarUrl={currentMedia.owner_avatar_url}
+            title={currentMedia.name}
+            artistName={currentMedia.owner_name}
+            mediaId={currentMedia.media_id}
+          />
+        ) : (
+          <VideoPlayer
+            url={currentMedia.media_url}
+          />
+        )
+      }
       <Tabs
         options={options}
         onSelect={handleSelect}
