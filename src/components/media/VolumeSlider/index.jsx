@@ -24,7 +24,7 @@ const VolumeSlider = (props) => {
 
   // render
   return (
-    <div className={`d-flex ${styles.playerVolumeWrapper}`}>
+    <div className={`d-flex align-items-center ${styles.playerVolumeWrapper}`}>
       <button
         className={`${styles.playerBtn} ${styles.playerVolumeBtn}`}
       >

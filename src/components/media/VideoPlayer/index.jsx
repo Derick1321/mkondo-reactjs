@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import ReactPlayer from 'react-player';
 
 import PlayBtn from '$components/media/PlayBtn';
 import Button from '$components/common/Button';
+import ProgressSlider from '$components/media/ProgressSlider';
+import VolumeSlider from '$components/media/VolumeSlider';
 
 import { getFileURL } from '$common/utils';
 
@@ -18,10 +20,14 @@ const VideoPlayer = (props) => {
   // state
   const [localUrl, setLocalUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [position, setPosition] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+  const [volume, setVolume] = useState(1);
 
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  }
+  // effects
+  const playerRef = useRef(null);
 
   useEffect(() => {
     if (!file) {
@@ -30,6 +36,26 @@ const VideoPlayer = (props) => {
 
     setLocalUrl(getFileURL(file));
   }, [file]);
+
+  // handler
+  const handleProgress = (data) => {
+    setPosition(data.playedSeconds);
+  }
+
+  const handleSeek = (value) => {
+    if (!playerRef.current) {
+      return;
+    }
+    playerRef.current.seekTo(value);
+  }
+
+  const handleDuration = (dur) => {
+    setDuration(dur);
+  }
+
+  const togglePlay = () => {
+    setIsPlaying(!isPlaying);
+  }
 
   // render
   if (!url && !localUrl) {
@@ -41,11 +67,29 @@ const VideoPlayer = (props) => {
       <div className={styles.playerWrapper}>
         <div className={styles.reactPlayer}>
           <ReactPlayer
+            ref={playerRef}
             url={url || localUrl}
             playing={isPlaying}
+            volume={volume}
+            onProgress={handleProgress}
+            onDuration={handleDuration}
+            onBuffer={() => setIsLoading(true)}
+            onBufferEnd={() => setIsLoading(false)}
+            onReady={() => setIsReady(true)}
             width='100%'
             height='100%'
           />
+          {
+            !isReady && (
+              <div className={`d-flex justify-content-center align-items-center ${styles.videoCover}`}>
+                <div
+                  className={`spinner-border spinner-light ${styles.loader}`}
+                  role="status"
+                />
+                <span className="mx-4">Loading...</span>
+              </div>
+            )
+          }
         </div>
       </div>
       <div className={`d-flex ${styles.playerBar}`}>
@@ -56,8 +100,20 @@ const VideoPlayer = (props) => {
         >
           <PlayBtn
             isPlaying={isPlaying}
+            isLoading={isLoading}
           />
         </Button>
+        <ProgressSlider
+          position={position}
+          duration={duration}
+          progressInterval={250}
+          onSeek={handleSeek}
+        />
+        <div className="mx-2">
+          <VolumeSlider
+            position={volume}
+          />
+        </div>
       </div>
     </>
   );
