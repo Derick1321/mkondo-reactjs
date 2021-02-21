@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Slider from '$components/common/Slider';
 import { formatTime } from '$common/utils';
@@ -12,6 +13,7 @@ const ProgressSlider = (props) => {
   const {
     position,
     duration,
+    onSeek,
   } = props;
 
   // store
@@ -19,12 +21,16 @@ const ProgressSlider = (props) => {
 
   // handlers
   const updateRange = (value) => {
+    if (onSeek) {
+      onSeek(value);
+      return;
+    }
     dispatch(seek(value));
   }
 
   // render
   return (
-    <div className={`d-flex ${styles.playerDurationWrapper}`}>
+    <div className={`d-flex align-items-center ${styles.playerDurationWrapper}`}>
       <span className={styles.playerTime}>{formatTime(position)}</span>
       <Slider
         position={(position / duration)}
@@ -36,5 +42,13 @@ const ProgressSlider = (props) => {
     </div>
   );
 }
+
+ProgressSlider.defaultProps = {
+  onSeek: null,
+};
+
+ProgressSlider.propTypes = {
+  onSeek: PropTypes.func,
+};
 
 export default ProgressSlider;

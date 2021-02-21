@@ -16,4 +16,18 @@
 .playerBar {
   height: 60px;
   background-color: $primary-blue;
+  padding-top: 10px;
+}
+
+.videoCover {
+  position: absolute;
+  background-color: $secondary-green;
+  height: 100%;
+  width: 100%;
+  top: 0;
+}
+
+.loader {
+  height: 5rem;
+  width: 5rem;
 }

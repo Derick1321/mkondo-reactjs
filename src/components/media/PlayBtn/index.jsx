@@ -13,6 +13,16 @@ const PlayBtn = (props) => {
   } = props;
 
   // render
+  if (isLoading) {
+    return (
+      <span
+        className="spinner-border spinner-border-lg text-light"
+        role="status"
+        aria-hidden="true"
+      />
+    );
+  }
+
   if (isPlaying) {
     return (
       <div className={styles.playIcon}>
@@ -22,16 +32,6 @@ const PlayBtn = (props) => {
           alt=""
         />
       </div>
-    );
-  }
-
-  if (isLoading) {
-    return (
-      <span
-        className="spinner-border spinner-border-lg text-light"
-        role="status"
-        aria-hidden="true"
-      />
     );
   }
 

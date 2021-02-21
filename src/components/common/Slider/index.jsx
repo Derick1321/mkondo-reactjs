@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 
-import './index.scss';
+import styles from './index.module.scss';
 
 // don't forget to register plugins
 gsap.registerPlugin(Draggable); 
@@ -91,9 +91,9 @@ const Slider = (props) => {
 
   // render
   return (
-    <div className="progressBar" ref={progressBarRef}>
-      <div className="knobMenu" ref={knobRef} />
-      <div className="rangeMenu" ref={rangeRef} />
+    <div className={styles.progressBar} ref={progressBarRef}>
+      <div className={styles.knobMenu} ref={knobRef} />
+      <div className={styles.rangeMenu} ref={rangeRef} />
     </div>
   );
 }
