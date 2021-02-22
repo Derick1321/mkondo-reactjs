@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import queryString from 'query-string';
 
 import { handleFetch, buildFormData } from '$common/requestUtils';
 
@@ -54,9 +55,9 @@ export const getMedia = createAsyncThunk(
 
 export const getNewReleases = createAsyncThunk(
   GET_NEW_RELEASES,
-  async (id, param) => {
+  async (data, param) => {
     const { token, visitorToken } = param.getState().authentication;
-    return await handleFetch('GET', 'media/new-release', null, token || visitorToken);
+    return await handleFetch('GET', `media/new-release?${queryString.stringify(data)}`, null, token || visitorToken);
   }
 );
 
@@ -172,7 +173,11 @@ const initialState = {
     cover_url: null,
     owner_avatar_url: null,
   },
-  newReleases: [],
+  newReleases: {
+    audio: [],
+    video: [],
+    movie: [],
+  },
   albumId: null,
   comments: [],
   recommendedMedia: [],
@@ -296,7 +301,7 @@ const mediaSlice = createSlice({
       state.getNewReleasesPending = false;
       state.getNewReleasesComplete = true;
       state.getNewReleasesError = null;
-      state.newReleases = action.payload.media;
+      state.newReleases[action.meta.arg.category] = action.payload.media;
     },
     [getNewReleases.rejected]: (state, action) => {
       state.getNewReleasesPending = false;
