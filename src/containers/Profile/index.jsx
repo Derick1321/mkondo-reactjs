@@ -10,7 +10,7 @@ import Feature from '$components/common/Feature';
 import { genres, generatePreview } from '$common/utils';
 import { handleFetch } from '$common/requestUtils';
 
-import { saveMedia, updateMedia, getNewReleases } from '$redux/features/media';
+import { saveMedia, updateMedia } from '$redux/features/media';
 import { updateUser, getUserMedia } from '$redux/features/user';
 
 import { menus, descriptionField, socials } from './menus';
@@ -143,7 +143,7 @@ const Profile = () => {
       }));
     });
 
-    dispatch(getNewReleases());
+    // TODO use monitor
   }
 
   const handleAvatarChange = async (files) => {
