@@ -67,6 +67,7 @@ const SearchResult = () => {
             <p className={styles.heading}>Songs</p>
             <TopSongs
               media={media}
+              isLoading={querySearchPending}
             />
             {
               querySearchComplete && media.length < 1 && (

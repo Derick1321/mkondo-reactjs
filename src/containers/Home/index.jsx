@@ -15,16 +15,24 @@ const Home = () => {
   // store
   const dispatch = useDispatch();
   const newReleases = useSelector((store) => store.media.newReleases);
+  const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
 
   // effects
   useEffect(() => {
-    // add monitor
-    dispatch(getNewReleases());
+    // add monitor?
+    dispatch(getNewReleases({
+      category: 'audio',
+    }));
   }, []);
 
   // handlers
   const handleSelect = (name) => {
     setSelected(name);
+    if (newReleases[name].length < 1) {
+      dispatch(getNewReleases({
+        category: name,
+      }));
+    }
   }
 
   // render
@@ -39,14 +47,23 @@ const Home = () => {
       <div className={selected !== 'audio' ? 'd-none' : ''}>
         <p className={`${styles.homeHeading} py-4`}>New Releases</p>
         <TopSongs
-          media={newReleases}
+          media={newReleases.audio}
+          isLoading={getNewReleasesPending && newReleases.audio.length < 1}
         />
       </div>
       <div className={selected !== 'video' ? 'd-none' : ''}>
-        <p>No Videos available! Please try again later!</p>
+        <p className={`${styles.homeHeading} py-4`}>New Releases</p>
+        <TopSongs
+          media={newReleases.video}
+          isLoading={getNewReleasesPending && newReleases.video.length < 1}
+        />
       </div>
       <div className={selected !== 'movie' ? 'd-none' : ''}>
-        <p>No Movies available! Please try again later!</p>
+        <p className={`${styles.homeHeading} py-4`}>Theatre</p>
+        <TopSongs
+          media={newReleases.movie}
+          isLoading={getNewReleasesPending && newReleases.movie.length < 1}
+        />
       </div>
     </div>
   );
