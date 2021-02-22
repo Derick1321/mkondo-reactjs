@@ -7,7 +7,7 @@ import styles from './index.module.scss';
 
 const TopSongs = (props) => {
   // props
-  const { media } = props;
+  const { media, isLoading } = props;
 
   // render
   return (
@@ -15,8 +15,21 @@ const TopSongs = (props) => {
       <div className="d-flex flex-column">
         <div className="d-flex flex-wrap">
           {
-            media.length < 1 && (
-              <p className={`mb-4 text-center ${styles.topSongsEmpty}`}>No New Free Top Songs!</p>
+            isLoading && (
+              <p className="text-center">
+                <span
+                  className="spinner-border spinner-border-lg text-light mr-2"
+                  role="status"
+                  aria-hidden="true"
+                />
+                Loading
+              </p>
+            )
+          }
+          {
+           !isLoading &&
+           media.length < 1 && (
+              <p className={`mb-4 text-center ${styles.topSongsEmpty}`}>No Media Found!</p>
             )
           }
           {

@@ -47,6 +47,7 @@ const Marketing = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const userType = useSelector((store) => store.authentication.user.user_type);
   const newReleases = useSelector((store) => store.media.newReleases);
+  const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
 
   // effects
   useEffect(() => {
@@ -81,7 +82,10 @@ const Marketing = () => {
       return;
     }
 
-    dispatch(getNewReleases());
+    dispatch(getNewReleases({
+      category: 'audio',
+      amount: 3,
+    }));
   }, [visitorToken])
 
   useEffect(() => {
@@ -142,7 +146,8 @@ const Marketing = () => {
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
           <TopSongs
-            media={newReleases}
+            media={newReleases.audio}
+            isLoading={getNewReleasesPending}
           />
           <div className="text-center">
             <Button
