@@ -50,7 +50,7 @@ const Player = () => {
     if (!sound) {
       return;
     }
-
+    console.log('getSeekPosition');
     dispatch(updateRange(sound.seek()));
   }
 

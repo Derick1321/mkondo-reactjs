@@ -10,9 +10,11 @@ const PreviewBkg = styled.div`
   height: 100%;
   width: 100%;
   background-position: center;
-  background-size: ${props => props.isActive ? '160%;' : 'cover'};
+  background-size: cover;
   background-repeat: no-repeat;
-  transition: background-size 150ms linear;
+  transition: transform 100ms ease-in-out;
+  transform: scale(${props => props.isActive ? 1.3 : 1});
+  transform-origin: center;
   background-image: url(${props => props.source}); 
 `;
 
