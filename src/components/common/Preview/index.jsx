@@ -21,6 +21,7 @@ const PreviewBkg = styled.div`
 const Preview = (props) => {
   // props
   const {
+    title,
     description,
     source, 
     onClick,
@@ -61,6 +62,9 @@ const Preview = (props) => {
         </button>
       </div>
       {
+        title && <p className={`${styles.title} text-left`}>{title}</p>
+      }
+      {
         description && <p className={`${styles.description} text-left`}>{description}</p>
       }
     </div>
@@ -68,11 +72,13 @@ const Preview = (props) => {
 };
 
 Preview.defaultProps = {
+  title: null,
   description: null,
   onClick: () => null,
 };
 
 Preview.propTypes = {
+  title: PropTypes.string,
   description: PropTypes.string,
   onClick: PropTypes.func,
 };

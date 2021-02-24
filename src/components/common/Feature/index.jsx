@@ -62,13 +62,17 @@ const Feature = (props) => {
   } = props;
 
   // store
-  const token = useSelector((store) => store.authentication.token);
+  const userToken = useSelector((store) => store.authentication.token);
+  const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const favourites = useSelector((store) => store.authentication.user.favourites);
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
+
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const token = userToken || visitorToken;
 
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
@@ -81,6 +85,7 @@ const Feature = (props) => {
   // effects
   useEffect(() => {
     isMounted.current = true;
+
     return () => {
       isMounted.current = false;
     }
