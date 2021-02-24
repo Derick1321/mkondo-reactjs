@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import ReactPlayer from 'react-player';
+import screenfull from 'screenfull'
 
 import PlayBtn from '$components/media/PlayBtn';
 import Button from '$components/common/Button';
@@ -7,8 +9,11 @@ import ProgressSlider from '$components/media/ProgressSlider';
 import VolumeSlider from '$components/media/VolumeSlider';
 
 import { getFileURL } from '$common/utils';
+import { toggleFooterPlayer } from '$redux/features/nav';
 
 import styles from './index.module.scss';
+
+const fullscreen = require('$assets/images/icons/fullscreen.svg');
 
 const VideoPlayer = (props) => {
   // props
@@ -17,6 +22,10 @@ const VideoPlayer = (props) => {
     url,
   } = props;
 
+  const dispatch = useDispatch();
+
+  const volume = useSelector((store) => store.player.volume);
+
   // state
   const [localUrl, setLocalUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -24,10 +33,16 @@ const VideoPlayer = (props) => {
   const [position, setPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const [volume, setVolume] = useState(1);
 
   // effects
   const playerRef = useRef(null);
+
+  useEffect(() => {
+    dispatch(toggleFooterPlayer(false));
+    return () => {
+      dispatch(toggleFooterPlayer(true));
+    }
+  }, []);
 
   useEffect(() => {
     if (!file) {
@@ -55,6 +70,12 @@ const VideoPlayer = (props) => {
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
+  }
+
+  const handleFullScreen = () => {
+    if (screenfull.isEnabled) {
+      screenfull.request(playerRef.current.wrapper);
+    }
   }
 
   // render
@@ -112,7 +133,21 @@ const VideoPlayer = (props) => {
         <div className="mx-2">
           <VolumeSlider
             position={volume}
+            setVolume
           />
+        </div>
+        <div>
+          <Button
+            onClick={handleFullScreen}
+            isTransparent
+            noBorder
+          >
+            <img
+              className={styles.fullscreen}
+              src={fullscreen}
+              alt=""
+            />
+          </Button>
         </div>
       </div>
     </>

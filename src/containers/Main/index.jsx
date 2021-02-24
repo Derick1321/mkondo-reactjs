@@ -26,7 +26,8 @@ const Main = (props) => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
   const isMobile = useSelector((store) => store.nav.isMobile);
-  
+  const showFooterPlayer = useSelector((store) => store.nav.showFooterPlayer);
+
   // effects
   useEffect(() => {
     if (location.pathname === routePaths.main) {
@@ -70,9 +71,13 @@ const Main = (props) => {
       <div className={`d-block d-sm-none ${styles.sideMenuMobile} ${isMobile && isSideMenuOpen ? styles.sideMenuActive : ''}`}>
         <SideMenu />
       </div>
-      <div className={styles.homeFooter}>
-        <Player />
-      </div>
+      {
+        showFooterPlayer && (
+          <div className={styles.homeFooter}>
+            <Player />
+          </div>
+        )
+      }
     </div>
   );
 }
