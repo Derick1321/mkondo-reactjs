@@ -23,6 +23,7 @@ const initialState = {
     albums: [],
   },
   forceClearSearch: false,
+  showFooterPlayer: true,
 };
 
 const navSlice = createSlice({
@@ -41,6 +42,9 @@ const navSlice = createSlice({
     clearSearch: (state) => {
       state.searchResults = initialState.searchResults;
       state.forceClearSearch = true;
+    },
+    toggleFooterPlayer: (state, action) => {
+      state.showFooterPlayer = action.payload || !state.showFooterPlayer;
     },
   },
   extraReducers: {
@@ -71,6 +75,7 @@ export const {
   toggleSideMenu,
   toggleIsMobile,
   clearSearch,
+  toggleFooterPlayer,
 } = navSlice.actions;
 
 // reducer
