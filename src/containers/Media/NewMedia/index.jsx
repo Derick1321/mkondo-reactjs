@@ -70,8 +70,8 @@ const NewMedia = () => {
       cover_url: avatarRes.payload,
       media_url: mediaRes.payload,
       owner_id: userId,
-      category: 'audio', // TODO
-      duration: 0, // TODO
+      category: 'audio',
+      duration: 0, // THIS FILE IS DEPRECATED
       composer: values.composer,
       record_label: values.recordLabel,
       song_writer: values.songWriter,
