@@ -3,7 +3,6 @@ import Home from '$containers/Home';
 import OnBoarding from '$containers/OnBoarding';
 import Main from '$containers/Main';
 import Media from '$containers/Media';
-import MediaNew from '$containers/Media/NewMedia';
 import MediaUpload from '$containers/Media/MediaUpload';
 import NewMediaCategory from '$containers/Media/NewMediaCategory';
 import NewAlbum from '$containers/Media/NewAlbum';
@@ -34,7 +33,6 @@ export const routePaths = {
   topChart: '/app/top-chart',
   feeds: '/app/feeds',
   media: '/app/media',
-  newMedia: '/app/media/new',
   newAlbum: '/app/media/new-album',
   newVideo: '/app/media/new-video',
   newMediaCategory: '/app/media/select-category',
@@ -209,12 +207,6 @@ export const routes = [
         component: Media,
         exact: false,
         routes: [
-          {
-            ...defaultConfig,
-            path: routePaths.newMedia,
-            component: MediaNew,
-            redirect: redirectFunctions.app,
-          },
           {
             ...defaultConfig,
             path: routePaths.newMediaCategory,

@@ -22,6 +22,18 @@ export const getFileURL = (file) => {
   return URL.createObjectURL(file);
 }
 
+export const getDuration = (file, type, callback) => {
+  var video = document.createElement(type);
+  video.preload = 'metadata';
+
+  video.onloadedmetadata = () => {
+    window.URL.revokeObjectURL(video.src);
+    callback(video.duration)
+  }
+
+  video.src = URL.createObjectURL(file);
+}
+
 export const formatDate = (value) => {
   const units = [
     'year',

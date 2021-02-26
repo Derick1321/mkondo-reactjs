@@ -8,7 +8,7 @@ import DraggableList from '$components/common/DraggableList';
 import UploadCard from '$components/media/UploadCard';
 
 import { routePaths } from '$common/routeConfig';
-import { bytesToSize, generatePreview } from '$common/utils';
+import { bytesToSize, generatePreview, getDuration } from '$common/utils';
 
 import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 
@@ -95,6 +95,13 @@ const MediaUpload = () => {
         size: bytesToSize(result[index].size),
         binary: result[index],
       });
+
+      getDuration(result[index], 'audio', (duration) => {
+        handleChange(result[index].name, {
+          ...values[result[index].name],
+          duration,
+        });
+      });
     }
     setFiles(fileList);
   }
@@ -108,6 +115,7 @@ const MediaUpload = () => {
   }
 
   const handleChange = (name, value) => {
+    console.log('name ', name, value);
     setValues({
       ...values,
       [name]: value,
