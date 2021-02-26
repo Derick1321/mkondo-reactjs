@@ -137,8 +137,8 @@ const MediaUpload = () => {
         cover_url: avatarRes.payload,
         media_url: mediaRes.payload,
         owner_id: userId,
-        category: 'audio', // TODO
-        duration: 0, // TODO
+        category: 'audio',
+        duration: values.duration || 0,
         composer: item.composer,
         record_label: item.recordLabel,
         song_writer: item.songWriter,
