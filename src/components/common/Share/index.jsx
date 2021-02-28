@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
@@ -16,6 +16,7 @@ import {
 import TextArea from '$components/common/TextArea';
 import Button from '$components/common/Button';
 
+import { handleFetch } from '$common/requestUtils';
 import { updateShareCount } from '$redux/features/media';
 
 import styles from './index.module.scss';
@@ -42,6 +43,7 @@ const Share = (props) => {
     avatar,
     initialDescription,
     mediaId,
+    isAvatarLoaded,
   } = props;
 
   // refs
@@ -49,10 +51,27 @@ const Share = (props) => {
 
   // store
   const dispatch = useDispatch();
+  const token = useSelector((store) => store.authentication.token);
 
   // state
   const [description, setDescription] = useState(initialDescription);
   const [link, setLink] = useState(url);
+  const [avatarUrl, setAvatarUrl] = useState(avatarSample);
+
+  // effects
+  useEffect(async () => {
+    if (!avatar) {
+      return;
+    }
+
+    if (isAvatarLoaded) {
+      setAvatarUrl(avatar)
+      return;
+    }
+
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token);
+    setAvatarUrl(res.response);
+  }, [avatar]);
 
   // handlers
   const handleChange = (name, value) => {
@@ -80,7 +99,7 @@ const Share = (props) => {
     <div className="row">
       <div className="col-6 col-sm-2">
         <Avatar
-          url={avatar || avatarSample}
+          url={avatarUrl}
         />
       </div>
       <div className="col-12 col-sm-5 col-md-6">
@@ -140,6 +159,7 @@ Share.defaultProps = {
   link: 'https//:mkondo.co/app/artist/artist01',
   avatar: null,
   initialDescription: 'I just joined Mkondo visit www.mkondo.co for checking my profile!',
+  isAvatarLoaded: true,
 };
 
 Share.propTypes = {
@@ -149,6 +169,7 @@ Share.propTypes = {
   link: PropTypes.string,
   avatar: PropTypes.string,
   initialDescription: PropTypes.string,
+  isAvatarLoaded: PropTypes.bool,
 };
 
 export default Share;

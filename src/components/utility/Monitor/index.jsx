@@ -28,6 +28,8 @@ const Monitor = () => {
   const addHistoryComplete = useSelector((store) => store.user.addHistoryComplete);
   const userType = useSelector((store) => store.authentication.user.user_type);
   const token = useSelector((store) => store.authentication.token);
+  const addMediaComplete = useSelector((store) => store.media.addMediaComplete);
+  const lastUploaded = useSelector((store) => store.media.lastUploaded);
 
   const isSuperAdmin = userType === 'super admin';
 
@@ -106,6 +108,24 @@ const Monitor = () => {
       return;
     }
   }, [token]);
+
+  useEffect(() => {
+    if (!addMediaComplete
+      || !lastUploaded
+      || lastUploaded.category === 'audio') { // TODO: use same for audio
+      return;
+    }
+
+    // lastUploaded
+    dispatch(showModal('SHARE_MODAL', {
+      title: lastUploaded.name,
+      country: lastUploaded.description,
+      id: lastUploaded.mediaId,
+      avatarUrl: lastUploaded.cover_url,
+      isAvatarLoaded: false,
+    }));
+
+  }, [addMediaComplete]);
 
   // render
   return (

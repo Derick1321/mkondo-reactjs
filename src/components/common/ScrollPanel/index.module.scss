@@ -1,7 +1,6 @@
 @import '$assets/scss/main.scss';
 
 .scrollMenuWrapper {
-  margin: 5rem 1rem;
 }
 
 .albumMenuTitleWrapper {
@@ -11,4 +10,16 @@
 .heading {
   font-size: $title;
   color: $white;
+}
+
+.dragSpace {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.wrapperBoxes {
+  position: absolute;
+  display: flex;
 }

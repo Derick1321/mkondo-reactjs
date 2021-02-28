@@ -8,7 +8,7 @@ import InputField from '$components/forms/InputField';
 import AvatarInput from '$components/common/AvatarInput';
 import VideoPlayer from '$components/media/VideoPlayer';
 
-import { bytesToSize, generatePreview } from '$common/utils';
+import { bytesToSize, generatePreview, movieGenres, getDuration } from '$common/utils';
 import { addMedia, saveMedia } from '$redux/features/media';
 
 import { menus, descriptionMenu } from './menus';
@@ -28,17 +28,23 @@ const NewVideo = () => {
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
 
-  const type = history.location.state && getType[history.location.state.type] || getType['video'];
+  const uploadType = (history.location.state && history.location.state.type) || 'video';
+  const type = getType[uploadType];
 
   // state
   const [file, setFile] = useState(null);
-  const [values, setValues] = useState({});
+  const [values, setValues] = useState({
+    duration: 0,
+  });
   const [coverFile, setCoverFile] = useState(null);
   const [localCoverUrl, setLocalCoverUrl] = useState(null);
 
   // hadnlers
   const handleFileChange = (files) => {
     setFile(files[0]);
+    getDuration(files[0], 'video', (value) => {
+      handleChange('duration', value);
+    });
   }
 
   const handleChange = (name, value) => {
@@ -57,8 +63,8 @@ const NewVideo = () => {
       cover_url: mediaRes.payload,
       media_url: 'placeholderurl',
       owner_id: userId,
-      category: 'video',
-      duration: 0, // TODO
+      category: uploadType,
+      duration: values.duration,
       owner_avatar_url: userAvatarUrl,
       production_company: values.productionCompany,
       movie_director: values.director,
@@ -96,20 +102,30 @@ const NewVideo = () => {
           <div className={styles.inputFormWrapper}>
             <div className="row">
               {
-                menus.map((menu) => (
-                  <div
-                    className='col-12 col-md-6'
-                    key={`new-video-${menu.name}`}
-                  >
-                    <InputField
-                      field={{
-                        ...menu,
-                        value: values[menu.name]
-                      }}
-                      onChange={handleChange}
-                    />
-                  </div>
-                ))
+                menus.map((menu) => {
+                  const item = {
+                    ...menu,
+                  };
+
+                  if (item.options && uploadType === 'movie') {
+                    item.options = movieGenres;
+                  }
+
+                  return (
+                    <div
+                      className='col-12 col-md-6'
+                      key={`new-video-${menu.name}`}
+                    >
+                      <InputField
+                        field={{
+                          ...item,
+                          value: values[menu.name]
+                        }}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  )
+                })
               }
             </div>
           </div>
@@ -151,8 +167,12 @@ const NewVideo = () => {
     if (addMediaPending) {
       return (
         <div className="d-flex">
-          <div className="spinner-border" role="status" />
-          <p>Your {type} is getting uploaded. Please don&apos;t refresh your browser.</p>
+          <div className={`spinner-border ${styles.spinnerLg}`} role="status" />
+          <div className="ml-4">
+            <p>Your {type} is getting uploaded.</p>
+            <p>Please don&apos;t refresh your browser.</p>
+            <p>You may continue using other functions of the app</p>
+          </div>
         </div>
       );
     }
