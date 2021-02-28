@@ -4,24 +4,17 @@ import { useHistory, generatePath } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import ActionHeader from '$components/media/ActionHeader';
+import PlayBtn from '$components/media/PlayBtn';
+
 import { handleFetch } from '$common/requestUtils';
 import { routePaths } from '$common/routeConfig';
 
-import PlayBtn from '$components/media/PlayBtn';
-
-import { addFavorite, removeFavorite } from '$redux/features/user';
-import { showModal } from '$redux/features/modal';
-import {
-  loadMedia,
-} from '$redux/features/player';
+import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
-const favoriteActive = require('$assets/images/icons/favorite-active.svg');
-const favorite = require('$assets/images/icons/favorite.svg');
-const share = require('$assets/images/icons/share.svg');
-const menu = require('$assets/images/icons/menu.svg');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -42,6 +35,7 @@ const FeatureAvatar = styled.div`
   ${commonStyle}
   height: 80px;
   width: 80px;
+  border-radius: 40px;
   margin-right: 10px;
   background-size: cover;
   background-image: url(${props => props.source}); 
@@ -64,7 +58,6 @@ const Feature = (props) => {
   // store
   const userToken = useSelector((store) => store.authentication.token);
   const visitorToken = useSelector((store) => store.authentication.visitorToken);
-  const favourites = useSelector((store) => store.authentication.user.favourites);
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
@@ -77,7 +70,6 @@ const Feature = (props) => {
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
-  const [isFavorite, setIsFavorite] = useState(false);
 
   // ref
   const isMounted = useRef(false);
@@ -90,18 +82,6 @@ const Feature = (props) => {
       isMounted.current = false;
     }
   }, []);
-
-  useEffect(() => {
-    if (!favourites) {
-      return;
-    }
-
-    const res = favourites.find((media) => media.media_id === mediaId);
-    if (!res) {
-      return;
-    }
-    setIsFavorite(true);
-  }, [favourites]);
 
   useEffect(async () => {
     if (!token || !isMounted.current) {
@@ -149,70 +129,19 @@ const Feature = (props) => {
     history.push(generatePath(routePaths.viewArtist, { id: artistId }));
   }
 
-  const handleFavorite = () => {
-    const data = {
-      media_id: mediaId,
-    };
-
-    if (!isFavorite) {
-      dispatch(addFavorite(data));
-    } else {
-      dispatch(removeFavorite(data));
-    }
-    setIsFavorite(!isFavorite);
-  }
-
-  const handleMenu = () => {
-    dispatch(showModal('PLAYLIST_MODAL', {
-      mediaId,
-      title,
-    }));
-  }
-
-  const handleShare = () => {
-    dispatch(showModal('SHARE_MODAL', {
-      title,
-      country,
-      id: mediaId,
-      avatarUrl,
-    }));
-  }
-
   // render
   return (
     <div className={styles.featureWrapper}>
       <FeatureBkg source={avatarUrl} />
       <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
         <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
-        <div className="d-flex">
-          <button
-            className={styles.featurePlayBtn}
-            onClick={handleMenu}
-          >
-            <img
-              src={menu}
-              className={styles.menuIcon}
-            />
-          </button>
-          <button
-            className={styles.featurePlayBtn}
-            onClick={handleFavorite}
-          >
-            <img
-              src={isFavorite ? favoriteActive : favorite}
-              className=""
-            />
-          </button>
-          <button
-            className={styles.featurePlayBtn}
-            onClick={handleShare}
-          >
-            <img
-              src={share}
-              className=""
-            />
-          </button>
-        </div>
+        <ActionHeader
+          mediaId={mediaId}
+          country={country}
+          title={title}
+          avatarUrl={avatarUrl}
+          showPlaylist
+        />
       </div>
       <div className={`d-flex ${styles.featurePane}`}>
         <div onClick={handleArtistView}>
