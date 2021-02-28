@@ -8,11 +8,12 @@ import styles from './index.module.scss';
 const ShareModal = (props) => {
   // props
   const {
+    id,
     title, 
     country,
-    id,
     avatarUrl,
     isArtist,
+    isAvatarLoaded,
   } = props;
 
   const param = isArtist ? 'artist' : 'media';
@@ -26,6 +27,7 @@ const ShareModal = (props) => {
         link={`https://mkondo.co/app/${param}/${id}`}
         avatar={avatarUrl}
         initialDescription={`Checkout this ${param} hosted at www.mkondo.co`}
+        isAvatarLoaded={isAvatarLoaded}
         id={id}
       />
     </div>
@@ -36,6 +38,7 @@ ShareModal.defaultProps  = {
   isArtist: false,
   country: '',
   avatarUrl: '',
+  isAvatarLoaded: true,
 }
 
 ShareModal.propTypes  = {
@@ -44,6 +47,7 @@ ShareModal.propTypes  = {
   isArtist: PropTypes.bool,
   country: PropTypes.string,
   avatarUrl: PropTypes.string.isRequired,
+  isAvatarLoaded: PropTypes.bool,
 }
 
 export default ShareModal;

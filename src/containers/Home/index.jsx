@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import ScrollMedia from '$components/media/ScrollMedia';
 import Tabs from '$components/common/Tabs';
-import TopSongs from '$components/common/TopSongs';
 
 import { getNewReleases } from '$redux/features/media';
 
@@ -16,6 +16,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const newReleases = useSelector((store) => store.media.newReleases);
   const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
+  const favorites = useSelector((store) => store.authentication.user.favourites);
 
   // effects
   useEffect(() => {
@@ -45,24 +46,39 @@ const Home = () => {
         />
       </div>
       <div className={selected !== 'audio' ? 'd-none' : ''}>
-        <p className={`${styles.homeHeading} py-4`}>New Releases</p>
-        <TopSongs
-          media={newReleases.audio}
+        <ScrollMedia
+          title="New Releases"
+          values={newReleases.audio}
           isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+          showHeader
+        />
+        <ScrollMedia
+          title="Favorite"
+          values={favorites.filter((item) => item.category === 'audio')}
         />
       </div>
       <div className={selected !== 'video' ? 'd-none' : ''}>
-        <p className={`${styles.homeHeading} py-4`}>New Releases</p>
-        <TopSongs
-          media={newReleases.video}
+        <ScrollMedia
+          title="New Releases"
+          values={newReleases.video}
           isLoading={getNewReleasesPending && newReleases.video.length < 1}
+          type="video"
+        />
+        <ScrollMedia
+          title="Favorite"
+          values={favorites.filter((item) => item.category === 'video')}
         />
       </div>
       <div className={selected !== 'movie' ? 'd-none' : ''}>
-        <p className={`${styles.homeHeading} py-4`}>Theatre</p>
-        <TopSongs
-          media={newReleases.movie}
+        <ScrollMedia
+          title="Theatre"
+          values={newReleases.movie}
           isLoading={getNewReleasesPending && newReleases.movie.length < 1}
+          type="video"
+        />
+        <ScrollMedia
+          title="Favorite"
+          values={favorites.filter((item) => item.category === 'movie')}
         />
       </div>
     </div>

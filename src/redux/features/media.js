@@ -181,6 +181,7 @@ const initialState = {
   albumId: null,
   comments: [],
   recommendedMedia: [],
+  lastUploaded: null,
 };
 
 const mediaSlice = createSlice({
@@ -200,12 +201,17 @@ const mediaSlice = createSlice({
       state.addMediaComplete = false;
       state.addMediaError = null;
       state.newMediaId = null;
+      state.lastUploaded = null;
     },
     [addMedia.fulfilled]: (state, action) => {
       state.addMediaPending = false;
       state.addMediaComplete = true;
       state.addMediaError = null;
-      state.newMediaId = action.payload.media_id;
+      state.newMediaId = action.payload.media_id; // Prepare Deprecation
+      state.lastUploaded = {
+        ...action.meta.arg,
+        mediaId: action.payload.media_id,
+      };
     },
     [addMedia.rejected]: (state, action) => {
       state.addMediaPending = false;
