@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+
+import { handleFetch } from '$common/requestUtils';
 
 import styles from './index.module.scss';
 
@@ -15,7 +18,8 @@ const PreviewBkg = styled.div`
   transition: transform 100ms ease-in-out;
   transform: scale(${props => props.isActive ? 1.3 : 1});
   transform-origin: center;
-  background-image: url(${props => props.source}); 
+  background-image: url(${props => props.source});
+  background-color: black;
 `;
 
 const Preview = (props) => {
@@ -25,10 +29,30 @@ const Preview = (props) => {
     description,
     source, 
     onClick,
+    isAvatarLoaded,
   } = props;
 
   // state
   const [isActive, setIsActive] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState(null);
+
+  // props
+  const token = useSelector((store) => store.authentication.token);
+
+  // effects
+  useEffect(async () => {
+    if (!source) {
+      return;
+    }
+
+    if (isAvatarLoaded) {
+      setAvatarUrl(source)
+      return;
+    }
+
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token);
+    setAvatarUrl(res.response);
+  }, [source]);
 
   // handler
   const handleFocus = () => {
@@ -41,14 +65,14 @@ const Preview = (props) => {
 
   // render
   return (
-    <div className="col-12 col-md-4 col-lg-3">
+    <div className={styles.temp}>
       <div
         className={styles.previewBkgWrapper}
         onMouseEnter={handleFocus}
         onMouseLeave={handleBlur}
       >
         <PreviewBkg
-          source={source}
+          source={avatarUrl}
           isActive={isActive}
         />
         <button
@@ -75,12 +99,14 @@ Preview.defaultProps = {
   title: null,
   description: null,
   onClick: () => null,
+  isAvatarLoaded: false,
 };
 
 Preview.propTypes = {
   title: PropTypes.string,
   description: PropTypes.string,
   onClick: PropTypes.func,
+  isAvatarLoaded: PropTypes.bool,
 };
 
 export default Preview;

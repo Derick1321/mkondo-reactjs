@@ -167,8 +167,8 @@ const NewVideo = () => {
     if (addMediaPending) {
       return (
         <div className="d-flex">
-          <div className="spinner-border" role="status" />
-          <div>
+          <div className={`spinner-border ${styles.spinnerLg}`} role="status" />
+          <div className="ml-4">
             <p>Your {type} is getting uploaded.</p>
             <p>Please don&apos;t refresh your browser.</p>
             <p>You may continue using other functions of the app</p>
