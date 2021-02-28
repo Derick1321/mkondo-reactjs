@@ -25,7 +25,7 @@ import { showModal } from '$redux/features/modal';
 import { getHistory } from '$redux/features/user';
 import { getNewReleases } from '$redux/features/media';
 
-import { urls, data } from './model';
+import { urls } from './model';
 
 import styles from './index.module.scss';
 
@@ -145,18 +145,23 @@ const Marketing = () => {
       </div>
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
+          <p className={`text-white text-center ${styles.panelHeader}`}>Featured Songs</p>
           <TopSongs
             media={newReleases.audio}
             isLoading={getNewReleasesPending}
           />
-          <div className="text-center">
-            <Button
-              onClick={handleExploreSongs}
-              style="px-4"
-            >
-              Explore Top Songs
-            </Button>
-          </div>
+          {
+            !getNewReleasesPending && (
+              <div className="d-flex justify-content-center">
+                <Button
+                  onClick={handleExploreSongs}
+                  style="px-4"
+                >
+                  Explore More Songs
+                </Button>
+              </div>
+            )
+          }
         </div>
       </div>
       <div className="row">

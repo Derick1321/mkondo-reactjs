@@ -1,28 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory, generatePath } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import ScrollMenu from 'react-horizontal-scrolling-menu';
+import gsap from 'gsap';
+import { Draggable } from 'gsap/Draggable';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
-import AlbumMenu from '$components/common/AlbumMenu';
 import Button from '$components/common/Button';
-
-import { routePaths } from '$common/routeConfig';
-
-import { clearSearch } from '$redux/features/nav';
 
 import styles from './index.module.scss';
 
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
+// don't forget to register plugins
+gsap.registerPlugin(Draggable);
+gsap.registerPlugin(ScrollToPlugin); // ??
+
+let v = 0;
+
 const ScrollPanel = (props) => {
   // props
   const {
     showHeader,
-    isRounded,
     title,
-    values,
+    children,
   } = props;
 
   // store
@@ -33,45 +35,32 @@ const ScrollPanel = (props) => {
   const [selected, setSelected] = useState(null);
 
   // ref
-  const arrowLeftRef = useRef(null);
-  const arrowRightRef = useRef(null);
+  const wrapperBox = useRef(null);
+
+  useEffect(() => {
+    Draggable.create("#wrapperBoxes", {
+      bounds: "#dragSpace",
+      type: "x",
+      throwProps: true,
+      // snap: (endValue) => Math.round(endValue / 300) * 300,
+    });
+  }, []);
 
   // handlers
-  const handleArtistNav = (artistId) => {
-    dispatch(clearSearch());
-    history.push(generatePath(routePaths.viewArtist, { id: artistId }));
-  }
-
-  const buildMenu = () => {
-    return values.map((value, idx) => (
-      <AlbumMenu
-        key={`album-menu-${idx}`}
-        description={value.full_name}
-        url={value.avatar_url}
-        handleClick={() => handleArtistNav(value.user_id)}
-        isRounded={isRounded}
-      />
-    ));
-  };
-
-  const onSelect = (key) => {
-    setSelected(key);
-  }
-
-  const arrowLeft = (
-    <div ref={arrowLeftRef} />
-  );
-
-  const arrowRight = (
-    <div ref={arrowRightRef} />
-  );
-
   const handleNavRight = () => {
-    arrowRightRef.current.click();
+    if (-(children.length * 200) > v) {
+      return;
+    }
+    v -= 900;
+    gsap.to(wrapperBox.current, { duration: 2, x: v });
   }
 
   const handleNavLeft = () => {
-    arrowLeftRef.current.click();
+    if (v > -900) {
+      return;
+    }
+    v += 900;
+    gsap.to(wrapperBox.current, { duration: 2, x: v });
   }
 
   // render
@@ -102,14 +91,11 @@ const ScrollPanel = (props) => {
           </div>
         )
       }
-      <ScrollMenu
-        data={buildMenu()}
-        selected={selected}
-        onSelect={onSelect}
-        arrowLeft={arrowLeft}
-        arrowRight={arrowRight}
-        alignCenter={false}
-      />
+      <div id="dragSpace" className={styles.dragSpace}>
+        <div id="wrapperBoxes" ref={wrapperBox} className={`${styles.wrapperBoxes}`}>
+          {children}
+        </div>
+      </div>
     </div>
   );
 }
@@ -118,14 +104,14 @@ ScrollPanel.defaultProps = {
   title: '',
   showHeader: false,
   isRounded: false,
-  values: [],
+  children: null,
 };
 
 ScrollPanel.propTypes = {
   title: PropTypes.string,
   showHeader: PropTypes.bool,
   isRounded: PropTypes.bool,
-  values: PropTypes.arrayOf(PropTypes.object),
+  children: PropTypes.node,
 };
 
 export default ScrollPanel;

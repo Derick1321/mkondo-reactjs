@@ -92,6 +92,12 @@ const Player = () => {
       return;
     }
 
+    if (!audioRef.current.canPlay()) {
+      // display cannot play message
+      dispatch(pause());
+      return;
+    }
+
     audioRef.current.play(audioRef.current.index);
     loop();
     return () => { // Return callback to run on unmount.
