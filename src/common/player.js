@@ -31,6 +31,10 @@ class Player {
     this.index = 0;
   }
 
+  canPlay(idx) {
+    return this.playlist && this.playlist[idx || this.index];
+  }
+
   play(idx) {
     let sound;
     let index = typeof idx === 'number' ? idx : this.index;
