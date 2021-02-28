@@ -27,7 +27,6 @@ const MediaUpload = () => {
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const userId = useSelector((store) => store.authentication.user.user_id);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
-  const addMediaFulfilled = useSelector((store) => store.media.addMediaFulfilled);
   const newMediaId = useSelector((store) => store.media.newMediaId);
 
   // refs
@@ -73,7 +72,7 @@ const MediaUpload = () => {
         completed: true,
       },
     });
-  }, [addMediaPending, addMediaFulfilled]);
+  }, [addMediaPending]);
 
   useEffect(() => {
     if (!newMediaId) {
