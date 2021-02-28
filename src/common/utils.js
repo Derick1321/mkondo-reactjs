@@ -28,7 +28,7 @@ export const getDuration = (file, type, callback) => {
 
   video.onloadedmetadata = () => {
     window.URL.revokeObjectURL(video.src);
-    callback(video.duration)
+    callback(parseInt(video.duration));
   }
 
   video.src = URL.createObjectURL(file);

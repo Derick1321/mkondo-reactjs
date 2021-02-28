@@ -86,9 +86,7 @@ const SearchResult = () => {
                 <p>No Artists preset!</p>
               )
             }
-            <ScrollPanel
-              values={users}
-            />
+
           </>
         )
       }
@@ -97,3 +95,5 @@ const SearchResult = () => {
 }
 
 export default SearchResult;
+
+// line 89 needs update

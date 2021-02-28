@@ -151,11 +151,6 @@ const ViewArtist = () => {
             <Social
               links={socialLinks}
             />
-            <ScrollPanel
-              title="Similar Artists"
-              showHeader
-              isRounded
-            />
           </div>
         </div>
       </div>
