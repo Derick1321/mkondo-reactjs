@@ -6,6 +6,7 @@ const ADD_ARTIST = 'artist/ADD_ARTIST';
 const GET_ARTISTS = 'artist/GET_ARTISTS';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
 const GET_INSIGHT = 'artist/GET_INSIGHT';
+const GET_ARTIST_MEDIA = 'artist/GET_ARTIST_MEDIA';
 
 // actions
 export const addArtist = createAsyncThunk(
@@ -13,6 +14,14 @@ export const addArtist = createAsyncThunk(
   async (data, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('POST', 'artists', data, token);
+  }
+);
+
+export const getArtistMedia = createAsyncThunk(
+  GET_ARTIST_MEDIA,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `users/${id}/media`, null, token);
   }
 );
 
@@ -46,6 +55,9 @@ const initialState = {
   addArtistComplete: false,
   getArtistsPending: false,
   getArtistsComplete: false,
+  getArtistMediaPending: false,
+  getArtistMediaComplete: false,
+  getArtistMediaError: false,
   getInsightPending: false,
   getInsightComplete: false,
   getInsightError: null,
@@ -57,6 +69,7 @@ const initialState = {
   getArtistByIdError: null,
   currentArtist: {},
   insights: {},
+  artistsMedia: [],
 };
 
 // slice
@@ -99,6 +112,22 @@ const artistSlice = createSlice({
       state.getArtistsPending = false;
       state.getArtistsComplete = false;
       state.getArtistsError = action.error;
+    },
+    [getArtistMedia.pending]: (state, action) => {
+      state.getArtistMediaPending = true;
+      state.getArtistMediaComplete = false;
+      state.getArtistMediaError = null;
+    },
+    [getArtistMedia.fulfilled]: (state, action) => {
+      state.getArtistMediaPending = false;
+      state.getArtistMediaComplete = true;
+      state.getArtistMediaError = null;
+      state.artistsMedia = action.payload.media.data;
+    },
+    [getArtistMedia.rejected]: (state, action) => {
+      state.getArtistMediaPending = false;
+      state.getArtistMediaComplete = false;
+      state.getArtistMediaError = action.error;
     },
     [getArtistById.pending]: (state, action) => {
       state.getArtistByIdPending = true;

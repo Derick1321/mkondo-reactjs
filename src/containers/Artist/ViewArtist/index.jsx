@@ -5,19 +5,17 @@ import styled from 'styled-components';
 
 import Button from '$components/common/Button';
 import Social from '$components/common/Social';
-import ScrollPanel from '$components/common/ScrollPanel';
+import ScrollMedia from '$components/media/ScrollMedia';
 
 import { handleFetch } from '$common/requestUtils';
 
 import { showModal } from '$redux/features/modal';
-import { getArtistById } from '$redux/features/artist';
+import { getArtistById, getArtistMedia } from '$redux/features/artist';
 import { addFollowers, removeFollowers } from '$redux/features/user';
 
 import styles from './index.module.scss';
 
 const shareIcon = require('$assets/images/icons/share.svg');
-const favoriteActive = require('$assets/images/icons/favorite-active.svg');
-const favoriteIcon = require('$assets/images/icons/favorite.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
 const Cover = styled.div`
@@ -46,8 +44,9 @@ const ViewArtist = () => {
   const currentArtist = useSelector((store) => store.artist.currentArtist);
   const token = useSelector((store) => store.authentication.token);
   const followers = useSelector((store) => store.authentication.user.followers);
+  const artistsMedia = useSelector((store) => store.artist.artistsMedia);
+  const getArtistMediaPending = useSelector((store) => store.artist.getArtistMediaPending);
   const isFavorite = followers.find((item) => item === id);
-
 
   const socialLinks = {
     fb: currentArtist.facebook_link,
@@ -67,6 +66,7 @@ const ViewArtist = () => {
     }
 
     dispatch(getArtistById(id));
+    dispatch(getArtistMedia(id));
   }, [id]);
 
   useEffect(async () => {
@@ -84,6 +84,10 @@ const ViewArtist = () => {
       setCoverUrl(res.response);
     }
   }, [currentArtist]);
+
+  useEffect(() => {
+    console.log('artistsMedia ', artistsMedia);
+  }, [artistsMedia]);
 
   // handler
   const handleShare = () => {
@@ -129,7 +133,7 @@ const ViewArtist = () => {
             <Button
               onClick={handleFavorite}
             >
-              { isFavorite ? 'Following' : 'Follow' }
+              {isFavorite ? 'Following' : 'Follow'}
             </Button>
             <Button
               onClick={handleShare}
@@ -150,6 +154,16 @@ const ViewArtist = () => {
             </div>
             <Social
               links={socialLinks}
+            />
+          </div>
+        </div>
+        <div className="row justify-content-center">
+          <div className="col-12 col-sm-10 col-md-8">
+            <ScrollMedia
+              title="Media"
+              values={artistsMedia}
+              isLoading={getArtistMediaPending}
+              showHeader
             />
           </div>
         </div>
