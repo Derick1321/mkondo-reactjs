@@ -1,7 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import gsap from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
@@ -27,15 +25,30 @@ const ScrollPanel = (props) => {
     children,
   } = props;
 
-  // store
-  const history = useHistory();
-  const dispatch = useDispatch();
-
-  //state
-  const [selected, setSelected] = useState(null);
-
   // ref
   const wrapperBox = useRef(null);
+  const observer = useRef(null);
+  const atStart = useRef(false);
+  const atEnd = useRef(false);
+  const firstElement = useRef(null);
+  const lastElement = useRef(null);
+
+  const callback = useCallback((entries) => {
+    atStart.current = false;
+    atEnd.current = false;
+    // console.log('entries ', entries);
+    entries.forEach((entry) => {
+      if (entry.target.className === "first-element") {
+        atStart.current = true;
+        console.log('FE');
+      }
+
+      if (entry.target.className === "last-element") {
+        atEnd.current = true;
+        console.log('LE');
+      }
+    });
+  }, []);
 
   useEffect(() => {
     Draggable.create("#wrapperBoxes", {
@@ -46,20 +59,29 @@ const ScrollPanel = (props) => {
     });
   }, []);
 
-  // handlers
-  const handleNavRight = () => {
-    if (-(children.length * 200) > v) {
+  useEffect(() => {
+    if (!children || !children[0]) {
       return;
     }
-    v -= 900;
+  }, [children]);
+
+  // handlers
+  const handleNavRight = () => {
+    if (atEnd.current || v < -(children.length * 300)) {
+      return;
+    }
+
+    v -= 600;
     gsap.to(wrapperBox.current, { duration: 2, x: v });
   }
 
   const handleNavLeft = () => {
-    if (v > -900) {
+    console.log('atStart.current ', atStart.current);
+    if (atStart.current || v > 500) {
       return;
     }
-    v += 900;
+
+    v += 600;
     gsap.to(wrapperBox.current, { duration: 2, x: v });
   }
 
@@ -93,7 +115,15 @@ const ScrollPanel = (props) => {
       }
       <div id="dragSpace" className={styles.dragSpace}>
         <div id="wrapperBoxes" ref={wrapperBox} className={`${styles.wrapperBoxes}`}>
+          <div
+            className="first-element"
+            ref={firstElement}
+          />
           {children}
+          <div
+            className="last-element"
+            ref={lastElement}
+          />
         </div>
       </div>
     </div>
@@ -115,3 +145,13 @@ ScrollPanel.propTypes = {
 };
 
 export default ScrollPanel;
+
+/*
+observer.current = new IntersectionObserver(callback, {
+      root: document.querySelector('#dragSpace'),
+      rootMargin: '0px',
+      threshold: 1.0
+    });
+    observer.current.observe(firstElement.current);
+    observer.current.observe(lastElement.current);
+*/

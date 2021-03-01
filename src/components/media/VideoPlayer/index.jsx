@@ -10,6 +10,7 @@ import VolumeSlider from '$components/media/VolumeSlider';
 
 import { getFileURL } from '$common/utils';
 import { toggleFooterPlayer } from '$redux/features/nav';
+import { pause } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
@@ -69,6 +70,7 @@ const VideoPlayer = (props) => {
   }
 
   const togglePlay = () => {
+    dispatch(pause());
     setIsPlaying(!isPlaying);
   }
 
