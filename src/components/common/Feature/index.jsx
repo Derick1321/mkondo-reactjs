@@ -102,7 +102,7 @@ const Feature = (props) => {
         }
         setAvatarUrl(res.response);
       });
-  }, [token]);
+  }, [token, avatar]);
 
   // handlers
   const handlePlay = async () => {
