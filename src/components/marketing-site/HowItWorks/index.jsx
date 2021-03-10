@@ -14,7 +14,7 @@ const HowItWorks = () => {
       <div className="row">
         <div className="col-12 col-md-6">
           <p className={styles.panelHeader}>How It Works</p>
-          <p>consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
+          <p className="text-white">consectetuer adipiscing elit. Aenean commodo ligula eget dolor.</p>
           {
             model.map((datum, idx) => (
               <List
@@ -28,10 +28,10 @@ const HowItWorks = () => {
         </div>
         <div className={`col-12 col-md-6 ${styles.howItWorksFeature}`}>
           <Feature
-              avatar="https://i.ibb.co/8b89DpX/image-8-1.png"
+              avatar="zja5uydd1795854_10152370111653109_115441845_o.jpg"
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
-              subtitle="The Weekend"
-              title="Starboy"
+              subtitle=""
+              title=""
               numOfSongs=""
               duration=""
             />
