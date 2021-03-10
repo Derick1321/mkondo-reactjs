@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import AudioPlayer from '$common/player';
@@ -19,6 +19,7 @@ const Player = () => {
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
   const newPosition = useSelector((store) => store.player.newPosition);
   const volume = useSelector((store) => store.player.volume);
+  const isLoading = useSelector((store) => store.player.isLoading);
 
   // refs
   const audioRef = useRef(null);
@@ -44,15 +45,15 @@ const Player = () => {
     }));
   }
 
-  const getSeekPosition = () => {
+  const getSeekPosition = useCallback(() => {
     const obj = audioRef.current;
     const sound = obj.playlist[obj.index].howl;
-    if (!sound) {
+    if (!sound || isLoading) {
       return;
     }
-    console.log('getSeekPosition');
+    console.log('getSeekPosition ', isLoading);
     dispatch(updateRange(sound.seek()));
-  }
+  }, [isLoading, audioRef.current]);
 
   const loop = () => {
     getSeekPosition();
