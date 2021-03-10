@@ -10,6 +10,7 @@ import { handleFetch } from '$common/requestUtils';
 import { showModal } from '$redux/features/modal';
 
 import { updatePlaylist, updateLocalPlaylist } from '$redux/features/playlist';
+import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
@@ -55,12 +56,14 @@ const Row = (props) => {
   // handlers
   const handlePlay = async () => {
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
-    dispatch(updateLocalPlaylist({
-      url: res.response,
-      avatar: url,
-      howl: null,
-      name,
+    console.log('res.response ', res.response, token);
+    dispatch(loadMedia({
       mediaId,
+      url: res.response,
+      howl: null,
+      avatar: url,
+      name,
+      artistName,
     }));
   }
 
@@ -137,10 +140,14 @@ const Row = (props) => {
   );
 }
 
+Row.defaultProps = {
+  artistName: 'Unknown',
+}
+
 Row.propTypes = {
   name: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
-  artistName: PropTypes.string.isRequired,
+  artistName: PropTypes.string,
   mediaId: PropTypes.string.isRequired,
   mediaUrl: PropTypes.string.isRequired,
 }
