@@ -11,9 +11,6 @@ const initialState = {
 const modalSlice = createSlice({
   name: 'modal',
   initialState,
-  actions: {
-    showModal: (type, modalProps) => ({type: SHOW_MODAL, payload: { type, modalProps }}),
-  },
   reducers: {
     showModal: (state, action) => {
       return action.payload;

@@ -13,7 +13,7 @@ const TopSongs = (props) => {
   return (
     <div className="container">
       <div className="d-flex flex-column">
-        <div className="d-flex flex-wrap">
+        <div className="d-flex justify-content-center flex-wrap">
           {
             isLoading && (
               <p className="text-center">
@@ -22,7 +22,7 @@ const TopSongs = (props) => {
                   role="status"
                   aria-hidden="true"
                 />
-                Loading
+                Loading ...
               </p>
             )
           }
