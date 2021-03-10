@@ -55,11 +55,9 @@ const Row = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${mediaUrl}`, null, token);
-    console.log('res.response ', res.response, token);
     dispatch(loadMedia({
       mediaId,
-      url: res.response,
+      url: mediaUrl,
       howl: null,
       avatar: url,
       name,
