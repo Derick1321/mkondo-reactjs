@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory, generatePath } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import ScrollMenu from 'react-horizontal-scrolling-menu';
 
 import AlbumMenu from '$components/common/AlbumMenu';
 import Button from '$components/common/Button';
@@ -101,6 +102,7 @@ const ScrollPanel = (props) => {
           </div>
         )
       }
+      
     </div>
   );
 }
@@ -120,6 +122,7 @@ ScrollPanel.propTypes = {
 };
 
 export default ScrollPanel;
+
 
 /*
 <ScrollMenu
