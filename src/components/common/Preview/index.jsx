@@ -44,6 +44,7 @@ const Preview = (props) => {
 
   // props
   const token = useSelector((store) => store.authentication.token);
+  const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const history = useHistory();
 
   // effects
@@ -57,7 +58,8 @@ const Preview = (props) => {
       return;
     }
 
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token);
+    // TODO: use stage to determine and update the relevant token
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token || visitorToken);
     setAvatarUrl(res.response);
   }, [source]);
 
