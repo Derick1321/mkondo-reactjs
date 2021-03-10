@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import ScrollPanel from '$components/common/ScrollPanel';
+import Scroller from '$components/common/Scroller';
 import Preview from '$components/common/Preview';
 import Feature from '$components/common/Feature';
 
@@ -12,6 +13,7 @@ const ScrollMedia = (props) => {
     title,
     isLoading,
     type,
+    name,
   } = props;
 
   const getMedia = useCallback((item, idx) => {
@@ -45,15 +47,17 @@ const ScrollMedia = (props) => {
 
   // render
   return (
-    <ScrollPanel
+    <Scroller
       isLoading={isLoading}
       title={title}
       showHeader={!!title}
+      total={values.length}
+      name={name}
     >
       {
         values.map((item, idx) => getMedia(item, idx))
       }
-    </ScrollPanel>
+    </Scroller>
   );
 }
 

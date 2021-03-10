@@ -54,7 +54,7 @@ const ScrollPanel = (props) => {
     Draggable.create("#wrapperBoxes", {
       bounds: "#dragSpace",
       type: "x",
-      throwProps: true,
+      // throwProps: true,
       // snap: (endValue) => Math.round(endValue / 300) * 300,
     });
   }, []);

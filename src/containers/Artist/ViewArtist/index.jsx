@@ -163,6 +163,7 @@ const ViewArtist = () => {
               title="Media"
               values={artistsMedia}
               isLoading={getArtistMediaPending}
+              name="view-artist"
               showHeader
             />
           </div>
