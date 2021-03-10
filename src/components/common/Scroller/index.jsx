@@ -20,6 +20,7 @@ const Scroller = (props) => {
     children,
     showHeader,
     title,
+    isLoading,
   } = props;
 
   const containerId = `${name}-container`;
@@ -106,6 +107,11 @@ const Scroller = (props) => {
               </Button>
             </div>
           </div>
+        )
+      }
+      {
+        isLoading && (
+          <p>Loading...</p>
         )
       }
       <div className={styles.wrapper}>
