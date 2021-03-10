@@ -25,8 +25,6 @@ import { showModal } from '$redux/features/modal';
 import { getHistory } from '$redux/features/user';
 import { getNewReleases } from '$redux/features/media';
 
-import { urls } from './model';
-
 import styles from './index.module.scss';
 
 const artists = require('$assets/images/marketing/artist.png');
@@ -97,6 +95,10 @@ const Marketing = () => {
   // handlers
   const handleSelect = (name) => {
     setSelected(name);
+    dispatch(getNewReleases({
+      category: name,
+      amount: 3,
+    }));
   }
 
   const handleFindMore = () => {
@@ -132,11 +134,14 @@ const Marketing = () => {
         <div className="col-12 col-md-8 offset-md-2">
           <div className={`row ${styles.tabContentWrapper}`}>
             {
-              urls[selected].map((item, idx) => (
+              newReleases[selected].map((item, idx) => (
                 <Preview
                   key={`${selected}-${idx}`}
                   {...item}
                   onClick={handleClick}
+                  source={item.cover_url}
+                  title={item.title || item.name}
+                  hideHeader
                 />
               ))
             }
@@ -145,7 +150,7 @@ const Marketing = () => {
       </div>
       <div className={`row ${styles.topSongsPane}`}>
         <div className="col-12 col-md-10 offset-md-1">
-          <p className={`text-white text-center ${styles.panelHeader}`}>Featured Songs</p>
+          <p className={`text-center ${styles.topPane}`}>Featured Songs</p>
           <TopSongs
             media={newReleases.audio}
             isLoading={getNewReleasesPending}
