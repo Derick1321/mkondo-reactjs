@@ -6,11 +6,11 @@ import Button from '$components/common/Button';
 import Header from '$components/common/Header';
 import Hero from '$components/common/Hero';
 import Tabs from '$components/common/Tabs';
-import Preview from '$components/common/Preview';
 import TopSongs from '$components/common/TopSongs';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
 import Social from '$components/common/Social';
+import TopPreview from '$components/marketing-site/TopPreview';
 
 import { routePaths } from '$common/routeConfig';
 import { getCurrentYear } from '$common/utils';
@@ -95,10 +95,12 @@ const Marketing = () => {
   // handlers
   const handleSelect = (name) => {
     setSelected(name);
-    dispatch(getNewReleases({
-      category: name,
-      amount: 3,
-    }));
+    if (newReleases[name].length < 1) {
+      dispatch(getNewReleases({
+        category: name,
+        amount: 3,
+      }));
+    }
   }
 
   const handleFindMore = () => {
@@ -106,10 +108,6 @@ const Marketing = () => {
   }
 
   const handleExploreSongs = () => {
-    dispatch(showModal('ALERT_MODAL'));
-  }
-
-  const handleClick = () => {
     dispatch(showModal('ALERT_MODAL'));
   }
 
@@ -133,18 +131,24 @@ const Marketing = () => {
       <div className="row">
         <div className="col-12 col-md-8 offset-md-2">
           <div className={`row ${styles.tabContentWrapper}`}>
-            {
-              newReleases[selected].map((item, idx) => (
-                <Preview
-                  key={`${selected}-${idx}`}
-                  {...item}
-                  onClick={handleClick}
-                  source={item.cover_url}
-                  title={item.title || item.name}
-                  hideHeader
+            <div className={`${selected === 'audio' ? '' : 'd-none'}`}>
+              <TopPreview
+                values={newReleases.audio}
+                isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+              />
+            </div>
+            <div className={`${selected === 'video' ? '' : 'd-none'}`}>
+              <TopPreview
+                values={newReleases.video}
+                isLoading={getNewReleasesPending && newReleases.video.length < 1}
+              />
+            </div>
+            <div className={`${selected === 'movie' ? '' : 'd-none'}`}>
+              <TopPreview
+                  values={newReleases.movie}
+                  isLoading={getNewReleasesPending && newReleases.movie.length < 1}
                 />
-              ))
-            }
+            </div>
           </div>
         </div>
       </div>
@@ -153,7 +157,7 @@ const Marketing = () => {
           <p className={`text-center ${styles.topPane}`}>Featured Songs</p>
           <TopSongs
             media={newReleases.audio}
-            isLoading={getNewReleasesPending}
+            isLoading={getNewReleasesPending && newReleases.audio.length < 1}
           />
           {
             !getNewReleasesPending && (

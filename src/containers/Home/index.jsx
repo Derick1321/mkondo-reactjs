@@ -50,34 +50,40 @@ const Home = () => {
           title="New Releases"
           values={newReleases.audio}
           isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+          name="audio-new-release"
           showHeader
         />
         <ScrollMedia
           title="Favorite"
+          name="audio-favorite"
           values={favorites.filter((item) => item.category === 'audio')}
         />
       </div>
       <div className={selected !== 'video' ? 'd-none' : ''}>
         <ScrollMedia
           title="New Releases"
+          name="video-new-release"
           values={newReleases.video}
           isLoading={getNewReleasesPending && newReleases.video.length < 1}
           type="video"
         />
         <ScrollMedia
           title="Favorite"
+          name="video-favorite"
           values={favorites.filter((item) => item.category === 'video')}
         />
       </div>
       <div className={selected !== 'movie' ? 'd-none' : ''}>
         <ScrollMedia
           title="Theatre"
+          name="theatre-new-release"
           values={newReleases.movie}
           isLoading={getNewReleasesPending && newReleases.movie.length < 1}
           type="video"
         />
         <ScrollMedia
           title="Favorite"
+          name="movie-favorite"
           values={favorites.filter((item) => item.category === 'movie')}
         />
       </div>
