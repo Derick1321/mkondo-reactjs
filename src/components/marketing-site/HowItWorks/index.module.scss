@@ -1,3 +1,5 @@
+@import '$assets/scss/main.scss';
+
 .howItWorksFeature {
   max-width: 420px;
 }
@@ -9,4 +11,5 @@
 
 .panelHeader {
   font-size: 1.6rem;
+  color: $white;
 }
