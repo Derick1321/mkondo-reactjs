@@ -7,7 +7,11 @@ import styles from './index.module.scss';
 
 const TopSongs = (props) => {
   // props
-  const { media, isLoading } = props;
+  const {
+    media,
+    isLoading,
+    showHeader,
+  } = props;
 
   // render
   return (
@@ -45,6 +49,7 @@ const TopSongs = (props) => {
                 title={item.name}
                 country={item.country}
                 category={item.category}
+                showHeader={showHeader}
               />
             ))
           }
@@ -57,11 +62,13 @@ const TopSongs = (props) => {
 TopSongs.defaultProps = {
   media: [],
   errorMsg: 'No new releases. Please try again later!',
+  showHeader: true,
 }
 
 TopSongs.propTypes = {
   media: PropTypes.array,
   errorMsg: PropTypes.string,
+  showHeader: PropTypes.bool,
 }
 
 export default TopSongs;

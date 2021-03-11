@@ -1,13 +1,13 @@
 @import '$assets/scss/main.scss';
 
-.albumMenu {
+.preview {
   height: 150px;
   width: 200px;
   margin-right: 1.6rem;
   margin-bottom: 1rem;
 }
 
-.albumMenuAvatar {
+.previewAvatar {
   user-select: none;
   -webkit-user-drag: none;
   height: 100%;
@@ -16,10 +16,12 @@
   background-color: $primary-gray;
 }
 
-.albumMenuRounded {
+.previewRounded {
   border-radius: 100%;
   height: 140px;
   width: 140px;
+  background-color: $primary-gray;
+  overflow: hidden;
 }
 
 .img {

@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 
 const icons = {
   search: require('$assets/images/icons/search.svg'),
+  cancel: require('$assets/images/icons/cancel-white.svg'),
 };
 
 const TextInput = (props) => {
@@ -20,6 +21,7 @@ const TextInput = (props) => {
     icon,
     disabled,
     title,
+    onIconClick,
   } = props;
 
   // handlers
@@ -48,6 +50,7 @@ const TextInput = (props) => {
             <img
               src={icons[icon]}
               className={styles.textInputIcon}
+              onClick={onIconClick}
             />
           )
         }
@@ -62,6 +65,7 @@ TextInput.defaultProps = {
   icon: null,
   disabled: false,
   onFocus: () => null,
+  onIconClick: () => null,
   title: '',
   value: '',
 };
@@ -77,6 +81,7 @@ TextInput.propTypes = {
   icon: PropTypes.string,
   disabled: PropTypes.bool,
   title: PropTypes.string,
+  onIconClick: PropTypes.func,
 };
 
 export default TextInput;

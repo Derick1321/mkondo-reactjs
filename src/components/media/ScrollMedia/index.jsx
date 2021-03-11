@@ -1,10 +1,10 @@
 import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-import ScrollPanel from '$components/common/ScrollPanel';
 import Scroller from '$components/common/Scroller';
 import Preview from '$components/common/Preview';
 import Feature from '$components/common/Feature';
+import SimplePreview from '$components/common/SimplePreview';
 
 const ScrollMedia = (props) => {
   // props
@@ -32,6 +32,17 @@ const ScrollMedia = (props) => {
           category={item.category}
         />
       );
+    }
+
+    if (type === 'artist') {
+      return (
+        <SimplePreview
+          description={item.full_name}
+          url={item.avatar_url}
+          handleClick={() => null}
+          isRounded
+        />
+      )
     }
 
     return (

@@ -20,7 +20,7 @@
   position: absolute;
   margin-top: 50px;
   width: calc(100vw - 220px);
-  z-index: $z-index-next;
+  z-index: $z-index-last;
   background-color: $primary-green;
   height: calc(100vh - 120px);
   padding: 40px;
