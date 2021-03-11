@@ -40,6 +40,9 @@ const Row = (props) => {
   const token = useSelector((store) => store.authentication.token);
   const favourites = useSelector((store) => store.authentication.user.favourites);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const currentMediaId = useSelector((store) => store.player.currentMediaId);
+  const isLoading = useSelector((store) => store.player.isLoading);
+  const isPlaying = useSelector((store) => store.player.isPlaying);
   const dispatch = useDispatch();
 
   const isFavorite = favourites.find((media) => media.media_id === mediaId);
@@ -94,6 +97,17 @@ const Row = (props) => {
     }
   }
 
+  const getPlayStatus = () => {
+    switch (true) {
+      case currentMediaId === mediaId && isPlaying:
+        return 'Playing...';
+      case currentMediaId === mediaId && isLoading:
+        return 'Loading...';
+      default:
+        return 'Play';
+    }
+  }
+
   const generateButton = (icon, func) => (
     <Button
       onClick={func}
@@ -125,7 +139,7 @@ const Row = (props) => {
             isCustom
             hideDefault
           >
-            Play
+            {getPlayStatus()}
         </Button>
         </div>
       </div>
