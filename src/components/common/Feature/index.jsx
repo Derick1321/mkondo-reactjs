@@ -53,6 +53,7 @@ const Feature = (props) => {
     artistId,
     country,
     category,
+    showHeader,
   } = props;
 
   // store
@@ -90,7 +91,7 @@ const Feature = (props) => {
 
     handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token)
       .then((res) => {
-         if (!isMounted.current) {
+        if (!isMounted.current) {
           return;
         }
         setSourceUrl(res.response);
@@ -133,16 +134,20 @@ const Feature = (props) => {
   return (
     <div className={styles.featureWrapper}>
       <FeatureBkg source={avatarUrl} />
-      <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
-        <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
-        <ActionHeader
-          mediaId={mediaId}
-          country={country}
-          title={title}
-          avatarUrl={avatarUrl}
-          showPlaylist
-        />
-      </div>
+      {
+        showHeader && (
+          <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
+            <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
+            <ActionHeader
+              mediaId={mediaId}
+              country={country}
+              title={title}
+              avatarUrl={avatarUrl}
+              showPlaylist
+            />
+          </div>
+        )
+      }
       <div className={`d-flex ${styles.featurePane}`}>
         <div onClick={handleArtistView}>
           {
@@ -185,6 +190,7 @@ Feature.defaultProps = {
   mediaId: null,
   artistId: null,
   mediaUrl: '',
+  showHeader: true,
 }
 
 Feature.propTypes = {
@@ -194,6 +200,7 @@ Feature.propTypes = {
   mediaId: PropTypes.string,
   country: PropTypes.string,
   artistId: PropTypes.string,
+  showHeader: PropTypes.bool,
 }
 
 export default Feature;
