@@ -98,12 +98,12 @@ const VideoPlayer = (props) => {
             onDuration={handleDuration}
             onBuffer={() => setIsLoading(true)}
             onBufferEnd={() => setIsLoading(false)}
-            onReady={() => setIsReady(true)}
+            //onReady={() => setIsReady(true)}
             width='100%'
             height='100%'
           />
           {
-            !isReady && (
+            !!isReady && (
               <div className={`d-flex justify-content-center align-items-center ${styles.videoCover}`}>
                 <div
                   className={`spinner-border spinner-light ${styles.loader}`}
