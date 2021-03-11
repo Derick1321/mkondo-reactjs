@@ -120,7 +120,7 @@ const SideMenu = () => {
           ))
         }
         <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>Your Music</p>
+          <p className={styles.sideMenuSubtitle}>Your Activity</p>
           {
             userIcons.map((item, idx) => {
               const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
