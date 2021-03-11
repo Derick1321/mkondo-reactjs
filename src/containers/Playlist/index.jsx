@@ -48,11 +48,13 @@ const Playlist = () => {
         activeColor="#8C8C8C"
       />
       <div className="d-flex justify-content-end align-items-center mt-4">
-        <Button
-          onClick={handlePlay}
-        >
-          Play All
-        </Button>
+        <div className="mr-4">
+          <Button
+            onClick={handlePlay}
+          >
+            Play All
+          </Button>
+        </div>
         <Button
           onClick={handleShuffle}
           style={styles.shuffleBtn}

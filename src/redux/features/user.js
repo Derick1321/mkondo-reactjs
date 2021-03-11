@@ -130,6 +130,7 @@ const initialState = {
   getHistoryPending: false,
   getHistoryError: null,
   getHistoryComplete: false,
+  history: [],
   getUserMediaPending: false,
   getUserMediaError: null,
   getUserMediaComplete: false,
@@ -246,6 +247,7 @@ const userSlice = createSlice({
       state.getHistoryPending = false;
       state.getHistoryComplete = false;
       state.getHistoryError = action.error;
+      state.history = [];
     },
     [updateUser.pending]: (state, action) => {
       state.updateUserPending = true;
