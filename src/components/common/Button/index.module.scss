@@ -3,6 +3,9 @@
 .customBtn {
   background-color: transparent;
   border: 0;
+  img {
+    min-height: 15px;
+  }
   &:focus {
     outline: none;
   }

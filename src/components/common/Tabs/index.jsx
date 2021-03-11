@@ -51,7 +51,7 @@ const Tabs = (props) => {
 
 Tabs.defaultProps = {
   options: initialOptions,
-  activeColor: null,
+  activeColor: '#EA4C89',
 }
 
 Tabs.propTypes = {
