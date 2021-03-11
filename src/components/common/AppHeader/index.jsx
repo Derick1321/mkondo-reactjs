@@ -87,6 +87,10 @@ const AppHeader = (props) => {
     dispatch(hideModal());
   }
 
+  const handleClear = () => {
+    setSearch('');
+  }
+
   // render
   return (
     <>
@@ -102,7 +106,8 @@ const AppHeader = (props) => {
               value={search}
               onChange={handleChange}
               customWrapperClass={styles.appHeaderInput}
-              icon="search"
+              icon={search ? "cancel" : "search"}
+              onIconClick={handleClear}
               onFocus={handleFocus}
             />
           )

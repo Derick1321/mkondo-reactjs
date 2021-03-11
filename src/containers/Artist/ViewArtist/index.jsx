@@ -35,6 +35,7 @@ const Avatar = styled.div`
   background-size: cover;
   background-position: center;
   border-radius: 50%;
+  background-color: #C1C1C1;
 `;
 
 const ViewArtist = () => {
@@ -119,54 +120,54 @@ const ViewArtist = () => {
         <Cover
           source={coverUrl}
         />
-        <div className={`row ${styles.artistHeaderWrapper}`}>
-          <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderInfopane}`}>
-            <Avatar
-              source={avatarUrl || defaultAvatar}
-            />
-            <div className="ml-4 mt-2">
-              <p className={`${styles.artistTitle} mt-2`}>{currentArtist.full_name}</p>
-              <span className={`d-none d-sm-block ${styles.artistSubtitle} pb-2`}>About</span>
-            </div>
-          </div>
-          <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderActionpane}`}>
-            <Button
-              onClick={handleFavorite}
-            >
-              {isFavorite ? 'Following' : 'Follow'}
-            </Button>
-            <Button
-              onClick={handleShare}
-              isTransparent
-              noBorder
-            >
-              <img
-                src={shareIcon}
-                className={styles.artistActionIcon}
-              />
-            </Button>
+      </div>
+      <div className={`row ${styles.artistHeaderWrapper}`}>
+        <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderInfopane}`}>
+          <Avatar
+            source={avatarUrl || defaultAvatar}
+          />
+          <div className="ml-4 mt-2">
+            <p className={`${styles.artistTitle} mt-2`}>{currentArtist.full_name}</p>
+            <span className={`d-none d-sm-block ${styles.artistSubtitle} pb-2`}>About</span>
           </div>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-12 col-sm-10 col-md-8">
-            <div className="px-2">
-              <p>{currentArtist.description}</p>
-            </div>
-            <Social
-              links={socialLinks}
+        <div className={`d-flex col-12 col-md-6 ${styles.artistHeaderActionpane}`}>
+          <Button
+            onClick={handleFavorite}
+          >
+            {isFavorite ? 'Following' : 'Follow'}
+          </Button>
+          <Button
+            onClick={handleShare}
+            isTransparent
+            noBorder
+          >
+            <img
+              src={shareIcon}
+              className={styles.artistActionIcon}
             />
-          </div>
+          </Button>
         </div>
-        <div className="row justify-content-center">
-          <div className="col-12 col-sm-10 col-md-8">
-            <ScrollMedia
-              title="Media"
-              values={artistsMedia}
-              isLoading={getArtistMediaPending}
-              name="view-artist"
-              showHeader
-            />
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-12 col-sm-10 col-md-8">
+          <div className="px-2">
+            <p>{currentArtist.description}</p>
           </div>
+          <Social
+            links={socialLinks}
+          />
+        </div>
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-12 col-sm-10 col-md-8">
+          <ScrollMedia
+            title="Media"
+            values={artistsMedia}
+            isLoading={getArtistMediaPending}
+            name="view-artist"
+            showHeader
+          />
         </div>
       </div>
     </div>

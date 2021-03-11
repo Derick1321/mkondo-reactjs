@@ -158,6 +158,7 @@ const Marketing = () => {
           <TopSongs
             media={newReleases.audio}
             isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+            showHeader={false}
           />
           {
             !getNewReleasesPending && (

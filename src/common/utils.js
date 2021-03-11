@@ -113,6 +113,19 @@ export function kFormatter(num) {
   return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num);
 }
 
+export const mediaSorter = (values = []) => {
+  const items = {
+    audio: [],
+    video: [],
+    movie: [],
+  };
+
+  values.forEach((value) => {
+    items[value.category].push(value);
+  });
+  return items;
+}
+
 export const genres = [
   { value: 'afro', label: 'Afro' },
   { value: 'hiphop', label: 'Hip Hop' },

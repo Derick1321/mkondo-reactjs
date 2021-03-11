@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 
 const singer = require('$assets/images/singer.svg');
 
-const AlbumMenu = (props) => {
+const SimplePreview = (props) => {
   // props
   const {
     description,
@@ -37,9 +37,9 @@ const AlbumMenu = (props) => {
   return (
     <div
       onClick={handleClick}
-      className={styles.albumMenu}
+      className={styles.preview}
     >
-      <div className={`${styles.albumMenuAvatar} ${isRounded ? styles.albumMenuAvatarRounded : ''}`}>
+      <div className={`${styles.preview} ${isRounded ? styles.previewRounded : ''}`}>
         <img
           src={avatarUrl || singer}
           className={styles.img}
@@ -50,16 +50,16 @@ const AlbumMenu = (props) => {
   );
 }
 
-AlbumMenu.defaultProps = {
+SimplePreview.defaultProps = {
   url: null,
-  description: 'Lorem ipsum dolor sit, amet, consectetuer ',
+  description: 'Lorem ipsum dolor sit, amet',
   isRounded: false,
 };
 
-AlbumMenu.propTypes = {
+SimplePreview.propTypes = {
   url: PropTypes.string,
   description: PropTypes.string,
   isRounded: PropTypes.bool,
 };
 
-export default AlbumMenu;
+export default SimplePreview;
