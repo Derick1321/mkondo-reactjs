@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useEffect } from 'react';
-import gsap, { Power4 } from 'gsap';
+import gsap, { Power2 } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 
 import Button from '$components/common/Button';
 
@@ -10,8 +10,7 @@ import styles from './index.module.scss';
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
-gsap.registerPlugin(Draggable);
-gsap.registerPlugin(ScrollToPlugin);
+gsap.registerPlugin(Draggable, ScrollToPlugin);
 
 const Scroller = (props) => {
   // props
@@ -24,9 +23,10 @@ const Scroller = (props) => {
   } = props;
 
   const containerId = `${name}-container`;
+  const noMedia = !isLoading && children.length < 1;
 
   // refs
-  const wrapperRef = useRef(null);
+  const scrollRef = useRef(0);
 
   // handlers
   const applyBoounds = useCallback(() => {
@@ -51,26 +51,32 @@ const Scroller = (props) => {
       throwProps: true,
       edgeResistance: 0.95,
       allowNativeTouchScrolling: false,
+      onDragStart: (elem) => scrollRef.current = elem.x,
+      onDragEnd: (elem) => scrollRef.current = Math.abs(scrollRef.current - elem.x),
     })[0];
   }, [children]);
 
   const handleNavRight = () => {
-    gsap.to(document.getElementById(containerId), {
-      duration: 2,
+    scrollRef.current += 400;
+    gsap.to(`#outer${name}`, {
+      duration: 1,
       scrollTo: {
-        offsetX: 450
+        x: scrollRef.current,
       },
-      ease: "power2",
+      ease: gsap.Power2,
     });
   }
 
   const handleNavLeft = () => {
-    gsap.to(document.getElementById(containerId), {
+    console.log('scrollRef.current ', scrollRef.current);
+    scrollRef.current -= 400;
+    console.log('scrollRef.current left ', scrollRef.current);
+    gsap.to(`#outer${name}`, {
       duration: 2,
       scrollTo: {
-        offsetX: -450
+        x: scrollRef.current,
       },
-      ease: "power2",
+      ease: gsap.Power2,
     });
   }
 
@@ -114,11 +120,19 @@ const Scroller = (props) => {
           <p>Loading...</p>
         )
       }
-      <div className={styles.wrapper}>
+      {
+        noMedia
+        && (
+          <p>No media available.</p>
+        )
+      }
+      <div
+        id={`outer${name}`}
+        className={`${styles.wrapper} ${isLoading || noMedia ? styles.collapsed : ''}`}
+      >
         <div
           className={styles.container}
           id={containerId}
-          ref={wrapperRef.current}
         >
           {children}
         </div>

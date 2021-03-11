@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
-import ScrollPanel from '$components/common/ScrollPanel';
-import TopSongs from '$components/common/TopSongs';
+import ScrollMedia from '$components/media/ScrollMedia';
 import Button from '$components/common/Button';
+import { mediaSorter } from '$common/utils';
 
 import styles from './index.module.scss';
 
@@ -17,6 +17,15 @@ const SearchResult = () => {
   const querySearchComplete = useSelector((store) => store.nav.querySearchComplete);
 
   const [active, setActive] = useState('all');
+  const [values, setValues] = useState({
+    audio: [],
+    video: [],
+    movie: [],
+  });
+
+  useEffect(() => {
+    setValues(mediaSorter(media));
+  }, [media, users]);
 
   // handlers
   const handleAll = () => {
@@ -44,7 +53,7 @@ const SearchResult = () => {
           </Button>
         </div>
         <div className="mr-4">
-           <Button
+          <Button
             style={`${active !== 'media' ? styles.isNotActive : ''}`}
             onClick={handleMedia}
           >
@@ -59,37 +68,46 @@ const SearchResult = () => {
         </Button>
       </div>
       {
-        querySearchPending  && <p className="pl-4">Searching...</p>
+        querySearchPending && <p className="pl-4">Searching...</p>
       }
-      {
-        (['all', 'media'].includes(active)) && (
-          <>
-            <p className={styles.heading}>Songs</p>
-            <TopSongs
-              media={media}
-              isLoading={querySearchPending}
-            />
-            {
-              querySearchComplete && media.length < 1 && (
-                <p>No Media preset!</p>
-              )
-            }
-          </>
-        )
-      }
-      {
-        (['all', 'users'].includes(active)) && (
-          <>
-            <p className={styles.heading}>Artists</p>
-            {
-              querySearchComplete && users.length < 1 && (
-                <p>No Artists preset!</p>
-              )
-            }
-
-          </>
-        )
-      }
+      <div className={`${['all', 'users'].includes(active) ? '' : 'd-none'}`}>
+        <ScrollMedia
+          isLoading={querySearchPending}
+          title="Artists"
+          values={users}
+          name="history-video"
+          type="artist"
+          showHeader
+        />
+      </div>
+      <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
+        <ScrollMedia
+          isLoading={querySearchPending}
+          title="Songs"
+          values={values.audio}
+          type="audio"
+          name="search-audio"
+          showHeader
+        />
+      </div>
+      <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
+        <ScrollMedia
+          isLoading={querySearchPending}
+          title="Videos"
+          values={values.video}
+          name="search-video"
+          showHeader
+        />
+      </div>
+      <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
+        <ScrollMedia
+          isLoading={querySearchPending}
+          title="Movies"
+          values={values.movie}
+          name="search-movie"
+          showHeader
+        />
+      </div>
     </div>
   );
 }
