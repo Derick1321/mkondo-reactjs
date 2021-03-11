@@ -128,7 +128,7 @@ const Scroller = (props) => {
       }
       <div
         id={`outer${name}`}
-        className={`${styles.wrapper} ${isLoading || noMedia ? styles.collapsed : ''}`}
+        className={`${styles.wrapper} ${(isLoading && noMedia) || noMedia ? styles.collapsed : ''}`}
       >
         <div
           className={styles.container}
