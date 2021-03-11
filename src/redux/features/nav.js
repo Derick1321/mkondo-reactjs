@@ -65,6 +65,11 @@ const navSlice = createSlice({
       state.querySearchPending = false;
       state.querySearchComplete = false;
       state.querySearchError = action.error;
+      state.searchResults = {
+        users: [],
+        media: [],
+        album: [],
+      }
     },
   }
 });
