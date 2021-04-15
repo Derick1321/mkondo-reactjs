@@ -74,8 +74,12 @@ export const handleFetch = async (method, path, data, token = '', baseUrl) => {
   const status = response.status;
   const result = await response.text();
 
-  if (![200, 201].includes(status)) {
+  if (![200, 201, 204].includes(status)) {
     throw result;
+  }
+
+  if ([204].includes(status)) {
+    return true
   }
 
   return JSON.parse(result);

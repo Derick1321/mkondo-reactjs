@@ -9,6 +9,7 @@
     "start": "parcel serve index.html -p 3000",
     "build": "parcel build index.html --no-cache --no-scope-hoist"
   },
+  "proxy": "http://127.0.0.1:5000",
   "dependencies": {
     "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "@reduxjs/toolkit": "^1.4.0",

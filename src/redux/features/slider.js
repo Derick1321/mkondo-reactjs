@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { async } from "regenerator-runtime";
 import { handleFetch } from "../../common/requestUtils";
 
 const initialState = {
@@ -13,6 +14,34 @@ export const fetchSliders = createAsyncThunk(
         const { token } = store.getState().authentication
         const response = await handleFetch('GET', 'sliders', null, token)
         return response.data
+    }
+)
+
+export const storeSlider = createAsyncThunk(
+    'slider/storeSlider',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('POST', 'sliders', payload, token)
+        return response.data
+    }
+)
+
+export const updateSlider = createAsyncThunk(
+    'slider/updateSlider',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const { id, values } = payload
+        const response = await handleFetch('PUT', `sliders/${id}`, values, token)
+        return response.data
+    }
+)
+
+export const deleteSlider = createAsyncThunk(
+    'slider/deleteSlider',
+    async (id, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('DELETE', `sliders/${id}`, null, token)
+        return id
     }
 )
 
@@ -31,6 +60,19 @@ const sliderSlice = createSlice({
         [fetchSliders.rejected]: (state, action) => {
             state.status = 'failed'
             state.error = action.error
+        },
+        [deleteSlider.fulfilled]: (state, action) => {
+            state.data = state.data.filter(slider => slider.slider_id !== action.payload)
+        },
+        [storeSlider.fulfilled]: (state, action) => {
+            state.data.push(action.payload)
+        },
+        [updateSlider.fulfilled]: (state, action) => {
+            state.data.map((slider, index) => {
+                if (slider.slider_id === action.payload.slider_id) {
+                    state.data[index] = action.payload
+                }
+            })
         }
     }
 });
