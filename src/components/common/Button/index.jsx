@@ -12,6 +12,7 @@ const icons = {
   menu: require('$assets/images/icons/menu.svg'),
   cancel: require('$assets/images/icons/close.svg'),
   favoriteActive: require('$assets/images/icons/favorite-active.svg'),
+  delete: require('$assets/images/icons/trash.svg'),
 }
 
 const Button = (props) => {
