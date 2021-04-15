@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router'
+import { routePaths } from '../../../common/routeConfig'
 import Button from '../../../components/common/Button'
-import { fetchSliders, selectAllSliders } from '../../../redux/features/slider'
+import { deleteSlider, fetchSliders, selectAllSliders } from '../../../redux/features/slider'
 import styles from './index.module.scss'
 
 export const SliderList = () => {
 
     const sliders = useSelector(selectAllSliders)
     const status = useSelector(store => store.slider.status)
+    
+    const history = useHistory()
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -21,20 +25,20 @@ export const SliderList = () => {
             <div className="row">
                 <div className="col-lg-auto"><h1 className="heading-2">Sliders</h1></div>
                 <div className="col-auto ml-auto">
-                    <Button>Add Slider</Button>
+                    <Button onClick={() => history.push(routePaths.sliderCreate)}>Add Slider</Button>
                 </div>
             </div>
 
             <div className="row mt-5">
                 {sliders.map(slider => (
-                    <div className="col-lg-4">
+                    <div className="col-lg-4" key={`${slider.slider_id}`}>
                         <div className={`${styles.card}`}>
                             <div>
                                 <h5 className="text-center">{slider.name}</h5>
                                 <div className={`${styles.actions}`}>
-                                    <a href="">View</a>
-                                    <a href="">Edit</a>
-                                    <a href="">Delete</a>
+                                    <span>View</span>
+                                    <span onClick={() => history.push(routePaths.sliderEdit.replace(':slider_id', slider.slider_id))}>Edit</span>
+                                    <span onClick={() => dispatch(deleteSlider(slider.slider_id))}>Delete</span>
                                 </div>
                             </div>
                         </div>
