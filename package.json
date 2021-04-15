@@ -36,8 +36,10 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2",
     "cssnano": "^4.1.10",
     "parcel": "^2.0.0-beta.1",
+    "postcss": "^8.2.10",
     "postcss-modules": "^3.2.2",
     "sass": "^1.29.0"
   },
