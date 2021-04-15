@@ -88,7 +88,18 @@ const SideMenu = () => {
     },
   ];
 
-  const artistAccess = getPermissions('artist', userRole,);
+  const setupRoutes = [
+    {
+      icon: require('$assets/images/icons/top-chart.svg'),
+      activeIcon: require('$assets/images/icons/top-chart-active.svg'),
+      title: 'Slider',
+      path: routePaths.slider,
+      permission: 'super admin',
+    },
+  ]
+
+  const artistAccess = getPermissions('artist', userRole);
+  const adminAccess = getPermissions('super admin', userRole);
 
   // handlers
   const handleNewPlaylist = () => {
@@ -169,6 +180,36 @@ const SideMenu = () => {
                           className={styles.sideMenuItemIcon}
                         />
                       }
+                      <span>{item.title}</span>
+                    </NavLink>
+                  )
+                })
+              }
+            </div>
+          )
+        }
+        {
+          adminAccess && (
+            <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+              <p className={styles.sideMenuSubtitle}>Admin</p>
+              {
+                setupRoutes.map((item, idx) => {
+                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
+                  if (!canAccess) {
+                    return null;
+                  }
+
+                  return (
+                    <NavLink
+                      to={item.path}
+                      className={styles.sideMenuItem}
+                      activeClassName={styles.sideMenuItemTitle}
+                      key={`sidemenu-${idx}`}
+                    >
+                      <img
+                        src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                        className={styles.sideMenuItemIcon}
+                      />
                       <span>{item.title}</span>
                     </NavLink>
                   )

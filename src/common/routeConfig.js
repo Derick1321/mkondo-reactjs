@@ -20,6 +20,7 @@ import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
 import Profile from '$containers/Profile';
 import NotFound from '../containers/NotFound';
+import { Slider } from '../containers/Slider';
 
 export const routePaths = {
   main: '/app',
@@ -48,6 +49,12 @@ export const routePaths = {
   playlist: '/app/playlist/:id',
   insights: '/app/insights',
   profile: '/app/profile',
+  slider: '/app/slider',
+  sliderCreate: 'app/slider/create',
+  sliderEdit: 'app/slider/:id/edit',
+  sliderShow: '/app/slider/:id',
+  sliderPictureCreate: 'app/slider/:id/create-picture',
+  sliderPictureEdit: 'app/slider/:id/edit-picture/:pictureid'
 };
 
 const roles = {
@@ -239,6 +246,13 @@ export const routes = [
           },
         ],
       },
+      { ...defaultConfig,
+        path: routePaths.slider,
+        component: Slider,
+        exact: false,
+        routes: [
+        ] 
+      }
     ],
   }
 ];
