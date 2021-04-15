@@ -16,9 +16,6 @@ export const Slider = (props) => {
 
     return (
         <Switch>
-            <Route to={routePaths.slider}>
-                <SliderList />
-            </Route>
             {
                 routes.map((route, i) => (
                     <RouteWithSubRoutes
@@ -27,6 +24,9 @@ export const Slider = (props) => {
                     />
                 ))
             }
+            <Route to={routePaths.slider}>
+                <SliderList />
+            </Route>
         </Switch>
     )
 }
