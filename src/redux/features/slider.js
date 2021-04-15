@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { useSelector } from "react-redux";
 import { handleFetch } from "../../common/requestUtils";
 
 const initialState = {
@@ -8,11 +7,12 @@ const initialState = {
     data: []
 }
 
-const fetchSliders = createAsyncThunk(
+export const fetchSliders = createAsyncThunk(
     'slider/fetchSliders',
     async (payload, store) => {
         const { token } = store.getState().authentication
         const response = await handleFetch('GET', 'sliders', null, token)
+        return response.data
     }
 )
 
@@ -37,4 +37,4 @@ const sliderSlice = createSlice({
 
 export default sliderSlice.reducer
 
-export const selectAllSliders = useSelector(state => state.slider.data)
+export const selectAllSliders = state => state.slider.data
