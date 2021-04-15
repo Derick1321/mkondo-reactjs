@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Button from '../../../components/common/Button'
+import { fetchSliders, selectAllSliders } from '../../../redux/features/slider'
 import styles from './index.module.scss'
 
 export const SliderList = () => {
-    const sliders = [
-        { id: 1, name: "Home Slider" },
-        { id: 2, name: "Artists Slider" }
-    ]
+
+    const sliders = useSelector(selectAllSliders)
+    const status = useSelector(store => store.slider.status)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (status === 'idle') {
+            dispatch(fetchSliders())
+        }
+    }, [dispatch, status])
 
     return (
         <div className={`${styles.container}`}>
@@ -18,7 +25,7 @@ export const SliderList = () => {
                 </div>
             </div>
 
-            <div className="row">
+            <div className="row mt-5">
                 {sliders.map(slider => (
                     <div className="col-lg-4">
                         <div className={`${styles.card}`}>
