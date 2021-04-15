@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "parcel serve index.html",
+    "start": "parcel serve index.html -p 3000",
     "build": "parcel build index.html --no-cache --no-scope-hoist"
   },
   "dependencies": {
