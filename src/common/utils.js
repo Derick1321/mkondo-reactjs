@@ -88,7 +88,8 @@ export const getPermissions = (role, userRole, params = {}) => {
     && [userTypes.admin, userTypes.creator, userTypes.superAdmin].includes(userRole)
   ) ||
     (role === 'media' && [userTypes.creator, userTypes.superAdmin].includes(userRole)) ||
-    (role === 'admin' && [userTypes.admin, userTypes.superAdmin].includes(userRole))
+    (role === 'admin' && [userTypes.admin, userTypes.superAdmin].includes(userRole)) ||
+    (role === 'super admin' && [userTypes.superAdmin].includes(userRole))
   ) {
     return true;
   }
