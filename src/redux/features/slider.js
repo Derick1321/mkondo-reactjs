@@ -54,6 +54,15 @@ export const deleteSlider = createAsyncThunk(
     }
 )
 
+export const deleteSliderItem = createAsyncThunk(
+    'slier/deleteSliderItem',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('DELETE', `sliders/${payload.slider_id}/items/${payload.slider_item_id}`)
+        return payload
+    }
+)
+
 const sliderSlice = createSlice({
     name: "slider",
     initialState,
@@ -87,6 +96,13 @@ const sliderSlice = createSlice({
             state.data.map((slider, index) => {
                 if (slider.slider_id === action.payload.slider_id) {
                     state.data[index].items.push(action.payload)
+                }
+            })
+        },
+        [deleteSliderItem.fulfilled]: (state, action) => {
+            state.data.map((slider, index) => {
+                if (slider.slider_id === action.payload.slider_id) {
+                    state.data[index].items = state.data[index].items.filter(item => item.slider_item_id != action.payload.slider_item_id)
                 }
             })
         }
