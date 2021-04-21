@@ -27,7 +27,11 @@ export const ViewSlider = () => {
                 <h1 className="heading-2">{slider.name}</h1>
                 <button className="ml-auto btn btn-primary" onClick={() => setPreview(!preview)}>toggle</button>
             </div>
-            <AddSliderPictureForm slider_id={slider.slider_id} />
+            {preview ? "" : (
+                <div className="mt-3">
+                    <AddSliderPictureForm slider_id={slider.slider_id} />
+                </div>
+            )}
             <div className="mt-5">
                 {!preview ? <SliderPictureList slider_id={slider.slider_id} /> : <Preview slider_id={slider.slider_id} /> }
             </div>
