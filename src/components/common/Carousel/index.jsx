@@ -44,28 +44,44 @@ export const Carousel = ({ items }) => {
 
 
     return (
-        <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
-            <ol className="carousel-indicators">
+        <div className={`${styles.container}`}>
+            <div className={`${styles.indicators}`}>
                 {items.map((item, index) => (
-                    <li key={item} data-target="#carouselExampleIndicators" onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && 'active'}`}></li>
+                    <div key={item} onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && styles.solid }`}></div>
                 ))}
-            </ol>
-            <div className="carousel-inner">
+            </div>
+            <div className="d-flex">
                 {items.map((item, index) => (
-                    <div key={item} className={`carousel-item ${styles.transitions} ${index + 1 === count && 'active'} ${index + 1 < count && styles.previous} ${index + 1 > count && styles.next}`}>
+                    <div key={item} className={`${styles.item} ${index + 1 === count && styles.active} ${index + 1 < count && styles.previous} ${index + 1 > count && styles.next}`}>
                         <div className={`${styles.wrapper}`} style={{ backgroundImage: `url('${item}')` }}>
                         </div>
                     </div>
                 ))}
             </div>
-            <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" onClick={prev}>
+            <div className={`${styles.prevButton}`} onClick={prev}>
                 <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span className="sr-only">Previous</span>
-            </a>
-            <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" onClick={next}>
+            </div>
+            <div className={`${styles.nextButton}`} onClick={next}>
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                <span className="sr-only">Next</span>
-            </a>
+            </div>
         </div>
+        // <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
+        //     <ol className="carousel-indicators">
+        //         {items.map((item, index) => (
+        //             <li key={item} data-target="#carouselExampleIndicators" onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && 'active'}`}></li>
+        //         ))}
+        //     </ol>
+        //     <div className="carousel-inner">
+                
+        //     </div>
+        //     <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev" onClick={prev}>
+        //         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        //         <span className="sr-only">Previous</span>
+        //     </a>
+        //     <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next" onClick={next}>
+        //         <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        //         <span className="sr-only">Next</span>
+        //     </a>
+        // </div>
     )
 }
