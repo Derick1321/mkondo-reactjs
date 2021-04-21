@@ -29,6 +29,8 @@ export const SliderList = () => {
                 </div>
             </div>
 
+            {status == 'loading' ? <p>Loading...</p> : (status === 'failed' ? <Button onClick={() => dispatch(fetchSliders())}>Reload!</Button> : '')}
+
             <div className="row mt-5">
                 {sliders.map(slider => (
                     <div className="col-lg-4" key={`${slider.slider_id}`}>
@@ -36,7 +38,7 @@ export const SliderList = () => {
                             <div>
                                 <h5 className="text-center">{slider.name}</h5>
                                 <div className={`${styles.actions}`}>
-                                    <span>View</span>
+                                    <span onClick={() => history.push(routePaths.sliderShow.replace(':slider_id', slider.slider_id))}>View</span>
                                     <span onClick={() => history.push(routePaths.sliderEdit.replace(':slider_id', slider.slider_id))}>Edit</span>
                                     <span onClick={() => dispatch(deleteSlider(slider.slider_id))}>Delete</span>
                                 </div>

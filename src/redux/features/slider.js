@@ -36,6 +36,15 @@ export const updateSlider = createAsyncThunk(
     }
 )
 
+export const storeSliderItem = createAsyncThunk(
+    'slider/storeSliderItem',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('POST', `sliders/${payload['slider_id']}/items`, payload, token)
+        return response.data
+    }
+)
+
 export const deleteSlider = createAsyncThunk(
     'slider/deleteSlider',
     async (id, store) => {
@@ -73,6 +82,13 @@ const sliderSlice = createSlice({
                     state.data[index] = action.payload
                 }
             })
+        },
+        [storeSliderItem.fulfilled]: (state, action) => {
+            state.data.map((slider, index) => {
+                if (slider.slider_id === action.payload.slider_id) {
+                    state.data[index].items.push(action.payload)
+                }
+            })
         }
     }
 });
@@ -80,3 +96,6 @@ const sliderSlice = createSlice({
 export default sliderSlice.reducer
 
 export const selectAllSliders = state => state.slider.data
+export const selectAllSliderPictures = (state, slider_id) => {
+    return state.slider.data.filter(slider => slider.slider_id === slider_id)[0].items
+}

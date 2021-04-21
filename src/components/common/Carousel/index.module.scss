@@ -1,0 +1,30 @@
+@import '$assets/scss/main.scss';
+
+.wrapper {
+    height: 600px;
+    overflow: hidden;
+    background-position: center;
+    background-size: cover;
+    transition: all ease-in-out 2s;
+}
+
+.active {
+    position: relative;
+    left: 0;
+}
+
+.next{
+    position: absolute;
+    top: 25%;
+    left: 200vw;
+    opacity: 0;
+    visibility: hidden; 
+}
+
+.previous{    
+    position: absolute;
+    top: 25%;
+    left: -200vw;
+    opacity: 0;
+    visibility: hidden; 
+}
