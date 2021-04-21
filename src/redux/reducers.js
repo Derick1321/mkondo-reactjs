@@ -6,6 +6,7 @@ import media from './features/media';
 import nav from './features/nav';
 import playlist from './features/playlist';
 import player from './features/player';
+import slider from './features/slider';
 
 export default {
   authentication,
@@ -16,4 +17,5 @@ export default {
   nav,
   playlist,
   player,
+  slider,
 };

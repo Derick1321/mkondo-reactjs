@@ -6,9 +6,10 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
-    "start": "parcel serve index.html",
+    "start": "parcel serve index.html -p 3000",
     "build": "parcel build index.html --no-cache --no-scope-hoist"
   },
+  "proxy": "http://127.0.0.1:5000",
   "dependencies": {
     "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
     "@reduxjs/toolkit": "^1.4.0",
@@ -26,6 +27,7 @@
     "react-dom": ">= 16.8.0",
     "react-error-boundary": "^3.1.0",
     "react-ga": "^3.2.1",
+    "react-image-crop": "^8.6.6",
     "react-player": "^2.8.2",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
@@ -36,8 +38,10 @@
     "styled-components": "^5.2.1"
   },
   "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-beta.2",
     "cssnano": "^4.1.10",
     "parcel": "^2.0.0-beta.1",
+    "postcss": "^8.2.10",
     "postcss-modules": "^3.2.2",
     "sass": "^1.29.0"
   },
