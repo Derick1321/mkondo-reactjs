@@ -1,4 +1,4 @@
-const BASE_URL = document.location.hostname === 'localhost3' ? 'http://localhost:5000' : 'https://api.mkondo.co';
+const BASE_URL = document.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
 const URL = BASE_URL;
@@ -74,8 +74,12 @@ export const handleFetch = async (method, path, data, token = '', baseUrl) => {
   const status = response.status;
   const result = await response.text();
 
-  if (![200, 201].includes(status)) {
+  if (![200, 201, 204].includes(status)) {
     throw result;
+  }
+
+  if ([204].includes(status)) {
+    return true
   }
 
   return JSON.parse(result);

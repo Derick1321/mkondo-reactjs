@@ -20,6 +20,10 @@ import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
 import Profile from '$containers/Profile';
 import NotFound from '../containers/NotFound';
+import { Slider } from '../containers/Slider';
+import { AddSliderForm } from '../containers/Slider/AddSliderForm';
+import { EditSliderForm } from '../containers/Slider/EditSliderForm';
+import { ViewSlider } from '../containers/Slider/ViewSlider';
 
 export const routePaths = {
   main: '/app',
@@ -48,6 +52,12 @@ export const routePaths = {
   playlist: '/app/playlist/:id',
   insights: '/app/insights',
   profile: '/app/profile',
+  slider: '/app/slider',
+  sliderCreate: '/app/slider/create',
+  sliderEdit: '/app/slider/:slider_id/edit',
+  sliderShow: '/app/slider/:slider_id',
+  sliderPictureCreate: 'app/slider/:slider_id/create-picture',
+  sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid'
 };
 
 const roles = {
@@ -239,6 +249,31 @@ export const routes = [
           },
         ],
       },
+      { ...defaultConfig,
+        path: routePaths.slider,
+        component: Slider,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.sliderCreate,
+            component: AddSliderForm,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.sliderEdit,
+            component: EditSliderForm,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.sliderShow,
+            component: ViewSlider,
+            redirect: redirectFunctions.app,
+          },
+        ] 
+      }
     ],
   }
 ];
