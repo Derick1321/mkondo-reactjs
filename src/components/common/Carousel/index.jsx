@@ -47,12 +47,12 @@ export const Carousel = ({ items }) => {
         <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
             <ol className="carousel-indicators">
                 {items.map((item, index) => (
-                    <li data-target="#carouselExampleIndicators" onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && 'active'}`}></li>
+                    <li key={item} data-target="#carouselExampleIndicators" onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && 'active'}`}></li>
                 ))}
             </ol>
             <div className="carousel-inner">
                 {items.map((item, index) => (
-                    <div className={`carousel-item ${styles.transitions} ${index + 1 === count && 'active'} ${index + 1 < count && styles.previous} ${index + 1 > count && styles.next}`}>
+                    <div key={item} className={`carousel-item ${styles.transitions} ${index + 1 === count && 'active'} ${index + 1 < count && styles.previous} ${index + 1 > count && styles.next}`}>
                         <div className={`${styles.wrapper}`} style={{ backgroundImage: `url('${item}')` }}>
                         </div>
                     </div>

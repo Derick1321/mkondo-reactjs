@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { generatePreview } from '../../../common/utils'
 import Button from '../../../components/common/Button'
+import { CroppingTool } from '../../../components/common/CroppingTool'
 import { saveMedia } from '../../../redux/features/media'
 import { storeSliderItem } from '../../../redux/features/slider'
 import styles from './index.module.scss'
@@ -46,6 +47,11 @@ export const AddSliderPictureForm = ({ slider_id }) => {
         }
     }
 
+    const handleCancel = () => {
+        setImage(null)
+        setPreviewUrl(null)
+    }
+
     return (
         <div className={`row ${styles.uploadCard}`}>
             <div className="col-lg">
@@ -58,12 +64,14 @@ export const AddSliderPictureForm = ({ slider_id }) => {
                 ) : (
                     <div>
                         {previewUrl && (
-                            <img src={previewUrl} alt="" height="100px" />
+                            <CroppingTool src={previewUrl} aspectRatio={2/1} width={100} locked={true} onChange={(cropped) => {
+                                setImage(cropped)
+                            }} />
                         )}
                         <div className="d-flex mt-2">
                             <Button onClick={handleUpload}>Upload</Button>
                             <div>&nbsp;&nbsp;&nbsp;</div>
-                            <Button isTransparent={true} onClick={() => setImage(null)}>Cancel</Button>
+                            <Button isTransparent={true} onClick={handleCancel}>Cancel</Button>
                         </div>
                     </div>
                 )}
