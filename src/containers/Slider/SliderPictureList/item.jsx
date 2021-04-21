@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleFetch } from '../../../common/requestUtils';
 import { deleteSliderItem } from '../../../redux/features/slider';
 
-export const Item = ({ item }) => {
+export const Item = ({ key, item }) => {
     const { token } = useSelector(state => state.authentication)
 
     const [image, setImage] = useState(null)
@@ -31,7 +31,7 @@ export const Item = ({ item }) => {
     }
 
     return (
-        <div>
+        <div key={key}>
             {deleting ? <p>Deleting...</p> : <button onClick={handleDelete}>delete</button>}
             <img src={image} alt="" width="100%" />
         </div>
