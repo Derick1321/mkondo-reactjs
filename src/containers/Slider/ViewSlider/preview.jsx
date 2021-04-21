@@ -18,7 +18,6 @@ export const Preview = ({ slider_id }) => {
         const items = await Promise.all(pictures.map(async (item) => {
             return loadImage(item)
         }))
-        console.log(items)
         setImages(items)
     }, [setImages, pictures])
 
