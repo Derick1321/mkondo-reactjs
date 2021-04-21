@@ -4,19 +4,12 @@ import styles from './index.module.scss'
 export const Carousel = ({ items }) => {
     const [count, setCount] = useState(1)
     const [playing, setPlaying] = useState(false)
-
-    const play = () => {
-        if (!playing) {
-            setPlaying(true)
-        }
-        return setInterval(() => {
-            console.log("step")
-            if (count === items.length) {
-                setCount(1)
-            } else {
-                setCount(count + 1)
-            }
-        }, 5000)
+    const [loaded, setLoaded] = useState(false)
+    const [itemsLoaded, setItemsLoaded] = useState(0)
+    const [tik, setTik] = useState(0)
+    
+    const itemLoaded = () => {
+        setItemsLoaded(itemsLoaded + 1)
     }
 
     const next = () => {
@@ -33,15 +26,33 @@ export const Carousel = ({ items }) => {
         } else {
             setCount(count - 1)
         }
+    
+    
     }
 
     useEffect(() => {
-        const interval = play()
-        return () => {
-            clearInterval(interval)
+        if (loaded) {
+            const interval = setInterval(() => {
+                setCount(prev => {
+                    if (prev === items.length) {
+                        return 1
+                    } else {
+                        return prev + 1
+                    }
+                })
+            }, 5000)
+            return () => {
+                clearInterval(interval)
+            }
         }
-    }, [play, playing])
+    }, [loaded])
 
+
+    useEffect(() => {
+        if (itemsLoaded !== 0 && itemsLoaded === items.length) {
+            setLoaded(true)
+        }
+    }, [itemsLoaded])
 
     return (
         <div className={`${styles.container}`}>
@@ -64,6 +75,14 @@ export const Carousel = ({ items }) => {
             <div className={`${styles.nextButton}`} onClick={next}>
                 <span className="carousel-control-next-icon" aria-hidden="true"></span>
             </div>
+            {!loaded ? (
+              <div className={`${styles.loader}`}>
+                <div>
+                    <span>Loading...</span>
+                </div>
+            </div>  
+            ) : ""}
+            {items.map((item) => <img src={item} alt="" style={{ display: "none" }} onLoad={itemLoaded} />)}
         </div>
         // <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
         //     <ol className="carousel-indicators">
