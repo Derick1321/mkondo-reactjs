@@ -10,7 +10,7 @@ const initialState = {
 
 const fetchConfigurations = createAsyncThunk(
     'configurations/fetchConfigurations',
-    async (payload, store) => {
+    async (filters, store) => {
         const { token } = store.getState().authentication
         const response = await handleFetch('GET', '/configurations', null, token)
         return response.data
@@ -36,6 +36,15 @@ const updateConfiguration = createAsyncThunk(
     }
 )
 
+const deleteConfiguration = createAsyncThunk(
+    'configurations/deleteConfiguration',
+    async (id, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('DELETE', `/configurations/${id}`, null, token)
+        return id
+    }
+)
+
 const configurationSlice = createSlice({
     name: 'configurations',
     initialState,
@@ -52,12 +61,16 @@ const configurationSlice = createSlice({
             state.status = 'error'
             state.error = action.payload
         },
-        [fetchConfigurations.fulfilled]: (state, action) => {
+        [storeConfiguration.fulfilled]: (state, action) => {
             state.data.push(action.payload)
         },
-        [fetchConfigurations.fulfilled]: (state, action) => {
+        [updateConfiguration.fulfilled]: (state, action) => {
             const index = state.data.findIndex(row => row.configuration_id === action.payload.configuration_id)
             state.data[index] = action.payload
+        },
+        [deleteConfiguration.fulfilled]: (state, action) => {
+            const filtered = state.data.filter(row => row.configuration_id === action.payload)
+            state.data = filtered
         }
     }
 })
