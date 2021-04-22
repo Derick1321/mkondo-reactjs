@@ -8,7 +8,7 @@ const initialState = {
     data: []
 }
 
-const fetchConfigurations = createAsyncThunk(
+export const fetchConfigurations = createAsyncThunk(
     'configurations/fetchConfigurations',
     async (filters, store) => {
         const { token } = store.getState().authentication
@@ -17,7 +17,7 @@ const fetchConfigurations = createAsyncThunk(
     }
 )
 
-const storeConfiguration = createAsyncThunk(
+export const storeConfiguration = createAsyncThunk(
     'configurations/storeConfiguration',
     async (payload, store) => {
         const { token } = store.getState().authentication
@@ -26,7 +26,7 @@ const storeConfiguration = createAsyncThunk(
     }
 )
 
-const updateConfiguration = createAsyncThunk(
+export const updateConfiguration = createAsyncThunk(
     'configurations/updateConfiguration',
     async (payload, store) => {
         const { token } = store.getState().authentication
@@ -36,7 +36,7 @@ const updateConfiguration = createAsyncThunk(
     }
 )
 
-const deleteConfiguration = createAsyncThunk(
+export const deleteConfiguration = createAsyncThunk(
     'configurations/deleteConfiguration',
     async (id, store) => {
         const { token } = store.getState().authentication
@@ -76,3 +76,6 @@ const configurationSlice = createSlice({
 })
 
 export default configurationSlice.reducer
+
+export const selectConfigurations = state => state.configuration.data
+export const selectConfigurationByKey = (state, key) => state.configuration.data.find(config => config.key === key)
