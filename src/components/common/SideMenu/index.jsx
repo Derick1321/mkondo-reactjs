@@ -96,6 +96,13 @@ const SideMenu = () => {
       path: routePaths.slider,
       permission: 'super admin',
     },
+    {
+      icon: require('$assets/images/icons/top-chart.svg'),
+      activeIcon: require('$assets/images/icons/top-chart-active.svg'),
+      title: 'Settings',
+      path: routePaths.configurations,
+      permission: 'super admin',
+    },
   ]
 
   const artistAccess = getPermissions('artist', userRole);
