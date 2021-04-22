@@ -26,6 +26,16 @@ const storeConfiguration = createAsyncThunk(
     }
 )
 
+const updateConfiguration = createAsyncThunk(
+    'configurations/updateConfiguration',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const { id, data } = payload
+        const response = await handleFetch('PUT', `/configurations/${id}`, data, token)
+        return response.data
+    }
+)
+
 const configurationSlice = createSlice({
     name: 'configurations',
     initialState,
@@ -44,6 +54,10 @@ const configurationSlice = createSlice({
         },
         [fetchConfigurations.fulfilled]: (state, action) => {
             state.data.push(action.payload)
+        },
+        [fetchConfigurations.fulfilled]: (state, action) => {
+            const index = state.data.findIndex(row => row.configuration_id === action.payload.configuration_id)
+            state.data[index] = action.payload
         }
     }
 })
