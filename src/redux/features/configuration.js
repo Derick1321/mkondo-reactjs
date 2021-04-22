@@ -9,7 +9,7 @@ const initialState = {
 }
 
 const fetchConfigurations = createAsyncThunk(
-    'configurations',
+    'configurations/fetchConfigurations',
     async (payload, store) => {
         const { token } = store.getState().authentication
         const response = await handleFetch('GET', '/configurations', null, token)
@@ -17,8 +17,17 @@ const fetchConfigurations = createAsyncThunk(
     }
 )
 
+const storeConfiguration = createAsyncThunk(
+    'configurations/storeConfiguration',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('POST', '/configurations', payload, token)
+        return response.data
+    }
+)
+
 const configurationSlice = createSlice({
-    name: 'configuration',
+    name: 'configurations',
     initialState,
     reducers: {},
     extraReducers: {
@@ -32,6 +41,9 @@ const configurationSlice = createSlice({
         [fetchConfigurations.rejected]: (state, action) => {
             state.status = 'error'
             state.error = action.payload
+        },
+        [fetchConfigurations.fulfilled]: (state, action) => {
+            state.data.push(action.payload)
         }
     }
 })
