@@ -12,7 +12,7 @@ export const fetchConfigurations = createAsyncThunk(
     'configurations/fetchConfigurations',
     async (filters, store) => {
         const { token } = store.getState().authentication
-        const response = await handleFetch('GET', '/configurations', null, token)
+        const response = await handleFetch('GET', 'configurations', null, token)
         return response.data
     }
 )
@@ -21,7 +21,7 @@ export const storeConfiguration = createAsyncThunk(
     'configurations/storeConfiguration',
     async (payload, store) => {
         const { token } = store.getState().authentication
-        const response = await handleFetch('POST', '/configurations', payload, token)
+        const response = await handleFetch('POST', 'configurations', payload, token)
         return response.data
     }
 )
@@ -31,7 +31,7 @@ export const updateConfiguration = createAsyncThunk(
     async (payload, store) => {
         const { token } = store.getState().authentication
         const { id, data } = payload
-        const response = await handleFetch('PUT', `/configurations/${id}`, data, token)
+        const response = await handleFetch('PUT', `configurations/${id}`, data, token)
         return response.data
     }
 )
@@ -40,7 +40,7 @@ export const deleteConfiguration = createAsyncThunk(
     'configurations/deleteConfiguration',
     async (id, store) => {
         const { token } = store.getState().authentication
-        const response = await handleFetch('DELETE', `/configurations/${id}`, null, token)
+        const response = await handleFetch('DELETE', `configurations/${id}`, null, token)
         return id
     }
 )
