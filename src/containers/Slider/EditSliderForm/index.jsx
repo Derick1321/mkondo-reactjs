@@ -6,6 +6,7 @@ import { routePaths } from '../../../common/routeConfig'
 import Button from '../../../components/common/Button'
 import InputField from '../../../components/forms/InputField'
 import { selectAllSliders, storeSlider, updateSlider } from '../../../redux/features/slider'
+import { aspectRatioXField, aspectRatioYField } from '../AddSliderForm'
 import styles from '../index.module.scss'
 
 const nameField = {
@@ -59,8 +60,16 @@ export const EditSliderForm = () => {
     return (
         <div className={`${styles.container}`}>
             <div className="col-lg-auto"><h1 className="heading-2">Update Slider</h1></div>
-            <div>
-                <InputField field={{ ...nameField, value: values[nameField.name] }} onChange={handleChange} />
+            <div className="row">
+                <div className="col-lg-6">
+                    <InputField field={{ ...nameField, value: values[nameField.name] }} onChange={handleChange} />
+                </div>
+                <div className="col-lg-3">
+                    <InputField field={{ ...aspectRatioXField, value: values[aspectRatioXField.name] }} onChange={handleChange} />
+                </div>
+                <div className="col-lg-3">
+                    <InputField field={{ ...aspectRatioYField, value: values[aspectRatioYField.name] }} onChange={handleChange} />
+                </div>
             </div>
             <Button onClick={handleUpdate} isLoading={submitting}>Update Slider</Button>
         </div>
