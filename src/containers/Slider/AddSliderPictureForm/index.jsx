@@ -64,7 +64,7 @@ export const AddSliderPictureForm = ({ slider_id }) => {
                 ) : (
                     <div>
                         {previewUrl && (
-                            <CroppingTool src={previewUrl} aspectRatio={2/1} width={100} locked={true} onChange={(cropped) => {
+                            <CroppingTool src={previewUrl} aspectRatio={2/1} width={100} locked={false} onChange={(cropped) => {
                                 setImage(cropped)
                             }} />
                         )}
