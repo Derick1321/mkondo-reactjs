@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
+import logo from './logo.png'
 
 export const Carousel = ({ items }) => {
     const [count, setCount] = useState(1)
@@ -82,6 +83,9 @@ export const Carousel = ({ items }) => {
                 </div>
             </div>  
             ) : ""}
+            <div className={`${styles.brand}`}>
+                <img src={logo} alt="Mkondo Logo" height={50} />
+            </div>
             {items.map((item) => <img src={item} alt="" style={{ display: "none" }} onLoad={itemLoaded} />)}
         </div>
         // <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">

@@ -99,3 +99,13 @@ $slider-height: 600px;
     align-items: center;
     justify-content: center;
 }
+
+.brand {
+    position: absolute;
+    background: rgba($color: $black, $alpha: 0.5);
+    z-index: 20;
+    bottom: 10px;
+    left: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
