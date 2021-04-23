@@ -24,6 +24,8 @@ import { Slider } from '../containers/Slider';
 import { AddSliderForm } from '../containers/Slider/AddSliderForm';
 import { EditSliderForm } from '../containers/Slider/EditSliderForm';
 import { ViewSlider } from '../containers/Slider/ViewSlider';
+import { Configuration } from '../containers/Configuration';
+import { Sliders } from '../containers/Configuration/Sliders';
 
 export const routePaths = {
   main: '/app',
@@ -57,7 +59,9 @@ export const routePaths = {
   sliderEdit: '/app/slider/:slider_id/edit',
   sliderShow: '/app/slider/:slider_id',
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
-  sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid'
+  sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
+  configurations: '/app/settings',
+  configSliders: '/app/settings/sliders'
 };
 
 const roles = {
@@ -273,6 +277,19 @@ export const routes = [
             redirect: redirectFunctions.app,
           },
         ] 
+      },
+      { ...defaultConfig,
+        path: routePaths.configurations,
+        component: Configuration,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.configSliders,
+            component: Sliders,
+            redirect: redirectFunctions.app,
+          },
+        ]
       }
     ],
   }
