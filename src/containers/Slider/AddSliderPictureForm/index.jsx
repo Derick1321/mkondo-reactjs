@@ -1,17 +1,19 @@
 import { unwrapResult } from '@reduxjs/toolkit'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { generatePreview } from '../../../common/utils'
 import Button from '../../../components/common/Button'
 import { CroppingTool } from '../../../components/common/CroppingTool'
 import { saveMedia } from '../../../redux/features/media'
-import { storeSliderItem } from '../../../redux/features/slider'
+import { selectSliderById, storeSliderItem } from '../../../redux/features/slider'
 import styles from './index.module.scss'
 
 export const AddSliderPictureForm = ({ slider_id }) => {
     const [image, setImage] = useState(null)
     const [previewUrl, setPreviewUrl] = useState(null)
     const [submitting, setSubmitting] = useState(false)
+    
+    const slider = useSelector(state => selectSliderById(state, slider_id))
 
     const dispatch = useDispatch()
 
@@ -64,7 +66,7 @@ export const AddSliderPictureForm = ({ slider_id }) => {
                 ) : (
                     <div>
                         {previewUrl && (
-                            <CroppingTool src={previewUrl} aspectRatio={2/1} width={100} locked={false} onChange={(cropped) => {
+                            <CroppingTool src={previewUrl} aspectRatio={slider.aspect_ratio_x/slider.aspect_ratio_y} width={100} locked={false} onChange={(cropped) => {
                                 setImage(cropped)
                             }} />
                         )}
