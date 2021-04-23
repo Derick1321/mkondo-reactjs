@@ -14,6 +14,18 @@ const nameField = {
     placeholder: "Slider Name"
 }
 
+export const aspectRatioXField = {
+    type: "number",
+    name: "aspect_ratio_x",
+    placeholder: "Horizontal Scale"
+}
+
+export const aspectRatioYField = {
+    type: "number",
+    name: "aspect_ratio_y",
+    placeholder: "Vertical Scale"
+}
+
 const initialState = {
     name: ""
 }
@@ -49,8 +61,16 @@ export const AddSliderForm = () => {
     return (
         <div className={`${styles.container}`}>
             <div className="col-lg-auto"><h1 className="heading-2">Add Slider</h1></div>
-            <div>
-                <InputField field={{ ...nameField, value: values[nameField.name] }} onChange={handleChange} />
+            <div className="row">
+                <div className="col-lg-6">
+                    <InputField field={{ ...nameField, value: values[nameField.name] }} onChange={handleChange} />
+                </div>
+                <div className="col-lg-3">
+                    <InputField field={{ ...aspectRatioXField, value: values[aspectRatioXField.name]  }} onChange={handleChange} />
+                </div>
+                <div className="col-lg-3">
+                    <InputField field={{ ...aspectRatioYField, value: values[aspectRatioYField.name]  }} onChange={handleChange} />
+                </div>
             </div>
             <Button onClick={handleStore} isLoading={submitting}>Add Slider</Button>
         </div>
