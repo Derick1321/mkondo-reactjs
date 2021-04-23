@@ -36,21 +36,21 @@ export const updateSlider = createAsyncThunk(
     }
 )
 
-export const storeSliderItem = createAsyncThunk(
-    'slider/storeSliderItem',
-    async (payload, store) => {
-        const { token } = store.getState().authentication
-        const response = await handleFetch('POST', `sliders/${payload['slider_id']}/items`, payload, token)
-        return response.data
-    }
-)
-
 export const deleteSlider = createAsyncThunk(
     'slider/deleteSlider',
     async (id, store) => {
         const { token } = store.getState().authentication
         const response = await handleFetch('DELETE', `sliders/${id}`, null, token)
         return id
+    }
+)
+
+export const storeSliderItem = createAsyncThunk(
+    'slider/storeSliderItem',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('POST', `sliders/${payload['slider_id']}/items`, payload, token)
+        return response.data
     }
 )
 
@@ -112,6 +112,10 @@ const sliderSlice = createSlice({
 export default sliderSlice.reducer
 
 export const selectAllSliders = state => state.slider.data
+export const selectSliderById = (state, slider_id) => {
+    const sliders = state.slider.data.filter(slider => slider.slider_id === slider_id)
+    return sliders.length ? sliders[0] : {}
+} 
 export const selectAllSliderPictures = (state, slider_id) => {
     const items = state.slider.data.filter(slider => slider.slider_id === slider_id)
     return items.length ? items[0].items : []

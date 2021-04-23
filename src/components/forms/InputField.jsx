@@ -16,6 +16,7 @@ const InputField = (props) => {
     switch(field.type) {
       case 'text':
       case 'password':
+      case 'number':
         return (
           <TextInput
             {...field}
