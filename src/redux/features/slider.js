@@ -36,21 +36,21 @@ export const updateSlider = createAsyncThunk(
     }
 )
 
-export const storeSliderItem = createAsyncThunk(
-    'slider/storeSliderItem',
-    async (payload, store) => {
-        const { token } = store.getState().authentication
-        const response = await handleFetch('POST', `sliders/${payload['slider_id']}/items`, payload, token)
-        return response.data
-    }
-)
-
 export const deleteSlider = createAsyncThunk(
     'slider/deleteSlider',
     async (id, store) => {
         const { token } = store.getState().authentication
         const response = await handleFetch('DELETE', `sliders/${id}`, null, token)
         return id
+    }
+)
+
+export const storeSliderItem = createAsyncThunk(
+    'slider/storeSliderItem',
+    async (payload, store) => {
+        const { token } = store.getState().authentication
+        const response = await handleFetch('POST', `sliders/${payload['slider_id']}/items`, payload, token)
+        return response.data
     }
 )
 
