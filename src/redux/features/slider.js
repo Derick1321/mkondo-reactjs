@@ -11,8 +11,8 @@ const initialState = {
 export const fetchSliders = createAsyncThunk(
     'slider/fetchSliders',
     async (payload, store) => {
-        const { token } = store.getState().authentication
-        const response = await handleFetch('GET', 'sliders', null, token)
+        const { token, visitorToken } = store.getState().authentication
+        const response = await handleFetch('GET', 'sliders', null, token ?? visitorToken)
         return response.data
     }
 )
@@ -113,5 +113,6 @@ export default sliderSlice.reducer
 
 export const selectAllSliders = state => state.slider.data
 export const selectAllSliderPictures = (state, slider_id) => {
-    return state.slider.data.filter(slider => slider.slider_id === slider_id)[0].items
+    const items = state.slider.data.filter(slider => slider.slider_id === slider_id)
+    return items.length ? items[0].items : []
 }
