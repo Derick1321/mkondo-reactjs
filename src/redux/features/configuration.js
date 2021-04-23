@@ -11,8 +11,8 @@ const initialState = {
 export const fetchConfigurations = createAsyncThunk(
     'configurations/fetchConfigurations',
     async (filters, store) => {
-        const { token } = store.getState().authentication
-        const response = await handleFetch('GET', 'configurations', null, token)
+        const { token, visitorToken } = store.getState().authentication
+        const response = await handleFetch('GET', 'configurations', null, token ?? visitorToken)
         return response.data
     }
 )
