@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+import { aspectRatioYField } from '../../../containers/Slider/AddSliderForm'
 import styles from './index.module.scss'
 import logo from './logo.png'
 
-export const Carousel = ({ items }) => {
+export const Carousel = ({ items, aspect_ratio_x, aspect_ratio_y }) => {
+    const [containerWidth, setContainerWidth] = useState(null)
+    const [containerHeight, setContainerHeight] = useState(null)
     const [count, setCount] = useState(1)
     const [playing, setPlaying] = useState(false)
     const [loaded, setLoaded] = useState(false)
     const [itemsLoaded, setItemsLoaded] = useState(0)
     const [tik, setTik] = useState(0)
     
+    //refs
+    const containerRef = useRef(null)
+
     const itemLoaded = () => {
         setItemsLoaded(itemsLoaded + 1)
     }
@@ -30,6 +36,25 @@ export const Carousel = ({ items }) => {
     
     
     }
+
+    const handleResize = () => {
+        if (aspect_ratio_x && aspect_ratio_y) {
+            console.log("Fixing carousel sizing issues")
+            const width = containerRef.current.clientWidth
+            const height = aspect_ratio_y * width/aspect_ratio_x
+            console.log(height)
+            setContainerHeight(height)
+            setContainerWidth(width)
+        }
+    }
+
+    useEffect(() => {
+        if (!containerRef.current) {
+            return
+        }
+        window.addEventListener('resize', handleResize);
+        handleResize()
+    }, [])
 
     useEffect(() => {
         if (loaded) {
@@ -56,7 +81,7 @@ export const Carousel = ({ items }) => {
     }, [itemsLoaded])
 
     return (
-        <div className={`${styles.container}`}>
+        <div ref={containerRef} style={{ height: containerHeight ?? 'auto' }} className={`${styles.container}`}>
             <div className={`${styles.indicators}`}>
                 {items.map((item, index) => (
                     <div key={item} onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && styles.solid }`}></div>
@@ -65,7 +90,8 @@ export const Carousel = ({ items }) => {
             <div className="d-flex">
                 {items.map((item, index) => (
                     <div key={item} className={`${styles.item} ${index + 1 === count && styles.active} ${index + 1 < count && styles.previous} ${index + 1 > count && styles.next}`}>
-                        <div className={`${styles.wrapper}`} style={{ backgroundImage: `url('${item}')` }}>
+                        <div className={`${styles.wrapper}`}>
+                            <img style={{ width: containerWidth, height: containerHeight }} src={item} alt=""/>
                         </div>
                     </div>
                 ))}
@@ -84,7 +110,7 @@ export const Carousel = ({ items }) => {
             </div>  
             ) : ""}
             <div className={`${styles.brand}`}>
-                <img src={logo} alt="Mkondo Logo" height={50} />
+                <img src={logo} alt="Mkondo Logo" height={containerHeight*0.1} />
             </div>
             {items.map((item) => <img src={item} alt="" style={{ display: "none" }} onLoad={itemLoaded} />)}
         </div>
