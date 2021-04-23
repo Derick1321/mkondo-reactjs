@@ -112,6 +112,10 @@ const sliderSlice = createSlice({
 export default sliderSlice.reducer
 
 export const selectAllSliders = state => state.slider.data
+export const selectSliderById = (state, slider_id) => {
+    const sliders = state.slider.data.filter(slider => slider.slider_id === slider_id)
+    return sliders.length ? sliders[0] : {}
+} 
 export const selectAllSliderPictures = (state, slider_id) => {
     const items = state.slider.data.filter(slider => slider.slider_id === slider_id)
     return items.length ? items[0].items : []
