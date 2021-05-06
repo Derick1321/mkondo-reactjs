@@ -17,8 +17,6 @@ const ScrollMedia = (props) => {
   } = props;
 
   const getMedia = useCallback((item, idx) => {
-    let avatar_url = item.owner_avatar_url;
-    if(item.owner_avatar_url == "null") avatar_url = null;
     if (type === 'audio') {
       return (
         <Feature
@@ -27,14 +25,11 @@ const ScrollMedia = (props) => {
           mediaId={item.media_id}
           avatar={item.cover_url}
           artistId={item.owner_id}
-          source={avatar_url}
+          source={item.owner_avatar_url}
           subtitle={item.owner_name}
           title={item.name}
           country={item.country}
           category={item.category}
-
-          likes={item.likes}
-          plays={item.plays}
         />
       );
     }
@@ -56,11 +51,7 @@ const ScrollMedia = (props) => {
         title={item.name}
         mediaId={item.media_id}
         description={item.description}
-        avatar={item.cover_url}
-        source={avatar_url}
-        likes={item.likes}
-        plays={item.plays}
-        artistId={item.owner_id}
+        source={item.cover_url}
       />
     );
   }, [type]);
