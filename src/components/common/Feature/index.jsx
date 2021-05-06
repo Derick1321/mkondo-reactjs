@@ -16,11 +16,6 @@ import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 
-/////////////////////// ADD /////////////////////////
-const icon_like = require('$assets/images/icons/like.svg');
-const icon_comment = require('$assets/images/icons/comment-pencil.svg');
-/////////////////////// END /////////////////////////
-
 const commonStyle = `
   background-repeat: no-repeat;
   background-position: center;
@@ -33,7 +28,6 @@ const FeatureBkg = styled.div`
   width: 100%;
   background-size: 100%;
   background-image: url(${props => props.source}); 
-  background-repeat-y: repeat;
   mix-blend-mode: multiply;
 `;
 
@@ -60,9 +54,6 @@ const Feature = (props) => {
     country,
     category,
     showHeader,
-
-    likes,
-    plays
   } = props;
 
   // store
@@ -71,8 +62,6 @@ const Feature = (props) => {
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
-
-  // const source = useSelector((store) => store.authentication.user.avatar_url);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -159,46 +148,37 @@ const Feature = (props) => {
           </div>
         )
       }
-      <div className={`d-flex w-100 ${styles.featurePane}`}>
-            <div className={styles.featureContentWrapper}>
-              <div className="d-flex">
-              <div onClick={handleArtistView}>
-              {
-                source ? (
-                  <FeatureAvatar
-                    source={sourceUrl}
-                    className={styles.realFeatureAvater}
-                  />
-                ) : (
-                    <img
-                      src={defaultAvatar}
-                      className={styles.defaultFeatureAvatar}
-                    />
-                  )
-              }
-            </div>
+      <div className={`d-flex ${styles.featurePane}`}>
+        <div onClick={handleArtistView}>
+          {
+            source ? (
+              <FeatureAvatar
+                source={sourceUrl}
+              />
+            ) : (
+                <img
+                  src={defaultAvatar}
+                  className={styles.defaultFeatureAvatar}
+                />
+              )
+          }
+        </div>
+        <div className={styles.featureContentWrapper}>
+          <div className="d-flex">
             <button
               className={styles.featurePlayBtn}
-              onClick={handlePlay} >
+              onClick={handlePlay}
+            >
               <PlayBtn
                 isLoading={isLoading && currentMediaId === mediaId}
                 isPlaying={isPlaying && currentMediaId === mediaId}
               />
             </button>
             <div className={`d-flex flex-column ${styles.featureSummary}`}>
-              <span onClick={handleView} className={styles.fontSize16}><b>{title}</b></span>
+              <span onClick={handleView}>{title}</span>
               <span className={styles.subtitle} onClick={handleArtistView}>{subtitle}</span>
             </div>
-            
           </div>
-          <div className="d-flex flex-row">
-              <span className="ml-auto">
-                <div className={`text-white text-right ${styles.fontSize12}`}><b>{likes} Likes</b></div>
-                <div className={`text-white ${styles.fontSize10}`}> {plays} Plays</div>
-              </span>
-              <img src={icon_like} className={styles.bottom_icon} alt=""/>
-              <img src={icon_comment} className={styles.bottom_icon} alt=""/>
-            </div>
         </div>
       </div>
     </div>
