@@ -123,7 +123,7 @@ const Scroller = (props) => {
       {
         noMedia
         && (
-          <p>No media available.</p>
+          <div className={styles.no_media}>No media available.</div>
         )
       }
       <div
