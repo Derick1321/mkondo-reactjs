@@ -72,8 +72,8 @@ const Main = (props) => {
         <SideMenu />
       </div>
       {
-        showFooterPlayer && (
-          <div className={styles.homeFooter}>
+        (
+          <div className={`${styles.homeFooter} ${showFooterPlayer? styles.hideFooter : ""}`}>
             <Player />
           </div>
         )
