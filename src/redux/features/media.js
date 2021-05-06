@@ -9,12 +9,17 @@ const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
 const UPDATE_MEDIA = 'media/UPDATE_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
+const GET_TOP_MEDIAS = 'media/GET_TOP_MEDIAS';
+const GET_RANDOM_MEDIAS = 'media/GET_RANDOM_MEDIAS';
+const GET_TREND_MEDIAS = 'media/GET_TREND_MEDIAS';
 const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const GET_COMMENT = 'media/GET_COMMENT';
 const GET_RECOMENDED = 'media/GET_RECOMENDED';
+const GET_POPULAR_RECOMENDED = 'media/GET_POPULAR_RECOMENDED';
+const GET_SIMILAR_RECOMENDED = 'media/GET_SIMILAR_RECOMENDED';
 const UPDATE_LIKE = 'media/UPDATE_LIKE';
 
 // actions
@@ -61,6 +66,30 @@ export const getNewReleases = createAsyncThunk(
   }
 );
 
+export const getTopMedias = createAsyncThunk(
+  GET_TOP_MEDIAS,
+  async (data, param) => {
+    const { token, visitorToken } = param.getState().authentication;
+    return await handleFetch('GET', `media/top-medias?${queryString.stringify(data)}`, null, token || visitorToken);
+  }
+);
+
+export const getRandomMedias = createAsyncThunk(
+  GET_RANDOM_MEDIAS,
+  async (data, param) => {
+    const { token, visitorToken } = param.getState().authentication;
+    return await handleFetch('GET', `media/random-medias?${queryString.stringify(data)}`, null, token || visitorToken);
+  }
+);
+
+export const getTrendMedias = createAsyncThunk(
+  GET_TREND_MEDIAS,
+  async (data, param) => {
+    const { token, visitorToken } = param.getState().authentication;
+    return await handleFetch('GET', `media/trend-medias?${queryString.stringify(data)}`, null, token || visitorToken);
+  }
+);
+
 export const addAlbum = createAsyncThunk(
   ADD_ALBUM,
   async (data, param) => {
@@ -90,6 +119,22 @@ export const getRecommended = createAsyncThunk(
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', `media/recommended/${id}/similar`, null, token);
+  }
+);
+
+export const getPopularRecommended = createAsyncThunk(
+  GET_POPULAR_RECOMENDED,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/recommended/${id}/popular`, null, token);
+  }
+);
+
+export const getSimilarRecommended = createAsyncThunk(
+  GET_SIMILAR_RECOMENDED,
+  async (id, param) => {
+    const { token } = param.getState().authentication;
+    return await handleFetch('GET', `media/recommended/${id}/popular`, null, token);
   }
 );
 
@@ -152,6 +197,15 @@ const initialState = {
   getNewReleasesPending: false,
   getNewReleasesComplete: false,
   getNewReleasesError: null,
+  getTopMediasPending: false,
+  getTopMediasComplete: false,
+  getTopMediasError: null,
+  getRandomMediasPending: false,
+  getRandomMediasComplete: false,
+  getRandomMediasError: null,
+  getTrendMediasPending: false,
+  getTrendMediasComplete: false,
+  getTrendMediasError: null,
   updateShareCountPending: false,
   updateShareCountError: null,
   updateShareCountComplete: false,
@@ -178,9 +232,32 @@ const initialState = {
     video: [],
     movie: [],
   },
+  topMedias: {
+    audio: [],
+    video: [],
+    movie: [],
+  },
+  randomMedias: {
+    audio: [],
+    video: [],
+    movie: [],
+  },
+  trendMedias: {
+    audio: [],
+    video: [],
+    movie: [],
+  },
   albumId: null,
   comments: [],
   recommendedMedia: [],
+  popularRecommendedMedia: {
+    success: '',
+    media: []
+  },
+  similarRecommendedMedia: {
+    success: '',
+    media: []
+  },
   lastUploaded: null,
 };
 
@@ -298,6 +375,38 @@ const mediaSlice = createSlice({
       state.getRecommendedComplete = false;
       state.getRecommendedError = action.error;
     },
+    [getPopularRecommended.pending]: (state, action) => {
+      state.getPopularRecommendedPending = true;
+      state.getPopularRecommendedComplete = false;
+      state.getPopularRecommendedError = null;
+    },
+    [getPopularRecommended.fulfilled]: (state, action) => {
+      state.getPopularRecommendedPending = false;
+      state.getPopularRecommendedComplete = true;
+      state.getPopularRecommendedError = null;
+      state.popularRecommendedMedia = action.payload;
+    },
+    [getPopularRecommended.rejected]: (state, action) => {
+      state.getPopularRecommendedPending = false;
+      state.getPopularRecommendedComplete = false;
+      state.getPopularRecommendedError = action.error;
+    },
+    [getSimilarRecommended.pending]: (state, action) => {
+      state.getSimilarRecommendedPending = true;
+      state.getSimilarRecommendedComplete = false;
+      state.getSimilarRecommendedError = null;
+    },
+    [getSimilarRecommended.fulfilled]: (state, action) => {
+      state.getSimilarRecommendedPending = false;
+      state.getSimilarRecommendedComplete = true;
+      state.getSimilarRecommendedError = null;
+      state.similarRecommendedMedia = action.payload;
+    },
+    [getSimilarRecommended.rejected]: (state, action) => {
+      state.getSimilarRecommendedPending = false;
+      state.getSimilarRecommendedComplete = false;
+      state.getSimilarRecommendedError = action.error;
+    },
     [getNewReleases.pending]: (state, action) => {
       state.getNewReleasesPending = true;
       state.getNewReleasesComplete = false;
@@ -313,6 +422,54 @@ const mediaSlice = createSlice({
       state.getNewReleasesPending = false;
       state.getNewReleasesComplete = true;
       state.getNewReleasesError = action.error;
+    },
+    [getTopMedias.pending]: (state, action) => {
+      state.getTopMediasPending = true;
+      state.getTopMediasComplete = false;
+      state.getTopMediasError = null;
+    },
+    [getTopMedias.fulfilled]: (state, action) => {
+      state.getTopMediasPending = false;
+      state.getTopMediasComplete = true;
+      state.getTopMediasError = null;
+      state.topMedias[action.meta.arg.category] = action.payload.media;
+    },
+    [getTopMedias.rejected]: (state, action) => {
+      state.getTopMediasPending = false;
+      state.getTopMediasComplete = true;
+      state.getTopMediasError = action.error;
+    },
+    [getRandomMedias.pending]: (state, action) => {
+      state.getRandomMediasPending = true;
+      state.getRandomMediasComplete = false;
+      state.getRandomMediasError = null;
+    },
+    [getRandomMedias.fulfilled]: (state, action) => {
+      state.getRandomMediasPending = false;
+      state.getRandomMediasComplete = true;
+      state.getRandomMediasError = null;
+      state.randomMedias[action.meta.arg.category] = action.payload.media;
+    },
+    [getRandomMedias.rejected]: (state, action) => {
+      state.getRandomMediasPending = false;
+      state.getRandomMediasComplete = true;
+      state.getRandomMediasError = action.error;
+    },
+    [getTrendMedias.pending]: (state, action) => {
+      state.getTrendMediasPending = true;
+      state.getTrendMediasComplete = false;
+      state.getTrendMediasError = null;
+    },
+    [getTrendMedias.fulfilled]: (state, action) => {
+      state.getTrendMediasPending = false;
+      state.getTrendMediasComplete = true;
+      state.getTrendMediasError = null;
+      state.trendMedias[action.meta.arg.category] = action.payload.media;
+    },
+    [getTrendMedias.rejected]: (state, action) => {
+      state.getTrendMediasPending = false;
+      state.getTrendMediasComplete = true;
+      state.getTrendMediasError = action.error;
     },
     [addComment.pending]: (state, action) => {
       state.addCommentPending = true;
