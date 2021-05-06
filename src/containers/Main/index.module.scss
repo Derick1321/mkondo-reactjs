@@ -9,13 +9,34 @@
   overflow-x: hidden;
 }
 
-.homeFooter {
-  position: fixed;
-  z-index: $z-index-last;
-  width: 100%;
-  bottom: 0;
-  overflow: hidden;
+///////////////// ADD /////////////////////
+
+.content::-webkit-scrollbar {
+  width: 15px;
 }
+
+.content::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #333;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.content::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+.content::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
+
+///////////////// END ////////////////////
+
+
 
 .sideMenuWrapper {
   width: 220px;
@@ -35,4 +56,21 @@
 
 .sideMenuActive {
   height: 100%;
+}
+
+
+.homeFooter {
+  position: fixed;
+  z-index: $z-index-last;
+  width: 100%;
+  bottom: 0;
+  transition: all 0.3s;
+}
+
+.hideFooter {
+  bottom: -55px;
+}
+
+.homeFooter:hover {
+  bottom: 0;
 }
