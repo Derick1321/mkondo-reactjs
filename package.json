@@ -7,7 +7,7 @@
   "private": true,
   "scripts": {
     "start": "parcel serve index.html -p 3000",
-    "build": "parcel build index.html --no-cache --no-scope-hoist"
+    "build": "parcel build index.html --no-source-maps"
   },
   "proxy": "http://127.0.0.1:5000",
   "dependencies": {
