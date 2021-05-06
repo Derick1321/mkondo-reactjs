@@ -3,54 +3,12 @@
   margin-bottom: 2rem;
 }
 
-///////////////////////////// ADD //////////////////////////////
 .temp {
   position: relative;
   width: 300px !important;
-  min-width: 300px;
   float: left;
   margin-right: 1.5rem;
-  box-shadow: 3px 3px 3px #111;
-  background-color: #f5f5f5;
-  color: #111;
-  margin-left: 1rem;
-  margin-right: 0;
 }
-
-.temp p {
-  color: #111;
-}
-
-// .temp:after {
-//   content: " ";
-//   position: absolute;
-//   top: 5px;
-//   left: 5px;
-//   right: 5px;
-//   bottom: 5px;
-//   border: 1px solid #333;
-// }
-
-.defaultFeatureAvatar{
-  height: 35px;
-  width: 35px;
-  margin-right: 10px;
-}
-
-.bottom_icon {
-  width: 25px;
-  color: white;
-  margin-left: 10px;
-  float: right;
-}
-
-.realFeatureAvater {
-  height: 35px !important;
-  width: 35px !important;
-  border-radius: 50% !important;
-}
-
-////////////////////////////// END ////////////////////////////////
 
 .previewBkgWrapper {
   position: relative;
@@ -60,7 +18,7 @@
   height: 200px;
   width: 100%;
   overflow: hidden;
-  margin-bottom: 10px;
+  margin-bottom: 1.5rem;
 }
 
 .previewActionBtn {
@@ -79,7 +37,7 @@
 }
 
 .title {
-  font-size: 15px;
+  font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: 0;
   overflow: hidden;
@@ -88,13 +46,11 @@
 }
 
 .description {
-  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* number of lines to show */
   -webkit-box-orient: vertical;
-  margin-bottom: 5px;
 }
 
 .header {

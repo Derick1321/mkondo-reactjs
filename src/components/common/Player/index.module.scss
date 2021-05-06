@@ -2,10 +2,8 @@
 
 .playerWrapper {
   height: 60px;
-  // background-color: $primary-blue;
-  background-image: linear-gradient(#252, #373, #373, #252);
+  background-color: $primary-blue;
   padding: 5px 2rem;
-  position: relative;
 }
 
 .playerNameWrapper {
@@ -47,6 +45,9 @@
   height: 100%;
 }
 
+.playerMenuWrapper {
+}
+
 .pauseBtnWrapper {
   display: flex;
   height: 20px;
@@ -62,21 +63,3 @@
   color: $white;
 }
 
-.size17 {
-  width: 17px;
-}
-
-.playList {
-  position: absolute;
-  display: block;
-  bottom: 65px;
-  right: 5px;
-  visibility: visible;
-  opacity: 1;
-  transition: all 0.3s;
-}
-
-.playListHidden {
-  visibility: hidden;
-  opacity: 0;
-}
