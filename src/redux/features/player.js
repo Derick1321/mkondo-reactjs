@@ -16,7 +16,6 @@ const INITIAL_STATE = {
   duration: 0,
   volume: 1,
   newPosition: -1,
-  isPlaylistOpened: false
 };
 
 const playerSlider = createSlice({
@@ -57,9 +56,6 @@ const playerSlider = createSlice({
     updateLoading(state, action) {
       state.isLoading = action.payload;
     },
-    togglePlaylistOpened(state, action) {
-      state.isPlaylistOpened = !state.isPlaylistOpened;
-    },
   },
 });
 
@@ -72,7 +68,6 @@ export const {
   updateLoading,
   updateDuration,
   updateVolume,
-  togglePlaylistOpened,
 } = playerSlider.actions;
 
 // actions
