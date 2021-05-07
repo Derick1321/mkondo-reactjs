@@ -27,20 +27,20 @@ jobs:
     
     - name: Deploy staging
       if: github.ref == 'refs/heads/staging'
-      run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/staging
+      run: sudo cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/staging
       
     - name: Change permissions 
       if: github.ref == 'refs/heads/staging'
-      run: chmod -R 777 /home/mwakatumbula/staging
+      run: sudo chmod -R 777 /home/mwakatumbula/staging
  
       
     - name: Deploy production
       if: github.ref == 'refs/heads/master'
-      run: cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
+      run: sudo cp -r /home/mwakatumbula/deploy/deploy/webapp/webapp/ /home/mwakatumbula/production
       
     - name: Change permissions 
       if: github.ref == 'refs/heads/master'
-      run: chmod -R 777 /home/mwakatumbula/production
+      run: sudo chmod -R 777 /home/mwakatumbula/production
       
   notify:
     name: Notify via Telegram
