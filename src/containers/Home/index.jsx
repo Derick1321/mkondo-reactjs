@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import ScrollMedia from '$components/media/ScrollMedia';
 import Tabs from '$components/common/Tabs';
@@ -24,6 +25,10 @@ const Home = () => {
   const getTrendMediasPending = useSelector((store) => store.media.getTrendMediasPending);
   const favorites = useSelector((store) => store.authentication.user.favourites);
   // const user_id = useSelector((store) => store.authentication.user_id);
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // effects
   useEffect(() => {
@@ -62,70 +67,70 @@ const Home = () => {
       </div>
       <div className={selected !== 'audio' ? 'd-none' : ''}>
         <ScrollMedia
-          title="New Releases"
+          title={t('new_release')}
           values={newReleases.audio}
           isLoading={getNewReleasesPending && newReleases.audio.length < 1}
           name="audio-new-release"
           showHeader
         />
         <ScrollMedia
-          title="Top Medias"
+          title={t('top_chart')}
           values={topMedias.audio}
           isLoading={getTopMediasPending && topMedias.audio.length < 1}
           name="audio-top-medias"
           showHeader
         />
         <ScrollMedia
-          title="Random Medias"
+          title={t('random_medias')}
           values={randomMedias.audio}
           isLoading={getRandomMediasPending && randomMedias.audio.length < 1}
           name="audio-random-medias"
           showHeader
         />
         <ScrollMedia
-          title="Trend Medias"
+          title={t('trend_medias')}
           values={trendMedias.audio}
           isLoading={getTrendMediasPending && trendMedias.audio.length < 1}
           name="audio-trend-medias"
           showHeader
         />
         <ScrollMedia
-          title="Favorite"
+          title={t('favorites')}
           name="audio-favorite"
           values={favorites.filter((item) => item.category === 'audio')}
         />
       </div>
       <div className={selected !== 'video' ? 'd-none' : ''}>
         <ScrollMedia
-          title="New Releases"
+          title={t('new_release')}
           name="video-new-release"
           values={newReleases.video}
           isLoading={getNewReleasesPending && newReleases.video.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Top Medias"
+          title={t('top_chart')}
           name="video-top-medias"
           values={topMedias.video}
           isLoading={getTopMediasPending && topMedias.video.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Random Medias"
+          title={t('random_medias')}
           name="video-random-medias"
           values={randomMedias.video}
           isLoading={getRandomMediasPending && randomMedias.video.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Trend Medias"
+          title={t('trend_medias')}
           name="video-trend-medias"
           values={trendMedias.video}
           isLoading={getTrendMediasPending && trendMedias.video.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Favorite"
+          title={t('favorites')}
           name="video-favorite"
           values={favorites.filter((item) => item.category === 'video')}
           type="video"
@@ -133,35 +138,35 @@ const Home = () => {
       </div>
       <div className={selected !== 'movie' ? 'd-none' : ''}>
         <ScrollMedia
-          title="Theatre"
+          title={t('new_release')}
           name="theatre-new-release"
           values={newReleases.movie}
           isLoading={getNewReleasesPending && newReleases.movie.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Top Medias"
+          title={t('top_chart')}
           name="theatre-top-medias"
           values={topMedias.movie}
           isLoading={getTopMediasPending && topMedias.movie.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Random Medias"
+          title={t('random_medias')}
           name="theatre-random-medias"
           values={randomMedias.movie}
           isLoading={getRandomMediasPending && randomMedias.movie.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Trend Medias"
+          title={t('trend_medias')}
           name="theatre-trend-medias"
           values={trendMedias.movie}
           isLoading={getTrendMediasPending && trendMedias.movie.length < 1}
           type="video"
         />
         <ScrollMedia
-          title="Favorite"
+          title={t('favorites')}
           name="movie-favorite"
           values={favorites.filter((item) => item.category === 'movie')}
           type="video"

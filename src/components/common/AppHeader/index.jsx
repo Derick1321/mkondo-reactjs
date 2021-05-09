@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
+import { useGoogleLogout } from 'react-google-login';
 
 import DropDown from '$components/common/DropDown';
 import TextInput from '$components/common/TextInput';
@@ -19,10 +20,10 @@ import { querySearch } from '$redux/features/nav';
 import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
-
+import { GOOGLE_CLIENT_ID } from '$common/constants';
 const headerMenus = [
   { name: 'account', title: 'My Account', },
-  { name: 'logout', title: 'Log Out', style: styles.optSecondary},
+  { name: 'logout', title: 'Log Out', style: styles.optSecondary },
 ];
 
 const AppHeader = (props) => {
@@ -62,21 +63,29 @@ const AppHeader = (props) => {
   }, [forceClearSearch]);
 
   // This remains same across renders
-	// highlight-starts
-	const debouncedSave = useRef(debounce(nextValue => dispatch(querySearch(nextValue)), 1000)).current;
-	// highlight-ends
+  // highlight-starts
+  const debouncedSave = useRef(debounce(nextValue => dispatch(querySearch(nextValue)), 1000)).current;
+  // highlight-ends
 
   // handler
   const handleChange = (name, value) => {
     setSearch(value);
-		// Even though handleChange is created on each render and executed
-		// it references the same debouncedSave that was created initially
-		debouncedSave(value);
+    // Even though handleChange is created on each render and executed
+    // it references the same debouncedSave that was created initially
+    debouncedSave(value);
   }
+
+  // Google Logout
+  const onLogoutSuccess = res => console.log('[Google Logout Success]');
+  const onFailure = res => console.log('[Google Logout Failure]');
+  const { signOut } = useGoogleLogout({ clientId: GOOGLE_CLIENT_ID, onLogoutSuccess, onFailure });
 
   const handleSelect = (name) => {
     if (name === 'logout') {
       dispatch(logout());
+
+      // Add google Logout
+      signOut();
       return;
     }
 

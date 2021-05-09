@@ -16,7 +16,7 @@ const defaultAvatar = require('$assets/images/profile-user-video.svg');
 
 /////////////////////// ADD /////////////////////////
 const icon_like = require('$assets/images/icons/like-video.svg');
-const icon_comment = require('$assets/images/icons/comment-pencil-video.svg');
+const icon_comment = require('$assets/images/icons/comment-video.svg');
 /////////////////////// END /////////////////////////
 
 const PreviewBkg = styled.div`
@@ -181,8 +181,8 @@ const Preview = (props) => {
               }
             </div>
             <span className="ml-auto">
-              <div className={`text-right`}><b>{likes} Likes</b></div>
-              <div> {plays} Plays</div>
+              <div className={`text-right ${styles.font12}`}><b>{likes} Likes</b></div>
+              <div className={styles.font10}> {plays} Plays</div>
             </span>
             <img src={icon_like} className={styles.bottom_icon} alt="" />
             <img src={icon_comment} className={styles.bottom_icon} alt="" />

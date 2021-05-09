@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import TabMenu from './Menu';
 
 import styles from './index.module.scss';
 
 const initialOptions = [
-  { name: 'audio', title: 'Audios' },
-  { name: 'video', title: 'Videos' },
-  { name: 'movie', title: 'Movies' },
+  { name: 'audio', title: 'audios' },
+  { name: 'video', title: 'videos' },
+  { name: 'movie', title: 'movies' },
 ];
 
 const Tabs = (props) => {
@@ -21,6 +23,10 @@ const Tabs = (props) => {
     activeColor,
   } = props;
 
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // render
   return (
     <>
@@ -29,7 +35,7 @@ const Tabs = (props) => {
         options.map((opt, idx) => (
           <TabMenu
             key={`tab-${name}-${idx}`}
-            title={opt.title}
+            title={t(opt.title)}
             name={opt.name}
             isActive={selected === opt.name}
             onClick={onSelect}

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ScrollMedia from '$components/media/ScrollMedia';
+import GridMedia from '$components/media/GridMedia';
 import Tabs from '$components/common/Tabs';
 
 import { getPopularRecommended } from '$redux/features/media';
 
 import styles from './index.module.scss';
 
-const Home = () => {
+const Recommendation = () => {
     // state
     const [selected, setSelected] = useState('audio');
 
@@ -37,7 +37,7 @@ const Home = () => {
                 />
             </div>
             <div className={selected !== 'audio' ? 'd-none' : ''}>
-                <ScrollMedia
+                <GridMedia
                     title="Recommend Popular Audio"
                     values={audios}
                     isLoading={getPopularRecommendedPending && popularRecommendedMedia.media.length < 1}
@@ -46,7 +46,7 @@ const Home = () => {
                 />
             </div>
             <div className={selected !== 'video' ? 'd-none' : ''}>
-                <ScrollMedia
+                <GridMedia
                     title="Recommend Popular Video"
                     name="video-new-release"
                     values={videos}
@@ -55,16 +55,16 @@ const Home = () => {
                 />
             </div>
             <div className={selected !== 'movie' ? 'd-none' : ''}>
-                <ScrollMedia
+                <GridMedia
                     title="Recommend Popular Movie"
                     name="theatre-new-release"
                     values={movies}
                     isLoading={getPopularRecommendedPending && popularRecommendedMedia.media.length < 1}
-                    type="video"
+                    type="movie"
                 />
             </div>
         </div>
     );
 };
 
-export default Home;
+export default Recommendation;

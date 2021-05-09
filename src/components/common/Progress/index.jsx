@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import './index.scss';
@@ -6,6 +8,10 @@ import './index.scss';
 const Progress = (props) => {
   // props
   const { values, placeholder } = props;
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // state
   const [percentage, setPercentage] = useState(0);
@@ -30,7 +36,7 @@ const Progress = (props) => {
         />
       </div>
       <span className="mx-2">
-        {percentage}% {placeholder}
+        {percentage}% {t(placeholder)}
       </span>
     </div>
   );
@@ -38,7 +44,7 @@ const Progress = (props) => {
 
 Progress.defaultProps = {
   values: {},
-  placeholder: 'Complete',
+  placeholder: 'complete',
 };
 
 Progress.propTypes = {

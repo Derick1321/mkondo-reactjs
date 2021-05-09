@@ -1,6 +1,8 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 // TODO: Refractor the avatarInput with the Drag&Drop
 import styles from './index.module.scss';
@@ -24,6 +26,10 @@ const AvatarInput = (props) => {
 
   // refs
   const fileRef = useRef(null);
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // handlers
   const handleDrop = (ev) => {
@@ -86,11 +92,11 @@ const AvatarInput = (props) => {
             />
           ) : (active ? (
             <p className={`text-center ${styles.dragTitle}`}>
-              Drop Image
+              {t('drop_image')}
             </p>
           ) : (
             <p className="text-center">
-              Drag and Drop your Image Here
+              {t('drag_and_drop_your_image_here')}
             </p>
           ))
         }
@@ -103,7 +109,7 @@ const AvatarInput = (props) => {
             className={styles.avatarBtnIcon}
             alt=""
           />
-          <span>Select Image</span>
+          <span>{t('select_image')} </span>
         </button>
       </div>
       <input

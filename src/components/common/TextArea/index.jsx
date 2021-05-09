@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
 
 import styles from './index.module.scss';
@@ -13,6 +15,10 @@ const TextArea = (props) => {
     title,
   } = props;
 
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // handlers
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -22,14 +28,14 @@ const TextArea = (props) => {
   // render
   return (
     <>
-      <p>{title}</p>
+      <p>{t(title)}</p>
       <div className={styles.formTextAreaWrapper}>
         <textarea
           name={name}
           className={styles.formTextArea}
           value={value}
           onChange={handleChange}
-          placeholder={placeholder}
+          placeholder={t(placeholder)}
         />
       </div>
     </>

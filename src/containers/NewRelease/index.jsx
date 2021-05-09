@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ScrollMedia from '$components/media/ScrollMedia';
+import GridMedia from '$components/media/GridMedia';
 import Tabs from '$components/common/Tabs';
 
 import { getNewReleases } from '$redux/features/media';
@@ -45,7 +45,7 @@ const NewRelease = () => {
         />
       </div>
       <div className={selected !== 'audio' ? 'd-none' : ''}>
-        <ScrollMedia
+        <GridMedia
           title="New Releases"
           values={newReleases.audio}
           isLoading={getNewReleasesPending && newReleases.audio.length < 1}
@@ -54,7 +54,7 @@ const NewRelease = () => {
         />
       </div>
       <div className={selected !== 'video' ? 'd-none' : ''}>
-        <ScrollMedia
+        <GridMedia
           title="New Releases"
           name="video-new-release"
           values={newReleases.video}
@@ -63,7 +63,7 @@ const NewRelease = () => {
         />
       </div>
       <div className={selected !== 'movie' ? 'd-none' : ''}>
-        <ScrollMedia
+        <GridMedia
           title="Theatre"
           name="theatre-new-release"
           values={newReleases.movie}

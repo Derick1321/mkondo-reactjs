@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -15,6 +16,11 @@ import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 import styles from './index.module.scss';
 
 const MediaUpload = () => {
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // state
   const [files, setFiles] = useState([]);
   const [values, setValues] = useState({});
@@ -168,7 +174,7 @@ const MediaUpload = () => {
         {
           files.length > 0 && (
             <>
-              <p className={styles.title}>Track List</p>
+              <p className={styles.title}>{t('track_list')} </p>
               <DraggableList
                 list={files}
                 listElement={UploadCard}
@@ -185,7 +191,7 @@ const MediaUpload = () => {
                   onClick={handleContinue}
                   isLoading={isLoading}
                 >
-                  Continue
+                  {t('continue')}
                 </Button>
               </div>
             </>
