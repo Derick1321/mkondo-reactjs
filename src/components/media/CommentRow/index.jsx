@@ -6,11 +6,14 @@ import { handleFetch } from '$common/requestUtils';
 import { formatDate } from '$common/utils';
 
 import styles from './index.module.scss';
+const icon_delete = require('$assets/images/icons/cancel.svg');
 
 const Avatar = styled.div`
   background-image: url(${props => props.source});
   height: 60px;
   width: 60px;
+  min-width: 60px;
+  background-size: cover;
   border-radius: 50%;
   background-color: #727C7C;
 `;
@@ -22,6 +25,8 @@ const CommentRow = (props) => {
     date,
     value,
     avatarUrl,
+    deleteComment,
+    comment_id,
   } = props;
 
   // store
@@ -35,7 +40,6 @@ const CommentRow = (props) => {
     if (!avatarUrl) {
       return;
     }
-
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatarUrl}`, null, token);
     setUrl(res.response);
   }, [avatarUrl]);
@@ -50,6 +54,7 @@ const CommentRow = (props) => {
          <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
          <p className={styles.text}>{value}</p>
       </div>
+      <img onClick={e => deleteComment(comment_id)} src={icon_delete} className={styles.deleteStyle} />
     </div>
   );
 } 

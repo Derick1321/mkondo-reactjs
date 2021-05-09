@@ -1,5 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '$components/common/Button';
 
@@ -17,6 +19,10 @@ const DragDrop = (props) => {
 
   // state
   const [active, setActive] = useState(false);
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // refs
   const fileRef = useRef(null);
@@ -79,7 +85,7 @@ const DragDrop = (props) => {
           {
             active ? (
               <p className={`text-center ${styles.dragTitle}`}>
-                Drop your files here
+                {t('drop_your_files_here')}
               </p>
             ) : (
               <Button
@@ -93,7 +99,7 @@ const DragDrop = (props) => {
                     src={upIcon}
                     alt=""
                   />
-                  <span>Choose or Drop files to upload</span>
+                  <span>{t('choose_or_drop_files_to_upload')}</span>
                 </div>
               </Button>
             )
