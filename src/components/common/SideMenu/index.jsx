@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useHistory, generatePath } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '$components/common/Button';
 
@@ -10,37 +11,42 @@ import { getPermissions } from '$common/utils';
 import { showModal } from '$redux/features/modal';
 
 import styles from './index.module.scss';
+import { useEffect } from 'react';
 
 const playlistIcon = require('$assets/images/icons/playlist-icon.svg');
 
-const SideMenu = () => {
+const SideMenu = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
   const userRole = useSelector((store) => store.authentication.user.user_type);
   const isPublished = useSelector((store) => store.authentication.user.publish);
   const playlists = useSelector((store) => store.playlist.playlists);
+  
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // icons
   const artistIcons = [
     {
       icon: require('$assets/images/icons/add-artist.svg'),
       activeIcon: require('$assets/images/icons/add-artist-active.svg'),
-      title: 'Add Artist',
+      title: 'add_artist',
       path: routePaths.newArtist,
       permission: 'admin',
     },
     {
       icon: require('$assets/images/icons/stats.svg'),
       activeIcon: require('$assets/images/icons/stats-active.svg'),
-      title: 'Insights',
+      title: 'insights',
       path: routePaths.insights,
       permission: 'media',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),
       activeIcon: require('$assets/images/icons/upload-active.svg'),
-      title: 'Upload Media',
+      title: 'upload_media',
       path: routePaths.newMediaCategory,
       permission: 'artist',
     },
@@ -50,13 +56,13 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/favorite.svg'),
       activeIcon: require('$assets/images/icons/favorite-active.svg'),
-      title: 'Favorites',
+      title: 'favorites',
       path: routePaths.favorites,
     },
     {
       icon: require('$assets/images/icons/history.svg'),
       activeIcon: require('$assets/images/icons/history-active.svg'),
-      title: 'History',
+      title: 'history',
       path: routePaths.history,
     },
   ];
@@ -65,25 +71,25 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/home.svg'),
       activeIcon: require('$assets/images/icons/home-active.svg'),
-      title: 'Home',
+      title: 'home',
       path: routePaths.home,
     },
     {
       icon: require('$assets/images/icons/recommandation.svg'),
       activeIcon: require('$assets/images/icons/recommandation-active.svg'),
-      title: 'Recommendation',
+      title: 'recommendation',
       path: routePaths.recommendation,
     },
     {
       icon: require('$assets/images/icons/calendar.svg'),
       activeIcon: require('$assets/images/icons/calendar-active.svg'),
-      title: 'New Release',
+      title: 'new_release',
       path: routePaths.newRelease,
     },
     {
       icon: require('$assets/images/icons/top-chart.svg'),
       activeIcon: require('$assets/images/icons/top-chart-active.svg'),
-      title: 'Top Chart',
+      title: 'top_chart',
       path: routePaths.topChart,
     },
   ];
@@ -92,14 +98,14 @@ const SideMenu = () => {
     {
       icon: require('$assets/images/icons/top-chart.svg'),
       activeIcon: require('$assets/images/icons/top-chart-active.svg'),
-      title: 'Slider',
+      title: 'slider',
       path: routePaths.slider,
       permission: 'super admin',
     },
     {
       icon: require('$assets/images/icons/top-chart.svg'),
       activeIcon: require('$assets/images/icons/top-chart-active.svg'),
-      title: 'Settings',
+      title: 'settings',
       path: routePaths.configurations,
       permission: 'super admin',
     },
@@ -120,7 +126,7 @@ const SideMenu = () => {
         <p className={styles.headerTitle}>Mkondo</p>
       </div>
       <div className={`d-flex flex-column ${styles.sideMenusWrapper}`}>
-        <p className={styles.sideMenuSubtitle}>Browse</p>
+        <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
         {
           icons.map((item, idx) => (
             <NavLink
@@ -133,12 +139,12 @@ const SideMenu = () => {
                 src={history.location.pathname === item.path ? item.activeIcon : item.icon}
                 className={styles.sideMenuItemIcon}
               />
-              <span>{item.title}</span>
+              <span>{t(item.title)}</span>
             </NavLink>
           ))
         }
         <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>Your Activity</p>
+          <p className={styles.sideMenuSubtitle}>{t('your_activity')}</p>
           {
             userIcons.map((item, idx) => {
               const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
@@ -157,7 +163,7 @@ const SideMenu = () => {
                     src={history.location.pathname === item.path ? item.activeIcon : item.icon}
                     className={styles.sideMenuItemIcon}
                   />
-                  <span>{item.title}</span>
+                  <span>{t(item.title)}</span>
                 </NavLink>
               )
             })
@@ -166,7 +172,7 @@ const SideMenu = () => {
         {
           artistAccess && (
             <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-              <p className={styles.sideMenuSubtitle}>Artist Panel</p>
+              <p className={styles.sideMenuSubtitle}>{t('artist_panel')}</p>
               {
                 artistIcons.map((item, idx) => {
                   const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
@@ -187,7 +193,7 @@ const SideMenu = () => {
                           className={styles.sideMenuItemIcon}
                         />
                       }
-                      <span>{item.title}</span>
+                      <span>{t(item.title)}</span>
                     </NavLink>
                   )
                 })
@@ -198,7 +204,7 @@ const SideMenu = () => {
         {
           adminAccess && (
             <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-              <p className={styles.sideMenuSubtitle}>Admin</p>
+              <p className={styles.sideMenuSubtitle}>{t('admin')}</p>
               {
                 setupRoutes.map((item, idx) => {
                   const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
@@ -217,7 +223,7 @@ const SideMenu = () => {
                         src={history.location.pathname === item.path ? item.activeIcon : item.icon}
                         className={styles.sideMenuItemIcon}
                       />
-                      <span>{item.title}</span>
+                      <span>{t(item.title)}</span>
                     </NavLink>
                   )
                 })
@@ -226,12 +232,12 @@ const SideMenu = () => {
           )
         }
         <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>Your Playlists</p>
+          <p className={styles.sideMenuSubtitle}>{t('your_playlists')}</p>
           <div className="m-4 ">
             <Button
               onClick={handleNewPlaylist}
             >
-              New Playlist
+              {t('new_playlist')}
           </Button>
           </div>
           {

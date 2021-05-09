@@ -83,7 +83,7 @@ const SearchResult = () => {
       <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
         <ScrollMedia
           isLoading={querySearchPending}
-          title="Songs"
+          title="songs"
           values={values.audio}
           type="audio"
           name="search-audio"
@@ -93,7 +93,7 @@ const SearchResult = () => {
       <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
         <ScrollMedia
           isLoading={querySearchPending}
-          title="Videos"
+          title="videos"
           values={values.video}
           name="search-video"
           showHeader
@@ -102,7 +102,7 @@ const SearchResult = () => {
       <div className={`${['all', 'media'].includes(active) ? '' : 'd-none'}`}>
         <ScrollMedia
           isLoading={querySearchPending}
-          title="Movies"
+          title="movies"
           values={values.movie}
           name="search-movie"
           showHeader

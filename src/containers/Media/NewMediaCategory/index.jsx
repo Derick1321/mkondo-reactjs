@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import GenreSelector from '$components/common/GenreSelector';
 import { routePaths } from '$common/routeConfig';
@@ -12,6 +14,10 @@ const NewMediaCategory = () => {
 
   // store
   const history = useHistory();
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // handlers
   const handleNext = () => {
@@ -39,7 +45,7 @@ const NewMediaCategory = () => {
         handleNext={handleNext}
         handleSelect={handleSelect}
         selected={selected}
-        title="What would you like to Upload?"
+        title={t('what_would_you_like_to_upload')}
         type="media"
       />
     </div>

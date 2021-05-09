@@ -11,6 +11,7 @@ const favoriteActive = require('$assets/images/icons/favorite-active.svg');
 const favorite = require('$assets/images/icons/favorite.svg');
 const share = require('$assets/images/icons/share.svg');
 const menu = require('$assets/images/icons/menu.svg');
+const playlist = require('$assets/images/icons/playlist.svg');
 
 const ActionHeader = (props) => {
   // props
@@ -56,7 +57,7 @@ const ActionHeader = (props) => {
     setIsFavorite(!isFavorite);
   }
 
-  const handleMenu = () => {
+  const playListMenu = () => {
     dispatch(showModal('PLAYLIST_MODAL', {
       mediaId,
       title,
@@ -79,11 +80,11 @@ const ActionHeader = (props) => {
         showPlaylist && (
           <button
             className={styles.featurePlayBtn}
-            onClick={handleMenu}
+            onClick={playListMenu}
           >
             <img
-              src={menu}
-              className={styles.menuIcon}
+              src={playlist}
+              className={styles.playlistIcon}
             />
           </button>
         )

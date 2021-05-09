@@ -2,6 +2,8 @@ import React, { useCallback, useRef, useEffect } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '$components/common/Button';
 
@@ -24,6 +26,10 @@ const Scroller = (props) => {
 
   const containerId = `${name}-container`;
   const noMedia = !isLoading && children.length < 1;
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // refs
   const scrollRef = useRef(0);
@@ -93,7 +99,7 @@ const Scroller = (props) => {
           <div className="d-flex align-items-center my-4">
             <div className={`d-flex ${styles.titleWrapper}`}>
               <span className={styles.heading}>
-                {title}
+                {t(title)}
               </span>
             </div>
             <div className="d-flex justify-content-end">
@@ -123,7 +129,7 @@ const Scroller = (props) => {
       {
         noMedia
         && (
-          <div className={styles.no_media}>No media available.</div>
+          <div className={styles.no_media}>{t('no_media_available')}</div>
         )
       }
       <div
