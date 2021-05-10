@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import PropTypes from 'prop-types';
 import { useGoogleLogout } from 'react-google-login';
+import { useTranslation } from 'react-i18next';
 
 import DropDown from '$components/common/DropDown';
 import TextInput from '$components/common/TextInput';
@@ -27,6 +28,11 @@ const headerMenus = [
 ];
 
 const AppHeader = (props) => {
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // props
   const { showSearch } = props;
 
@@ -111,7 +117,7 @@ const AppHeader = (props) => {
           showSearch && (
             <TextInput
               name="search"
-              placeholder="Search"
+              placeholder={t('search')}
               value={search}
               onChange={handleChange}
               customWrapperClass={styles.appHeaderInput}
