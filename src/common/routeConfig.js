@@ -1,5 +1,7 @@
 import Marketing from '$containers/Marketing';
 import Home from '$containers/Home';
+import Recommendation from '$containers/Recommendation';
+import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
 import Main from '$containers/Main';
 import Media from '$containers/Media';
@@ -26,6 +28,7 @@ import { EditSliderForm } from '../containers/Slider/EditSliderForm';
 import { ViewSlider } from '../containers/Slider/ViewSlider';
 import { Configuration } from '../containers/Configuration';
 import { Sliders } from '../containers/Configuration/Sliders';
+import TopMedias from '../containers/TopMedias';
 
 export const routePaths = {
   main: '/app',
@@ -132,19 +135,19 @@ export const routes = [
       {
         ...defaultConfig,
         path: routePaths.recommendation,
-        component: Home,
+        component: Recommendation,
         redirect: redirectFunctions.app
       },
       {
         ...defaultConfig,
         path: routePaths.newRelease,
-        component: Home,
+        component: NewRelease,
         redirect: redirectFunctions.app
       },
       {
         ...defaultConfig,
         path: routePaths.topChart,
-        component: Home,
+        component: TopMedias,
         redirect: redirectFunctions.app
       },
       {
