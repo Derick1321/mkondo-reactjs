@@ -1,0 +1,13 @@
+.wrapper {
+    background-color: #333;
+    color: #aaa;
+    padding: 5px 3px 5px 3px;
+    border-radius: 8px 0 0 8px;
+    border: 1px solid #000;
+    box-shadow: 2px 2px 3px #111;
+    opacity: 0.8;
+}
+
+.wrapper:hover {
+    opacity: 1;
+}

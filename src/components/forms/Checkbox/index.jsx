@@ -1,5 +1,8 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+
 
 const Checkbox = (props) => {
   // props
@@ -9,6 +12,10 @@ const Checkbox = (props) => {
     onChange,
     value,
   } = props;
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // handlers
   const handleChange = (evt) => {
@@ -32,7 +39,7 @@ const Checkbox = (props) => {
           className="form-check-label"
           htmlFor="gridCheck"
         >
-          {title}
+          {t(title)}
         </label>
       </div>
     </div>

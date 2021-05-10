@@ -1,5 +1,6 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Preview from '$components/common/Preview';
 import { showModal } from '$redux/features/modal';
@@ -10,6 +11,10 @@ const TopPreview = (props) => {
     values,
     isLoading,
   } = props;
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // store
   const dispatch = useDispatch();
@@ -25,7 +30,7 @@ const TopPreview = (props) => {
       {
         isLoading && (
           <p className="text-center">
-            Loading ...
+            {t('loading')}
           </p>
         )
       }

@@ -47,8 +47,6 @@ const Player = () => {
 
   const dispatch = useDispatch();
 
-  console.log(similarRecommendedMedia);
-
   useEffect(() => {
     dispatch(getSimilarRecommended(user_id));
   }, []);
@@ -154,8 +152,8 @@ const Player = () => {
       <div className={`${styles.playList} ${!isPlaylistOpened ? styles.playListHidden : ""}`}>
         <ul className="list-group">
           {
-            similarRecommendedMedia.media.length > 0 ? similarRecommendedMedia.media.map(item => 
-              <li className="list-group-item">{item.name}</li>
+            similarRecommendedMedia.media.length > 0 ? similarRecommendedMedia.media.map((item, index) => 
+              <li key={index} className="list-group-item">{item.name}</li>
             ) : <h4>No Item</h4>
           }
         </ul>
