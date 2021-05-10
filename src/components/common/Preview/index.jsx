@@ -12,6 +12,12 @@ import { handleFetch } from '$common/requestUtils';
 import styles from './index.module.scss';
 
 const playBtn = require('$assets/images/icons/play.svg');
+const defaultAvatar = require('$assets/images/profile-user-video.svg');
+
+/////////////////////// ADD /////////////////////////
+const icon_like = require('$assets/images/icons/like-video.svg');
+const icon_comment = require('$assets/images/icons/comment-pencil-video.svg');
+/////////////////////// END /////////////////////////
 
 const PreviewBkg = styled.div`
   height: 100%;
@@ -23,7 +29,18 @@ const PreviewBkg = styled.div`
   transform: scale(${props => props.isActive ? 1.3 : 1});
   transform-origin: center;
   background-image: url(${props => props.source});
-  background-color: black;
+  background-color: #514E4E;
+`;
+
+const FeatureAvatar = styled.div`
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 80px;
+  width: 80px;
+  border-radius: 40px;
+  margin-right: 10px;
+  background-size: cover;
+  background-image: url(${props => props.source}); 
 `;
 
 const Preview = (props) => {
@@ -31,37 +48,54 @@ const Preview = (props) => {
   const {
     title,
     description,
+    avatar,
     source,
     onClick,
     isAvatarLoaded,
     hideHeader,
     mediaId,
+    artistId,
+
+    likes,
+    plays
   } = props;
 
   // state
   const [isActive, setIsActive] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [sourceUrl, setSourceUrl] = useState('');
 
   // props
-  const token = useSelector((store) => store.authentication.token);
+  const userToken = useSelector((store) => store.authentication.token);
   const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const history = useHistory();
 
+  // const source = useSelector((store) => store.authentication.user.avatar_url);
+
+  const token = userToken || visitorToken;
+
   // effects
   useEffect(async () => {
-    if (!source) {
+    if (!avatar) {
       return;
     }
 
     if (isAvatarLoaded) {
-      setAvatarUrl(source)
+      setAvatarUrl(avatar)
       return;
     }
 
     // TODO: use stage to determine and update the relevant token
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token || visitorToken);
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, userToken || visitorToken);
     setAvatarUrl(res.response);
-  }, [source]);
+
+    // Source URL
+    handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token)
+      .then((res) => {
+        setSourceUrl(res.response);
+      });
+
+  }, [avatar]);
 
   // handler
   const handleFocus = () => {
@@ -79,6 +113,10 @@ const Preview = (props) => {
     }
 
     history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+  }
+
+  const handleArtistView = () => {
+    history.push(generatePath(routePaths.viewArtist, { id: artistId }));
   }
 
   // render
@@ -115,12 +153,42 @@ const Preview = (props) => {
           />
         </button>
       </div>
-      {
-        title && <p className={`${styles.title} text-left`}>{title}</p>
-      }
-      {
-        description && <p className={`${styles.description} text-left`}>{description}</p>
-      }
+      <div className="container">
+        <div className={styles.featureContentWrapper}>
+
+          <div>
+            {
+              title && <p className={`${styles.title} text-left`}>{title}</p>
+            }
+            {
+              description && <p className={`${styles.description} text-left`}>{description}</p>
+            }
+          </div>
+          <div className="d-flex flex-col">
+            <div onClick={handleArtistView}>
+              {
+                source ? (
+                  <FeatureAvatar
+                    source={sourceUrl}
+                    className={styles.realFeatureAvater}
+                  />
+                ) : (
+                  <img
+                    src={defaultAvatar}
+                    className={styles.defaultFeatureAvatar}
+                  />
+                )
+              }
+            </div>
+            <span className="ml-auto">
+              <div className={`text-right`}><b>{likes} Likes</b></div>
+              <div> {plays} Plays</div>
+            </span>
+            <img src={icon_like} className={styles.bottom_icon} alt="" />
+            <img src={icon_comment} className={styles.bottom_icon} alt="" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
