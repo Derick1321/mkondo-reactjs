@@ -14,6 +14,7 @@ import {
   getComment,
   getRecommended,
   getMedia,
+  deleteComment,
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
@@ -42,6 +43,8 @@ const ViewMedia = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const addCommentPending = useSelector((store) => store.media.addCommentPending);
   const addCommentComplete = useSelector((store) => store.media.addCommentComplete);
+  const deleteCommentPending = useSelector((store) => store.media.deleteCommentPending);
+  const deleteCommentComplete = useSelector((store) => store.media.deleteCommentComplete);
   const comments = useSelector((store) => store.media.comments);
   const currentMedia = useSelector((store) => store.media.currentMedia);
 
@@ -54,7 +57,7 @@ const ViewMedia = () => {
     dispatch(getMedia(mediaId));
     dispatch(getComment(mediaId));
     dispatch(getRecommended(userId));
-  }, [addCommentComplete, mediaId]);
+  }, [addCommentComplete, deleteCommentComplete, mediaId]);
 
   // handlers
   const handleSelect = (item) => {
@@ -66,11 +69,17 @@ const ViewMedia = () => {
   }
 
   const handleAddComment = () => {
+    if(value == "") return;
     dispatch(addComment({
       media_id: mediaId,
       user_id: userId,
       value,
     }));
+  }
+
+  const handleDeleteComment = (commentId) => {
+    if(!confirm("Are you going to delete this item?")) return;
+    dispatch(deleteComment(commentId));
   }
 
   const commentPane = (
@@ -90,8 +99,9 @@ const ViewMedia = () => {
           isLoading={addCommentPending}
           isCustom
           hideDefault
+          style="btn btn-primary"
         >
-          Comment
+          Add
         </Button>
       </div>
       <div className="d-flex flex-column">
@@ -103,6 +113,8 @@ const ViewMedia = () => {
               date={comment.modified}
               value={comment.value}
               avatarUrl={comment.avatar_user_url}
+              comment_id={comment.comment_id}
+              deleteComment={handleDeleteComment}
             />
           ))
         }

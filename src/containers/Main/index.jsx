@@ -56,7 +56,7 @@ const Main = (props) => {
         <SideMenu />
       </div>
       <div className={styles.content}>
-        <AppHeader />
+        <AppHeader/>
         <Switch>
           {
             routes.map((route, i) => (

@@ -1,15 +1,23 @@
 @import '$assets/scss/main.scss';
-
 .text {
-  font-size: 14px;
-  color: $secondary-black;
+    font-size: 14px;
+    color: $secondary-black;
 }
 
 .date {
-  font-size: 10px;
-  color: $tertiary-gray;
+    font-size: 10px;
+    color: $tertiary-gray;
 }
 
 .row {
-  margin: 1rem 0;
+    margin: 1rem 0;
+}
+
+.deleteStyle {
+    width: 15px;
+    margin-left: auto;
+}
+
+.deleteStyle:hover {
+    cursor: pointer;
 }

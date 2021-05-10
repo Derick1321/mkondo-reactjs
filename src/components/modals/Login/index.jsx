@@ -6,6 +6,8 @@ import Button from '$components/common/Button';
 import TextInput from '$components/common/TextInput';
 import InfoPane from '$components/authentication/Info';
 import Alert from '$components/authentication/Alert';
+import GoogleLoginComponent from '$components/modals/GoogleLoginComponent';
+import FacebookLoginComponent from '$components/modals/FacebookLoginComponent';
 
 import { showModal } from '$redux/features/modal';
 import { login } from '$redux/features/authentication';
@@ -48,19 +50,17 @@ const LoginModal = () => {
     });
   };
 
-  const handleForgotPassword = () => {
-    dispatch(showModal('FORGOT_PASSWORD_MODAL'));
-  };
+  const handleForgotPassword = () => { dispatch(showModal('FORGOT_PASSWORD_MODAL')); };
 
-  const handleSignUp = () => {
-    dispatch(showModal('SIGNUP_MODAL'));
-  };
+  const handleSignUp = () => { dispatch(showModal('SIGNUP_MODAL')); };
 
   const handleSignIn = () => {
     const { email, password } = values;
     dispatch(login({
+      login_strategy: 'local',
       username: email,
       password,
+      tokenId: null
     }));
   };
 
@@ -102,6 +102,10 @@ const LoginModal = () => {
                 Login
               </Button>
             </div>
+
+            <GoogleLoginComponent></GoogleLoginComponent>
+            <FacebookLoginComponent></FacebookLoginComponent>
+
             <div className="d-flex justify-content-center my-2">
               <Button
                 onClick={handleForgotPassword}

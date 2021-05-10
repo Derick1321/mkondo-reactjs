@@ -11,8 +11,8 @@ import { generatePreview } from '$common/utils';
 import styles from './index.module.scss';
 
 const options = [
-  { name: 'basic', title: 'Basic' },
-  { name: 'metadata', title: 'Metadata' },
+  { name: 'basic', title: 'basic' },
+  { name: 'metadata', title: 'metadata' },
 ]
 
 const NewItem = (props) => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorBoundary } from 'react-error-boundary';
+import { useTranslation } from 'react-i18next';
 
 import RouteWithSubRoutes from '$components/common/RouteWithSubRoutes';
 import ModalRoot from '$components/modals/ModalRoot';
@@ -17,6 +18,8 @@ import NotFound from '$containers/NotFound';
 import { setInitialNav, toggleIsMobile } from '$redux/features/nav';
 
 import { routes, routePaths } from '$common/routeConfig';
+import styles from './index.module.scss';
+import LangBar from '../../components/common/LangBar';
 
 const App = () => {
   // store
@@ -24,21 +27,24 @@ const App = () => {
   const isMobile = useSelector((store) => store.nav.isMobile);
   const dispatch = useDispatch();
 
+  // I18n initial setting
+  const { t, i18n } = useTranslation('common');
+  const [constructorHasRun, setConstructorHasRun] = useState(false);
+  const constructor = () => {
+    if (constructorHasRun) return;
+    i18n.changeLanguage('en')
+    setConstructorHasRun(true);
+  };
+
   // handler
   const preventDefault = (evt) => {
     evt.preventDefault();
   }
 
   const getWindowDimensions = () => {
-    const {
-      innerWidth: width,
-      innerHeight: height
-    } = window;
+    const { innerWidth: width, innerHeight: height } = window;
 
-    return {
-      width,
-      height
-    };
+    return { width, height };
   }
 
   const handleResize = () => {
@@ -47,12 +53,13 @@ const App = () => {
       dispatch(toggleIsMobile(true));
       return;
     }
-
     dispatch(toggleIsMobile(false));
   }
 
   // effects
   useEffect(() => {
+    constructor();
+
     window.addEventListener("dragover", preventDefault, false);
     window.addEventListener("drop", preventDefault, false);
     window.addEventListener('resize', handleResize);
@@ -82,6 +89,9 @@ const App = () => {
       <ErrorBoundary
         FallbackComponent={NotFound}
       >
+        <div className={styles.langBar}>
+           <LangBar />
+        </div>
         <Switch>
           {
             routes.map((route, i) => (
