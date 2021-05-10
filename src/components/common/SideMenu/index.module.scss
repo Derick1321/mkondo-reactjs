@@ -2,12 +2,40 @@
 
 .sideMenu {
   position: relative;
-  background-color: $black;
+  background-color: #222;
   height: 100%;
   width: 100%;
   padding: 3rem 1rem 1rem 0rem;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden
 }
+
+//////////////////// ADD ///////////////////////
+.sideMenu::-webkit-scrollbar {
+  width: 15px;
+}
+
+.sideMenu::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+.sideMenu::-webkit-scrollbar-thumb {
+  background: #333;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.sideMenu::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+.sideMenu::-webkit-scrollbar-corner {
+  background: transparent !important;
+}
+
+////////////////////// END //////////////////////
+
 
 // TODO: move typography into scss files
 .headerTitle {
@@ -64,7 +92,7 @@
 }
 
 .logoWrapper {
-  background-color: #000000;
+  background-color: #222;
   width: 220px;
   height: 5rem;
   top: 0;
