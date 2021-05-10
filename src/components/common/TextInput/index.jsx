@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import styles from './index.module.scss';
 
@@ -24,6 +26,10 @@ const TextInput = (props) => {
     onIconClick,
   } = props;
 
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // handlers
   const handleChange = (evt) => {
     const { value } = evt.target;
@@ -33,7 +39,7 @@ const TextInput = (props) => {
   // render
   return (
     <>
-      <p>{title}</p>
+      <p>{t(title)}</p>
       <div className={`d-flex justify-content-center align-items-center ${styles.textInputContainer} ${customWrapperClass}`}>
         <input
           name={name}
@@ -42,7 +48,7 @@ const TextInput = (props) => {
           onChange={handleChange}
           onFocus={onFocus}
           value={value}
-          placeholder={placeholder}
+          placeholder={t(placeholder)}
           disabled={disabled}
         />
         {

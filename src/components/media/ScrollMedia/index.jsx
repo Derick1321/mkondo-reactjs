@@ -32,6 +32,7 @@ const ScrollMedia = (props) => {
           title={item.name}
           country={item.country}
           category={item.category}
+          description={item.description}
 
           likes={item.likes}
           plays={item.plays}

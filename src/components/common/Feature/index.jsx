@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, generatePath } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 
 import ActionHeader from '$components/media/ActionHeader';
 import PlayBtn from '$components/media/PlayBtn';
@@ -18,7 +19,7 @@ const defaultAvatar = require('$assets/images/profile-user.svg');
 
 /////////////////////// ADD /////////////////////////
 const icon_like = require('$assets/images/icons/like.svg');
-const icon_comment = require('$assets/images/icons/comment-pencil.svg');
+const icon_comment = require('$assets/images/icons/comment.svg');
 /////////////////////// END /////////////////////////
 
 const commonStyle = `
@@ -60,6 +61,7 @@ const Feature = (props) => {
     country,
     category,
     showHeader,
+    description,
 
     likes,
     plays
@@ -71,6 +73,10 @@ const Feature = (props) => {
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   // const source = useSelector((store) => store.authentication.user.avatar_url);
 
@@ -148,7 +154,7 @@ const Feature = (props) => {
       {
         showHeader && (
           <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
-            <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>FEATURE</div>
+            <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>{t('feature')} </div>
             <ActionHeader
               mediaId={mediaId}
               country={country}
@@ -162,7 +168,7 @@ const Feature = (props) => {
       <div className={`d-flex w-100 ${styles.featurePane}`}>
             <div className={styles.featureContentWrapper}>
               <div className="d-flex">
-              <div onClick={handleArtistView}>
+              <div className={styles.hoverCursor} onClick={handleArtistView}>
               {
                 source ? (
                   <FeatureAvatar
@@ -186,18 +192,18 @@ const Feature = (props) => {
               />
             </button>
             <div className={`d-flex flex-column ${styles.featureSummary}`}>
-              <span onClick={handleView} className={styles.fontSize16}><b>{title}</b></span>
-              <span className={styles.subtitle} onClick={handleArtistView}>{subtitle}</span>
+              <span className={styles.fontSize16}><b>{title}</b></span>
+              <span className={styles.description}>{description}</span>
             </div>
             
           </div>
           <div className="d-flex flex-row">
               <span className="ml-auto">
-                <div className={`text-white text-right ${styles.fontSize12}`}><b>{likes} Likes</b></div>
-                <div className={`text-white ${styles.fontSize10}`}> {plays} Plays</div>
+                <div className={`text-white-50 text-right ${styles.fontSize12}`}><b>{likes} {t('likes')}</b></div>
+                <div className={`text-white-50 ${styles.fontSize10}`}> {plays} {t('plays')} </div>
               </span>
-              <img src={icon_like} className={styles.bottom_icon} alt=""/>
-              <img src={icon_comment} className={styles.bottom_icon} alt=""/>
+              <img onClick={handleArtistView} src={icon_like} className={`${styles.bottom_icon} ${styles.hoverCursor}`} alt=""/>
+              <img onClick={handleView} src={icon_comment} className={`${styles.bottom_icon} ${styles.hoverCursor}`} alt=""/>
             </div>
         </div>
       </div>

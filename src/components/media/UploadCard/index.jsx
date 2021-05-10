@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '$components/common/Button';
 import Progress from '$components/common/Progress';
@@ -39,6 +41,10 @@ const UploadCard = (props) => {
   } = props;
   const values = allFields[name];
 
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   // state
   const [isOpen, setIsOpen] = useState(false);
 
@@ -74,7 +80,7 @@ const UploadCard = (props) => {
           <div>{name} | {size}</div>
           <Progress
             values={status[name] || initialStatus}
-            placeholder="Uploading"
+            placeholder={t('uploading')}
           />
         </div>
         <div>
@@ -105,7 +111,7 @@ const UploadCard = (props) => {
                 style={styles.deleteBtn}
                 onClick={() => onRemove(index)}
               >
-                Remove
+                {t('remove')}
               </Button>
               <Button
                 onClick={handleClose}
@@ -113,7 +119,7 @@ const UploadCard = (props) => {
                 isCustom
                 hideDefault
               >
-                Close
+                {t('close')}
               </Button>
             </div>
           </div>

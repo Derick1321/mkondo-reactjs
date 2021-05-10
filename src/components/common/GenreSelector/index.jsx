@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 import Button from '$components/common/Button';
 import menus, { newMedia } from './menus';
@@ -18,6 +20,10 @@ const GenreSelector = (props) => {
     title,
     subtitle,
   } = props;
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
   const source = type === 'media' ? newMedia : menus;
 
@@ -53,7 +59,7 @@ const GenreSelector = (props) => {
                       alt=""
                     />
                   </div>
-                  <span>{menu.title}</span>
+                  <span>{t(menu.title)}</span>
                 </div>
               )
             })
@@ -64,7 +70,7 @@ const GenreSelector = (props) => {
             onClick={handleNext}
             icon="next"
           >
-            Continue
+            {t('continue')}
           </Button>
         </div>
       </div>
