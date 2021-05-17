@@ -116,8 +116,6 @@ const authenticationSlice = createSlice({
             state.loginError = null;
         },
         [login.fulfilled]: (state, action) => {
-            console.log(action.payload);
-
             return {
                 ...state,
                 ...handleAuthentication(action.payload),
@@ -127,8 +125,11 @@ const authenticationSlice = createSlice({
             };
         },
         [login.rejected]: (state, action) => {
+            let err = action.error.message;
+            err = JSON.parse(err);
+            console.log(err);
             state.loginPending = false;
-            state.loginError = action.error;
+            state.loginError = err.message;
             state.loginComplete = false;
         },
         [signup.pending]: (state, action) => {
