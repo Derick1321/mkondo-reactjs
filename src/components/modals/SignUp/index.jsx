@@ -7,7 +7,7 @@ import Button from '$components/common/Button';
 import TextInput from '$components/common/TextInput';
 import InfoPane from '$components/authentication/Info';
 import InputField from '$components/forms/InputField';
-
+import FacebookSignUpButton from '$components/modals/SignUp/FacebookSignUpButton/index'
 import { showModal, hideModal } from '$redux/features/modal';
 import { signup } from '$redux/features/authentication';
 
@@ -155,7 +155,7 @@ const SignupModal = () => {
               }}
               onChange={handleChange}
             />
-            <div className="d-flex justify-content-center my-2">
+            <div className="my-2">
               <Button
                 onClick={handleSignUp}
                 isLoading={signupPending}
@@ -164,6 +164,7 @@ const SignupModal = () => {
               >
                 Sign Up
               </Button>
+              <FacebookSignUpButton />
             </div>
             <div className="d-flex align-items-center justify-content-center my-4">
               <span>Have an account? </span>
