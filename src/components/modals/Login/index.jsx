@@ -70,7 +70,7 @@ const LoginModal = () => {
       {
         error && (
           <Alert
-            content="Failed to login. Try again"
+            content={error}
             type="error"
           />
         )

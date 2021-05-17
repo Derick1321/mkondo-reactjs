@@ -35,7 +35,7 @@ const GoogleLoginComponent = (props) => {
 
     const onSuccess = (res) => {
         console.log('[Login success] currentUser: ', res.profileObj.email);
-        refreshTokenSetup(res);
+        (res);
 
         dispatch(login({
             login_strategy: 'google',
