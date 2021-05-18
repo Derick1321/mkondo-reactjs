@@ -16,3 +16,23 @@
 .heroSubHeading {
   color: $secondary-gray;
 }
+
+.heroSliderLoader {
+  height: '300px';
+  background: blue;
+}
+
+.sliderWrapper {
+  animation-name: displaySlider;
+  animation-duration: 300ms;
+  animation-timing-function: ease-in;
+}
+
+@keyframes displaySlider {
+  from {
+    transform: translate(-100%, 0) scale(0);
+  }
+  to {
+    transform: translate(0,0) scale(1);
+  }
+}

@@ -114,13 +114,13 @@ const Marketing = () => {
   // render
   return (
     <div className={`container-fluid h-100 ${styles.wrapper}`}>
-      <div className="row w-100">
+      <div className={`row w-100 ${styles.transform}`}>
         <div className="col-12 col-sm-8 offset-sm-2">
           <Header />
           <Hero
             source={selected}
           />
-          <div className="mt-4">
+          <div className={`mt-4`}>
             <Tabs
               onSelect={handleSelect}
               selected={selected}
