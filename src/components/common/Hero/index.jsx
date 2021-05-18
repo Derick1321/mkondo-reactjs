@@ -89,29 +89,33 @@ const Hero = (props) => {
 
   if (homeSliderItems.length) {
     return (
-      <div>
+      <div className={`${styles.sliderWrapper}`}>
         <Carousel items={sliderItems} aspect_ratio_x={home_slider.aspect_ratio_x} aspect_ratio_y={home_slider.aspect_ratio_y} />
       </div>
     )
   }
 
-  // render
   return (
-    <div className="row align-items-center">
-      <div className="col-12 col-md-6">
-        <p className={styles.heroHeading}>Mkondo entertainment platform</p>
-        <p className={`${styles.heroSubHeading} pb-4`}>Bringing Entertainment to your door step</p>
-        <Button onClick={handlePlay}>Play</Button>
-      </div>
-      <div className="col-12 col-md-6">
-        {
-          source === 'audio' ?
-            <Audio /> :
-            <Video />
-        }
-      </div>
-    </div>
-  );
+    <div className={`${styles.heroSliderLoader}`}></div>
+  )
+
+  // // render
+  // return (
+  //   <div className="row align-items-center">
+  //     <div className="col-12 col-md-6">
+  //       <p className={styles.heroHeading}>Mkondo entertainment platform</p>
+  //       <p className={`${styles.heroSubHeading} pb-4`}>Bringing Entertainment to your door step</p>
+  //       <Button onClick={handlePlay}>Play</Button>
+  //     </div>
+  //     <div className="col-12 col-md-6">
+  //       {
+  //         source === 'audio' ?
+  //           <Audio /> :
+  //           <Video />
+  //       }
+  //     </div>
+  //   </div>
+  // );
 };
 
 Hero.defaultProps = {
