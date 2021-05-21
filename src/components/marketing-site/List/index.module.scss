@@ -1,25 +1,26 @@
 @import '$assets/scss/main.scss';
-
 .listNumWrapper {
-  color: $secondary-green;
-  font-size: $normal-text;
-  border: 1px solid $secondary-green;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin-right: 2rem;
+    color: #FC0135;
+    font-size: 1.5rem;
+    border: 2px solid #FC0135;
+    border-radius: 50%;
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    margin-right: 2rem;
 }
 
 .listHeader {
-  color: $secondary-green;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+    color: #FC0135;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
 }
 
 .listContentWrapper {
-  margin-right: 2rem;
+    margin-right: 2rem;
 }
 
 .listDescription {
-  color: $white;
+    color: $white;
+    font-size: 15px;
 }
