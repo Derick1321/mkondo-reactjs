@@ -14,29 +14,41 @@ import { async } from 'regenerator-runtime';
 import { Carousel } from '../Carousel';
 import { handleFetch } from '../../../common/requestUtils';
 
-const audioBkg = require('$assets/images/audio-bkg.png');
-const videoBkg = require('$assets/images/video-bkg.png');
+// const audioBkg = require('$assets/images/audio-bkg.png');
+// const videoBkg = require('$assets/images/video-bkg.png');
 
-const commonStyles = `
-  height: 360px;
+const logo = require('$assets/images/logo.png');
+
+// const commonStyles = `
+//   height: 360px;
+//   background-position: center;
+//   background-size: contain;
+//   background-repeat: no-repeat;
+// `;
+
+// const Audio = styled.div`
+//   background-image: url(${audioBkg});
+//   ${commonStyles}    
+// `;
+
+// const Video = styled.div`
+//   background-image: url(${videoBkg});
+//   ${commonStyles}    
+// `;
+
+const Logo = styled.div`
+  background-image: url(${logo});
+  background-size: 130px 130px;
   background-position: center;
-  background-size: contain;
   background-repeat: no-repeat;
-`;
-
-const Audio = styled.div`
-  background-image: url(${audioBkg});
-  ${commonStyles}    
-`;
-
-const Video = styled.div`
-  background-image: url(${videoBkg});
-  ${commonStyles}    
+  height: 130px;
+  width: 130px;
+  position: absolute;
+  left: 70px;
+  top: 30px;
 `;
 
 const Hero = (props) => {
-  // props
-  const { source } = props;
 
   //state
   const [sliderItems, setSliderItems] = useState([])
@@ -97,19 +109,8 @@ const Hero = (props) => {
 
   // render
   return (
-    <div className="row align-items-center">
-      <div className="col-12 col-md-6">
-        <p className={styles.heroHeading}>Mkondo entertainment platform</p>
-        <p className={`${styles.heroSubHeading} pb-4`}>Bringing Entertainment to your door step</p>
-        <Button onClick={handlePlay}>Play</Button>
-      </div>
-      <div className="col-12 col-md-6">
-        {
-          source === 'audio' ?
-            <Audio /> :
-            <Video />
-        }
-      </div>
+    <div className={styles.heroWrapper}>
+      <Logo />
     </div>
   );
 };
