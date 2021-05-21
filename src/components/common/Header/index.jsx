@@ -41,9 +41,6 @@ const Header = () => {
   // render
   return (
     <div className={`d-flex ${styles.wrapper}`}>
-      <div className={styles.panel}>
-        <p className={styles.title}>Mkondo</p>
-      </div>
       <div className="d-block d-sm-none">
         <HamburgerMenu />
       </div>

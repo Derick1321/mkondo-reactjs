@@ -74,35 +74,13 @@ const ActionHeader = (props) => {
   // render
   return (
     <div className="d-flex">
-      {
-        showPlaylist && (
-          <button
-            className={styles.featurePlayBtn}
-            onClick={playListMenu}
-          >
-            <img
-              src={playlist}
-              className={styles.playlistIcon}
-            />
-          </button>
-        )
-      }
-      <button
-        className={styles.featurePlayBtn}
-        onClick={handleFavorite}
-      >
-        <img
-          src={isFavorite ? favoriteActive : favorite}
-          className=""
-        />
-      </button>
       <button
         className={styles.featurePlayBtn}
         onClick={handleShare}
       >
         <img
           src={share}
-          className=""
+          className={styles.shareIcon}
         />
       </button>
     </div>

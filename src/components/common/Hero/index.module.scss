@@ -1,38 +1,19 @@
 @import '$assets/scss/main.scss';
-
 .heroWrapper {
-  display: flex;
-  flex: 1;
-  height: 280px;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../../assets/images/background.png');
+    background-size: cover;
+    background-position: center;
 }
 
 .heroHeading {
-  font-family: Poppins;
-  font-weight: 700;
-  font-size: $heading;
-  color: $primary-gray;
+    font-family: Poppins;
+    font-weight: 700;
+    font-size: $heading;
+    color: $primary-gray;
 }
 
 .heroSubHeading {
-  color: $secondary-gray;
-}
-
-.heroSliderLoader {
-  height: '300px';
-  background: blue;
-}
-
-.sliderWrapper {
-  animation-name: displaySlider;
-  animation-duration: 300ms;
-  animation-timing-function: ease-in;
-}
-
-@keyframes displaySlider {
-  from {
-    transform: translate(-100%, 0) scale(0);
-  }
-  to {
-    transform: translate(0,0) scale(1);
-  }
+    color: $secondary-gray;
 }
