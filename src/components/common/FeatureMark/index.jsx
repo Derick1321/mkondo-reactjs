@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 
-import ActionHeader from '$components/media/ActionHeader';
-import PlayBtn from '$components/media/PlayBtn';
+import ActionHeaderMark from '$components/media/ActionHeaderMark';
+import PlayBtnMark from '$components/media/PlayBtnMark';
 import { addLikes, removeLikes } from '$redux/features/user';
 
 import { handleFetch } from '$common/requestUtils';
@@ -16,10 +16,12 @@ import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
-const defaultAvatar = require('$assets/images/profile-user.svg');
-const icon_like = require('$assets/images/icons/like.svg');
-const icon_like_full = require('$assets/images/icons/like-full.svg');
-const icon_comment = require('$assets/images/icons/comment.svg');
+// const defaultAvatar = require('$assets/images/profile-user.svg');
+// const icon_like = require('$assets/images/icons/like.svg');
+// const icon_like_full = require('$assets/images/icons/like-full.svg');
+// const icon_comment = require('$assets/images/icons/comment.svg');
+
+const logo_icon = require('$assets/images/logo_icon.png');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -182,8 +184,10 @@ const Feature = (props) => {
         {
           showHeader && (
             <div className={`d-flex justify-content-between mt-2 px-2 ${styles.featureHeaderWrapper}`}>
-              <div className={`px-2 ${styles.featureHeaderWrapperTitle}`}>{t('feature')} </div>
-              <ActionHeader
+              <div className={`px-2`}>
+                <img className={styles.logo_icon} src={logo_icon} alt="" />
+              </div>
+              <ActionHeaderMark
                 mediaId={mediaId}
                 country={country}
                 title={title}
@@ -196,26 +200,10 @@ const Feature = (props) => {
         <div className={`d-flex w-100 ${styles.featurePane}`}>
           <div className={styles.featureContentWrapper}>
             <div className="d-flex">
-              <div className={styles.hoverCursor} onClick={handleArtistView}>
-                {
-                  source ? (
-                    <FeatureAvatar
-                      source={sourceUrl}
-                      className={styles.realFeatureAvater}
-                      onClick={handleArtistView}
-                    />
-                  ) : (
-                    <img
-                      src={defaultAvatar}
-                      className={styles.defaultFeatureAvatar}
-                    />
-                  )
-                }
-              </div>
               <button
                 className={styles.featurePlayBtn}
                 onClick={handlePlay} >
-                <PlayBtn
+                <PlayBtnMark
                   isLoading={isLoading && currentMediaId === mediaId}
                   isPlaying={isPlaying && currentMediaId === mediaId}
                 />
@@ -227,13 +215,11 @@ const Feature = (props) => {
 
             </div>
             <div className="d-flex flex-row">
-              <span className="ml-auto">
-                <div className={`text-white-50 text-right ${styles.fontSize12}`}><b>{likes} {t('likes')}</b></div>
-                <div className={`text-white-50 ${styles.fontSize10}`}> {plays} {t('plays')} </div>
-                <div className={`text-white-50 ${styles.fontSize10}`}> {comment_num} {t('comments')} </div>
-              </span>
-              <img onClick={handleLikes} src={isLikes ? icon_like_full : icon_like} className={`${styles.bottom_icon} ${styles.hoverCursor}`} alt="" />
-              <img onClick={handleView} src={icon_comment} className={`${styles.bottom_icon} ${styles.hoverCursor}`} alt="" />
+              {/* <span className="ml-auto"> */}
+                <div className={`text-white-50 ml-auto ${styles.fontSize12}`}>{likes || 0} {t('likes')}</div>
+                <div className={`text-white-50 ml-4 ${styles.fontSize12}`}> {plays || 0} {t('plays')} </div>
+                <div className={`text-white-50 ml-4 ${styles.fontSize12}`}> {comment_num || 0} {t('comments')} </div>
+              {/* </span> */}
             </div>
           </div>
         </div>

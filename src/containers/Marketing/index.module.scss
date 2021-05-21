@@ -1,86 +1,110 @@
 @import '$assets/scss/main.scss';
-
 .wrapper {
-  background-color: $primary-green;
+    background-color: $white;
+    font-family: 'Montserrat'
 }
 
 .tabContentWrapper {
-  margin-top: 2rem;
-  padding-bottom: 10rem;
-  padding-top: 2rem;
+    margin-top: 2rem;
+    padding-bottom: 10rem;
+    padding-top: 2rem;
 }
 
 .topSongsPane {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-  background-color: $white;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-color: $white;
 }
 
 .panelHeader {
-  font-size: $title;
-  font-family: Montserrat;
-  font-weight: bold;
+    font-size: $title;
+    font-family: Montserrat;
+    font-weight: bold;
 }
 
 .panelHeaderDark {
-  color: $tertiary-gray;
+    color: $tertiary-gray;
 }
 
 .neverStopPanel {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-  background: linear-gradient(93.01deg, $secondary-green 0.83%, $secondary-blue 100%);
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background: linear-gradient(93.01deg, $secondary-green 0.83%, $secondary-blue 100%);
 }
 
 .thanksPanel {
-  padding-top: 8rem;
-  padding-bottom: 8rem;
-  background-color: $white;
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    background-color: #EAEAEA;
 }
 
 .marketingFooter {
-  height: 8rem;
-  border-top: 1px solid $light-gray;
-  background-color: $white;
+    height: 8rem;
+    border-top: 1px solid $light-gray;
+    background-color: $white;
 }
 
 .appDownloadWrapper {
-  background-color: $white;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  position: relative;
+    background-color: $white;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    position: relative;
 }
 
 .downloadWrapper {
-  position: relative;
+    position: relative;
 }
 
 .appDownloadFooter {
-  background-color: $secondary-white;
-  position: absolute;
-  margin-top: 210px !important;
-  height: 220px;
-  width: 100%;
+    background-color: $secondary-white;
+    position: absolute;
+    margin-top: 210px !important;
+    height: 220px;
+    width: 100%;
 }
 
 .appDownloadContent {
-  position: absolute;
-  padding-top: 4rem;
+    position: absolute;
+    padding-top: 4rem;
 }
 
 .artistPlaceholder {
-  position: absolute;
-  right: 1rem;
-  margin-top: -0.5rem;
+    position: absolute;
+    right: 1rem;
+    margin-top: -0.5rem;
 }
 
 .topPane {
-  color: $primary-blue;
-  font-size: 18px;
-  font-family: Montserrat;
-  font-weight: bold;
+    color: $primary-blue;
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: bold;
 }
 
+.neverStopIcon {
+    width: 80%;
+    // height: 200px;
+}
+
+.f72 {
+    font-size: 72px;
+}
+
+.f40 {
+    font-size: 40px;
+}
+
+.f23 {
+    font-size: 23px;
+}
+
+.how_it {
+    background-image: url('../../assets/images/how_it_works.png');
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 50px;
+}
 .transform {
   transition: all 5s;
 }
