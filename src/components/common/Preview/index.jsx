@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, generatePath } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -9,15 +9,16 @@ import ActionHeader from '$components/media/ActionHeader';
 import { routePaths } from '$common/routeConfig';
 import { handleFetch } from '$common/requestUtils';
 
+import { addLikes, removeLikes } from '$redux/features/user';
+
 import styles from './index.module.scss';
+import { useTranslation } from 'react-i18next';
 
 const playBtn = require('$assets/images/icons/play.svg');
 const defaultAvatar = require('$assets/images/profile-user-video.svg');
-
-/////////////////////// ADD /////////////////////////
 const icon_like = require('$assets/images/icons/like-video.svg');
+const icon_like_full = require('$assets/images/icons/like-full.svg');
 const icon_comment = require('$assets/images/icons/comment-video.svg');
-/////////////////////// END /////////////////////////
 
 const PreviewBkg = styled.div`
   height: 100%;
@@ -57,18 +58,27 @@ const Preview = (props) => {
     artistId,
 
     likes,
-    plays
+    plays,
+    comment_num
   } = props;
 
   // state
   const [isActive, setIsActive] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [sourceUrl, setSourceUrl] = useState('');
+  const [isLikes, setIsLikes] = useState(false);
 
   // props
   const userToken = useSelector((store) => store.authentication.token);
   const visitorToken = useSelector((store) => store.authentication.visitorToken);
+  const likes_s = useSelector((store) => store.authentication.user.likes);
+
+  const lang = useSelector(store => store.user.language);
+  const { t, i18n } = useTranslation('common');
+  useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
   const history = useHistory();
+  const dispatch = useDispatch();
 
   // const source = useSelector((store) => store.authentication.user.avatar_url);
 
@@ -97,6 +107,30 @@ const Preview = (props) => {
 
   }, [avatar]);
 
+  // effects
+  useEffect(() => {
+    if (!likes_s) { return; }
+    const res = likes_s.find((media) => media.media_id === mediaId);
+    if (!res) {
+      return;
+    }
+    setIsLikes(true);
+  }, [likes_s]);
+
+  // Likes
+  const handleLikes = () => {
+    const data = {
+      media_id: mediaId,
+    };
+
+    if (!isLikes) {
+      dispatch(addLikes(data));
+    } else {
+      dispatch(removeLikes(data));
+    }
+    setIsLikes(!isLikes);
+  }
+
   // handler
   const handleFocus = () => {
     setIsActive(true);
@@ -105,6 +139,10 @@ const Preview = (props) => {
   const handleBlur = () => {
     setIsActive(false);
   };
+
+  const handleView = () => {
+    history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+  }
 
   const handleClick = () => {
     if (onClick) {
@@ -181,11 +219,12 @@ const Preview = (props) => {
               }
             </div>
             <span className="ml-auto">
-              <div className={`text-right ${styles.font12}`}><b>{likes} Likes</b></div>
-              <div className={styles.font10}> {plays} Plays</div>
+              <div className={`text-right ${styles.font12}`}><b>{likes} {t('likes')}</b></div>
+              <div className={styles.font10}> {plays} {t('plays')}</div>
+              <div className={styles.font10}> {comment_num} {t('comments')} </div>
             </span>
-            <img src={icon_like} className={styles.bottom_icon} alt="" />
-            <img src={icon_comment} className={styles.bottom_icon} alt="" />
+            <img onClick={handleLikes} src={isLikes ? icon_like_full : icon_like} className={styles.bottom_icon} alt="" />
+            <img onClick={handleView} src={icon_comment} className={styles.bottom_icon} alt="" />
           </div>
         </div>
       </div>

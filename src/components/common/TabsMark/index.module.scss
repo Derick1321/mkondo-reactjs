@@ -1,4 +1,8 @@
 @import '$assets/scss/main.scss';
+.wrapper {
+    margin-top: inherit;
+}
+
 .tabLine {
     border-bottom: 1px solid $secondary-green;
     margin-top: -2.5px;
