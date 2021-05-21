@@ -1,20 +1,21 @@
 @import '$assets/scss/main.scss';
 .tabMenu {
-    color: $secondary-gray;
+    color: $black;
     font-family: Roboto;
-    font-weight: 700;
-    font-size: $normal-text;
+    font-size: $heading;
     border: none;
     background-color: transparent;
-    padding: 0 4rem;
+    padding: 0.5rem 2rem;
     margin-top: 1rem;
     &:focus {
         outline: none;
     }
+    text-transform: uppercase;
+    border-radius: 2rem;
 }
 
 .tabMenuActive {
-    color: $white;
+    background-color: #C082FD;
     font-size: $heading;
 }
 

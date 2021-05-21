@@ -36,6 +36,7 @@ const ScrollMedia = (props) => {
 
           likes={item.likes}
           plays={item.plays}
+          comment_num={item.comment_num}
         />
       );
     }
@@ -61,6 +62,7 @@ const ScrollMedia = (props) => {
         source={avatar_url}
         likes={item.likes}
         plays={item.plays}
+        comment_num={item.comment_num}
         artistId={item.owner_id}
       />
     );

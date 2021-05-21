@@ -5,8 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Button from '$components/common/Button';
 import Header from '$components/common/Header';
 import Hero from '$components/common/Hero';
-import Tabs from '$components/common/Tabs';
-import TopSongs from '$components/common/TopSongs';
+import TabsMark from '$components/common/TabsMark';
 import HowItWorks from '$components/marketing-site/HowItWorks';
 import AppDownload from '$components/marketing-site/AppDownload';
 import Social from '$components/common/Social';
@@ -28,6 +27,7 @@ import { getNewReleases } from '$redux/features/media';
 import styles from './index.module.scss';
 
 const artists = require('$assets/images/marketing/artist.png');
+const logo_icon = require('$assets/images/logo_icon.png');
 
 const Marketing = () => {
   // state
@@ -46,6 +46,9 @@ const Marketing = () => {
   const userType = useSelector((store) => store.authentication.user.user_type);
   const newReleases = useSelector((store) => store.media.newReleases);
   const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
+
+  console.log('[media]', newReleases);
+
 
   // effects
   useEffect(() => {
@@ -82,7 +85,7 @@ const Marketing = () => {
 
     dispatch(getNewReleases({
       category: 'audio',
-      amount: 3,
+      amount: 6,
     }));
   }, [visitorToken])
 
@@ -98,7 +101,7 @@ const Marketing = () => {
     if (newReleases[name].length < 1) {
       dispatch(getNewReleases({
         category: name,
-        amount: 3,
+        amount: 6,
       }));
     }
   }
@@ -107,131 +110,127 @@ const Marketing = () => {
     console.log('find more!!');
   }
 
-  const handleExploreSongs = () => {
-    dispatch(showModal('ALERT_MODAL'));
-  }
-
   // render
   return (
-    <div className={`container-fluid h-100 ${styles.wrapper}`}>
-      <div className="row w-100">
-        <div className="col-12 col-sm-8 offset-sm-2">
-          <Header />
-          <Hero
-            source={selected}
-          />
-          <div className="mt-4">
-            <Tabs
-              onSelect={handleSelect}
-              selected={selected}
-            />
+    <div className={styles.wrapper}>
+      <Header />
+      <Hero />
+      <div className={`container-fluid h-100`}>
+        <div className="row w-100 justify-content-center">
+          <div className="col-12 col-sm-11">
+            <div className="row">
+              <h1 className={`${styles.f72} col-sm-6 mt-4`}>New Releases</h1>
+              <div className="col-sm-6 mt-4">
+                <TabsMark
+                  onSelect={handleSelect}
+                  selected={selected}
+                />
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div className="row">
-        <div className="col-12 col-md-8 offset-md-2">
-          <div className={`row ${styles.tabContentWrapper}`}>
-            <div className={`${selected === 'audio' ? '' : 'd-none'}`}>
-              <TopPreview
-                values={newReleases.audio}
-                isLoading={getNewReleasesPending && newReleases.audio.length < 1}
-              />
-            </div>
-            <div className={`${selected === 'video' ? '' : 'd-none'}`}>
-              <TopPreview
-                values={newReleases.video}
-                isLoading={getNewReleasesPending && newReleases.video.length < 1}
-              />
-            </div>
-            <div className={`${selected === 'movie' ? '' : 'd-none'}`}>
-              <TopPreview
+        <div className="row w-100 justify-content-center">
+          <div className="col-12 col-md-11">
+            <div className={`row ${styles.tabContentWrapper}`}>
+              <div className={`${selected === 'audio' ? '' : 'd-none'}`}>
+                <TopPreview
+                  values={newReleases.audio}
+                  isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+                />
+              </div>
+              <div className={`${selected === 'video' ? '' : 'd-none'}`}>
+                <TopPreview
+                  values={newReleases.video}
+                  isLoading={getNewReleasesPending && newReleases.video.length < 1}
+                />
+              </div>
+              <div className={`${selected === 'movie' ? '' : 'd-none'}`}>
+                <TopPreview
                   values={newReleases.movie}
                   isLoading={getNewReleasesPending && newReleases.movie.length < 1}
                 />
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className={`row ${styles.topSongsPane}`}>
-        <div className="col-12 col-md-10 offset-md-1">
-          <p className={`text-center ${styles.topPane}`}>Featured Songs</p>
-          <TopSongs
-            media={newReleases.audio}
-            isLoading={getNewReleasesPending && newReleases.audio.length < 1}
-            showHeader={false}
-          />
-          {
-            !getNewReleasesPending && (
-              <div className="d-flex justify-content-center">
-                <Button
-                  onClick={handleExploreSongs}
-                  style="px-4"
-                >
-                  Explore More Songs
-                </Button>
               </div>
-            )
-          }
-        </div>
-      </div>
-      <div className="row">
-        <div className="col-12 col-md-10 offset-md-1">
-          <HowItWorks />
-        </div>
-      </div>
-      <div className={`row justify-content-center align-items-center ${styles.appDownloadWrapper}`}>
-        <div className="col-12">
-          <div className={styles.appDownloadFooter} />
-          <div className={styles.appDownloadContent1}>
-            <div className={`col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 ${styles.downloadWrapper}`}>
-              <AppDownload />
             </div>
           </div>
         </div>
       </div>
-      <div className={`row ${styles.neverStopPanel}`}>
-        <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
-          <p className={`text-white ${styles.panelHeader}`}>Never stop listening</p>
-          <p className="text-white">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
-          <Button
-            onClick={handleFindMore}
-            isBorderSecondary
-            isTransparent
-            isSquare
-          >
-            FIND OUT MORE
+      <div className={styles.how_it}>
+        <HowItWorks />
+      </div>
+      <div className={`container-fluid h-100`}>
+        <div className="row w-100 justify-content-center">
+          <div className="col-12 col-sm-11">
+            <div className="row mt-5 mb-5">
+              <div className="col-sm-9 mt-4">
+                <h1 className={`${styles.f72}`}>Never Stop Listening</h1>
+                <div className={styles.f23}>
+                  Discover, stream, and share a constantly expanding mix of music from emerging and
+                  major artists around the world.
+              </div>
+              </div>
+              <div className="col-sm-3">
+                <img src={logo_icon} alt="" className={styles.neverStopIcon} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className={`container-fluid h-100`}>
+        {/* <div className={`row justify-content-center align-items-center ${styles.appDownloadWrapper}`}>
+          <div className="col-12">
+            <div className={styles.appDownloadFooter} />
+            <div className={styles.appDownloadContent1}>
+              <div className={`col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3 ${styles.downloadWrapper}`}>
+                <AppDownload />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={`row ${styles.neverStopPanel}`}>
+          <div className="col-12 col-sm-8 col-md-6 offset-sm-2 offset-md-3">
+            <p className={`text-white ${styles.panelHeader}`}>Never stop listening</p>
+            <p className="text-white">Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
+            <Button
+              onClick={handleFindMore}
+              isBorderSecondary
+              isTransparent
+              isSquare
+            >
+              FIND OUT MORE
           </Button>
-          <div className="d-none d-md-block">
-            <img
-              className={styles.artistPlaceholder}
-              src={artists}
-              alt=""
-            />
+            <div className="d-none d-md-block">
+              <img
+                className={styles.artistPlaceholder}
+                src={artists}
+                alt=""
+              />
+            </div>
+          </div>
+        </div> */}
+        <div className={`row justify-content-center text-center ${styles.thanksPanel}`}>
+          <div className="col-12 col-sm-8 col-md-6">
+            <p className={`${styles.panelHeader} ${styles.panelHeaderDark} ${styles.f40}`}>Contact with us</p>
+            <p className={styles.f23}>Follow us on.</p>
+            <div className={`d-flex flex-wrap justify-content-center ${styles.socialWrapper}`}>
+              <Social
+                links={{
+                  fb: '#',
+                  instagram: '#',
+                  yt: '#',
+                  twitter: '#',
+                }}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className={`col-12 d-flex align-items-center justify-content-center ${styles.marketingFooter}`}>
+            <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
           </div>
         </div>
       </div>
-      <div className={`row justify-content-center text-center ${styles.thanksPanel}`}>
-        <div className="col-12 col-sm-8 col-md-6">
-          <p className={`${styles.panelHeader} ${styles.panelHeaderDark}`}>Connect with us</p>
-          <p>Follow us on.</p>
-          <div className={`d-flex flex-wrap justify-content-center ${styles.socialWrapper}`}>
-            <Social
-              links={{
-                fb: '#',
-                instagram: '#',
-                yt: '#',
-                twitter: '#',
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      <div className="row">
-        <div className={`col-12 d-flex align-items-center justify-content-center ${styles.marketingFooter}`}>
-          <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
-        </div>
-      </div>
-    </div>
+    </div >
+
   );
 };
 

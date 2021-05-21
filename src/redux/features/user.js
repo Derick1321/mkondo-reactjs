@@ -5,6 +5,8 @@ import { handleFetch } from '$common/requestUtils';
 const UPDATE_USER = 'user/UPDATE_USER';
 const ADD_FAVORITE = 'user/ADD_FAVORITE';
 const REMOVE_FAVORITE = 'user/REMOVE_FAVORITE';
+const ADD_LIKE = 'user/ADD_LIKE';
+const REMOVE_LIKE = 'use/REMOVE_LIKE';
 const ADD_HISTORY = 'user/ADD_HISTORY';
 const GET_MEDIA = 'user/GET_MEDIA';
 const GET_HISTORY = 'user/GET_HISTORY';
@@ -36,6 +38,22 @@ export const removeFavorite = createAsyncThunk(
     async(data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('DELETE', `users/${user.user_id}/favourites`, data, token);
+    }
+);
+
+export const addLikes = createAsyncThunk(
+    ADD_LIKE,
+    async(data, param) => {
+        const { token, user } = param.getState().authentication;
+        return await handleFetch('POST', `users/${user.user_id}/likes`, data, token);
+    }
+);
+
+export const removeLikes = createAsyncThunk(
+    REMOVE_LIKE,
+    async(data, param) => {
+        const { token, user } = param.getState().authentication;
+        return await handleFetch('DELETE', `users/${user.user_id}/likes`, data, token);
     }
 );
 
@@ -115,6 +133,12 @@ const initialState = {
     removeFavoritePending: false,
     removeFavoriteError: null,
     removeFavoriteComplete: false,
+    addLikesPending: false,
+    addLikesError: null,
+    addLikesComplete: false,
+    removeLikesPending: false,
+    removeLikesError: null,
+    removeLikesComplete: false,
     addFollowersPending: false,
     addFollowersError: null,
     addFollowersComplete: false,
@@ -190,6 +214,38 @@ const userSlice = createSlice({
             state.removeFavoritePending = false;
             state.removeFavoriteComplete = false;
             state.removeFavoriteError = action.error;
+        },
+        [addLikes.pending]: (state, action) => {
+            state.addLikesPending = true;
+            state.addLikesComplete = false;
+            state.addLikesError = null;
+            state.newMediaId = null;
+        },
+        [addLikes.fulfilled]: (state, action) => {
+            state.addLikesPending = false;
+            state.addLikesComplete = true;
+            state.addLikesError = null;
+        },
+        [addLikes.rejected]: (state, action) => {
+            state.addLikesPending = false;
+            state.addLikesComplete = false;
+            state.addLikesError = action.error;
+        },
+        [removeLikes.pending]: (state, action) => {
+            state.removeLikesPending = true;
+            state.removeLikesComplete = false;
+            state.removeLikesError = null;
+            state.newMediaId = null;
+        },
+        [removeLikes.fulfilled]: (state, action) => {
+            state.removeLikesPending = false;
+            state.removeLikesComplete = true;
+            state.removeLikesError = null;
+        },
+        [removeLikes.rejected]: (state, action) => {
+            state.removeLikesPending = false;
+            state.removeLikesComplete = false;
+            state.removeLikesError = action.error;
         },
         [addFollowers.pending]: (state, action) => {
             state.addFollowersPending = true;
