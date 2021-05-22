@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import styled from 'styled-components';
 
 import Button from '$components/common/Button';
 import Header from '$components/common/Header';
@@ -26,8 +27,16 @@ import { getNewReleases } from '$redux/features/media';
 
 import styles from './index.module.scss';
 
-const artists = require('$assets/images/marketing/artist.png');
+const how_it = require('$assets/images/how_it_works.png');
 const logo_icon = require('$assets/images/logo_icon.png');
+
+const HowIt = styled.div`
+  background-image: url(${how_it});
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding-top: 50px;
+`;
 
 const Marketing = () => {
   // state
@@ -154,9 +163,9 @@ const Marketing = () => {
           </div>
         </div>
       </div>
-      <div className={styles.how_it}>
+      <HowIt>
         <HowItWorks />
-      </div>
+      </HowIt>
       <div className={`container-fluid h-100`}>
         <div className="row w-100 justify-content-center">
           <div className="col-12 col-sm-11">
