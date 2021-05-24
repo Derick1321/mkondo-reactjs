@@ -18,23 +18,16 @@ import { handleFetch } from '../../../common/requestUtils';
 // const videoBkg = require('$assets/images/video-bkg.png');
 
 const logo = require('$assets/images/logo.png');
+const background = require('$assets/images/background.png');
 
-// const commonStyles = `
-//   height: 360px;
-//   background-position: center;
-//   background-size: contain;
-//   background-repeat: no-repeat;
-// `;
 
-// const Audio = styled.div`
-//   background-image: url(${audioBkg});
-//   ${commonStyles}    
-// `;
-
-// const Video = styled.div`
-//   background-image: url(${videoBkg});
-//   ${commonStyles}    
-// `;
+const HeroWrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  background-image: url(${background});
+  background-size: cover;
+  background-position: center;
+`;
 
 const Logo = styled.div`
   background-image: url(${logo});
@@ -53,7 +46,7 @@ const Hero = (props) => {
   //state
   const [sliderItems, setSliderItems] = useState([])
   const [homeSliderItems, setHomeSliderItems] = useState([])
-  
+
   // store
   const { visitorToken } = useSelector(state => state.authentication)
   const configuration = useSelector(state => state.configuration)
@@ -108,9 +101,9 @@ const Hero = (props) => {
   }
 
   return (
-    <div className={styles.heroWrapper}>
+    <HeroWrapper>
       <Logo />
-    </div>
+    </HeroWrapper>
   );
 
 };
