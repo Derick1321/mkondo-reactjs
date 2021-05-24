@@ -7,7 +7,7 @@
     "private": true,
     "scripts": {
         "start": "parcel serve index.html -p 3000",
-        "build": "parcel build --no-minify --no-cache index.html"
+        "build": "parcel build --no-cache index.html"
     },
     "proxy": "http://127.0.0.1:5000",
     "dependencies": {
