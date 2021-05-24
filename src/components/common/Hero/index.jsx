@@ -94,18 +94,18 @@ const Hero = (props) => {
 
   if (homeSliderItems.length) {
     return (
-      <div>
+      <div className={`${styles.sliderWrapper}`}>
         <Carousel items={sliderItems} aspect_ratio_x={home_slider.aspect_ratio_x} aspect_ratio_y={home_slider.aspect_ratio_y} />
       </div>
     )
   }
 
-  // render
   return (
     <HeroWrapper>
       <Logo />
     </HeroWrapper>
   );
+
 };
 
 Hero.defaultProps = {

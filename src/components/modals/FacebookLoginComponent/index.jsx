@@ -34,14 +34,11 @@ const FacebookLoginComponent = (props) => {
     const loginPending = useSelector((store) => store.authentication.loginPending);
 
     const responseFacebook = (res) => {
-        console.log('[Facebook Login Response]')
-        console.log(res);
-
         dispatch(login({
             login_strategy: 'facebook',
-            username: res.email,
+            username: 'facebooklogin@email.com',
             password: '',
-            tokenId: res.tokenId
+            tokenId: res.accessToken
         }))
     }
 
@@ -50,9 +47,10 @@ const FacebookLoginComponent = (props) => {
     return (
         <FacebookLogin
             appId={FACEBOOK_APP_ID}
-            autoLoad={true}
+            autoLoad={false}
+            disableMobileRedirect={true}
             fields="name,email,picture"
-            scope="public_profile,user_friends,user_actions.books"
+            scope="public_profile,user_friends,user_actions.books,email"
             callback={responseFacebook}
             onClick={componentClicked}
             cssClass={`d-flex ${styles.mkBtn} ${styles.mkBtnStretch}`}
