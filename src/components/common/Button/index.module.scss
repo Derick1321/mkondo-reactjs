@@ -25,6 +25,10 @@
     &:focus {
         outline: none;
     }
+    @media screen and (max-width: 768px) {
+        min-width: unset;
+        padding: 0rem 0.3rem;
+    }
 }
 
 .mkBtnSquare {
@@ -46,6 +50,10 @@
 
 .mkBtnTransparent {
     background-color: transparent;
+}
+
+.mkBtnRed {
+    background-color: #EA4235;
 }
 
 .mkBtnBorderWhite {
@@ -73,4 +81,8 @@
 .borderPrimary {
     color: $secondary-green;
     border-color: $secondary-green;
+}
+
+.alignLeft {
+    text-align: left;
 }

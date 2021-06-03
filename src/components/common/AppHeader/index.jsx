@@ -7,7 +7,7 @@ import { useGoogleLogout } from 'react-google-login';
 import { useTranslation } from 'react-i18next';
 
 import DropDown from '$components/common/DropDown';
-import TextInput from '$components/common/TextInput';
+import TextInputCustom from '$components/common/TextInputCustom';
 import SearchResult from '$components/common/SearchResult';
 import HamburgerMenu from '$components/nav/HamburgerMenu';
 
@@ -21,6 +21,7 @@ import { querySearch } from '$redux/features/nav';
 import styles from './index.module.scss';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
+const dropdown = require('$assets/images/icons/dropdown.svg');
 import { GOOGLE_CLIENT_ID } from '$common/constants';
 const headerMenus = [
   { name: 'account', title: 'My Account', },
@@ -112,10 +113,12 @@ const AppHeader = (props) => {
       <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
         <div className={`d-block d-sm-none ${styles.menuWrapper}`}>
           <HamburgerMenu />
+          <span className={styles.mobile_logo}>MKONDO</span>
+
         </div>
         {
           showSearch && (
-            <TextInput
+            <TextInputCustom
               name="search"
               placeholder={t('search')}
               value={search}
@@ -132,12 +135,13 @@ const AppHeader = (props) => {
           handleSelect={handleSelect}
         >
           <div className={`d-flex align-items-center ${styles.appHeaderName}`}>
-            <span className="d-none d-sm-block">{userName || 'Name'}</span>
             <img
               src={url || defaultAvatar}
               className={styles.appHeaderAvatar}
               alt=""
             />
+            <span className="d-none d-sm-block text-center">{userName || 'Name'}</span>
+            <img src={dropdown} alt="" style={{width: '10px', marginRight: '5px'}} />
           </div>
         </DropDown>
       </div>

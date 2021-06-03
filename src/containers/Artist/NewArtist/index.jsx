@@ -104,29 +104,32 @@ const NewArtist = () => {
     <div className={styles.newArtistWrapper}>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-8">
-          <div className="d-flex flex-column">
-            <NewItem 
+          <div className={`d-flex flex-column`}>
+            <NewItem
               menus={menus}
               metamenus={metamenus}
               onChange={handleChange}
               values={values}
             />
+            <div className={`d-flex justify-content-end ${styles.newItemFooter}`}>
+              <Button
+                onClick={handleCancel}
+                style={styles.btnCancel}
+                isTransparent
+                isSquare
+              >
+                Cancel
+              </Button>
+              <Button
+                  onClick={handleSave}
+                  isRed
+                  isSquare
+                >
+                  Save
+              </Button>
+            </div>
           </div>
-          <div className={`d-flex justify-content-end ${styles.newItemFooter}`}>
-            <Button
-              onClick={handleCancel}
-              style={styles.btnCancel}
-              isTransparent
-              noBorder
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          </div>
+
         </div>
       </div>
     </div>

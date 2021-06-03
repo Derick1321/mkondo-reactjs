@@ -12,8 +12,6 @@ const TopPreview = (props) => {
     isLoading,
   } = props;
 
-
-
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
@@ -46,7 +44,9 @@ const TopPreview = (props) => {
             source={item.owner_avatar_url}
             title={item.title || item.name}
             subtitle={item.description}
-            hideHeader
+            mediaId={item.media_id}
+            mediaUrl={item.media_url}
+            artistId={item.owner_id}
           />
           </div>
         ))

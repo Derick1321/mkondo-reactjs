@@ -39,6 +39,13 @@ const Logo = styled.div`
   position: absolute;
   left: 70px;
   top: 30px;
+  @media screen and (max-width: 768px) {
+    height: 90px;
+    width: 90px;
+    left: 20px;
+    top: 20px;
+    background-size: 85px 85px;
+  }
 `;
 
 const Hero = (props) => {

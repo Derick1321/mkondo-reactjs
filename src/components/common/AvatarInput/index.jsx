@@ -100,17 +100,20 @@ const AvatarInput = (props) => {
             </p>
           ))
         }
-        <button
-          className={`d-flex align-items-center ${styles.avatarBtn}`}
-          onClick={handleSelectFile}
-        >
+        <div className={styles.buttonWrapper}>
           <img
             src={camera}
             className={styles.avatarBtnIcon}
             alt=""
           />
-          <span>{t('select_image')} </span>
-        </button>
+          <button
+            className={`align-items-center ${styles.avatarBtn}`}
+            onClick={handleSelectFile}
+          >
+            <span>{t('select_image')} </span>
+          </button>
+        </div>
+
       </div>
       <input
         className="d-none"

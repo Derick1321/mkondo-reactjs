@@ -35,7 +35,7 @@ const Progress = (props) => {
           style={{ width: `${percentage}%` }}
         />
       </div>
-      <span className="mx-2">
+      <span className="mx-2 link-light">
         {percentage}% {t(placeholder)}
       </span>
     </div>
