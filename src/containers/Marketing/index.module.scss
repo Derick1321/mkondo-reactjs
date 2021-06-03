@@ -84,16 +84,28 @@
 .neverStopIcon {
     width: 80%;
     // height: 200px;
+    @media screen and (max-width: 576px) {
+        width: 30%;
+    }
 }
 
 .f72 {
-    font-size: 72px;
+    font-size: 50px;
+    @media screen and (max-width: 768px) {
+        font-size: 30px;
+    }
 }
 
 .f40 {
     font-size: 40px;
+    @media screen and (max-width: 768px) {
+        font-size: 30px;
+    }
 }
 
 .f23 {
     font-size: 23px;
+    @media screen and (max-width: 768px) {
+        font-size: 17px;
+    }
 }

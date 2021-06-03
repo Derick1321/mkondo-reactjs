@@ -142,7 +142,7 @@ const Feature = (props) => {
       handleView();
       return;
     }
-
+    console.log(category);
     dispatch(loadMedia({
       mediaId,
       url: mediaUrl,
@@ -154,6 +154,7 @@ const Feature = (props) => {
   }
 
   const handleView = () => {
+    console.log(mediaId);
     history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
   }
 

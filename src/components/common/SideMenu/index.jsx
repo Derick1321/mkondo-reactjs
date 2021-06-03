@@ -14,6 +14,7 @@ import styles from './index.module.scss';
 import { useEffect } from 'react';
 
 const playlistIcon = require('$assets/images/icons/playlist-icon.svg');
+const logo = require('$assets/images/logo.png');
 
 const SideMenu = (props) => {
   // store
@@ -30,22 +31,22 @@ const SideMenu = (props) => {
   // icons
   const artistIcons = [
     {
-      icon: require('$assets/images/icons/add-artist.svg'),
-      activeIcon: require('$assets/images/icons/add-artist-active.svg'),
+      icon: require('$assets/images/icons/add_user.svg'),
+      activeIcon: require('$assets/images/icons/add_user.svg'),
       title: 'add_artist',
       path: routePaths.newArtist,
       permission: 'admin',
     },
     {
-      icon: require('$assets/images/icons/stats.svg'),
-      activeIcon: require('$assets/images/icons/stats-active.svg'),
+      icon: require('$assets/images/icons/bar_chart.svg'),
+      activeIcon: require('$assets/images/icons/bar_chart.svg'),
       title: 'insights',
       path: routePaths.insights,
       permission: 'media',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),
-      activeIcon: require('$assets/images/icons/upload-active.svg'),
+      activeIcon: require('$assets/images/icons/upload.svg'),
       title: 'upload_media',
       path: routePaths.newMediaCategory,
       permission: 'artist',
@@ -55,13 +56,13 @@ const SideMenu = (props) => {
   const userIcons = [
     {
       icon: require('$assets/images/icons/favorite.svg'),
-      activeIcon: require('$assets/images/icons/favorite-active.svg'),
+      activeIcon: require('$assets/images/icons/favorite.svg'),
       title: 'favorites',
       path: routePaths.favorites,
     },
     {
-      icon: require('$assets/images/icons/history.svg'),
-      activeIcon: require('$assets/images/icons/history-active.svg'),
+      icon: require('$assets/images/icons/history_side.svg'),
+      activeIcon: require('$assets/images/icons/history_side.svg'),
       title: 'history',
       path: routePaths.history,
     },
@@ -69,26 +70,26 @@ const SideMenu = (props) => {
 
   const icons = [
     {
-      icon: require('$assets/images/icons/home.svg'),
-      activeIcon: require('$assets/images/icons/home-active.svg'),
+      icon: require('$assets/images/icons/home_side.svg'),
+      activeIcon: require('$assets/images/icons/home_side.svg'),
       title: 'home',
       path: routePaths.home,
     },
     {
-      icon: require('$assets/images/icons/recommandation.svg'),
-      activeIcon: require('$assets/images/icons/recommandation-active.svg'),
+      icon: require('$assets/images/icons/radio_signal.svg'),
+      activeIcon: require('$assets/images/icons/radio_signal.svg'),
       title: 'recommendation',
       path: routePaths.recommendation,
     },
     {
-      icon: require('$assets/images/icons/calendar.svg'),
-      activeIcon: require('$assets/images/icons/calendar-active.svg'),
+      icon: require('$assets/images/icons/star.svg'),
+      activeIcon: require('$assets/images/icons/star.svg'),
       title: 'new_release',
       path: routePaths.newRelease,
     },
     {
       icon: require('$assets/images/icons/top-chart.svg'),
-      activeIcon: require('$assets/images/icons/top-chart-active.svg'),
+      activeIcon: require('$assets/images/icons/top-chart.svg'),
       title: 'top_chart',
       path: routePaths.topChart,
     },
@@ -123,7 +124,7 @@ const SideMenu = (props) => {
   return (
     <div className={styles.sideMenu}>
       <div className={`text-center ${styles.logoWrapper}`}>
-        <p className={styles.headerTitle}>Mkondo</p>
+        <img src={logo} alt="" className={styles.sidemenu_logo} />
       </div>
       <div className={`d-flex flex-column ${styles.sideMenusWrapper}`}>
         <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
@@ -236,6 +237,7 @@ const SideMenu = (props) => {
           <div className="m-4 ">
             <Button
               onClick={handleNewPlaylist}
+              isSecondary
             >
               {t('new_playlist')}
           </Button>

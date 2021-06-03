@@ -8,7 +8,7 @@ import Button from '$components/common/Button';
 import './index.scss';
 
 import { GOOGLE_CLIENT_ID } from '$common/constants';
-
+const google_icon = require('$assets/images/icons/google-icon.svg');
 
 const refreshTokenSetup = res => {
     let refreshTiming = (res.tokenObj.expires_in || 3600 - 5 * 60) * 1000;
@@ -59,10 +59,11 @@ const GoogleLoginComponent = (props) => {
         <Button
             onClick={signIn}
             isLoading={loginPending}
-            isSecondary
             isStretch
+            isRed
+            isAlignLeft
         >
-            Login with Google
+            <img src={google_icon} className="google-icon" /> Login with Google
         </Button>
     )
 }
