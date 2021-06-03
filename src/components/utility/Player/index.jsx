@@ -51,7 +51,7 @@ const Player = () => {
     if (!sound || isLoading) {
       return;
     }
-    console.log('getSeekPosition ', isLoading);
+    // console.log('getSeekPosition ', isLoading);
     dispatch(updateRange(sound.seek()));
   }, [isLoading, audioRef.current]);
 

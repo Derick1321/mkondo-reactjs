@@ -177,6 +177,7 @@ const Preview = (props) => {
                 mediaId={mediaId}
                 avatarUrl={avatarUrl}
                 country={description}
+                showPlaylist
               />
             </div>
           )

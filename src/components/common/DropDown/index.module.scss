@@ -1,21 +1,20 @@
 @import '$assets/scss/main.scss';
-
 .dropdownWrapperBtn {
-  background-color: transparent;
-  border: none;
-  &:focus {
-    outline: none;
-  }
+    background-color: transparent;
+    border: none;
+    &:focus {
+        outline: none;
+    }
 }
 
 .dropdownBubbleMenu {
-  margin-top: 1em;
-  text-align: left;
-  padding: 1rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-  background-color: $white;
-  /*
+    text-align: left;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    background-color: #323232;
+    border-radius: 10px;
+    /*
   &::before, &::after {
     content: ' ';
     border-style: solid;
@@ -25,7 +24,7 @@
     right: 4em;
   }
   */
-  /*
+    /*
   &::after {
     top: 3.5em;
     border-bottom-color: $white;
@@ -34,21 +33,26 @@
 }
 
 .dropdownOption {
-  height: 40px;
-  font-family: Helvetica;
-  color: $black;
-  text-decoration: transparent;
-  &:focus, &:active, &:hover {
-    color: $black;
-  }
+    height: 40px;
+    font-family: Helvetica;
+    color: $white;
+    text-decoration: transparent;
+    &:focus,
+    &:active,
+    &:hover {
+        color: $white;
+        cursor: pointer;
+    }
 }
 
 .dropdownElementMenu {
-  width: 50rem;
+    width: 50rem;
 }
 
 .content {
-  background-color: $white;
-  position: relative;
-  box-shadow: 0px 1px 3px $border-gray;
+    background-color: $white;
+    position: absolute;
+    right: 10px;
+    box-shadow: 0px 1px 3px $border-gray;
+    border-radius: 10px;
 }

@@ -23,7 +23,7 @@ const InputDate = (props) => {
   // render
   return (
     <div className="form-group">
-      <p>{title}</p>
+      <p style={{color: 'white'}}>{title}</p>
       <div className="d-flex flex-column custom-date-wrapper">
         <input
           name={name}

@@ -80,7 +80,6 @@ export const loadMedia = createAsyncThunk(
   LOAD_MEDIA,
   async (data, param) => {
     const { currentMediaId, isPlaying } = param.getState().player;
-
     if (currentMediaId === data.mediaId) {
       if (isPlaying) {
         param.dispatch(pause());
@@ -89,10 +88,10 @@ export const loadMedia = createAsyncThunk(
       param.dispatch(play());
       return;
     }
-
     param.dispatch(updateLoading(true));
     param.dispatch(setCurrentMediaId(data.mediaId));
-    const { token } = param.getState().authentication;
+    let { token, visitorToken } = param.getState().authentication;
+    if(!token) {token = visitorToken;}
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.url}`, null, token);
     param.dispatch(play({
       ...data,

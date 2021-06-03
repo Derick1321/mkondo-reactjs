@@ -2,7 +2,7 @@ import React from 'react';
 
 import styles from './index.module.scss';
 
-const playIcon = require('$assets/images/player/play.svg');
+const playIconRed = require('$assets/images/player/play_red.svg');
 const pauseIcon = require('$assets/images/player/pause.svg');
 
 const PlayBtn = (props) => {
@@ -38,7 +38,7 @@ const PlayBtn = (props) => {
   return (
     <div className={styles.playIcon}>
       <img
-        src={playIcon}
+        src={playIconRed}
         alt=""
       />
     </div>
