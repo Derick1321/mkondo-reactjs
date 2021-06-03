@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
 import ScrollMedia from '$components/media/ScrollMedia';
-import Tabs from '$components/common/Tabs';
+import TabsMark from '$components/common/TabsMark';
 
 import { getNewReleases, getTopMedias, getRandomMedias, getTrendMedias } from '$redux/features/media';
 
@@ -60,11 +60,13 @@ const Home = () => {
   return (
     <div className={styles.homeContent}>
       <div className={styles.homeTabsWrapper}>
-        <Tabs
+        <TabsMark
           onSelect={handleSelect}
           selected={selected}
+          activeColor="white"
         />
       </div>
+      <div style={{clear: 'both'}}></div>
       <div className={selected !== 'audio' ? 'd-none' : ''}>
         <ScrollMedia
           title={t('new_release')}

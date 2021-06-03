@@ -9,7 +9,7 @@ import SocialInput from '$components/forms/SocialInput';
 
 const InputField = (props) => {
   // props
-  const { field, onChange } = props;
+  const { field, onChange, isGrey } = props;
 
   // handlers
   const buildField = (field) => {
@@ -20,6 +20,7 @@ const InputField = (props) => {
         return (
           <TextInput
             {...field}
+            isGrey
             onChange={onChange}
           />
         );
@@ -27,6 +28,7 @@ const InputField = (props) => {
         return (
           <TextArea
             {...field}
+            isGrey
             onChange={onChange}
           />
         );
@@ -35,6 +37,7 @@ const InputField = (props) => {
           <div>
             <SelectInput
               {...field}
+              isGrey
               onChange={onChange}
             />
           </div>
@@ -50,6 +53,7 @@ const InputField = (props) => {
         return (
           <InputDate
             {...field}
+            isGrey
             onChange={onChange}
           />
         )
@@ -58,6 +62,7 @@ const InputField = (props) => {
           <SocialInput
             {...field}
             onChange={onChange}
+            isGrey
           />
         )
       default:

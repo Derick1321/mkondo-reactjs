@@ -63,25 +63,25 @@ const menus = [{
 export const newMedia = [{
         name: 'songs',
         title: 'songs',
-        icon: require('$assets/images/home/player.svg'),
-        iconActive: require('$assets/images/home/player-active.svg'),
+        icon: require('$assets/images/icons/register_music_gen.svg'),
+        iconActive: require('$assets/images/icons/register_music_gen.svg'),
     },
     {
         name: 'album',
         title: 'album',
-        icon: require('$assets/images/home/trumpet.svg'),
+        icon: require('$assets/images/home/trumpet-active.svg'),
         iconActive: require('$assets/images/home/trumpet-active.svg'),
     },
     {
         name: 'video',
         title: 'videos',
-        icon: require('$assets/images/home/videos.svg'),
+        icon: require('$assets/images/home/videos-active.svg'),
         iconActive: require('$assets/images/home/videos-active.svg'),
     },
     {
         name: 'movie',
         title: 'movies',
-        icon: require('$assets/images/home/movies.svg'),
+        icon: require('$assets/images/home/movies-active.svg'),
         iconActive: require('$assets/images/home/movies-active.svg'),
     },
 ];

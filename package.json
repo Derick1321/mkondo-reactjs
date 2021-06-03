@@ -6,7 +6,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "start": "parcel serve index.html -p 3000",
+        "start": "parcel serve index.html -p 8080",
         "build": "parcel build --no-cache index.html"
     },
     "proxy": "http://127.0.0.1:5000",

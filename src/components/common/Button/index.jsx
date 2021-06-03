@@ -36,6 +36,8 @@ const Button = (props) => {
     isBorderPrimary,
     isBorderSecondary,
     icon,
+    isRed,
+    isAlignLeft,
   } = props;
 
   // handler
@@ -47,10 +49,12 @@ const Button = (props) => {
       { value: noBorder, style: styles.noBorder },
       { value: noWidth, style: styles.noWidth, },
       { value: isSecondary, style: styles.mkBtnSecondary },
+      { value: isRed, style: styles.mkBtnRed },
       { value: isTertiary, style: styles.mkBtnSecondaryTransparent },
       { value: isCustom, style: styles.customBtn },
       { value: isBorderPrimary, style: styles.borderPrimary },
       { value: isBorderSecondary, style: styles.borderSecondary },
+      { value: isAlignLeft, style: styles.alignLeft },
     ];
 
     let customStyle = properties.reduce((acc, item) => item.value ? `${acc} ${item.style}` : acc, '');

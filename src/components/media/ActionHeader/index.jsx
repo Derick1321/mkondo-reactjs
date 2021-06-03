@@ -73,7 +73,7 @@ const ActionHeader = (props) => {
 
   // render
   return (
-    <div className="d-flex">
+    <div className="d-flex ml-auto">
       {
         showPlaylist && (
           <button
