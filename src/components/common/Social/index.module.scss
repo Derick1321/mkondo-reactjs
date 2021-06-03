@@ -1,8 +1,14 @@
 .socialWrapper {
     padding: 2rem 1rem;
+    button {
+        padding: 0;
+    }
 }
 
 .socialIcon {
-    margin: 0 1rem;
-    height: 4.6rem;
+    width: 4rem;
+    @media screen and (max-width: 768px) {
+        width: 40px;
+        margin: 0;
+    }
 }

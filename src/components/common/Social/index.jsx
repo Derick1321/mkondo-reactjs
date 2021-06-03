@@ -30,28 +30,30 @@ const Social = (props) => {
 
   // socials
   return (
-    <div className={`d-flex ${styles.socialWrapper}`}>
+    <div className={`row ${styles.socialWrapper}`}>
       {
         Object.values(socialIcons).map((item, idx) => {
-          
+
           if (!links[item.name]) {
             return null;
           }
 
           return (
-            <Button
-              key={`social-btn-${idx}`}
-              onClick={() => handleClick(item.name)}
-              onMouseEnter={() => handleFocus(item.name)}
-              onMouseLeave={() => handleBlur(item.name)}
-              isTransparent
-              noBorder
-            >
-              <img
-                src={active === item.name ? item.iconActive : item.icon}
-                className={styles.socialIcon}
-              />
-            </Button>
+            <div className="col-3">
+              <Button
+                key={`social-btn-${idx}`}
+                onClick={() => handleClick(item.name)}
+                onMouseEnter={() => handleFocus(item.name)}
+                onMouseLeave={() => handleBlur(item.name)}
+                isTransparent
+                noBorder
+              >
+                <img
+                  src={active === item.name ? item.icon : item.icon}
+                  className={styles.socialIcon}
+                />
+              </Button>
+            </div>
           )
         })
       }

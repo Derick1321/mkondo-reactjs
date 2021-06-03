@@ -32,6 +32,8 @@ const ModalRoot = () => {
   const modalType = useSelector((store) => store.modal.type);
   const modalProps = useSelector((store) => store.modal.modalProps);
 
+  console.log('[modal]', modalType, modalProps);
+
   // effects
   useEffect(() => {
     if (modalType) {
@@ -101,10 +103,10 @@ const ModalRoot = () => {
       className={styles.modalContainer}
       onClick={handleClick}
     >
-      <div className="row justify-content-center">
-        <div className="col-10 col-md-8">
+      <div className="row justify-content-center h-100">
+        <div className="col-md-12 col-sm-12 col-xs-12">
           <div
-            className={styles.modalWrapper}
+            className={`${styles.modalWrapper}  ${modalType == 'LOGIN_MODAL' || modalType == 'SIGNUP_MODAL' ? 'h-100': ''}`}
             onClick={handleInnerClick}
           >
             <ModalContent
