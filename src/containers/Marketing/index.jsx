@@ -138,7 +138,7 @@ const Marketing = () => {
             </div>
           </div>
         </div>
-        <div className="row w-100 justify-content-center">
+        <div className="row justify-content-center">
           <div className="col-12 col-md-11">
             <div className={`row ${styles.tabContentWrapper}`}>
               <div className={`${selected === 'audio' ? '' : 'd-none'}`}>
@@ -177,7 +177,7 @@ const Marketing = () => {
                   major artists around the world.
               </div>
               </div>
-              <div className="col-sm-3">
+              <div className="col-sm-3 text-center">
                 <img src={logo_icon} alt="" className={styles.neverStopIcon} />
               </div>
             </div>

@@ -13,6 +13,7 @@ const TextArea = (props) => {
     onChange,
     placeholder,
     title,
+    isGrey
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -28,11 +29,11 @@ const TextArea = (props) => {
   // render
   return (
     <>
-      <p>{t(title)}</p>
+      <p style={{color: 'white'}}>{t(title)}</p>
       <div className={styles.formTextAreaWrapper}>
         <textarea
           name={name}
-          className={styles.formTextArea}
+          className={`${styles.formTextArea} ${isGrey?styles.textareaGrey:''}`}
           value={value}
           onChange={handleChange}
           placeholder={t(placeholder)}

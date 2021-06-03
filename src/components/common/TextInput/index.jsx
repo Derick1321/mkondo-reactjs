@@ -24,6 +24,7 @@ const TextInput = (props) => {
     disabled,
     title,
     onIconClick,
+    isGrey,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -39,11 +40,11 @@ const TextInput = (props) => {
   // render
   return (
     <>
-      <p>{t(title)}</p>
-      <div className={`d-flex justify-content-center align-items-center ${styles.textInputContainer} ${customWrapperClass}`}>
+      <p style={{color: 'white'}}>{t(title)}</p>
+      <div className={`d-flex justify-content-center align-items-center ${styles.textInputContainer} ${customWrapperClass}  ${isGrey && styles.GreyStyleWrapper}`}>
         <input
           name={name}
-          className={styles.textInputWrapper}
+          className={`${styles.textInputWrapper} ${isGrey && styles.GreyStyle}`}
           type={type}
           onChange={handleChange}
           onFocus={onFocus}

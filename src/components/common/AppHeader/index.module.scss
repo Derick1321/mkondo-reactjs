@@ -5,9 +5,11 @@
     height: 70px;
     padding: 0.5rem 2.5rem;
     width: calc(100% - 220px);
-    background-color: $primary-green;
+    background-color: #323232;
     z-index: 10000;
-    box-shadow: 3px 3px 3px #222;
+    @media screen and (max-width: 576px) {
+        background-color: black;
+    }
 }
 
 .mobile {
@@ -19,14 +21,19 @@
 }
 
 .appHeaderAvatar {
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
     border-radius: 50%;
 }
 
 .appHeaderName {
     color: $white;
     padding: 0 1rem;
+    margin-top: 13px;
+    background-color: black;
+    padding: 2px;
+    border-radius: 21px;
+    margin-left: 10px;
     span {
         padding: 0 0.5rem;
         width: 14ch;
@@ -37,11 +44,26 @@
 }
 
 .appHeaderInput {
-    background-color: $secondary-black;
-    border-color: $secondary-black;
+    background-color: $black;
+    border-color: $black;
     input {
         color: $white;
     }
+    @media screen and (max-width: 576px) {
+        visibility: hidden;
+    }
+}
+
+.mobile_logo {
+    @media screen and (min-width: 576px) {
+        display: none;
+    }
+    color: #A0A0FF;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    top: 25%;
+    left: 25%;
 }
 
 .optSecondary {

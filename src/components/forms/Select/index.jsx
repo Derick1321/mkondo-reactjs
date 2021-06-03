@@ -14,6 +14,7 @@ const SelectInput = (props) => {
     value,
     placeholder,
     name,
+    isGrey,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -24,11 +25,29 @@ const SelectInput = (props) => {
   const handleChange = (value, item) => {
     onChange(item.name, value);
   }
+  console.log('[isGrey]', isGrey);
+
+  const customStyles = {
+    option: (provided, state) => ({
+      ...provided,
+      color: isGrey? 'white': '',
+      backgroundColor: isGrey? '#818181': ''
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      color: isGrey? 'white': '',
+      backgroundColor: isGrey? '#818181': ''
+    }),
+    placeholder: (provided, state) => ({
+      ...provided,
+      color: isGrey? 'white': '',
+    }),
+  }
 
   // render
   return (
     <>
-      <p>{t(title)}</p>
+      <p style={{color: 'white'}}>{t(title)}</p>
       <Select
         name={name}
         options={options}
@@ -36,6 +55,7 @@ const SelectInput = (props) => {
         value={value}
         isMulti={isMulti}
         placeholder={t(placeholder)}
+        styles={customStyles}
       />
     </>
   );

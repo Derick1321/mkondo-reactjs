@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import Preview from '$components/common/Preview';
-import Feature from '$components/common/Feature';
+import FeatureHomeRes from '$components/common/FeatureHomeRes';
 import SimplePreview from '$components/common/SimplePreview';
 import styles from './index.module.scss';
 
@@ -21,14 +21,14 @@ const GridMedia = (props) => {
     if(item.owner_avatar_url == "null") avatar_url = null;
     if (type === 'audio') {
       return (
-        <Feature
+        <FeatureHomeRes
           key={`feature-home-songs-${idx}`}
           mediaUrl={item.media_url}
           mediaId={item.media_id}
           avatar={item.cover_url}
           artistId={item.owner_id}
           source={avatar_url}
-          subtitle={item.owner_name}
+          owner_name={item.owner_name}
           title={item.name}
           country={item.country}
           category={item.category}
@@ -36,6 +36,7 @@ const GridMedia = (props) => {
 
           likes={item.likes}
           plays={item.plays}
+          comment_num={item.comment_num}
         />
       );
     }
@@ -71,7 +72,12 @@ const GridMedia = (props) => {
     <div className="row">
       {
         values.map((item, idx) => 
-            <div key={idx} className={`col-md-4 ${styles.gridItem}`}>{getMedia(item, idx)}</div>
+            {if(type == 'audio') return (<div key={idx} className={`col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 ${styles.gridItem}`}>{getMedia(item, idx)}</div>)
+            else return (
+              <div key={idx} className={`col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 ${styles.gridItem}`}>{getMedia(item, idx)}</div>
+            )
+            }
+
         )
       }
     </div>

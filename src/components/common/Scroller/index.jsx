@@ -47,7 +47,7 @@ const Scroller = (props) => {
 
   const setup = useCallback(() => {
     const container = document.getElementById(containerId);
-    var left = children.length * 300;
+    var left = children.length * 230;
     gsap.set(container, {
       width: left,
     });

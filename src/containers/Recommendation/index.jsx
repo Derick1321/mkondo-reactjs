@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import GridMedia from '$components/media/GridMedia';
-import Tabs from '$components/common/Tabs';
+import TabsMark from '$components/common/TabsMark';
 
 import { getPopularRecommended } from '$redux/features/media';
 
@@ -30,11 +30,18 @@ const Recommendation = () => {
     // render
     return (
         <div className={styles.homeContent}>
+
             <div className={styles.homeTabsWrapper}>
-                <Tabs
+
+                <TabsMark
                     onSelect={handleSelect}
                     selected={selected}
+                    activeColor="white"
                 />
+                <div style={{ clear: 'both' }}></div>
+                <span className={styles.heading}>
+                    Recommendation
+                </span>
             </div>
             <div className={selected !== 'audio' ? 'd-none' : ''}>
                 <GridMedia

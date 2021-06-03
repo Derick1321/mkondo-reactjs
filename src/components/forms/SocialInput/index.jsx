@@ -13,6 +13,7 @@ const SocialInput = (props) => {
     value,
     placeholder,
     icon,
+    isGrey,
   } = props;
 
   // render
@@ -29,6 +30,7 @@ const SocialInput = (props) => {
         placeholder={placeholder}
         onChange={onChange}
         value={value}
+        isGrey={isGrey}
       />
     </div>
   );

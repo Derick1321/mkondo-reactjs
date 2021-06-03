@@ -37,8 +37,8 @@ const GenreSelector = (props) => {
             alt="Happy Face"
           />
           <div className={styles.genreSelectorHeaderWrapper}>
-            <p className={styles.genreSelectorHeader}>{title}</p>
-            <p>{subtitle}</p>
+            <div className={styles.genreSelectorHeader}>{title}</div>
+            <div>{subtitle}</div>
           </div>
         </div>
         <div className={`d-flex flex-wrap justify-content-center ${styles.genreSelectorMenus}`}>
@@ -59,7 +59,7 @@ const GenreSelector = (props) => {
                       alt=""
                     />
                   </div>
-                  <span>{t(menu.title)}</span>
+                  <span style={{fontSize: '1.4rem'}}>{t(menu.title)}</span>
                 </div>
               )
             })
@@ -68,7 +68,9 @@ const GenreSelector = (props) => {
         <div className="d-flex justify-content-center my-4">
           <Button
             onClick={handleNext}
-            icon="next"
+            isRed
+            noBorder
+            isSquare
           >
             {t('continue')}
           </Button>

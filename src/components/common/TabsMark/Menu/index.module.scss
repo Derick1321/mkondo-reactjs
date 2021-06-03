@@ -2,21 +2,24 @@
 .tabMenu {
     color: $black;
     font-family: Roboto;
-    font-size: $heading;
+    font-size: 20px;
     border: none;
     background-color: transparent;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
     margin-top: 1rem;
     &:focus {
         outline: none;
     }
     text-transform: uppercase;
     border-radius: 2rem;
+    @media screen and (max-width: 768px) {
+        font-size: 14px;
+        padding: 0.5rem 1rem;
+    }
 }
 
 .tabMenuActive {
     background-color: #C082FD;
-    font-size: $heading;
 }
 
 .activeTabMenu {
@@ -26,6 +29,5 @@
 }
 
 .mobile {
-    width: 100%;
     max-width: 360px;
 }
