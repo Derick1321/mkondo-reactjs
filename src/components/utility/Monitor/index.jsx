@@ -16,6 +16,8 @@ const Monitor = () => {
   const saveMediaPending = useSelector((store) => store.media.saveMediaPending);
   const removeFavoritePending = useSelector((store) => store.user.removeFavoritePending);
   const addFavoritePending = useSelector((store) => store.user.addFavoritePending);
+  const addLikePending = useSelector((store) => store.user.addLikesPending);
+  const removeLikePending = useSelector((store) => store.user.removeLikesPending);
   const removeFollowersPending = useSelector((store) => store.user.removeFollowersPending);
   const addFollowersPending = useSelector((store) => store.user.addFollowersPending);
   const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
@@ -63,6 +65,8 @@ const Monitor = () => {
     || removeFavoritePending
     || addFollowersPending
     || removeFollowersPending
+    || addLikePending
+    || removeLikePending
     || !userId) {
       return;
     }
@@ -73,6 +77,8 @@ const Monitor = () => {
     addFavoritePending,
     removeFavoritePending,
     removeFollowersPending,
+    addLikePending,
+    removeLikePending,
     updateUserComplete,
   ]);
 
