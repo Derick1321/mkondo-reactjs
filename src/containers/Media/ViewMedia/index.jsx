@@ -98,8 +98,8 @@ const ViewMedia = () => {
           onClick={handleAddComment}
           isLoading={addCommentPending}
           isCustom
-          hideDefault
-          style="btn btn-primary"
+          hideDefault={false}
+          className="btn btn-primary"
         >
           Add
         </Button>
