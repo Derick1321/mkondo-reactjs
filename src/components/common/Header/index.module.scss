@@ -1,9 +1,10 @@
 @import '$assets/scss/main.scss';
 .wrapper {
-    padding: 2.8rem 3rem 2.8rem 0;
-    position: absolute;
+    padding: 0.8rem 3rem 0.8rem 0;
+    // position: absolute;
     right: 0;
     z-index: 9998;
+    float: right;
 }
 
 .title {
@@ -27,12 +28,15 @@
     background-color: $white;
     overflow: hidden;
     padding: 0 1rem;
+    right: 0;
+    width: 30%;
+    margin-left: auto;
+    margin-right: 10px;
     transition: transform 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0), background 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0), height 0.5s ease;
     @media screen and (max-width: 768px) {
         min-width: 119px;
         background-color: #818181;
         border-radius: 20px;
-        margin-left: -30px;
     }
 }
 
@@ -43,7 +47,6 @@
         min-width: 119px;
         background-color: #818181;
         border-radius: 20px;
-        margin-left: -30px;
     }
     padding-top: 1rem;
     padding-bottom: 1rem;
