@@ -23,7 +23,7 @@ const initialState = {
     albums: [],
   },
   forceClearSearch: false,
-  showFooterPlayer: true,
+  showFooterPlayer: false,
 };
 
 const navSlice = createSlice({
