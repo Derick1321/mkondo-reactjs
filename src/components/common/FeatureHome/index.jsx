@@ -91,7 +91,7 @@ const FeatureHome = (props) => {
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
-  const [isLikes, setIsLikes] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // ref
   const isMounted = useRef(false);
@@ -131,9 +131,10 @@ const FeatureHome = (props) => {
     if (!likes_s) { return; }
     const res = likes_s.find((media) => media.media_id === mediaId);
     if (!res) {
+      setIsLiked(false);
       return;
     }
-    setIsLikes(true);
+    setIsLiked(true);
   }, [likes_s]);
 
   // handlers
@@ -167,12 +168,12 @@ const FeatureHome = (props) => {
       media_id: mediaId,
     };
 
-    if (!isLikes) {
+    if (!isLiked) {
       dispatch(addLikes(data));
     } else {
       dispatch(removeLikes(data));
     }
-    setIsLikes(!isLikes);
+    setIsLiked(!isLiked);
   }
 
   // render
@@ -197,7 +198,7 @@ const FeatureHome = (props) => {
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
             <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes} {t('likes')}</div>
-            <img onClick={handleLikes} src={isLikes ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" />
+            <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" />
             <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" />
           </div>
           <div className="d-flex">
@@ -220,7 +221,7 @@ const FeatureHome = (props) => {
                 <div className={styles.f_description}>{description}</div>
               </div>
 
-              <div className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
+              <div onClick={handleView} className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
 
             </div>
 
@@ -229,7 +230,7 @@ const FeatureHome = (props) => {
             <span className="ml-auto">
               {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
             </span>
-            {/* <img onClick={handleLikes} src={isLikes ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+            {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
             {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
           </div>
 

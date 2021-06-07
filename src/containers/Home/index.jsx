@@ -17,6 +17,8 @@ const Home = () => {
   const dispatch = useDispatch();
   const newReleases = useSelector((store) => store.media.newReleases);
   const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
+  const addLikesPending = useSelector((store) => store.user.addLikesPending);
+  const removeLikesPending = useSelector((store) => store.user.removeLikesPending);
   const topMedias = useSelector((store) => store.media.topMedias);
   const getTopMediasPending = useSelector((store) => store.media.getTopMediasPending);
   const randomMedias = useSelector((store) => store.media.randomMedias);
@@ -38,6 +40,16 @@ const Home = () => {
     dispatch(getRandomMedias({ category: 'audio' }));
     dispatch(getTrendMedias({ category: 'audio' }));
   }, []);
+
+  useEffect(() => {
+    if (addLikesPending || removeLikesPending) {
+      return;
+    }
+    dispatch(getNewReleases({ category: selected }));
+    dispatch(getTopMedias({ category: selected }));
+    dispatch(getRandomMedias({ category: selected }));
+    dispatch(getTrendMedias({ category: selected }));
+  }, [addLikesPending, removeLikesPending]);
 
   // handlers
   const handleSelect = (name) => {
