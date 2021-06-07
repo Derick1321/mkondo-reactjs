@@ -36,6 +36,7 @@ const ActionHeader = (props) => {
 
     const res = favourites.find((media) => media.media_id === mediaId);
     if (!res) {
+      setIsFavorite(false);
       return;
     }
     setIsFavorite(true);
