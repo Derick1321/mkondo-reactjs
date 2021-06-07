@@ -221,7 +221,7 @@ const FeatureHome = (props) => {
                 <div className={styles.f_description}>{description}</div>
               </div>
 
-              <div className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
+              <div onClick={handleView} className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
 
             </div>
 
