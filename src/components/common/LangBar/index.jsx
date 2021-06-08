@@ -17,8 +17,8 @@ const LangBar = props => {
     return (
         <div>
             <select value={lang} onChange={onLanguageChange} className={styles.wrapper}>
-                <option value="en">English</option>
-                <option value="es">Español</option>
+                <option value="en">EN</option>
+                <option value="es">ES</option>
             </select>
         </div>
     )
