@@ -138,11 +138,11 @@ const Feature = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    if (category !== 'audio') {
-      handleView();
-      return;
-    }
-    console.log(category);
+    // if (category !== 'audio') {
+    //   handleView();
+    //   return;
+    // }
+    // console.log(category);
     dispatch(loadMedia({
       mediaId,
       url: mediaUrl,

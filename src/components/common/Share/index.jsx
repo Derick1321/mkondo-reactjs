@@ -111,6 +111,7 @@ const Share = (props) => {
           placeholder="Description"
           onChange={handleChange}
           value={description}
+          isGrey
         />
       </div>
       <div className="col-12 col-sm-5 col-md-4">
@@ -144,7 +145,7 @@ const Share = (props) => {
           type="text"
           value={link}
         />
-        <Button onClick={copyLink}>
+        <Button isRed onClick={copyLink}>
           Copy Link
         </Button>
       </div>

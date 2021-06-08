@@ -122,8 +122,11 @@ const Marketing = () => {
   // render
   return (
     <div className={styles.wrapper}>
-      <Header />
-      <Hero />
+      <div style={{backgroundColor: '#111'}}>
+        <Header />
+        <Hero />
+      </div>
+
       <div className={`container-fluid h-100`}>
         <div className="row w-100 justify-content-center">
           <div className="col-12 col-sm-11">
