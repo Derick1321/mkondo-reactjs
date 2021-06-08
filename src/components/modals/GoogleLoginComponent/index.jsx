@@ -31,7 +31,7 @@ const refreshTokenSetup = res => {
 const GoogleLoginComponent = (props) => {
 
     const dispatch = useDispatch();
-    const loginPending = useSelector((store) => store.authentication.loginPending);
+    // const loginPending = useSelector((store) => store.authentication.loginPending);
 
     const onSuccess = (res) => {
         console.log('[Login success] currentUser: ', res.profileObj.email);
@@ -58,7 +58,6 @@ const GoogleLoginComponent = (props) => {
     return (
         <Button
             onClick={signIn}
-            isLoading={loginPending}
             isStretch
             isRed
             isAlignLeft
