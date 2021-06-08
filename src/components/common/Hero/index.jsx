@@ -22,6 +22,7 @@ const background = require('$assets/images/background.png');
 
 
 const HeroWrapper = styled.div`
+  clear: both;
   width: 100vw;
   height: 100vh;
   background-image: url(${background});
@@ -31,20 +32,19 @@ const HeroWrapper = styled.div`
 
 const Logo = styled.div`
   background-image: url(${logo});
-  background-size: 130px 130px;
+  background-size: 60px 60px;
   background-position: center;
   background-repeat: no-repeat;
-  height: 130px;
-  width: 130px;
+  height: 70px;
+  width: 70px;
   position: absolute;
   left: 70px;
-  top: 30px;
+  top: 2px;
   @media screen and (max-width: 768px) {
-    height: 90px;
-    width: 90px;
-    left: 20px;
-    top: 20px;
-    background-size: 85px 85px;
+    height: 45px;
+    width: 45px;
+    left: 45px;
+    background-size: 45px 45px;
   }
 `;
 
