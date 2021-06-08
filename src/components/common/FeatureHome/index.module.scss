@@ -110,12 +110,30 @@
     font-size: 12px;
 }
 
+.f_hoverCursor_icon {
+    color: #2B7676;
+}
+
+.f_hoverCursor_icon:hover {
+    cursor: pointer;
+}
+
 .f_fontSize16 {
     font-size: 16px;
+    font-size: 1.1rem;
+    line-height: 1.2rem;
+    max-height: 2.4rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0.5rem;
 }
 
 .f_hoverCursor {
     color: #2B7676;
+    text-overflow: ellipsis;
+    line-height: 1rem;
+    height: 2rem;
+    overflow: hidden;
 }
 
 .f_hoverCursor:hover {

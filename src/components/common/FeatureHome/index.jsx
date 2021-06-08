@@ -198,8 +198,8 @@ const FeatureHome = (props) => {
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
             <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes} {t('likes')}</div>
-            <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" />
-            <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" />
+            <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+            <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
           </div>
           <div className="d-flex">
             <button
