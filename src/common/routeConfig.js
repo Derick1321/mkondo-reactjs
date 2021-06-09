@@ -29,10 +29,12 @@ import { ViewSlider } from '../containers/Slider/ViewSlider';
 import { Configuration } from '../containers/Configuration';
 import { Sliders } from '../containers/Configuration/Sliders';
 import TopMedias from '../containers/TopMedias';
+import GuestViewMedia from '$containers/GuestViewMedia';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
+  guestViewMedia: '/guest/media/:id',
   onBoarding: '/on-boarding',
   notFound: '/not-found',
   resetPassword: '/reset-password',
@@ -103,6 +105,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.marketing,
     component: Marketing,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.guestViewMedia,
+    component: GuestViewMedia,
   },
   {
     ...defaultConfig,
