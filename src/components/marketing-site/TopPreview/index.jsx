@@ -47,6 +47,7 @@ const TopPreview = (props) => {
             mediaId={item.media_id}
             mediaUrl={item.media_url}
             artistId={item.owner_id}
+            category={item.category}
           />
           </div>
         ))

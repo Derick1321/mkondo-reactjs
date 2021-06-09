@@ -1,10 +1,6 @@
 @import '$assets/scss/main.scss';
 .wrapper {
-    padding: 0.8rem 3rem 0.8rem 0;
-    // position: absolute;
-    right: 0;
     z-index: 9998;
-    float: right;
 }
 
 .title {
@@ -14,9 +10,9 @@
     color: $secondary-green;
 }
 
-.panel {
-    flex: 1;
-}
+// .panel {
+//     flex: 1;
+// }
 
 .menuMobile {
     position: absolute;

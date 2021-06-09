@@ -138,11 +138,11 @@ const Feature = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    // if (category !== 'audio') {
-    //   handleView();
-    //   return;
-    // }
-    // console.log(category);
+    if (category !== 'audio') {
+      handleView();
+      return;
+    }
+    
     dispatch(loadMedia({
       mediaId,
       url: mediaUrl,
@@ -154,8 +154,12 @@ const Feature = (props) => {
   }
 
   const handleView = () => {
-    console.log(mediaId);
-    history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+    //check if user is authenticated 
+    if (userToken) {
+      history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+    } else {
+      history.push(generatePath(routePaths.guestViewMedia, {id: mediaId}));
+    }
   }
 
   const handleArtistView = () => {
