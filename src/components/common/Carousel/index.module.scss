@@ -73,7 +73,7 @@ $slider-height: 600px;
     
     div {
         border-radius: 20px;
-        padding: 1rem;
+        padding: 0.5rem;
         background-color: rgba($color: $black, $alpha: 0.3);
         margin-right: 5px;
     }
@@ -84,7 +84,7 @@ $slider-height: 600px;
     }
 
     .solid {
-        background-color: rgba($color: $black, $alpha: 1);
+        background-color: rgba($color: $accent-color, $alpha: 1);
     }
 }
 
