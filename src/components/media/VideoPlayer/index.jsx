@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/vimeo';
 import screenfull from 'screenfull'
 
 import PlayBtn from '$components/media/PlayBtn';
