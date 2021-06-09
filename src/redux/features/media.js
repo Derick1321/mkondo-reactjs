@@ -54,8 +54,8 @@ export const updateShareCount = createAsyncThunk(
 export const getMedia = createAsyncThunk(
     GET_MEDIA,
     async(id, param) => {
-        const { token } = param.getState().authentication;
-        return await handleFetch('GET', `media/${id}`, null, token);
+        const { token, visitorToken } = param.getState().authentication;
+        return await handleFetch('GET', `media/${id}`, null, token ?? visitorToken );
     }
 );
 
