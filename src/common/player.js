@@ -26,7 +26,6 @@ class Player {
       && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
-    
     this.playlist = playlist;
     this.index = 0;
   }

@@ -99,18 +99,10 @@ const Hero = (props) => {
     dispatch(showModal('ALERT_MODAL'));
   };
 
-  if (homeSliderItems.length) {
-    return (
-      <div className={`${styles.sliderWrapper}`}>
-        <Carousel items={sliderItems} aspect_ratio_x={home_slider.aspect_ratio_x} aspect_ratio_y={home_slider.aspect_ratio_y} />
-      </div>
-    )
-  }
-
   return (
-    <HeroWrapper>
-      <Logo />
-    </HeroWrapper>
+    <div className={`${styles.sliderWrapper}`}>
+      <Carousel items={sliderItems} aspect_ratio_x={home_slider.aspect_ratio_x ?? 6} aspect_ratio_y={home_slider.aspect_ratio_y ?? 2} />
+    </div>
   );
 
 };
