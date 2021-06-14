@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import queryString from 'query-string';
 
 import { handleFetch, buildFormData } from '$common/requestUtils';
+import { async } from 'regenerator-runtime';
 
 const ADD_MEDIA = 'media/ADD_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
@@ -16,6 +17,7 @@ const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
+const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
 const GET_COMMENT = 'media/GET_COMMENT';
 const DELETE_COMMENT = 'media/DELETE_COMMENT';
 const GET_RECOMENDED = 'media/GET_RECOMENDED';
@@ -106,6 +108,14 @@ export const addComment = createAsyncThunk(
         return await handleFetch('POST', 'comments', data, token);
     }
 );
+
+export const addMediaComment = createAsyncThunk(
+    ADD_MEDIA_COMMENT,
+    async(data, param) => {
+        const { token } = param.getState().authentication;
+        return await handleFetch('POST', `media/${data['media_id']}/comments`, data, token);
+    }
+)
 
 export const getComment = createAsyncThunk(
     GET_COMMENT,
@@ -494,6 +504,21 @@ const mediaSlice = createSlice({
             state.addCommentError = null;
         },
         [addComment.rejected]: (state, action) => {
+            state.addCommentPending = false;
+            state.addCommentComplete = true;
+            state.addCommentError = action.error;
+        },
+        [addMediaComment.pending]: (state, action) => {
+            state.addCommentPending = true;
+            state.addCommentComplete = false;
+            state.addCommentError = null;
+        },
+        [addMediaComment.fulfilled]: (state, action) => {
+            state.addCommentPending = false;
+            state.addCommentComplete = true;
+            state.addCommentError = null;
+        },
+        [addMediaComment.rejected]: (state, action) => {
             state.addCommentPending = false;
             state.addCommentComplete = true;
             state.addCommentError = action.error;
