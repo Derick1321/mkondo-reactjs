@@ -19,6 +19,7 @@ import {
 
 import styles from './index.module.scss';
 import { addMediaComment } from '../../../redux/features/media';
+import { COLOR_PRIMARY, COLOR_ACCENT } from '$common/constants'
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -102,6 +103,7 @@ const ViewMedia = () => {
           Add
         </Button>
      
+        <div className="mt-3">
         {
           comments.map((comment, idx) => (
             <Row
@@ -112,15 +114,18 @@ const ViewMedia = () => {
               avatarUrl={comment.avatar_user_url}
               comment_id={comment.comment_id}
               deleteComment={handleDeleteComment}
+              no_of_replies={comment.no_of_replies}
+              replies={comment.comments ?? []}
             />
           ))
         }
+        </div>
     </div>
   );
 
   const descriptionPane = (
     <div className={selected === 'description' ? '' : 'd-none'}>
-      <div className={styles.descriptionWrapper}>
+      <div className={`${styles.descriptionWrapper} text-light`}>
         {currentMedia.description}
       </div>
     </div>
@@ -149,15 +154,21 @@ const ViewMedia = () => {
           </div>
         )
       }
-      <Tabs
-        options={options}
-        onSelect={handleSelect}
-        selected={selected}
-        name="viewMedia"
-        activeColor="#EA4C89"
-      />
-      { commentPane}
-      { descriptionPane}
+      <div className="row">
+        <div className="col-lg-9">
+          <Tabs
+            options={options}
+            onSelect={handleSelect}
+            selected={selected}
+            name="viewMedia"
+            activeColor={ COLOR_ACCENT }
+          />
+          { commentPane}
+          { descriptionPane}
+        </div>
+        
+      </div>
+      
     </div>
   );
 }
