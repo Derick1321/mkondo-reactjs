@@ -18,6 +18,7 @@ import {
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { addMediaComment } from '../../../redux/features/media';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -70,7 +71,7 @@ const ViewMedia = () => {
 
   const handleAddComment = () => {
     if(value == "") return;
-    dispatch(addComment({
+    dispatch(addMediaComment({
       media_id: mediaId,
       user_id: userId,
       value,
@@ -84,17 +85,14 @@ const ViewMedia = () => {
 
   const commentPane = (
     <div className={selected === 'comments' ? '' : 'd-none'}>
-      <div className="d-flex align-items-center mt-4">
-        <div className={styles.commentsWrapper}>
-          <InputField
+        <InputField
             field={{
               ...field,
               value,
             }}
             onChange={handleChange}
           />
-        </div>
-        <Button
+          <Button
           onClick={handleAddComment}
           isLoading={addCommentPending}
           isCustom
@@ -103,8 +101,7 @@ const ViewMedia = () => {
         >
           Add
         </Button>
-      </div>
-      <div className="d-flex flex-column">
+     
         {
           comments.map((comment, idx) => (
             <Row
@@ -118,7 +115,6 @@ const ViewMedia = () => {
             />
           ))
         }
-      </div>
     </div>
   );
 
@@ -144,9 +140,13 @@ const ViewMedia = () => {
             mediaId={currentMedia.media_id}
           />
         ) : (
-          <VideoPlayer
-            url={currentMedia.media_url}
-          />
+          <div className="row">
+            <div className="col-lg-9">
+              <VideoPlayer
+                url={currentMedia.media_url}
+              />
+            </div>
+          </div>
         )
       }
       <Tabs
