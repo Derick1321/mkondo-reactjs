@@ -18,7 +18,9 @@ const ADD_ALBUM = 'media/ADD_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
+const ADD_COMMENT_COMMENT = 'media/ADD_COMMENT_COMMENT';
 const GET_COMMENT = 'media/GET_COMMENT';
+const GET_COMMENT_REPLIES = 'media/GET_COMMENT_REPLIES';
 const DELETE_COMMENT = 'media/DELETE_COMMENT';
 const GET_RECOMENDED = 'media/GET_RECOMENDED';
 const GET_POPULAR_RECOMENDED = 'media/GET_POPULAR_RECOMENDED';
@@ -117,6 +119,14 @@ export const addMediaComment = createAsyncThunk(
     }
 )
 
+export const addCommentComment = createAsyncThunk(
+    ADD_COMMENT_COMMENT,
+    async(data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('POST', `comments/${data['comment_id']}/comments`, data, token);
+    }
+)
+
 export const getComment = createAsyncThunk(
     GET_COMMENT,
     async(id, param) => {
@@ -124,6 +134,15 @@ export const getComment = createAsyncThunk(
         return await handleFetch('GET', `media/${id}/comments`, null, token);
     }
 );
+
+export const getCommentReplies = createAsyncThunk(
+    GET_COMMENT_REPLIES,
+    async(id, store) => {
+        const { token } = store.getState().authentication;
+        updateCurrentComment(id);
+        return await handleFetch('GET', `comments/${id}/comments`, null, token);
+    }
+)
 
 export const deleteComment = createAsyncThunk(
     DELETE_COMMENT,
@@ -234,9 +253,15 @@ const initialState = {
     getCommentPending: false,
     getCommentError: null,
     getCommentComplete: false,
+    getCommentRepliesPending: false,
+    getCommentRepliesError: null,
+    getCommentRepliesComplete: false,
     addCommentPending: false,
     addCommentError: null,
     addCommentComplete: false,
+    replyCommentPending: false,
+    replyCommentError: null,
+    replyCommentComplete: false,
     deleteCommentPending: false,
     deleteCommentError: null,
     deleteCommentComplete: false,
@@ -271,6 +296,7 @@ const initialState = {
     },
     albumId: null,
     comments: [],
+    currentComment: null,
     recommendedMedia: [],
     popularRecommendedMedia: {
         success: '',
@@ -292,7 +318,10 @@ const mediaSlice = createSlice({
         },
         clearMedia(state) {
             state = initialState;
-        }
+        },
+        updateCurrentComment(state, action) {
+            state.currentComment = action.payload ?? null;
+        },
     },
     extraReducers: {
         [addMedia.pending]: (state, action) => {
@@ -523,6 +552,21 @@ const mediaSlice = createSlice({
             state.addCommentComplete = true;
             state.addCommentError = action.error;
         },
+        [addCommentComment.pending]: (state, action) => {
+            state.replyCommentPending = true;
+            state.replyCommentError = null;
+            state.replyCommentComplete = false;
+        }, 
+        [addCommentComment.fulfilled]: (state, action) => {
+            state.replyCommentPending = false;
+            state.replyCommentComplete = true;
+            state.replyCommentError = null;
+        },
+        [addCommentComment.rejected]: (state, action) => {
+            state.replyCommentPending = false;
+            state.replyCommentError = action.error;
+            state.replyCommentSuccess = false;
+        },
         [getComment.pending]: (state, action) => {
             state.getCommentPending = true;
             state.getCommentComplete = false;
@@ -539,6 +583,24 @@ const mediaSlice = createSlice({
             state.getCommentPending = false;
             state.getCommentComplete = true;
             state.getCommentError = action.error;
+        },
+        [getCommentReplies.pending]: (state, action) => {
+            state.getCommentRepliesPending = true;
+            state.getCommentRepliesError = null;
+            state.getCommentRepliesComplete = false;
+        },
+        [getCommentReplies.fulfilled]: (state, action) => {
+            state.getCommentRepliesPending = false;
+            state.getCommentRepliesError = null;
+            state.getCommentRepliesComplete = true;
+            //updating the replies
+            let commentIndex = state.comments.find((comment => comment.comment_id == state.media.current_comment));
+            state.comments[commentIndex].comments = action.payload.comments;
+        },
+        [getCommentReplies.rejected]: (state, action) => {
+            state.getCommentRepliesPending = false;
+            state.getCommentRepliesError = action.error;
+            state.getCommentRepliesComplete = false;
         },
         [deleteComment.pending]: (state, action) => {
             state.deleteCommentPending = true;
@@ -574,5 +636,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment } = mediaSlice.actions;
 export default mediaSlice.reducer;

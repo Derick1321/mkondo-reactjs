@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { handleFetch } from '$common/requestUtils';
 import { formatDate } from '$common/utils';
 
 import styles from './index.module.scss';
+import { addCommentComment, getCommentReplies, updateCurrentComment } from '../../../redux/features/media';
 const icon_delete = require('$assets/images/icons/cancel.svg');
 
 const Avatar = styled.div`
   background-image: url(${props => props.source});
-  height: 60px;
-  width: 60px;
-  min-width: 60px;
+  height: ${props => props.size ?? 60}px;
+  width: ${props => props.size ?? 60}px;
+  min-width: ${props => props.size ?? 60}px;
   background-size: cover;
   border-radius: 50%;
   background-color: #727C7C;
@@ -27,13 +28,25 @@ const CommentRow = (props) => {
     avatarUrl,
     deleteComment,
     comment_id,
+    no_of_replies,
+    replies,
   } = props;
 
   // store
   const token = useSelector((store) => store.authentication.token);
+  const user_id = useSelector((store) => store.authentication.user.user_id);
+  const loading = useSelector((store) => store.media.replyCommentPending);
+  const currentComment = useSelector((store) => store.media.currentComment);
+  const isFetchingReplies = useSelector((store) => store.media.getCommentRepliesPending);
+  const replyCommentComplete = useSelector((store) => store.media.replyCommentComplete);
+  
+  const dispatch = useDispatch();
 
   // state
   const [url, setUrl] = useState(null);
+  const [isOnReplyView, setisOnReplyView] = useState(false);
+  const [comment, setComment] = useState("");
+
 
   // effects
   useEffect(async () => {
@@ -44,18 +57,80 @@ const CommentRow = (props) => {
     setUrl(res.response);
   }, [avatarUrl]);
 
+  useEffect(() => {
+    getCommentReplies(currentComment);
+  }, [replyCommentComplete])
+
+  const handleSubmitReply = () => {
+    if (!comment) return;
+    dispatch(addCommentComment({
+      user_id: user_id,
+      comment_id: comment_id,
+      value: comment,
+    }))
+    //refresh comments
+  }
+
   // render
   return (
-    <div className={`d-flex ${styles.row}`}>
-      <Avatar
-        source={url}
-      />
-      <div className="d-flex flex-column ml-4">
-         <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
-         <p className={styles.text}>{value}</p>
+    <>
+      <div className={styles.row}>
+        <div className={`d-flex`}>
+          <Avatar
+            source={url}
+          />
+          <div className="d-flex flex-column ml-4">
+            <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
+            <p className={styles.text}>{value}</p>
+          </div>
+          <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div>
+        </div>
+        <div className="d-flex">
+          <div className="">0 Likes</div>
+          <div className="ml-3">{no_of_replies ?? 0} Replies</div>
+          <div className={`ml-3 ${styles.replyButton}`} onClick={() => {
+            if (!isOnReplyView) {
+              dispatch(updateCurrentComment(comment_id))
+            } else {
+              dispatch(updateCurrentComment(null))
+            }
+            setisOnReplyView(!isOnReplyView)
+          }}>Reply</div>
+        </div>
       </div>
-      <img onClick={e => deleteComment(comment_id)} src={icon_delete} className={styles.deleteStyle} />
-    </div>
+      {isOnReplyView 
+      ? (
+        <div className={`ml-5`}>
+          <textarea
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Reply Comment"
+            className={styles.textArea}>
+          </textarea>
+          <button disabled={loading} className={`${styles.buttonAccent} btn`} onClick={handleSubmitReply}>Reply</button>
+          {loading ? <small>Submitting Reply</small> : ""}
+
+          <div>
+            {replies.map((comment) => {
+              console.log(comment)
+              return (
+                      <div className={styles.row}>
+                        <div className={`d-flex`}>
+                          <div className="d-flex flex-column ml-4">
+                            <p className={styles.text}>{comment.commenter_name} <span className={styles.date}>{formatDate(comment.posted)}</span></p>
+                            <p className={styles.text}>{comment.value}</p>
+                          </div>
+                          <div onClick={e => deleteComment(comment.comment_id)} className={styles.deleteStyle}>Delete</div>
+                        </div>
+                        <div className="d-flex">
+                          
+                        </div>
+                      </div>
+                    )
+            })}
+          </div>
+        </div>
+      ) : null}
+    </>
   );
 } 
 
