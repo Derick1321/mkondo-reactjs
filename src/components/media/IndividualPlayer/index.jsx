@@ -13,6 +13,8 @@ import { showModal } from '$redux/features/modal';
 import { addFavorite, removeFavorite } from '$redux/features/user';
 import { loadMedia } from '$redux/features/player';
 
+import { COLOR_PRIMARY } from '$common/constants';
+
 import styles from './index.module.scss';
 
 const prevIcon = require('$assets/images/player/prev.svg');
@@ -39,14 +41,15 @@ const Cover = styled.div`
 `;
 
 const AvatarImage = styled.div`
-  ${commonStyle}
   border-radius: 50%;
   height: 80px;
   width: 80px;
-  border: 0.8rem solid #3B8CBC;
+  border: 0.5rem solid ${props => props.bg};
   background-image: url(${props => props.url});
-  background-color: #3B8CBC;
+  background-size: cover;
+  background-color: ${props => props.bg};
   margin-right: 1rem;
+
 `;
 
 const IndividualPlayer = (props) => {
@@ -208,7 +211,7 @@ const IndividualPlayer = (props) => {
               />
             </Button>
           </div>
-          <AvatarImage url={avatarSrc} />
+          <AvatarImage url={avatarSrc} bg={COLOR_PRIMARY} />
           <div className="d-flex flex-column justify-content-center">
             <p className={styles.artistName}>{artistName}</p>
             <p className={styles.title}>{title}</p>
