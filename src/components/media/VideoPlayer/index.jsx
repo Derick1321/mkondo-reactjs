@@ -106,10 +106,10 @@ const VideoPlayer = (props) => {
             !isReady && (
               <div className={`d-flex justify-content-center align-items-center ${styles.videoCover}`}>
                 <div
-                  className={`spinner-border spinner-light ${styles.loader}`}
+                  className={`spinner-border spinner-dark ${styles.loader}`}
                   role="status"
                 />
-                <span className="mx-4">Loading...</span>
+                <span className="mx-4 text-dark">Loading...</span>
               </div>
             )
           }

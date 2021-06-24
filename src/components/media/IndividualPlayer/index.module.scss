@@ -18,7 +18,7 @@
 .playerWrapper {
   height: 60px;
   padding: 15px 2rem 5px;
-  background-color: $primary-blue;
+  background-color: $primary-color;
 }
 
 .playerNameWrapper {
@@ -64,4 +64,10 @@
 
 .headerIcon {
   height: 20px;
+}
+
+.avatarImageWrapper {
+  background-color: $primary-color;
+  padding: 10px;
+  border-radius: 50%;
 }
