@@ -129,6 +129,7 @@ const LoginModal = () => {
       <div className="col-lg-6">
         <div className="d-flex flex-column h-100 justify-content-center align-items-center">
           <div className="w-75">
+          <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
           <div className="f25 mb-4">Login</div>
               {
                 error && (
@@ -157,13 +158,13 @@ const LoginModal = () => {
                 <button
                   onClick={handleSignIn}
                   isLoading={loginPending}
-                  className="btn-login"
+                  className="btn btn-primary mr-2"
                 >
                   {loginPending ? <span className="spinner-border w20"></span> : <span>LOGIN</span>}
                 </button>
                 <button
                   onClick={handleSignUp}
-                  className="btn-register"
+                  className="btn btn-outline-primary"
                 >
                   REGISTER
                 </button>
