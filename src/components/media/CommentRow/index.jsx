@@ -59,7 +59,7 @@ const CommentRow = (props) => {
 
   useEffect(() => {
     getCommentReplies(currentComment);
-  }, [replyCommentComplete])
+  }, [replyCommentComplete, currentComment])
 
   const handleSubmitReply = () => {
     if (!comment) return;
@@ -68,6 +68,7 @@ const CommentRow = (props) => {
       comment_id: comment_id,
       value: comment,
     }))
+    setComment("");
     //refresh comments
   }
 
@@ -110,10 +111,9 @@ const CommentRow = (props) => {
           {loading ? <small>Submitting Reply</small> : ""}
 
           <div>
-            {replies.map((comment) => {
-              console.log(comment)
+            {replies ? replies.map((comment) => {
               return (
-                      <div className={styles.row}>
+                      <div className={styles.row} key={comment.comment_id}>
                         <div className={`d-flex`}>
                           <div className="d-flex flex-column ml-4">
                             <p className={styles.text}>{comment.commenter_name} <span className={styles.date}>{formatDate(comment.posted)}</span></p>
@@ -126,7 +126,7 @@ const CommentRow = (props) => {
                         </div>
                       </div>
                     )
-            })}
+            }) : console.log(replies)}
           </div>
         </div>
       ) : null}

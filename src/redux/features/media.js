@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, current } from '@reduxjs/toolkit';
 import queryString from 'query-string';
 
 import { handleFetch, buildFormData } from '$common/requestUtils';
@@ -561,6 +561,23 @@ const mediaSlice = createSlice({
             state.replyCommentPending = false;
             state.replyCommentComplete = true;
             state.replyCommentError = null;
+
+            //updating the replies
+            let commentIndex = state.comments.findIndex((comment => comment.comment_id == state.currentComment));
+            console.debug(commentIndex, current(state), current(state.comments), state.currentComment);
+            if (state.comments[commentIndex]) {
+                //the comment exists
+                let comment = state.comments[commentIndex]
+                if (comment.comments && comment.no_of_replies) {
+                    comment.comments.push(action.payload["comment"])
+                    comment.no_of_replies++;
+                } else {
+                    comment.comments = [].push(action.payload["comment"])
+                    comment.no_of_replies = 1;
+                }
+                state.comments[commentIndex] = comment;
+            }
+            
         },
         [addCommentComment.rejected]: (state, action) => {
             state.replyCommentPending = false;
