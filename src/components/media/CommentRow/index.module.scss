@@ -1,7 +1,7 @@
 @import '$assets/scss/main.scss';
 .text {
     font-size: 14px;
-    color: $secondary-black;
+    color: $white;
 }
 
 .date {
@@ -10,14 +10,43 @@
 }
 
 .row {
+    @include card-dark;
     margin: 1rem 0;
 }
 
 .deleteStyle {
-    width: 15px;
     margin-left: auto;
 }
 
 .deleteStyle:hover {
+    color: red;
     cursor: pointer;
+}
+
+.replyButton {
+}
+
+.replyButton:hover {
+    cursor: pointer;
+    color: $accent-color;
+}
+
+.textArea {
+    @include card-dark;
+    width: 100%;
+    color: rgba($white, 0.7);
+}
+
+.textArea::placeholder {
+    color: rgba($white, 0.2);
+}
+
+.buttonAccent {
+    background: rgba($accent-color, 0.9);
+    color: rgba($white, 0.9);
+}
+
+.buttonAccent:hover {
+    background: rgba($accent-color, 1);
+    color: rgba($white, 1);
 }
