@@ -16,12 +16,20 @@ import { login } from '$redux/features/authentication';
 import { routePaths } from '$common/routeConfig';
 
 import './index.scss';
+import { COLOR_ACCENT, COLOR_PRIMARY } from '../../../common/constants';
 
-const background = require('$assets/images/login_bg.png');
+const login_banner_top_hd = require('$assets/images/banner-login-top.png');
 const login_mobile_top = require('$assets/images/login_mobile_top.png');
 const login_mobile_bottom = require('$assets/images/login_mobile_bottom.png');
 const logo = require('$assets/images/logo.png');
 const arrow_left = require('$assets/images/icons/arrow-left-home.svg');
+
+
+const GradientBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(${COLOR_PRIMARY}, ${COLOR_ACCENT});
+`;
 
 const LoginBackBottom = styled.div`
   @media screen and (max-width: 576px) {
@@ -39,22 +47,19 @@ const LoginBackBottom = styled.div`
 
 const LoginBack = styled.div`
   width: 100%;
-  height: 0;
-  background-size: cover;
-  background-position: left;
+  height: 100%;
+  background-size: contain;
+  background-position: top;
+  background-repeat: no-repeat;
   position: absolute;
   background-color: transparent;
-  top: 0;
-  left: 0;
-  z-index: 1;
+  z-index: 0;
 
   @media screen and (max-width: 576px) {
     background-image: url(${login_mobile_top});
-    padding-top: 39%
   }
   @media screen and (min-width: 576px) {
-    background-image: url(${background});
-    padding-top: 23%;
+    background-image: url(${login_banner_top_hd});
   }
 `;
 
@@ -108,21 +113,23 @@ const LoginModal = () => {
 
   // render
   return (
-    <div>
-
-      <LoginBack />
-      <LoginBackBottom />
-      <button className="goHome" onClick={() => dispatch(hideModal())}>
-        <img src={arrow_left} style={{ width: '12px' }} /> Home</button>
-      <div className="foreContent row justify-content-center h-100">
-
-        <div className="col-md-6 col-sm-6 c-text-center position-relative">
-          <img src={logo} alt="" className="login_logo_icon" />
-        </div>
-        <div className="col-md-6 col-sm-6 z3">
-          <div className="row justify-content-center login-modal-top">
-            <div className="col-10 col-sm-10 col-md-10 mt-4">
-              <div className="f25 mb-4">Login</div>
+    <div className="row">
+      <div className="col-lg-6">
+        <GradientBackground>
+          <div className="d-flex flex-column justify-content-center align-items-center h-100">
+            <h1 className="display-3 text-light pt-20 w-75">Welcome back to mkondo</h1>
+            <div className="w-75 my-4">
+              <div className="py-1 bg-light w-50 rounded-pill"></div>
+            </div>
+            <p className="lead w-75 text-light">Sign in to continue to your account.</p>
+          </div>
+        </GradientBackground>
+      </div>
+      
+      <div className="col-lg-6">
+        <div className="d-flex flex-column h-100 justify-content-center align-items-center">
+          <div className="w-75">
+          <div className="f25 mb-4">Login</div>
               {
                 error && (
                   <Alert
@@ -177,14 +184,9 @@ const LoginModal = () => {
               <div className="d-flex justify-content-center my-2">
 
               </div>
-            </div>
           </div>
         </div>
-        <div className="col-md-12 text-center mt-5 mb-3 display-none">
-          Copyright ©2021 Mkondo. All Rights Reserved
-        </div>
       </div>
-
     </div>
   );
 }
