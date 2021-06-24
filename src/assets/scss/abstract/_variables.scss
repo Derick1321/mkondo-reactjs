@@ -3,9 +3,11 @@ $heading: 24px;
 $title: 18px;
 $normal-text: 14px;
 $margin-top: 2.5rem;
+
 // COLORS
 $primary-green: #1A394B;
 $secondary-green: #FC0135;
+$primary-color: #8103FC;
 $accent-color: #FC0135;
 $primary-gray: #C1C1C1;
 $primary-blue: #3B8CBC;
@@ -26,8 +28,15 @@ $tertiary-black: #34353D;
 $pink: #EA4C89;
 $primary-light-gray: #F7F5F5;
 $secondary-light-gray: #F1F1F1;
+
 // Z-INDEX
 $z-index-lift: 9;
 $z-index-next: 99;
 $z-index-lifter: 999;
 $z-index-last: 9999;
+
+//Mixins
+@mixin card-dark {
+    padding: 1em;
+    background: rgba(0, 0, 0, 0.5);
+}

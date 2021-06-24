@@ -13,7 +13,7 @@ const TextArea = (props) => {
     onChange,
     placeholder,
     title,
-    isGrey
+    isGrey,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -37,6 +37,7 @@ const TextArea = (props) => {
           value={value}
           onChange={handleChange}
           placeholder={t(placeholder)}
+          rows={1}
         />
       </div>
     </>
