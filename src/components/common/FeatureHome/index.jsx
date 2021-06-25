@@ -28,6 +28,7 @@ const commonStyle = `
 
 const FeatureBkg = styled.div`
   ${commonStyle}
+  position: relative;
   height: 60%;
   min-height: 170px;
   width: 100%;
@@ -179,11 +180,11 @@ const FeatureHome = (props) => {
   // render
   return (
     <div className={styles.f_featureWrapper}>
-      <FeatureBkg source={avatarUrl} />
+      <FeatureBkg source={avatarUrl}>
       {
         showHeader && (
-          <div className={`d-flex justify-content-between mt-2 ${styles.f_featureHeaderWrapper}`}>
-            <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>{t('feature')} </div>
+          <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+            <div className={`ml-3 ${styles.views}`}>{plays} views</div>
             <ActionHeader
               mediaId={mediaId}
               country={country}
@@ -194,6 +195,7 @@ const FeatureHome = (props) => {
           </div>
         )
       }
+      </FeatureBkg>
       <div className={`d-flex w-100 ${styles.f_featurePane}`}>
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
