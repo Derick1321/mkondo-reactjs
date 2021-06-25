@@ -56,14 +56,7 @@ const GoogleLoginComponent = (props) => {
     });
 
     return (
-        <Button
-            onClick={signIn}
-            isStretch
-            isRed
-            isAlignLeft
-        >
-            <img src={google_icon} className="google-icon" /> Login with Google
-        </Button>
+        <button className="btn btn-secondary btn-google rounded-pill" onClick={signIn}><img src={google_icon} className="google-icon" /> Login with Google</button>
     )
 }
 
