@@ -1,10 +1,12 @@
+@import '$assets/scss/main.scss';
+
 .login-modal-top {
-    padding-top: 4rem;
+    padding-top: 0;
 }
 
 .foreContent {
     z-index: 2;
-    padding-top: 50px;
+    padding-top: 0;
 }
 
 .f25 {
@@ -103,4 +105,34 @@
     @media screen and (max-width: 576px) {
         display: none;
     }
+}
+
+.btn-primary {
+    background: rgba($primary-color, 0.9);
+    border-color: rgba($primary-color, 0.9);
+}
+
+.btn-primary:hover {
+    background: $primary-color;
+    border-color: $primary-color;
+}
+
+.btn-outline-primary {
+    color: $primary-color;
+    border-color: rgba($primary-color, 0.9);
+}
+
+.btn-outline-primary:hover {
+     background: $primary-color;
+    border-color: rgba($primary-color, 1);
+}
+
+#login-mobile-top-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 20%;
+    border-radius: 0 0 90% 0;
+    background: linear-gradient($primary-color, $accent-color);
 }
