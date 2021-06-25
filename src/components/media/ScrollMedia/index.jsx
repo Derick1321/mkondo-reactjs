@@ -14,6 +14,7 @@ const ScrollMedia = (props) => {
     isLoading,
     type,
     name,
+    viewMore,
   } = props;
 
   const getMedia = useCallback((item, idx) => {
@@ -78,6 +79,7 @@ const ScrollMedia = (props) => {
       showHeader={!!title}
       total={values.length}
       name={name}
+      viewMore={viewMore}
     >
       {
         values.map((item, idx) => getMedia(item, idx))
@@ -98,6 +100,7 @@ ScrollMedia.propTypes = {
   title: PropTypes.string,
   isLoading: PropTypes.bool,
   type: PropTypes.string,
+  viewMore: PropTypes.string,
 };
 
 
