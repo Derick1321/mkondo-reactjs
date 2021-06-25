@@ -73,7 +73,7 @@ const Main = (props) => {
       </div>
       {
         (
-          <div className={`${styles.homeFooter} ${showFooterPlayer? styles.hideFooter : ""}`}>
+          <div className={`${styles.homeFooter} ${!showFooterPlayer? styles.hideFooter : ""}`}>
             <Player />
           </div>
         )
