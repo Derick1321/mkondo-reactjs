@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '$components/common/Button';
 
 import styles from './index.module.scss';
+import { useHistory } from 'react-router';
 
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
@@ -22,6 +23,7 @@ const Scroller = (props) => {
     showHeader,
     title,
     isLoading,
+    viewMore,
   } = props;
 
   const containerId = `${name}-container`;
@@ -30,6 +32,8 @@ const Scroller = (props) => {
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+
+  const { push } = useHistory()
 
   // refs
   const scrollRef = useRef(0);
@@ -117,6 +121,12 @@ const Scroller = (props) => {
               >
                 <img src={arrowRightIcon} />
               </Button>
+              {viewMore ? <button
+                onClick={() => push(viewMore)}
+                className="btn btn-primary"
+              >
+                View More
+              </button> : <></>}
             </div>
           </div>
         )
