@@ -9,7 +9,7 @@
     background-color: #191919;
     box-shadow: 3px 3px 3px #111;
     width: 230px;
-    padding: 20px 20px 5px 20px;
+    padding: 10px 10px 5px 10px;
     position: relative;
     border-radius: 5px;
     margin: auto;
@@ -60,9 +60,11 @@
 
 .f_featureHeaderWrapper {
     position: absolute;
-    width: 190px;
-    top: 12px;
-    background-color: rgba(0, 0, 0, 0.3);
+    width: auto;
+    top: 0px;
+    width: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0));
+    border-radius: 10px 10px 0 0;
 }
 
 .f_featureHeaderWrapperTitle {
@@ -138,4 +140,8 @@
 
 .f_hoverCursor:hover {
     cursor: pointer;
+}
+
+.views {
+    font-size: 8px;
 }
