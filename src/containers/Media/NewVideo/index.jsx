@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router';
 
 import DragDrop from '$components/common/DragDrop';
 import Button from '$components/common/Button';
@@ -14,6 +14,7 @@ import { addMedia, saveMedia } from '$redux/features/media';
 import { menus, descriptionMenu } from './menus';
 
 import styles from './index.module.scss';
+import { routePaths } from '../../../common/routeConfig';
 
 const getType = {
   movie: 'Upload Movie',
@@ -21,8 +22,10 @@ const getType = {
 };
 
 const NewVideo = () => {
+
   // store
   const history = useHistory();
+  const push = history.push;
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
@@ -89,6 +92,7 @@ const NewVideo = () => {
   const buildInputPanel = () => {
     return (
       <>
+
         <p className={styles.paneTitle}>{type}</p>
 
         <div className={styles.inputContainer}>
@@ -182,10 +186,13 @@ const NewVideo = () => {
     }
 
     return (
-      <DragDrop
-        onChange={handleFileChange}
-        acceptedFiles="video/mp4,video/x-m4v,video/*"
-      />
+      <div>
+        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
+        <DragDrop
+          onChange={handleFileChange}
+          acceptedFiles="video/mp4,video/x-m4v,video/*"
+        />
+      </div>
     )
   }
 
