@@ -194,7 +194,7 @@ const FeatureHomeRes = (props) => {
       {
         showHeader && (
           <div className={`d-flex justify-content-between mt-2 ${styles.fr_featureHeaderWrapper}`}>
-            <div className={`px-2 ${styles.fr_featureHeaderWrapperTitle}`}>{t('feature')} </div>
+            <div className={`px-2 ${styles.fr_featureHeaderWrapperTitle}`}>{plays} views</div>
             <ActionHeader
               mediaId={mediaId}
               country={country}
