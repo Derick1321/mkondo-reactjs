@@ -114,7 +114,7 @@ const LoginModal = () => {
   // render
   return (
     <div className="row">
-      <div className="col-lg-6">
+      <div className="col-lg-6 d-none d-md-block">
         <GradientBackground>
           <div className="d-flex flex-column justify-content-center align-items-center h-100">
             <h1 className="display-3 text-light pt-20 w-75">Welcome back to mkondo</h1>
@@ -127,6 +127,7 @@ const LoginModal = () => {
       </div>
       
       <div className="col-lg-6">
+        <div id="login-mobile-top-shape" className="justify-self-start"></div>
         <div className="d-flex flex-column h-100 justify-content-center align-items-center">
           <div className="w-75">
           <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
@@ -154,7 +155,7 @@ const LoginModal = () => {
                 value={values.password}
                 onChange={handleChange}
               />
-              <div className="d-flex my-2 mt-4">
+              <div className="d-flex align-items-center my-2 mt-4">
                 <button
                   onClick={handleSignIn}
                   isLoading={loginPending}
@@ -169,7 +170,7 @@ const LoginModal = () => {
                   REGISTER
                 </button>
                 <button
-                  className="btn-forget"
+                  className="btn btn-link ml-auto"
                   onClick={handleForgotPassword}
                 >
                   Forgot Password?
