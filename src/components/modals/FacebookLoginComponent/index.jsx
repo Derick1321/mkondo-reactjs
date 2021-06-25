@@ -55,7 +55,7 @@ const FacebookLoginComponent = (props) => {
             callback={responseFacebook}
             onClick={componentClicked}
             cssClass={`d-flex ${styles.mkBtn} ${styles.mkBtnStretch}`}
-            icon={<img src={facebook_icon} />}
+            icon={<img className="ml-0" src={facebook_icon} height="40" />}
         >Facebook</FacebookLogin>
     )
 }
