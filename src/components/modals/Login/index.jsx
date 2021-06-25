@@ -127,7 +127,7 @@ const LoginModal = () => {
       </div>
       
       <div className="col-lg-6">
-        <div id="login-mobile-top-shape" className="justify-self-start"></div>
+        <div id="login-mobile-top-shape" className="d-sm-none"></div>
         <div className="d-flex flex-column h-100 justify-content-center align-items-center">
           <div className="w-75">
           <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
