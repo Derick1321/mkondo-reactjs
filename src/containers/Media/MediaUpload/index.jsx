@@ -21,6 +21,9 @@ const MediaUpload = () => {
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
 
+  //router
+  const { push } = useHistory()
+
   // state
   const [files, setFiles] = useState([]);
   const [values, setValues] = useState({});
@@ -167,6 +170,7 @@ const MediaUpload = () => {
   return (
     <div className={`row ${styles.wrapper}`}>
       <div className="col-md-8 offset-md-2 col-10">
+        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
         <DragDrop
           onChange={handleFileChange}
           isMulti
