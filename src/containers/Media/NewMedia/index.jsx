@@ -101,6 +101,7 @@ const NewMedia = () => {
       <div className={styles.newMediaWrapper}>
         <div className="row justify-content-center">
           <div className="col-10 col-sm-8 col-lg-6">
+          <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
             <div className={`${file ? 'd-none' : ''}`}>
               <DragDrop
                 onChange={handleFileChange}

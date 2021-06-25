@@ -95,13 +95,15 @@ const NewAlbum = () => {
   return (
     <div className={`row ${styles.albumWrapper}`}>
       <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+        <button className="btn btn-primary" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
+
         <NewItem
           menus={menus}
           metamenus={metamenus}
           onChange={handleChange}
           values={values}
         />
-        <div className="d-flex justify-content-end new-item-footer">
+        <div className="d-flex justify-content-end new-item-footer mt-2">
           <Button
             onClick={handleCancel}
             style="btn-cancel"
