@@ -8,6 +8,7 @@ import TabsMark from '$components/common/TabsMark';
 import { getNewReleases, getTopMedias, getRandomMedias, getTrendMedias } from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { routePaths } from '../../common/routeConfig';
 
 const Home = () => {
   // state
@@ -85,6 +86,7 @@ const Home = () => {
           values={newReleases.audio}
           isLoading={getNewReleasesPending && newReleases.audio.length < 1}
           name="audio-new-release"
+          viewMore={`${routePaths.newRelease}`}
           showHeader
         />
         <ScrollMedia
@@ -92,6 +94,7 @@ const Home = () => {
           values={topMedias.audio}
           isLoading={getTopMediasPending && topMedias.audio.length < 1}
           name="audio-top-medias"
+          viewMore={routePaths.topChart}
           showHeader
         />
         <ScrollMedia
@@ -120,6 +123,7 @@ const Home = () => {
           name="video-new-release"
           values={newReleases.video}
           isLoading={getNewReleasesPending && newReleases.video.length < 1}
+          viewMore={routePaths.newRelease}
           type="video"
         />
         <ScrollMedia
@@ -127,6 +131,7 @@ const Home = () => {
           name="video-top-medias"
           values={topMedias.video}
           isLoading={getTopMediasPending && topMedias.video.length < 1}
+          viewMore={routePaths.topChart}
           type="video"
         />
         <ScrollMedia
@@ -156,6 +161,7 @@ const Home = () => {
           name="theatre-new-release"
           values={newReleases.movie}
           isLoading={getNewReleasesPending && newReleases.movie.length < 1}
+          viewMore={routePaths.newRelease}
           type="video"
         />
         <ScrollMedia
@@ -163,6 +169,7 @@ const Home = () => {
           name="theatre-top-medias"
           values={topMedias.movie}
           isLoading={getTopMediasPending && topMedias.movie.length < 1}
+          viewMore={routePaths.topChart}
           type="video"
         />
         <ScrollMedia
