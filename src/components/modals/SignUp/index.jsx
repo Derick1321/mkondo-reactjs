@@ -17,6 +17,7 @@ import { signup } from '$redux/features/authentication';
 import { routePaths } from '$common/routeConfig';
 
 import './index.scss';
+import { COLOR_ACCENT, COLOR_PRIMARY } from '../../../common/constants';
 
 const background = require('$assets/images/login_bg.png');
 const login_mobile_top = require('$assets/images/login_mobile_top.png');
@@ -30,6 +31,23 @@ const user_icon_white = require('$assets/images/icons/register_user_active.svg')
 const music_icon_white = require('$assets/images/icons/register_music_active.svg');
 const manager_icon_white = require('$assets/images/icons/register_manager_active.svg');
 const arrow_left = require('$assets/images/icons/arrow-left-home.svg');
+
+
+const RegisterTopShape = styled.div`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 70%;
+    height: 20%;
+    border-radius: 0 0 90% 0;
+    background: linear-gradient(${COLOR_PRIMARY}, ${COLOR_ACCENT});
+`;
+
+const GradientBackground = styled.div`
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(${COLOR_PRIMARY}, ${COLOR_ACCENT});
+`;
 
 const LoginBackBottom = styled.div`
   @media screen and (max-width: 576px) {
@@ -175,19 +193,23 @@ const SignupModal = () => {
 
   // render
   return (
-    <div>
-
-      <RegisterBack />
-      <LoginBackBottom />
-      <button className="goHome" onClick={() => dispatch(hideModal())}><img src={arrow_left} style={{ width: '12px' }} /> Home</button>
-
-      <div className="foreContent row justify-content-center h-100">
-        <div className="col-md-6 col-sm-6 c-text-center position-relative">
-          <img src={logo} alt="" className="login_logo_icon" />
-        </div>
-        <div className="col-md-6 col-sm-6 z3">
-          <div className="row justify-content-center login-modal-top">
-            <div className="col-10 col-sm-10 col-md-10 mt-4">
+    <div className="row">
+      <div className="col-lg-6 d-none d-md-block">
+      <GradientBackground>
+          <div className="d-flex flex-column justify-content-center align-items-center h-100">
+            <h1 className="display-3 text-light pt-20 w-75">Register with Mkondo</h1>
+            <div className="w-75 my-4">
+              <div className="py-1 bg-light w-50 rounded-pill"></div>
+            </div>
+            <p className="lead w-75 text-light">Africa's choice for premium content. Listen, Watch and Enjoy more with Mkondo.</p>
+          </div>
+        </GradientBackground>
+      </div>
+      <div className="col-lg-6">
+      <div className="d-sm-none"><RegisterTopShape /></div>
+      <div className="d-flex flex-column h-100 justify-content-center align-items-center">
+          <div className="w-75">
+          <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
               <div className="f25 mb-4">Register</div>
               {
                 (error || signupError)
@@ -202,7 +224,7 @@ const SignupModal = () => {
                 (
                   <div className="mb-5">
                     <h5>Choose User Group</h5>
-                    <div className="signup-user-type">
+                    <div className="d-flex w-100">
                       {
                         values['userType'] == 'user' ? (
                           <button className="group-item item-active">
@@ -246,7 +268,7 @@ const SignupModal = () => {
                     </div>
                     <button
                       onClick={() => handlePage(2)}
-                      className="btn-login mt-5 mb-5"
+                      className="btn btn-primary mt-2"
                     >
                       CONTINUE
                     </button>
@@ -277,19 +299,10 @@ const SignupModal = () => {
                     value={values.phoneNumber}
                     onChange={handleChange}
                   />
-                  <div className="d-flex mt-2 mb-2">
-                    <button
-                      onClick={() => handlePage(1)}
-                      className="btn-login"
-                    >
-                      Back
-                    </button>
-                    <button
-                      onClick={() => handlePage(3)}
-                      className="btn-login"
-                    >
-                      CONTINUE
-                    </button>
+                  <div className="d-flex mt-2 mb-2 align-items-center">
+                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register</button>
+                    <button className="btn btn-outline-primary"  onClick={() => handlePage(1)}>Back</button>
+
 
                     <button className="gotoLogin" onClick={() => handleLogin()}>Already have an account?</button>
                   </div>
@@ -318,13 +331,13 @@ const SignupModal = () => {
                   />
                   <button
                     onClick={() => handlePage(2)}
-                    className="btn-login"
+                    className="btn btn-outline-primary mr-2"
                   >
                     Back
                     </button>
                   <button
                     onClick={() => handlePage(4)}
-                    className="btn-login float-right"
+                    className="btn btn-primary"
                   >
                     Finish
                   </button>
@@ -333,11 +346,7 @@ const SignupModal = () => {
               )
               }
             </div>
-          </div>
-        </div>
-        <div className="col-md-12 text-center mt-5 mb-3 display-none">
-          Copyright ©2021 Mkondo. All Rights Reserved
-        </div>
+            </div>
       </div>
     </div>
   );
