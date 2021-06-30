@@ -16,7 +16,7 @@ import { updateUser, getUserMedia } from '$redux/features/user';
 import { menus, descriptionField, socials } from './menus';
 
 import styles from './index.module.scss';
-import FeatureHomeRes from '../../components/common/FeatureHomeRes';
+import FeatureHome from '../../components/common/FeatureHome';
 
 const options = [
   { name: 'account', title: 'Account' },
@@ -247,26 +247,28 @@ const Profile = () => {
             <p>No Songs available!</p>
           )
         }
-        <div className="d-flex flex-wrap justify-content-end">
+        <div className="d-flex flex-wrap justify-content-between">
           {
             userMedia.map((item, index) => {
               if (item.category != 'audio') return;
               return (
-                <FeatureHomeRes
-                  key={`feature-top-songs-${index}`}
-                  mediaId={item.media_id}
-                  mediaUrl={item.media_url}
-                  avatar={item.cover_url}
-                  artistId={item.owner_id}
-                  owner_name={item.owner_name}
-                  title={item.name}
-                  description={item.owner_name}
-                  country={item.country}
-                  category={item.category}
-                  showHeader={true}
-                  likes={item.likes}
-                  plays={item.plays}
-                />
+                <div className="mb-3">
+                  <FeatureHome
+                    key={`feature-top-songs-${index}`}
+                    mediaId={item.media_id}
+                    mediaUrl={item.media_url}
+                    avatar={item.cover_url}
+                    artistId={item.owner_id}
+                    owner_name={item.owner_name}
+                    title={item.name}
+                    description={item.owner_name}
+                    country={item.country}
+                    category={item.category}
+                    showHeader={true}
+                    likes={item.likes}
+                    plays={item.plays}
+                  />
+               </div>
               )
             })
           }
@@ -278,23 +280,28 @@ const Profile = () => {
             <p>No Videos available!</p>
           )
         }
-        <div className="d-flex flex-wrap">
+        <div className="d-flex flex-wrap justify-content-between">
           {
             userMedia.map((item, index) => {
               if (item.category != 'video') return;
               return (
-                <Feature
-                  key={`feature-top-songs-${index}`}
-                  mediaUrl={item.media_url}
-                  mediaId={item.media_id}
-                  avatar={item.cover_url}
-                  artistId={item.owner_id}
-                  source={item.owner_avatar_url}
-                  subtitle={item.owner_name}
-                  title={item.name}
-                  country={item.country}
-                  category={item.category}
-                />
+               <div className="mb-3">
+                  <FeatureHome
+                    key={`feature-top-videos-${index}`}
+                    mediaId={item.media_id}
+                    mediaUrl={item.media_url}
+                    avatar={item.cover_url}
+                    artistId={item.owner_id}
+                    owner_name={item.owner_name}
+                    title={item.name}
+                    description={item.owner_name}
+                    country={item.country}
+                    category={item.category}
+                    showHeader={true}
+                    likes={item.likes}
+                    plays={item.plays}
+                  />
+               </div>
               )
             })
           }
