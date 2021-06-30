@@ -64,13 +64,12 @@ const FeatureAvatar = styled.div`
 const FeatureHomeRes = (props) => {
   // props
   const {
+    mediaId,
+    mediaUrl,
     avatar,
-    source,
+    artistId,
     owner_name,
     title,
-    mediaUrl,
-    mediaId,
-    artistId,
     country,
     category,
     showHeader,
