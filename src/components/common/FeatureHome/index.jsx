@@ -40,6 +40,25 @@ const FeatureBkg = styled.div`
   border-radius: 10px;
 `;
 
+const PlayButton = styled.div`
+  background-color: transparent;
+  border: none;
+  &:focus {
+      outline: 0;
+  }
+  position: absolute;
+  ${props => props.category == 'audio' && `
+    right: 5px;
+    bottom: 5px;
+  `}
+  ${props => props.category == 'video' && `
+    left: 50%;
+    margin-left: -20px;
+    top: 50%;
+    margin-top: -20px;
+  `}
+`;
+
 const FeatureAvatar = styled.div`
   ${commonStyle}
   height: 80px;
@@ -183,16 +202,27 @@ const FeatureHome = (props) => {
       <FeatureBkg source={avatarUrl}>
       {
         showHeader && (
-          <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
-            <div className={`ml-3 ${styles.views}`}>{plays} views</div>
-            <ActionHeader
-              mediaId={mediaId}
-              country={country}
-              title={title}
-              avatarUrl={avatarUrl}
-              showPlaylist
-            />
-          </div>
+          <>
+            <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+              <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+                <ActionHeader
+                  mediaId={mediaId}
+                  country={country}
+                  title={title}
+                  avatarUrl={avatarUrl}
+                  showPlaylist
+                />
+            </div>
+            <PlayButton
+              category={category}
+              onClick={handlePlay} >
+              <PlayBtn
+                size={category == "audio" ? "30" : "40"}
+                isLoading={isLoading && currentMediaId === mediaId}
+                isPlaying={isPlaying && currentMediaId === mediaId}
+              />
+            </PlayButton>
+          </>
         )
       }
       </FeatureBkg>
@@ -204,16 +234,6 @@ const FeatureHome = (props) => {
             <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
           </div>
           <div className="d-flex">
-            <button
-              className={styles.f_featurePlayBtn}
-              onClick={handlePlay} >
-              <PlayBtn
-                isLoading={isLoading && currentMediaId === mediaId}
-                isPlaying={isPlaying && currentMediaId === mediaId}
-              />
-            </button>
-
-
             <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
               <div style={{flex: 1}}>
                 <div className={styles.f_hoverCursor} onClick={handleArtistView}>
