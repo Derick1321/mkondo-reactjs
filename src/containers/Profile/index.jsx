@@ -16,6 +16,7 @@ import { updateUser, getUserMedia } from '$redux/features/user';
 import { menus, descriptionField, socials } from './menus';
 
 import styles from './index.module.scss';
+import FeatureHomeRes from '../../components/common/FeatureHomeRes';
 
 const options = [
   { name: 'account', title: 'Account' },
@@ -242,31 +243,62 @@ const Profile = () => {
       </div>
       <div className={`${selected === 'songs' ? 'd-block' : 'd-none'} mt-4`}>
         {
-          (!userMedia || userMedia.length < 1) && (
+          (!userMedia || (userMedia.length < 1 && userMedia.some((_media) => (_media.category == "audio")))) && (
             <p>No Songs available!</p>
           )
         }
-        <div className="d-flex flex-wrap">
+        <div className="d-flex flex-wrap justify-content-end">
           {
-            userMedia.map((item, index) => (
-              <Feature
-                key={`feature-top-songs-${index}`}
-                mediaUrl={item.media_url}
-                mediaId={item.media_id}
-                avatar={item.cover_url}
-                artistId={item.owner_id}
-                source={item.owner_avatar_url}
-                subtitle={item.owner_name}
-                title={item.name}
-                country={item.country}
-                category={item.category}
-              />
-            ))
+            userMedia.map((item, index) => {
+              if (item.category != 'audio') return;
+              return (
+                <FeatureHomeRes
+                  key={`feature-top-songs-${index}`}
+                  mediaId={item.media_id}
+                  mediaUrl={item.media_url}
+                  avatar={item.cover_url}
+                  artistId={item.owner_id}
+                  owner_name={item.owner_name}
+                  title={item.name}
+                  description={item.owner_name}
+                  country={item.country}
+                  category={item.category}
+                  showHeader={true}
+                  likes={item.likes}
+                  plays={item.plays}
+                />
+              )
+            })
           }
         </div>
       </div>
       <div className={`${selected === 'videos' ? 'd-block' : 'd-none'} mt-4`}>
-        <p>No Videos available!</p>
+      {
+          (!userMedia || (userMedia.length < 1 && userMedia.some((_media) => (_media.category == "video")))) && (
+            <p>No Videos available!</p>
+          )
+        }
+        <div className="d-flex flex-wrap">
+          {
+            userMedia.map((item, index) => {
+              if (item.category != 'video') return;
+              return (
+                <Feature
+                  key={`feature-top-songs-${index}`}
+                  mediaUrl={item.media_url}
+                  mediaId={item.media_id}
+                  avatar={item.cover_url}
+                  artistId={item.owner_id}
+                  source={item.owner_avatar_url}
+                  subtitle={item.owner_name}
+                  title={item.name}
+                  country={item.country}
+                  category={item.category}
+                />
+              )
+            })
+          }
+        </div>
       </div>
       <div className={`mt-4 pt-4 ${selected === 'account' ? 'd-flex' : 'd-none'}`}>
         <Button
