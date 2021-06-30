@@ -10,13 +10,14 @@ const PlayBtn = (props) => {
   const {
     isLoading,
     isPlaying,
+    size,
   } = props;
 
   // render
   if (isLoading) {
     return (
       <span
-        className="spinner-border spinner-border-lg text-light"
+        className="spinner-border spinner-border-lg text-light m-2"
         role="status"
         aria-hidden="true"
       />
@@ -40,6 +41,8 @@ const PlayBtn = (props) => {
       <img
         src={playIconRed}
         alt=""
+        height={size}
+        width={size}
       />
     </div>
   );
