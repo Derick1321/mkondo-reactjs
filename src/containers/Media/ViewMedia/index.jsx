@@ -20,6 +20,7 @@ import {
 import styles from './index.module.scss';
 import { addMediaComment } from '../../../redux/features/media';
 import { COLOR_PRIMARY, COLOR_ACCENT } from '$common/constants'
+import { addHistory } from '../../../redux/features/user';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -49,6 +50,13 @@ const ViewMedia = () => {
   const deleteCommentComplete = useSelector((store) => store.media.deleteCommentComplete);
   const comments = useSelector((store) => store.media.comments);
   const currentMedia = useSelector((store) => store.media.currentMedia);
+
+  useEffect(() => {
+    if (!currentMedia) return;
+    dispatch(addHistory({
+      media_id: mediaId,
+    }));
+  }, []);
 
   // effects
   useEffect(() => {
