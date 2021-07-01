@@ -187,8 +187,8 @@ export const updateMedia = createAsyncThunk(
 export const updateLike = createAsyncThunk(
     UPDATE_LIKE,
     async(mediaId, param) => {
-        const { token } = param.getState().authentication;
-        return await handleFetch('POST', `media/${mediaId}/like`, null, token);
+        const { token, user } = param.getState().authentication;
+        return await handleFetch('POST', `media/${mediaId}/like`, {user_id: user.user_id}, token);
     }
 );
 

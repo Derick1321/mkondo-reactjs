@@ -265,7 +265,7 @@ const Profile = () => {
                     country={item.country}
                     category={item.category}
                     showHeader={true}
-                    likes={item.likes}
+                    likes={item.likes || undefined}
                     plays={item.plays}
                   />
                </div>
@@ -298,7 +298,7 @@ const Profile = () => {
                     country={item.country}
                     category={item.category}
                     showHeader={true}
-                    likes={item.likes}
+                    likes={item.likes || undefined}
                     plays={item.plays}
                   />
                </div>
