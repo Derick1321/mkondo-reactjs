@@ -47,7 +47,7 @@ const ScrollMedia = (props) => {
           category={item.category}
           description={item.description}
 
-          likes={item.likes}
+          likes={item.likes || undefined}
           plays={item.plays}
           comment_num={item.comment_num}
         />

@@ -91,6 +91,7 @@ const FeatureHome = (props) => {
 
   // store
   const userToken = useSelector((store) => store.authentication.token);
+  const user = useSelector((store) => store.authentication.user);
   const visitorToken = useSelector((store) => store.authentication.visitorToken);
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
@@ -111,7 +112,7 @@ const FeatureHome = (props) => {
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(likes.some(like => like.user_id == user.user_id));
 
   // ref
   const isMounted = useRef(false);
@@ -130,13 +131,6 @@ const FeatureHome = (props) => {
       return;
     }
 
-    // handleFetch('GET', `media/presigned-get-url?file_name=${source}`, null, token)
-    //   .then((res) => {
-    //     if (!isMounted.current) {
-    //       return;
-    //     }
-    //     setSourceUrl(res.response);
-    //   });
     handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token)
       .then((res) => {
         if (!isMounted.current) {
@@ -148,14 +142,14 @@ const FeatureHome = (props) => {
 
   // effects
   useEffect(() => {
-    if (!likes_s) { return; }
-    const res = likes_s.find((media) => media.media_id === mediaId);
+    if (!likes.length) { return; }
+    const res = likes.find((like) => like.user_id === user.user_id);
     if (!res) {
       setIsLiked(false);
       return;
     }
     setIsLiked(true);
-  }, [likes_s]);
+  }, [likes]);
 
   // handlers
   const handlePlay = async () => {
@@ -229,7 +223,7 @@ const FeatureHome = (props) => {
       <div className={`d-flex w-100 ${styles.f_featurePane}`}>
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
-            <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes} {t('likes')}</div>
+            <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes.length} {t('likes')}</div>
             <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
             <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
           </div>
@@ -269,6 +263,7 @@ FeatureHome.defaultProps = {
   artistId: null,
   mediaUrl: '',
   showHeader: true,
+  likes: [],
 }
 
 FeatureHome.propTypes = {
@@ -279,6 +274,7 @@ FeatureHome.propTypes = {
   country: PropTypes.string,
   artistId: PropTypes.string,
   showHeader: PropTypes.bool,
+  likes: PropTypes.array
 }
 
 export default FeatureHome;
