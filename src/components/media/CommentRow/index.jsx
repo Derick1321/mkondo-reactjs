@@ -61,9 +61,9 @@ const CommentRow = (props) => {
     getCommentReplies(currentComment);
   }, [replyCommentComplete, currentComment])
 
-  const handleSubmitReply = () => {
+  const handleSubmitReply = async () => {
     if (!comment) return;
-    dispatch(addCommentComment({
+    await dispatch(addCommentComment({
       user_id: user_id,
       comment_id: comment_id,
       value: comment,
@@ -105,11 +105,9 @@ const CommentRow = (props) => {
           <textarea
             onChange={(e) => setComment(e.target.value)}
             placeholder="Reply Comment"
-            className={styles.textArea}>
-          </textarea>
+            className={styles.textArea} value={comment}></textarea>
           <button disabled={loading} className={`${styles.buttonAccent} btn`} onClick={handleSubmitReply}>Reply</button>
-          {loading ? <small>Submitting Reply</small> : ""}
-
+          {loading ? <small className="text-light ml-2">Submitting Reply</small> : ""}
           <div>
             {replies ? replies.map((comment) => {
               return (
