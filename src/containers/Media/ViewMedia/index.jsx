@@ -124,6 +124,7 @@ const ViewMedia = () => {
               deleteComment={handleDeleteComment}
               no_of_replies={comment.no_of_replies}
               replies={comment.comments ?? []}
+              likes={comment.likes || undefined}
             />
           ))
         }
