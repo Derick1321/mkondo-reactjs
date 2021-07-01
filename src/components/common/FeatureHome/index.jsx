@@ -142,7 +142,6 @@ const FeatureHome = (props) => {
 
   // effects
   useEffect(() => {
-    if (!likes.length) { return; }
     const res = likes.find((like) => like.user_id === user.user_id);
     if (!res) {
       setIsLiked(false);
