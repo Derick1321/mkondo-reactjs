@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -6,7 +8,8 @@ import { handleFetch } from '$common/requestUtils';
 import { formatDate } from '$common/utils';
 
 import styles from './index.module.scss';
-import { addCommentComment, getCommentReplies, updateCurrentComment } from '../../../redux/features/media';
+import { addCommentComment, addCommentLike, getCommentReplies, updateCurrentComment } from '../../../redux/features/media';
+import { async } from 'regenerator-runtime';
 const icon_delete = require('$assets/images/icons/cancel.svg');
 
 const Avatar = styled.div`
@@ -30,6 +33,7 @@ const CommentRow = (props) => {
     comment_id,
     no_of_replies,
     replies,
+    likes,
   } = props;
 
   // store
@@ -72,6 +76,12 @@ const CommentRow = (props) => {
     //refresh comments
   }
 
+  const handleLike = async () => {
+    await dispatch(addCommentLike({
+      comment_id: comment_id,
+    }));
+  }
+
   // render
   return (
     <>
@@ -87,7 +97,7 @@ const CommentRow = (props) => {
           <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div>
         </div>
         <div className="d-flex">
-          <div className="">0 Likes</div>
+          <div className="">{likes.length} Likes</div>
           <div className="ml-3">{no_of_replies ?? 0} Replies</div>
           <div className={`ml-3 ${styles.replyButton}`} onClick={() => {
             if (!isOnReplyView) {
@@ -97,6 +107,7 @@ const CommentRow = (props) => {
             }
             setisOnReplyView(!isOnReplyView)
           }}>Reply</div>
+          <div className={`ml-3 ${styles.replyButton}`} onClick={handleLike}>Like</div>
         </div>
       </div>
       {isOnReplyView 
@@ -131,5 +142,13 @@ const CommentRow = (props) => {
     </>
   );
 } 
+
+CommentRow.defaultProps = {
+  likes: [],
+};
+
+CommentRow.propTypes = {
+  likes: PropTypes.array,
+};
 
 export default CommentRow;

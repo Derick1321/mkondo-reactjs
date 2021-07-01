@@ -57,6 +57,8 @@ export const removeLikes = createAsyncThunk(
     }
 );
 
+export const addCommentLike = createAsyncThunk();
+
 export const addFollowers = createAsyncThunk(
     ADD_FOLLOWERS,
     async(data, param) => {
