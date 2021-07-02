@@ -31,6 +31,10 @@
     color: $accent-color;
 }
 
+.replyButton.active {
+    color: $accent-color;
+}
+
 .textArea {
     @include card-dark;
     width: 100%;
