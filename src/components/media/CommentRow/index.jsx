@@ -8,7 +8,7 @@ import { handleFetch } from '$common/requestUtils';
 import { formatDate } from '$common/utils';
 
 import styles from './index.module.scss';
-import { addCommentComment, addCommentLike, getCommentReplies, updateCurrentComment } from '../../../redux/features/media';
+import { addCommentComment, addCommentLike, getCommentReplies, removeCommentLike, updateCurrentComment } from '../../../redux/features/media';
 import { async } from 'regenerator-runtime';
 const icon_delete = require('$assets/images/icons/cancel.svg');
 
@@ -50,6 +50,7 @@ const CommentRow = (props) => {
   const [url, setUrl] = useState(null);
   const [isOnReplyView, setisOnReplyView] = useState(false);
   const [comment, setComment] = useState("");
+  const [liked, setliked] = useState(likes.some(like => like.user_id == user_id))
 
 
   // effects
@@ -65,6 +66,10 @@ const CommentRow = (props) => {
     getCommentReplies(currentComment);
   }, [replyCommentComplete, currentComment])
 
+  useEffect(() => {
+    setliked(likes.some(like => like.user_id == user_id))
+  }, [likes])
+
   const handleSubmitReply = async () => {
     if (!comment) return;
     await dispatch(addCommentComment({
@@ -77,9 +82,15 @@ const CommentRow = (props) => {
   }
 
   const handleLike = async () => {
-    await dispatch(addCommentLike({
-      comment_id: comment_id,
-    }));
+    if (!liked) {
+      dispatch(addCommentLike({
+        comment_id: comment_id,
+      }));
+    } else {
+      dispatch(removeCommentLike({
+        comment_id: comment_id,
+      }));
+    }
   }
 
   // render
@@ -107,7 +118,7 @@ const CommentRow = (props) => {
             }
             setisOnReplyView(!isOnReplyView)
           }}>Reply</div>
-          <div className={`ml-3 ${styles.replyButton}`} onClick={handleLike}>Like</div>
+          <div className={`ml-3 ${styles.replyButton} ${liked ? styles.active : ""}`} onClick={handleLike}>Like</div>
         </div>
       </div>
       {isOnReplyView 

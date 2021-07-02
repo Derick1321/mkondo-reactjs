@@ -18,7 +18,7 @@ import {
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
-import { addMediaComment } from '../../../redux/features/media';
+import { addMediaComment, removeCommentLike } from '../../../redux/features/media';
 import { COLOR_PRIMARY, COLOR_ACCENT } from '$common/constants'
 import { addHistory } from '../../../redux/features/user';
 
@@ -46,7 +46,9 @@ const ViewMedia = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const addCommentPending = useSelector((store) => store.media.addCommentPending);
   const addCommentComplete = useSelector((store) => store.media.addCommentComplete);
-  const deleteCommentPending = useSelector((store) => store.media.deleteCommentPending);
+  const addCommentLikeComplete = useSelector((store) => store.media.addCommentLikeComplete);
+  const removeCommentLikeComplete = useSelector((store) => store.media.removeCommentLikeComplete);
+  // const deleteCommentPending = useSelector((store) => store.media.deleteCommentPending);
   const deleteCommentComplete = useSelector((store) => store.media.deleteCommentComplete);
   const comments = useSelector((store) => store.media.comments);
   const currentMedia = useSelector((store) => store.media.currentMedia);
@@ -68,6 +70,11 @@ const ViewMedia = () => {
     dispatch(getComment(mediaId));
     dispatch(getRecommended(userId));
   }, [addCommentComplete, deleteCommentComplete, mediaId]);
+
+  useEffect(() => {
+    if (!mediaId) return;
+    dispatch(getComment(mediaId));
+  }, [addCommentLikeComplete, removeCommentLikeComplete])
 
   // handlers
   const handleSelect = (item) => {
