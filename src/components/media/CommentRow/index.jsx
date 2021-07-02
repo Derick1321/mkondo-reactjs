@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -6,7 +8,8 @@ import { handleFetch } from '$common/requestUtils';
 import { formatDate } from '$common/utils';
 
 import styles from './index.module.scss';
-import { addCommentComment, getCommentReplies, updateCurrentComment } from '../../../redux/features/media';
+import { addCommentComment, addCommentLike, getCommentReplies, removeCommentLike, updateCurrentComment } from '../../../redux/features/media';
+import { async } from 'regenerator-runtime';
 const icon_delete = require('$assets/images/icons/cancel.svg');
 
 const Avatar = styled.div`
@@ -30,6 +33,7 @@ const CommentRow = (props) => {
     comment_id,
     no_of_replies,
     replies,
+    likes,
   } = props;
 
   // store
@@ -46,6 +50,7 @@ const CommentRow = (props) => {
   const [url, setUrl] = useState(null);
   const [isOnReplyView, setisOnReplyView] = useState(false);
   const [comment, setComment] = useState("");
+  const [liked, setliked] = useState(likes.some(like => like.user_id == user_id))
 
 
   // effects
@@ -61,15 +66,31 @@ const CommentRow = (props) => {
     getCommentReplies(currentComment);
   }, [replyCommentComplete, currentComment])
 
-  const handleSubmitReply = () => {
+  useEffect(() => {
+    setliked(likes.some(like => like.user_id == user_id))
+  }, [likes])
+
+  const handleSubmitReply = async () => {
     if (!comment) return;
-    dispatch(addCommentComment({
+    await dispatch(addCommentComment({
       user_id: user_id,
       comment_id: comment_id,
       value: comment,
     }))
     setComment("");
     //refresh comments
+  }
+
+  const handleLike = async () => {
+    if (!liked) {
+      dispatch(addCommentLike({
+        comment_id: comment_id,
+      }));
+    } else {
+      dispatch(removeCommentLike({
+        comment_id: comment_id,
+      }));
+    }
   }
 
   // render
@@ -87,7 +108,7 @@ const CommentRow = (props) => {
           <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div>
         </div>
         <div className="d-flex">
-          <div className="">0 Likes</div>
+          <div className="">{likes.length} Likes</div>
           <div className="ml-3">{no_of_replies ?? 0} Replies</div>
           <div className={`ml-3 ${styles.replyButton}`} onClick={() => {
             if (!isOnReplyView) {
@@ -97,6 +118,7 @@ const CommentRow = (props) => {
             }
             setisOnReplyView(!isOnReplyView)
           }}>Reply</div>
+          <div className={`ml-3 ${styles.replyButton} ${liked ? styles.active : ""}`} onClick={handleLike}>Like</div>
         </div>
       </div>
       {isOnReplyView 
@@ -105,11 +127,9 @@ const CommentRow = (props) => {
           <textarea
             onChange={(e) => setComment(e.target.value)}
             placeholder="Reply Comment"
-            className={styles.textArea}>
-          </textarea>
+            className={styles.textArea} value={comment}></textarea>
           <button disabled={loading} className={`${styles.buttonAccent} btn`} onClick={handleSubmitReply}>Reply</button>
-          {loading ? <small>Submitting Reply</small> : ""}
-
+          {loading ? <small className="text-light ml-2">Submitting Reply</small> : ""}
           <div>
             {replies ? replies.map((comment) => {
               return (
@@ -133,5 +153,13 @@ const CommentRow = (props) => {
     </>
   );
 } 
+
+CommentRow.defaultProps = {
+  likes: [],
+};
+
+CommentRow.propTypes = {
+  likes: PropTypes.array,
+};
 
 export default CommentRow;
