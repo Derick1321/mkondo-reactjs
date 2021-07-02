@@ -35,7 +35,9 @@ export const addMedia = createAsyncThunk(
     async(data, param) => {
         const { token } = param.getState().authentication;
         if (data.file) {
-            return await handleFetch('POST', 'media', data, token);
+            return await handleFetch('POST', 'media', data, token, null, (progress) => {
+                param.dispatch(updateAddMediaUploadProgress(progress));
+            });
         }
         return await handleFetch('POST', 'media', data, token, '');
     }
@@ -229,13 +231,49 @@ export const saveMedia = createAsyncThunk(
                 file,
             });
 
-            const res = await fetch(url, {
-                method: 'POST',
-                body: formData,
-                headers,
-            });
+            const res = await new Promise((resolve, reject) => {
+                let request = new XMLHttpRequest();
+                request.open('POST', url);
+                
+                //upload progress event
+                request.upload.addEventListener('progress', (e) => {
+                    //upload progress as percentage
+                    let progress = (e.loaded/e.total)*100;
+                    param.dispatch(updateMediaProgress(progress));
+                    // console.log(`Progress: ${progress}%`);
+                });
+    
+                //request finished event
+                request.addEventListener('load', (e) => {
+                    //http status message
+                    //TODO: check if the ui is good
+                    param.dispatch(updateMediaProgress(0));
+                    const status = request.status;
+                    const result = request.response;
+                
+                    if (![200, 201, 204].includes(status)) {
+                        reject(result);
+                        return;
+                    }
+                
+                    if ([204].includes(status)) {
+                        resolve(true);
+                        return;
+                    }
+                
+                    resolve(JSON.parse(result));
+                    return;
+                });
+    
+                //setting the request headers
+                for (const key in headers) {
+                    request.setRequestHeader(key, headers[key]);
+                }
+                
+                request.send(formData);
+            })
 
-            await res.text();
+            console.log(res);
             return fileName;
         } catch (error) {
             throw error;
@@ -247,12 +285,14 @@ const initialState = {
     addMediaPending: false,
     addMediaError: null,
     addMediaComplete: false,
+    addMediaUploadProgress: 0,
     getMediaPending: false,
     getMediaComplete: false,
     getMediaError: null,
     saveMediaPending: false,
     saveMediaError: null,
     saveMediaComplete: false,
+    saveMediaProgress: 0,
     newMediaId: null,
     getNewReleasesPending: false,
     getNewReleasesComplete: false,
@@ -349,6 +389,12 @@ const mediaSlice = createSlice({
         },
         updateCurrentComment(state, action) {
             state.currentComment = action.payload ?? null;
+        },
+        updateMediaProgress(state, action) {
+            state.saveMediaProgress = action.payload ?? state.saveMediaProgress;
+        },
+        updateAddMediaUploadProgress(state, action) {
+            state.addMediaUploadProgress = action.payload ?? state.addMediaUploadProgress;
         },
     },
     extraReducers: {
@@ -711,5 +757,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress } = mediaSlice.actions;
 export default mediaSlice.reducer;
