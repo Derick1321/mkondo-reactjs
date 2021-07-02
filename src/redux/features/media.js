@@ -20,6 +20,7 @@ const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
 const ADD_COMMENT_COMMENT = 'media/ADD_COMMENT_COMMENT';
 const ADD_COMMENT_LIKE = 'media/ADD_COMMENT_LIKE';
+const REMOVE_COMMENT_LIKE = 'media/REMOVE_COMMENT_LIKE'
 const GET_COMMENT = 'media/GET_COMMENT';
 const GET_COMMENT_REPLIES = 'media/GET_COMMENT_REPLIES';
 const DELETE_COMMENT = 'media/DELETE_COMMENT';
@@ -127,6 +128,16 @@ export const addCommentLike = createAsyncThunk(
             "user_id": user.user_id,
         }
         return await handleFetch('POST', `comments/${data['comment_id']}/likes`, payload, token);
+    }
+)
+
+export const removeCommentLike = createAsyncThunk(
+    REMOVE_COMMENT_LIKE, async (data, param) => {
+        const { token, user } = param.getState().authentication;
+        const payload = {
+            "user_id": user.user_id,
+        }
+        return await handleFetch('DELETE', `comments/${data['comment_id']}/likes`, payload, token);
     }
 )
 
@@ -282,6 +293,9 @@ const initialState = {
     addCommentLikePending: false,
     addCommentLikeError: null,
     addCommentLikeComplete: false,
+    removeCommentLikePending: false,
+    removeCommentLikeError: null,
+    removeCommentLikeComplete: false,
     currentMedia: {
         media_id: null,
         name: '',
@@ -678,6 +692,21 @@ const mediaSlice = createSlice({
             state.addCommentLikePending = false;
             state.addCommentLikeComplete = false;
             state.addCommentLikeError = action.error;
+        },
+        [removeCommentLike.pending]: (state, action) => {
+            state.removeCommentLikePending = true;
+            state.removeCommentLikeComplete = false;
+            state.removeCommentLikeError = null;
+        },
+        [removeCommentLike.fulfilled]: (state, action) => {
+            state.removeCommentLikePending = false;
+            state.removeCommentLikeComplete = true;
+            state.removeCommentLikeError = null;
+        },
+        [removeCommentLike.rejected]: (state, action) => {
+            state.removeCommentLikePending = false;
+            state.removeCommentLikeComplete = false;
+            state.removeCommentLikeError = action.error;
         },
     }
 });
