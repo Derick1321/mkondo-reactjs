@@ -142,12 +142,13 @@ const FeatureHome = (props) => {
 
   // effects
   useEffect(() => {
-    const res = likes.find((like) => like.user_id === user.user_id);
+    if (typeof likes.some == 'function' && likes.some((like) => like.user_id == user.user_id)) {
+      setIsLiked(true);
+    }
     if (!res) {
       setIsLiked(false);
-      return;
     }
-    setIsLiked(true);
+    
   }, [likes]);
 
   // handlers
