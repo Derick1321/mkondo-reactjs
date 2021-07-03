@@ -27,6 +27,7 @@ export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
     console.log('Build form data url: ', newUrl);
     const headers = {
         'Accept': '*/*',
+        'Access-Control-Allow-Origin': '*',
     };
 
     const formData = new FormData();
