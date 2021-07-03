@@ -28,6 +28,7 @@ export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
     const headers = {
         'Accept': '*/*',
         'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'multipart/form-data',
     };
 
     const formData = new FormData();
