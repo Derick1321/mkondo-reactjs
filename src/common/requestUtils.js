@@ -23,8 +23,8 @@ const buildUrl = (url, data) => {
 };
 
 export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
-    const newUrl = `${baseUrl}${url}`;
-
+    const newUrl = `${URL}/${url}`;
+    console.log('Build form data url: ', newUrl);
     const headers = {
         'Accept': '*/*',
     };
