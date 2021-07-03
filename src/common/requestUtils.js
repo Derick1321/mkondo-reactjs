@@ -29,6 +29,7 @@ export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
         'Accept': '*/*',
         'Access-Control-Allow-Origin': '*',
         'Content-Type': 'multipart/form-data',
+        'X-PINGOTHER': 'pingpong',
     };
 
     const formData = new FormData();
