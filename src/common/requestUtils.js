@@ -23,8 +23,8 @@ const buildUrl = (url, data) => {
 };
 
 export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
-    const newUrl = `${URL}/${url}`;
-    console.log('Build form data url: ', newUrl);
+    const newUrl = `${baseUrl}${url}`;
+
     const headers = {
         'Accept': '*/*',
         'Access-Control-Allow-Origin': '*',
@@ -52,7 +52,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
 
     if (data && data.file) {
         console.log("File Upload");
-        const res = buildFormData(`${path}`, data, baseUrl);
+        const res = buildFormData(`/${path}`, data, baseUrl);
         url = res.url;
         headers = res.headers;
         props.body = res.body;
