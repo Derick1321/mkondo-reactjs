@@ -112,7 +112,7 @@ const FeatureHome = (props) => {
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
   const [sourceUrl, setSourceUrl] = useState('');
-  const [isLiked, setIsLiked] = useState(likes ? likes.some(like => like.user_id == user.user_id) : false);
+  const [isLiked, setIsLiked] = useState(likes && typeof likes.some == 'function' ? likes.some(like => like.user_id == user.user_id) : false);
 
   // ref
   const isMounted = useRef(false);
