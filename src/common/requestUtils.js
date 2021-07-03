@@ -49,7 +49,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
 
     if (data && data.file) {
         console.log("File Upload");
-        const res = buildFormData(`/${path}`, data, baseUrl);
+        const res = buildFormData(`${path}`, data, baseUrl);
         url = res.url;
         headers = res.headers;
         props.body = res.body;
