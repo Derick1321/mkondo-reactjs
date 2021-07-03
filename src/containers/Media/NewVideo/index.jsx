@@ -30,6 +30,7 @@ const NewVideo = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
+  const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
 
   const uploadType = (history.location.state && history.location.state.type) || 'video';
   const type = getType[uploadType];
@@ -176,6 +177,17 @@ const NewVideo = () => {
             <p>Your {type} is getting uploaded.</p>
             <p>Please don&apos;t refresh your browser.</p>
             <p>You may continue using other functions of the app</p>
+            {/* Progress indicator */}
+            <div className="d-flex align-items-center progress-wrapper mx-5">
+                <div className="progress">
+                  <div
+                    className="progress-bar"
+                    style={{ width: `${addMediaUploadProgress}%` }} />
+                </div>
+                <span className="mx-2">
+                  {parseInt(addMediaUploadProgress)}% {'uploading'}
+                </span>
+              </div>
           </div>
         </div>
       );
