@@ -38,7 +38,7 @@ export const Carousel = ({ items, aspect_ratio_x, aspect_ratio_y }) => {
     }
 
     const handleResize = () => {
-        if (aspect_ratio_x && aspect_ratio_y) {
+        if (aspect_ratio_x && aspect_ratio_y && containerRef.current) {
             console.log("Fixing carousel sizing issues")
             const width = containerRef.current.clientWidth
             const height = aspect_ratio_y * width/aspect_ratio_x
