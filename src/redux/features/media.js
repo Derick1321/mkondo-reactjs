@@ -35,7 +35,6 @@ export const addMedia = createAsyncThunk(
     async(data, param) => {
         const { token } = param.getState().authentication;
         if (data.file) {
-            console.log("Excecuting here because we detected a file");
             return await handleFetch('POST', 'media', data, token, '', (progress) => {
                 param.dispatch(updateAddMediaUploadProgress(progress));
             });

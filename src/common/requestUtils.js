@@ -51,7 +51,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
     const props = {};
 
     if (data && data.file) {
-        console.log("File Upload");
+        console.log("File Upload", path);
         const res = buildFormData(`/${path}`, data, baseUrl);
         url = res.url;
         headers = res.headers;
@@ -65,7 +65,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
         return await new Promise((resolve, reject) => {
             console.log("File Upload -> Promise -> Create Request");
             let request = new XMLHttpRequest();
-            request.open(method, url);
+            request.open(method,`${URL}/${url}`);
 
             //upload progress event
             request.upload.addEventListener('progress', (e) => {
@@ -81,7 +81,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
                 if (onProgressCallback) onProgressCallback(0);
                 const status = request.status;
                 const result = request.response;
-                console.log(`File Upload -> Complete`, status, result);
+                console.log(`File Upload -> Complete`, status, result, url);
                 if (![200, 201, 204].includes(status)) {
                     reject(result);
                     return;
