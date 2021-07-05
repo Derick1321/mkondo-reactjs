@@ -50,7 +50,7 @@ const CommentRow = (props) => {
   const [url, setUrl] = useState(null);
   const [isOnReplyView, setisOnReplyView] = useState(false);
   const [comment, setComment] = useState("");
-  const [liked, setliked] = useState(likes.some(like => like.user_id == user_id))
+  const [liked, setliked] = useState(likes ? likes.some(like => like.user_id == user_id) : false);
 
 
   // effects
@@ -67,6 +67,7 @@ const CommentRow = (props) => {
   }, [replyCommentComplete, currentComment])
 
   useEffect(() => {
+    if (!likes) return;
     setliked(likes.some(like => like.user_id == user_id))
   }, [likes])
 
