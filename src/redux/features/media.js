@@ -39,7 +39,6 @@ export const addMedia = createAsyncThunk(
                 param.dispatch(updateAddMediaUploadProgress(progress));
             });
         }
-        console.log("File not found hence excecuting a normal handle Fetch");
         return await handleFetch('POST', 'media', data, token, '');
     }
 );
