@@ -31,6 +31,8 @@ const NewVideo = () => {
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
   const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
+  const addMediaUploadedSize = useSelector((store) => store.media.addMediaUploadedSize);
+  const addMediaTotalSize = useSelector((store) => store.media.addMediaTotalSize);
 
   const uploadType = (history.location.state && history.location.state.type) || 'video';
   const type = getType[uploadType];
@@ -178,6 +180,8 @@ const NewVideo = () => {
             <p>Please don&apos;t refresh your browser.</p>
             <p>You may continue using other functions of the app</p>
             {/* Progress indicator */}
+            {/* <p><strong>Total: </strong> {bytesToSize(addMediaTotalSize)}</p> */}
+            <p><strong>Uploaded: </strong> {bytesToSize(addMediaUploadedSize)}</p>
             <div className="d-flex align-items-center progress-wrapper mx-5">
                 <div className="progress">
                   <div
