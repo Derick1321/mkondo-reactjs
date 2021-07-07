@@ -68,7 +68,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
             request.upload.addEventListener('progress', (e) => {
                 //upload progress as percentage
                 let progress = (e.loaded/e.total)*100;
-                if (onProgressCallback) onProgressCallback(progress);
+                if (onProgressCallback) onProgressCallback(progress, e.loaded, e.total);
                 console.log(`File Upload -> Progress: ${progress}%`);
             });
 

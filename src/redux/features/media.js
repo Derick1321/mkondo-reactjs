@@ -35,8 +35,10 @@ export const addMedia = createAsyncThunk(
     async(data, param) => {
         const { token } = param.getState().authentication;
         if (data.file) {
-            return await handleFetch('POST', 'media', data, token, '', (progress) => {
+            return await handleFetch('POST', 'media', data, token, '', (progress, uploaded, total) => {
                 param.dispatch(updateAddMediaUploadProgress(progress));
+                param.dispatch(updateAddMediaUploadedSize(uploaded));
+                param.dispatch(updateAddMediaTotalSize(total));
             });
         }
         return await handleFetch('POST', 'media', data, token, '');
@@ -240,6 +242,8 @@ export const saveMedia = createAsyncThunk(
                     //upload progress as percentage
                     let progress = (e.loaded/e.total)*100;
                     param.dispatch(updateMediaProgress(progress));
+                    param.dispatch(updateAddMediaUploadedSize(e.loaded));
+                    param.dispatch(updateAddMediaTotalSize(e.total));
                     // console.log(`Progress: ${progress}%`);
                 });
     
@@ -286,6 +290,8 @@ const initialState = {
     addMediaError: null,
     addMediaComplete: false,
     addMediaUploadProgress: 0,
+    addMediaUploadedSize: 0,
+    addMediaTotalSize: 0,
     getMediaPending: false,
     getMediaComplete: false,
     getMediaError: null,
@@ -396,6 +402,12 @@ const mediaSlice = createSlice({
         updateAddMediaUploadProgress(state, action) {
             state.addMediaUploadProgress = action.payload ?? state.addMediaUploadProgress;
         },
+        updateAddMediaUploadedSize(state, action) {
+            state.addMediaUploadedSize = action.payload ?? state.addMediaUploadedSize;
+        },
+        updateAddMediaTotalSize(state, action) {
+            state.addMediaTotalSize = action.payload ?? state.addMediaTotalSize;
+        }
     },
     extraReducers: {
         [addMedia.pending]: (state, action) => {
@@ -757,5 +769,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize } = mediaSlice.actions;
 export default mediaSlice.reducer;
