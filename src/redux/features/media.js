@@ -769,5 +769,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize } = mediaSlice.actions;
 export default mediaSlice.reducer;

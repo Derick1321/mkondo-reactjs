@@ -97,18 +97,20 @@ export const getPermissions = (role, userRole, params = {}) => {
 }
 
 // https://gist.github.com/lanqy/5193417
-export const bytesToSize = (bytes) => {
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-  if (bytes === 0) {
-    return sizes[0];
-  }
+// https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
+export const bytesToSize = (bytes, decimals=2) => {
+  if (bytes === 0) return '0 Bytes';
 
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
-  if (i === 0) {
-    return `${bytes} ${sizes[i]})`;
-  }
-  return `${(bytes / (1024 ** i)).toFixed(1)} ${sizes[i]}`;
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+
 
 export function kFormatter(num) {
   return Math.abs(num) > 999 ? Math.sign(num) * ((Math.abs(num) / 1000).toFixed(1)) + 'k' : Math.sign(num) * Math.abs(num);
