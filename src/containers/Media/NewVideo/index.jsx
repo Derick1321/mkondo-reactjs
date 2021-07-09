@@ -181,7 +181,7 @@ const NewVideo = () => {
             <p>You may continue using other functions of the app</p>
             {/* Progress indicator */}
             {/* <p><strong>Total: </strong> {bytesToSize(addMediaTotalSize)}</p> */}
-            <p><strong>Uploaded: </strong> {bytesToSize(addMediaUploadedSize)}</p>
+            <p><strong>Uploaded: </strong> {bytesToSize(addMediaUploadedSize, 3)}</p>
             <div className="d-flex align-items-center progress-wrapper mx-5">
                 <div className="progress">
                   <div
