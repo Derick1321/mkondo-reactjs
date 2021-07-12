@@ -151,7 +151,7 @@ const Share = (props) => {
           Copy Link
         </Button>
         <span className="mr-2"></span>
-        <Button onClick={hideModal()}>
+        <Button onClick={() => dispatch(hideModal())}>
           close
         </Button>
         </div>
