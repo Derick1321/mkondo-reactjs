@@ -336,10 +336,11 @@ const SignupModal = () => {
                     Back
                     </button>
                   <button
-                    onClick={() => handlePage(4)}
+                    onClick={() => handleSignUp()}
                     className="btn btn-primary"
+                    disabled={signupPending}
                   >
-                    Finish
+                    Finish {signupPending ? <small>loading...</small> : null }
                   </button>
                   <div className="mb-5" style={{ clear: "both" }}></div>
                 </>
