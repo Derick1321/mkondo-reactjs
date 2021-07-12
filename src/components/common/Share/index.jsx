@@ -20,6 +20,7 @@ import { handleFetch } from '$common/requestUtils';
 import { updateShareCount } from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { hideModal } from '$redux/features/modal';
 
 const avatarSample = require('$assets/images/album-sample.png');
 
@@ -145,9 +146,15 @@ const Share = (props) => {
           type="text"
           value={link}
         />
+        <div className="d-flex">
         <Button isRed onClick={copyLink}>
           Copy Link
         </Button>
+        <span className="mr-2"></span>
+        <Button onClick={hideModal()}>
+          close
+        </Button>
+        </div>
       </div>
     </div>
   );
