@@ -8,6 +8,7 @@ import playlist from './features/playlist';
 import player from './features/player';
 import slider from './features/slider';
 import configuration from './features/configuration';
+import croptool from './features/croptool';
 
 export default {
   authentication,
@@ -19,5 +20,6 @@ export default {
   playlist,
   player,
   slider,
-  configuration
+  configuration,
+  croptool,
 };
