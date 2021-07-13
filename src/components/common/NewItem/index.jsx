@@ -9,6 +9,8 @@ import Progress from '$components/common/Progress';
 import { generatePreview } from '$common/utils';
 
 import styles from './index.module.scss';
+import { useDispatch } from 'react-redux';
+import { showModal } from '$redux/features/modal';
 
 const options = [
   { name: 'basic', title: 'basic' },
@@ -30,6 +32,9 @@ const NewItem = (props) => {
   const [selected, setSelected] = useState(options[0].name);
   const [avatarUrl, setAvatarUrl] = useState(null);
 
+  // redux
+  const dispatch = useDispatch();
+
   // handlers
   const handleSelect = (item) => {
     setSelected(item);
@@ -37,6 +42,13 @@ const NewItem = (props) => {
 
   const handleAvatarChange = async (file) => {
     const url = await generatePreview(file[0]);
+    dispatch(showModal('CROP_MODAL', {
+      src: url,
+      aspectRatio: 1/1,
+      width: 100, 
+      locked: true, 
+      onChange: onChange,
+    }))
     setAvatarUrl(url);
     onChange('file', file[0]);
   }
