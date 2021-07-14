@@ -5,6 +5,7 @@ import { handleFetch, buildFormData } from '$common/requestUtils';
 import { async } from 'regenerator-runtime';
 
 const ADD_MEDIA = 'media/ADD_MEDIA';
+const DELETE_MEDIA = 'media/DELETE_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const GET_MEDIA = 'media/GET_MEDIA';
@@ -42,6 +43,14 @@ export const addMedia = createAsyncThunk(
             });
         }
         return await handleFetch('POST', 'media', data, token, '');
+    }
+);
+
+export const deleteMedia = createAsyncThunk(
+    DELETE_MEDIA,
+    async(data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('DELETE', `media/${data}`, null, token);
     }
 );
 
@@ -289,6 +298,9 @@ const initialState = {
     addMediaPending: false,
     addMediaError: null,
     addMediaComplete: false,
+    deleteMediaPending: false,
+    deleteMediaError: null,
+    deleteMediaComplete: false,
     addMediaUploadProgress: 0,
     addMediaUploadedSize: 0,
     addMediaTotalSize: 0,
@@ -431,6 +443,21 @@ const mediaSlice = createSlice({
             state.addMediaPending = false;
             state.addMediaComplete = false;
             state.addMediaError = action.error;
+        },
+        [deleteMedia.pending]: (state, action) => {
+            state.deleteMediaPending = true;
+            state.deleteMediaError = null;
+            state.deleteMediaComplete = false;
+        },
+        [deleteMedia.fulfilled]: (state, action) => {
+            state.deleteCommentPending = false;
+            state.deleteMediaError = null;
+            state.deleteMediaComplete = true;
+        },
+        [deleteMedia.rejected]: (state, action) => {
+            state.deleteMediaPending = false;
+            state.deleteMediaError = action.error
+            state.deleteMediaComplete = false;
         },
         [getMedia.pending]: (state, action) => {
             state.getMediaPending = true;
