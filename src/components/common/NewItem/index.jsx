@@ -55,13 +55,7 @@ const NewItem = (props) => {
       src: url,
       aspectRatio: 1/1,
       width: 100, 
-      locked: true, 
-      onChange: async (blob) => {
-        console.log("Image Cropped Callback ", blob);
-        // const _url = await generatePreview(blob);
-        // setAvatarUrl(_url);
-        // onChange('file', blob);
-      },
+      locked: true,
     }))
   }
 
