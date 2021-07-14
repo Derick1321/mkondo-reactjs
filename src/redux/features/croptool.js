@@ -1,5 +1,30 @@
-import { createSlice, createAction } from '@reduxjs/toolkit';
+import { createSlice, createAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { showModal } from '$redux/features/modal';
 
+const CROP = 'croptool/CROP';
+
+// actions
+export const crop = createAsyncThunk(
+    CROP,
+    async (data, store) => {
+        return await new Promise((resolve, reject) => {
+            console.log(data);
+            const { src, aspectRatio, width, locked, onChange } = data;
+            //show modal
+            //if condition is satisfied
+            if (store.getState().modal.type != 'CROP_MODAL') {
+                store.dispatch(showModal('CROP_MODAL', {
+                    src,
+                    aspectRatio,
+                    width,
+                    locked
+                }))
+            }
+            //dispatch hide model
+            resolve()
+        });
+    }
+);
 
 const initialState = {
   cropped: null,
@@ -11,9 +36,20 @@ const croptoolSlice = createSlice({
   initialState,
   reducers: {
     updateCroppedImage: (state, action) => {
-      return action.payload;
+      state.cropped = action.payload;
     },
     hideModal: () => initialState,
+  },
+  extraReducers: {
+      [crop.pending]: (state, action) => {
+        console.log('Crop Pending');
+      },
+      [crop.fulfilled]: (state, action) => {
+        console.log('Crop fullfilled');
+      },
+      [crop.rejected]: (state, action) => {
+        console.log('Crop rejected');
+      },
   },
 });
 
