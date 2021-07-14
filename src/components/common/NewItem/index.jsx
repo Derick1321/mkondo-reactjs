@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import TabsArtist from '$components/common/TabsArtist';
@@ -9,8 +9,9 @@ import Progress from '$components/common/Progress';
 import { generatePreview } from '$common/utils';
 
 import styles from './index.module.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '$redux/features/modal';
+import { crop } from '../../../redux/features/croptool';
 
 const options = [
   { name: 'basic', title: 'basic' },
@@ -33,7 +34,15 @@ const NewItem = (props) => {
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   // redux
+  const croppedImage = useSelector((state) => state.croptool.cropped)
   const dispatch = useDispatch();
+
+  useEffect(async () => {
+    const file = await fetch(croppedImage).then(res => res.blob());
+    const url = await generatePreview(file)
+    setAvatarUrl(url);
+    onChange('file', file);
+  }, [croppedImage]);
 
   // handlers
   const handleSelect = (item) => {
@@ -42,15 +51,18 @@ const NewItem = (props) => {
 
   const handleAvatarChange = async (file) => {
     const url = await generatePreview(file[0]);
-    dispatch(showModal('CROP_MODAL', {
+    dispatch(crop({
       src: url,
       aspectRatio: 1/1,
       width: 100, 
       locked: true, 
-      onChange: onChange,
+      onChange: async (blob) => {
+        console.log("Image Cropped Callback ", blob);
+        // const _url = await generatePreview(blob);
+        // setAvatarUrl(_url);
+        // onChange('file', blob);
+      },
     }))
-    setAvatarUrl(url);
-    onChange('file', file[0]);
   }
 
   // render
