@@ -17,6 +17,7 @@ import { menus, descriptionField, socials } from './menus';
 
 import styles from './index.module.scss';
 import FeatureHome from '../../components/common/FeatureHome';
+import { deleteMedia } from '../../redux/features/media';
 
 const options = [
   { name: 'account', title: 'Account' },
@@ -193,6 +194,7 @@ const Profile = () => {
         name="profile"
         activeColor="#EA4C89"
       />
+
       <div className={`${selected === 'account' ? 'd-block' : 'd-none'}`}>
         <div className="row mt-4">
           {
@@ -252,7 +254,13 @@ const Profile = () => {
             userMedia.map((item, index) => {
               if (item.category != 'audio') return;
               return (
-                <div className="mb-3">
+                <div className="mb-5">
+                  <div className="d-flex justify-content-end mb-2">
+                    <button className="btn btn-sm btn-text text-light mr-1" onClick={}>Edit</button>
+                    <button className="btn btn-sm btn-danger"  onClick={() => {
+                      dispatch(deleteMedia(item.media_id))
+                    }}>Delete</button>
+                  </div>
                   <FeatureHome
                     key={`feature-top-songs-${index}`}
                     mediaId={item.media_id}
