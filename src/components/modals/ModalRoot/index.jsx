@@ -15,7 +15,7 @@ import PlaylistModal from '$components/modals/PlaylistModal';
 import ShareModal from '$components/modals/ShareModal';
 import { CropImageModal } from '../CropImage/index';
 
-const MODAL_COMPONENTS = {
+export const MODAL_COMPONENTS = {
   'ALERT_MODAL': AlertModal,
   'LOGIN_MODAL': LoginModal,
   'SIGNUP_MODAL': SignUpModal,
