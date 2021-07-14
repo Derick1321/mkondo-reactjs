@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -15,6 +15,7 @@ import { menus, descriptionMenu } from './menus';
 
 import styles from './index.module.scss';
 import { routePaths } from '../../../common/routeConfig';
+import { crop } from '../../../redux/features/croptool';
 
 const getType = {
   movie: 'Upload Movie',
@@ -33,6 +34,7 @@ const NewVideo = () => {
   const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
   const addMediaUploadedSize = useSelector((store) => store.media.addMediaUploadedSize);
   const addMediaTotalSize = useSelector((store) => store.media.addMediaTotalSize);
+  const croppedImage = useSelector((state) => state.croptool.cropped)
 
   const uploadType = (history.location.state && history.location.state.type) || 'video';
   const type = getType[uploadType];
@@ -44,6 +46,14 @@ const NewVideo = () => {
   });
   const [coverFile, setCoverFile] = useState(null);
   const [localCoverUrl, setLocalCoverUrl] = useState(null);
+
+  useEffect(async () => {
+    const file = await fetch(croppedImage).then(res => res.blob());
+    const url = await generatePreview(file)
+
+    setLocalCoverUrl(url);
+    setCoverFile(file);
+  }, [croppedImage]);
 
   // hadnlers
   const handleFileChange = (files) => {
@@ -88,8 +98,12 @@ const NewVideo = () => {
 
   const handleCoverChange = async (files) => {
     const url = await generatePreview(files[0]);
-    setLocalCoverUrl(url);
-    setCoverFile(files[0]);
+    dispatch(crop({
+      src: url,
+      aspectRatio: 4/1,
+      width: 1000, 
+      locked: false,
+    }))
   }
 
   const buildInputPanel = () => {
