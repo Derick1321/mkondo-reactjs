@@ -357,6 +357,21 @@ const Profile = () => {
               if (item.category != 'movie') return;
               return (
                <div className="mb-3 mr-3">
+                 <div className="d-flex justify-content-end mb-2">
+                    <button className="btn btn-sm btn-text text-light mr-1" onClick={() => {
+                      dispatch(showModal('FORM_MODAL', {
+                        'noWrapper':true,
+                        'preventOutsideClick': true,
+                        'form': 'movie-form',
+                        'payload': {
+                          'mediaId':item.media_id,
+                        },
+                      }))
+                    }}>Edit</button>
+                    <button className="btn btn-sm btn-danger"  onClick={() => {
+                      dispatch(deleteMedia(item.media_id))
+                    }}>Delete</button>
+                  </div>
                   <FeatureHome
                     key={`feature-top-movies-${index}`}
                     mediaId={item.media_id}
