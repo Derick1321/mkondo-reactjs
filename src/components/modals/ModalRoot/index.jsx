@@ -13,8 +13,10 @@ import ResetPasswordModal from '$components/modals/ResetPassword';
 import LoaderModal from '$components/modals/Loader';
 import PlaylistModal from '$components/modals/PlaylistModal';
 import ShareModal from '$components/modals/ShareModal';
+import { CropImageModal } from '../CropImage/index';
+import { FormModal } from '../Form/index';
 
-const MODAL_COMPONENTS = {
+export const MODAL_COMPONENTS = {
   'ALERT_MODAL': AlertModal,
   'LOGIN_MODAL': LoginModal,
   'SIGNUP_MODAL': SignUpModal,
@@ -23,6 +25,8 @@ const MODAL_COMPONENTS = {
   'LOADER_MODAL': LoaderModal,
   'SHARE_MODAL': ShareModal,
   'PLAYLIST_MODAL': PlaylistModal,
+  'CROP_MODAL': CropImageModal,
+  'FORM_MODAL': FormModal,
   'EMPTY': () => <div />,
 };
 

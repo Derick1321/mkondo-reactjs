@@ -17,11 +17,16 @@ import { menus, descriptionField, socials } from './menus';
 
 import styles from './index.module.scss';
 import FeatureHome from '../../components/common/FeatureHome';
+import { deleteMedia } from '../../redux/features/media';
+import { showModal } from '$redux/features/modal';
 
 const options = [
   { name: 'account', title: 'Account' },
   { name: 'songs', title: 'Songs' },
-  { name: 'videos', title: 'Videos' },
+  { name: 'videos', title: 'Videos'},
+  { name: 'movies', title: 'Movies'},
+  { name: 'albums', title: 'Albums'},
+  { name: 'series', title: 'Series' }
 ];
 
 const initialState = {
@@ -193,6 +198,7 @@ const Profile = () => {
         name="profile"
         activeColor="#EA4C89"
       />
+
       <div className={`${selected === 'account' ? 'd-block' : 'd-none'}`}>
         <div className="row mt-4">
           {
@@ -247,12 +253,28 @@ const Profile = () => {
             <p>No Songs available!</p>
           )
         }
-        <div className="d-flex flex-wrap justify-content-between">
+        <div className="d-flex flex-wrap justify-content-start">
           {
             userMedia.map((item, index) => {
               if (item.category != 'audio') return;
               return (
-                <div className="mb-3">
+                <div className="mb-5  mr-3">
+                  <div className="d-flex justify-content-end mb-2">
+                    <button className="btn btn-sm btn-text text-light mr-1" onClick={() => {
+                      dispatch(showModal('FORM_MODAL', {
+                        'noWrapper':true,
+                        'preventOutsideClick': true,
+                        'form': 'audio-form',
+                        'payload': {
+                          'mediaId':item.media_id,
+                        },
+                        
+                      }))
+                    }}>Edit</button>
+                    <button className="btn btn-sm btn-danger"  onClick={() => {
+                      dispatch(deleteMedia(item.media_id))
+                    }}>Delete</button>
+                  </div>
                   <FeatureHome
                     key={`feature-top-songs-${index}`}
                     mediaId={item.media_id}
@@ -275,17 +297,33 @@ const Profile = () => {
         </div>
       </div>
       <div className={`${selected === 'videos' ? 'd-block' : 'd-none'} mt-4`}>
-      {
+        {
           (!userMedia || (userMedia.length < 1 && userMedia.some((_media) => (_media.category == "video")))) && (
             <p>No Videos available!</p>
           )
         }
-        <div className="d-flex flex-wrap justify-content-between">
+        <div className="d-flex flex-wrap justify-content-start">
           {
             userMedia.map((item, index) => {
               if (item.category != 'video') return;
               return (
-               <div className="mb-3">
+               <div className="mb-3 mr-3">
+                 <div className="d-flex justify-content-end mb-2">
+                    <button className="btn btn-sm btn-text text-light mr-1" onClick={() => {
+                      dispatch(showModal('FORM_MODAL', {
+                        'noWrapper':true,
+                        'preventOutsideClick': true,
+                        'form': 'video-form',
+                        'payload': {
+                          'mediaId':item.media_id,
+                        },
+                        
+                      }))
+                    }}>Edit</button>
+                    <button className="btn btn-sm btn-danger"  onClick={() => {
+                      dispatch(deleteMedia(item.media_id))
+                    }}>Delete</button>
+                  </div>
                   <FeatureHome
                     key={`feature-top-videos-${index}`}
                     mediaId={item.media_id}
@@ -307,6 +345,55 @@ const Profile = () => {
           }
         </div>
       </div>
+      <div className={`${selected === 'movies' ? 'd-block' : 'd-none'} mt-4`}>
+        {
+          (!userMedia || (userMedia.length < 1 && userMedia.some((_media) => (_media.category == "movie")))) && (
+            <p>No Movies available!</p>
+          )
+        }
+        <div className="d-flex flex-wrap justify-content-start">
+          {
+            userMedia.map((item, index) => {
+              if (item.category != 'movie') return;
+              return (
+               <div className="mb-3 mr-3">
+                 <div className="d-flex justify-content-end mb-2">
+                    <button className="btn btn-sm btn-text text-light mr-1" onClick={() => {
+                      dispatch(showModal('FORM_MODAL', {
+                        'noWrapper':true,
+                        'preventOutsideClick': true,
+                        'form': 'movie-form',
+                        'payload': {
+                          'mediaId':item.media_id,
+                        },
+                      }))
+                    }}>Edit</button>
+                    <button className="btn btn-sm btn-danger"  onClick={() => {
+                      dispatch(deleteMedia(item.media_id))
+                    }}>Delete</button>
+                  </div>
+                  <FeatureHome
+                    key={`feature-top-movies-${index}`}
+                    mediaId={item.media_id}
+                    mediaUrl={item.media_url}
+                    avatar={item.cover_url}
+                    artistId={item.owner_id}
+                    owner_name={item.owner_name}
+                    title={item.name}
+                    description={item.owner_name}
+                    country={item.country}
+                    category={item.category}
+                    showHeader={true}
+                    likes={item.likes || undefined}
+                    plays={item.plays}
+                  />
+               </div>
+              )
+            })
+          }
+        </div>
+      </div>
+
       <div className={`mt-4 pt-4 ${selected === 'account' ? 'd-flex' : 'd-none'}`}>
         <Button
           onClick={handleUpdate}

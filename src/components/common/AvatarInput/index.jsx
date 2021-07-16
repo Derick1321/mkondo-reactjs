@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 // TODO: Refractor the avatarInput with the Drag&Drop
 import styles from './index.module.scss';
+import { showModal } from '$redux/features/modal';
 
 const camera = require('$assets/images/photo-camera.svg');
 
@@ -23,6 +24,9 @@ const AvatarInput = (props) => {
 
   // state
   const [active, setActive] = useState(false);
+
+  // redux
+  const dispatch = useDispatch();
 
   // refs
   const fileRef = useRef(null);
@@ -86,10 +90,12 @@ const AvatarInput = (props) => {
       >
         {
           url ? (
-            <Pic
-              className={styles.avatarInputWrapperImage}
-              url={url}
-            />
+            <>
+              <Pic
+                className={styles.avatarInputWrapperImage}
+                url={url}
+              />
+            </>
           ) : (active ? (
             <p className={`text-center ${styles.dragTitle}`}>
               {t('drop_image')}

@@ -31,6 +31,7 @@ const Monitor = () => {
   const userType = useSelector((store) => store.authentication.user.user_type);
   const token = useSelector((store) => store.authentication.token);
   const addMediaComplete = useSelector((store) => store.media.addMediaComplete);
+  const deleteMediaComplete = useSelector((store) => store.media.deleteMediaComplete);
   const lastUploaded = useSelector((store) => store.media.lastUploaded);
 
   const isSuperAdmin = userType === 'super admin';
@@ -80,6 +81,7 @@ const Monitor = () => {
     addLikePending,
     removeLikePending,
     updateUserComplete,
+    deleteMediaComplete,
   ]);
 
   useEffect(() => {
