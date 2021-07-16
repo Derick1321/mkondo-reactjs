@@ -36,7 +36,7 @@ export const CroppingTool = ({ src, aspectRatio, width, locked, onChange }) => {
             imageRef.current = img
     }, [])
 
-    useEffect(() => {
+    useEffect(async () => {
         if (!completedCrop || !previewCanvasRef.current || !imageRef.current) {
             return
         }
@@ -68,7 +68,7 @@ export const CroppingTool = ({ src, aspectRatio, width, locked, onChange }) => {
             crop.height
         )
 
-        canvas.toBlob(blob => onChange(blob), 'image/jpeg', 1)
+        await canvas.toBlob(blob => onChange(blob), 'image/jpeg', 1)
     }, [completedCrop])
 
     return (
