@@ -12,6 +12,10 @@
     padding: 10px 10px 5px 10px;
     position: relative;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    height: 100%;
 }
 
 // .f_featureWrapper:before {
@@ -41,8 +45,6 @@
 .f_featurePane {
     // position: absolute;
     z-index: $z-index-lift;
-    bottom: 0;
-    align-items: flex-end;
 }
 
 .f_featurePlayBtn {
