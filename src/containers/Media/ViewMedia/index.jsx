@@ -194,9 +194,7 @@ const ViewMedia = () => {
           { commentPane}
           { descriptionPane}
         </div>
-        
       </div>
-      
     </div>
   );
 }
