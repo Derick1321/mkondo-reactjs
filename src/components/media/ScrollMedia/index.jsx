@@ -35,7 +35,7 @@ const ScrollMedia = (props) => {
     return (
       <div style={{marginRight: '15px'}}>
         <FeatureHome
-          key={`feature-home-songs-${idx}`}
+          key={`feature-home-${idx}`}
           mediaUrl={item.media_url}
           mediaId={item.media_id}
           avatar={item.cover_url}
