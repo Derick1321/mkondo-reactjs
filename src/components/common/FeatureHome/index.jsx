@@ -28,9 +28,9 @@ const commonStyle = `
 
 const FeatureBkg = styled.div`
   ${commonStyle}
+  flex-grow: 6;
   position: relative;
-  height: 60%;
-  min-height: 170px;
+  min-height: 100px;
   width: 100%;
   margin: auto;
   background-size: cover;
@@ -219,7 +219,7 @@ const FeatureHome = (props) => {
         )
       }
       </FeatureBkg>
-      <div className={`d-flex w-100 ${styles.f_featurePane}`}>
+      <div className={`d-flex flex-1 w-100 ${styles.f_featurePane}`}>
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
             <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes.length} {t('likes')}</div>
@@ -236,7 +236,7 @@ const FeatureHome = (props) => {
                 <div className={styles.f_description}>{description}</div>
               </div>
 
-              <div onClick={handleView} className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
+              <div onClick={handleView} className={`text-white-50 mt-2 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
 
             </div>
 
@@ -266,7 +266,7 @@ FeatureHome.defaultProps = {
 }
 
 FeatureHome.propTypes = {
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.string,
   title: PropTypes.string.isRequired,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,

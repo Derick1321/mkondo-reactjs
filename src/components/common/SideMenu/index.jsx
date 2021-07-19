@@ -51,7 +51,15 @@ const SideMenu = (props) => {
       path: routePaths.newMediaCategory,
       permission: 'artist',
     },
+    {
+      icon: require('$assets/images/icons/upload.svg'),
+      activeIcon: require('$assets/images/icons/upload.svg'),
+      title: 'Manager Panel',
+      path: routePaths.managerPanel,
+      permission: 'artist',
+    },
   ];
+
 
   const userIcons = [
     {

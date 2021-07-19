@@ -1,4 +1,5 @@
 import { DateTime, Duration } from 'luxon';
+import { handleFetch } from './requestUtils';
 
 // -> Fisher–Yates shuffle algorithm
 export const shuffleArray = (array) => {
@@ -153,3 +154,10 @@ export const movieGenres = [
   { value: 'romance', label: 'Romance' },
   { value: 'thriller', label: 'Thriller' },
 ];
+
+export const getMediaUrl = async (filename, token) => {
+  if (!filename) return null;
+  console.log("Getting media Url: ", filename);
+  const { response } = await handleFetch('GET', `media/presigned-get-url?file_name=${filename}`, null, token);
+  return response;
+}

@@ -29,6 +29,7 @@ const GET_RECOMENDED = 'media/GET_RECOMENDED';
 const GET_POPULAR_RECOMENDED = 'media/GET_POPULAR_RECOMENDED';
 const GET_SIMILAR_RECOMENDED = 'media/GET_SIMILAR_RECOMENDED';
 const UPDATE_LIKE = 'media/UPDATE_LIKE';
+const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -294,6 +295,14 @@ export const saveMedia = createAsyncThunk(
     }
 );
 
+// get similar media
+export const getSimilar = createAsyncThunk(
+    GET_SIMILAR_MEDIA, 
+    async(id, store) => {
+        const { token } = store.getState().authentication
+        return await handleFetch('GET', `media/${id}/similar`, null, token);
+})
+
 const initialState = {
     addMediaPending: false,
     addMediaError: null,
@@ -354,12 +363,16 @@ const initialState = {
     removeCommentLikePending: false,
     removeCommentLikeError: null,
     removeCommentLikeComplete: false,
+    getSimilarPending: false,
+    getSimilarError: null,
+    getSimilarComplete: false,
     currentMedia: {
         media_id: null,
         name: '',
         cover_url: null,
         owner_avatar_url: null,
     },
+    similarMedia: [],
     newReleases: {
         audio: [],
         video: [],
@@ -793,6 +806,23 @@ const mediaSlice = createSlice({
             state.removeCommentLikeComplete = false;
             state.removeCommentLikeError = action.error;
         },
+        [getSimilar.pending]: (state, action) => {
+            state.getSimilarPending = true;
+            state.getSimilarComplete = false;
+            state.getSimilarError = null;
+            state.similarMedia = [];
+        },
+        [getSimilar.fulfilled]: (state, action) => {
+            state.getSimilarPending = false;
+            state.getSimilarComplete = true;
+            state.getSimilarError = null;
+            state.similarMedia = action.payload.media;
+        },
+        [getSimilar.rejected]: (state, action) => {
+            state.getSimilarPending = false;
+            state.getSimilarComplete = false;
+            state.getSimilarError = action.payload;
+        }
     }
 });
 
