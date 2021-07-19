@@ -101,6 +101,7 @@ const VideoPlayer = (props) => {
             onReady={() => setIsReady(true)}
             width='100%'
             height='100%'
+            controls={true}
           />
           {
             !isReady && (
