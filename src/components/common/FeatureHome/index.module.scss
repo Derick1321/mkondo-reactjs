@@ -8,7 +8,7 @@
     // margin-bottom: 1rem;
     background-color: #191919;
     box-shadow: 3px 3px 3px #111;
-    width: 230px;
+    width: 200px;
     padding: 10px 10px 5px 10px;
     position: relative;
     border-radius: 5px;
@@ -36,7 +36,6 @@
 .f_featureSummary {
     color: $white;
     margin: 5px;
-    height: 100px;
 }
 
 .f_featurePane {
@@ -132,9 +131,8 @@
 .f_hoverCursor {
     color: #2B7676;
     text-overflow: ellipsis;
-    line-height: 1rem;
-    height: 2rem;
     overflow: hidden;
+    font-size: 10px;
 }
 
 .f_hoverCursor:hover {
