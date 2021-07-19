@@ -30,6 +30,7 @@ import { Configuration } from '../containers/Configuration';
 import { Sliders } from '../containers/Configuration/Sliders';
 import TopMedias from '../containers/TopMedias';
 import GuestViewMedia from '$containers/GuestViewMedia';
+import { ManagerPanel } from '../containers/ManagerPanel';
 
 export const routePaths = {
   main: '/app',
@@ -66,7 +67,8 @@ export const routePaths = {
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
   configurations: '/app/settings',
-  configSliders: '/app/settings/sliders'
+  configSliders: '/app/settings/sliders',
+  managerPanel: '/app/manager',
 };
 
 const roles = {
@@ -300,7 +302,12 @@ export const routes = [
             redirect: redirectFunctions.app,
           },
         ]
-      }
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.managerPanel,
+        component: ManagerPanel,
+      },
     ],
   }
 ];
