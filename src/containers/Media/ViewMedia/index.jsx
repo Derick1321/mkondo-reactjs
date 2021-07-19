@@ -18,9 +18,11 @@ import {
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
-import { addMediaComment, removeCommentLike } from '../../../redux/features/media';
+import media, { addMediaComment, getSimilar, removeCommentLike } from '../../../redux/features/media';
 import { COLOR_PRIMARY, COLOR_ACCENT } from '$common/constants'
 import { addHistory } from '../../../redux/features/user';
+import { getMediaUrl } from '../../../common/utils';
+import { SimilarMediaItem } from './similarMediaItem';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -38,12 +40,14 @@ const ViewMedia = () => {
   // state
   const [selected, setSelected] = useState(options[0].name);
   const [value, setValue] = useState('');
+  const [similarMediaCovers, setSimilarMediaCovers] = useState({})
 
   // store
   const dispatch = useDispatch();
   const { id: mediaId } = useParams();
 
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const token = useSelector((store) => store.authentication.token);
   const addCommentPending = useSelector((store) => store.media.addCommentPending);
   const addCommentComplete = useSelector((store) => store.media.addCommentComplete);
   const addCommentLikeComplete = useSelector((store) => store.media.addCommentLikeComplete);
@@ -52,6 +56,8 @@ const ViewMedia = () => {
   const deleteCommentComplete = useSelector((store) => store.media.deleteCommentComplete);
   const comments = useSelector((store) => store.media.comments);
   const currentMedia = useSelector((store) => store.media.currentMedia);
+  const similarMedia = useSelector((store) => store.media.similarMedia);
+  const similarMediaLoading = useSelector((store) => store.media.getSimilarPending);
 
   useEffect(() => {
     if (!currentMedia) return;
@@ -69,6 +75,7 @@ const ViewMedia = () => {
     dispatch(getMedia(mediaId));
     dispatch(getComment(mediaId));
     dispatch(getRecommended(userId));
+    dispatch(getSimilar(mediaId));
   }, [addCommentComplete, deleteCommentComplete, mediaId]);
 
   useEffect(() => {
@@ -166,6 +173,11 @@ const ViewMedia = () => {
               <VideoPlayer
                 url={currentMedia.media_url}
               />
+            </div>
+            <div className="col-lg-3">
+              <h3 className="text-light">Similar Content</h3>
+              {similarMediaLoading ? <p>Loading...</p> : null }
+              {similarMedia.map((media) => <SimilarMediaItem media={media} />)}
             </div>
           </div>
         )
