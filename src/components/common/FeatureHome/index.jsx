@@ -266,7 +266,7 @@ FeatureHome.defaultProps = {
 }
 
 FeatureHome.propTypes = {
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.string,
   title: PropTypes.string.isRequired,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,

@@ -34,14 +34,17 @@ const VideoPlayer = (props) => {
   const [position, setPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const [isFixed, setIsFixed] = useState(false)
 
   // effects
   const playerRef = useRef(null);
 
   useEffect(() => {
     dispatch(toggleFooterPlayer(false));
+    window.addEventListener("scroll", listenScrollEvent)
     return () => {
       dispatch(toggleFooterPlayer(true));
+      window.removeEventListener('scroll', listenScrollEvent);
     }
   }, []);
 
@@ -49,7 +52,6 @@ const VideoPlayer = (props) => {
     if (!file) {
       return;
     }
-
     setLocalUrl(getFileURL(file));
   }, [file]);
 
@@ -80,6 +82,19 @@ const VideoPlayer = (props) => {
     }
   }
 
+  const listenScrollEvent = e => {
+    console.log("Scroll event", playerRef.current.offsetTop);
+    if (playerRef.current.offsetTop < 1) {
+      if (!isFixed) {
+        setIsFixed(true);
+      }
+    } else {
+      if (isFixed) {
+        setIsFixed(false);
+      }
+    }
+  }
+
   // render
   if (!url && !localUrl) {
     return null;
@@ -87,7 +102,9 @@ const VideoPlayer = (props) => {
 
   return (
     <>
-      <div className={styles.playerWrapper}>
+      <div className={styles.playerWrapper} style={{ 
+          position: isFixed ? 'fixed' : 'relative',
+        }}>
         <div className={styles.reactPlayer}>
           <ReactPlayer
             ref={playerRef}
