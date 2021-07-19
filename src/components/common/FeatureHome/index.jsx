@@ -30,7 +30,7 @@ const FeatureBkg = styled.div`
   ${commonStyle}
   position: relative;
   height: 60%;
-  min-height: 170px;
+  min-height: 100px;
   width: 100%;
   margin: auto;
   background-size: cover;
@@ -236,7 +236,7 @@ const FeatureHome = (props) => {
                 <div className={styles.f_description}>{description}</div>
               </div>
 
-              <div onClick={handleView} className={`text-white-50 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
+              <div onClick={handleView} className={`text-white-50 mt-2 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
 
             </div>
 
