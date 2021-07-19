@@ -28,8 +28,8 @@ const commonStyle = `
 
 const FeatureBkg = styled.div`
   ${commonStyle}
+  flex-grow: 6;
   position: relative;
-  height: 60%;
   min-height: 100px;
   width: 100%;
   margin: auto;
@@ -219,7 +219,7 @@ const FeatureHome = (props) => {
         )
       }
       </FeatureBkg>
-      <div className={`d-flex w-100 ${styles.f_featurePane}`}>
+      <div className={`d-flex flex-1 w-100 ${styles.f_featurePane}`}>
         <div className={styles.f_featureContentWrapper}>
           <div className="d-flex flex-row align-items-center mt-1">
             <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes.length} {t('likes')}</div>
