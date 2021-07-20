@@ -56,7 +56,7 @@ const NewItem = (props) => {
       aspectRatio: 1/1,
       width: 100, 
       locked: true,
-    }))
+    }));
   }
 
   // render

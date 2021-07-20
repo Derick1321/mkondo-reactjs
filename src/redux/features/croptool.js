@@ -9,7 +9,7 @@ export const crop = createAsyncThunk(
     async (data, store) => {
         return await new Promise((resolve, reject) => {
             console.log(data);
-            const { src, aspectRatio, width, locked, onChange } = data;
+            const { src, aspectRatio, width, locked, slung, onChange } = data;
             //show modal
             //if condition is satisfied
             if (store.getState().modal.type != 'CROP_MODAL') {
@@ -17,7 +17,8 @@ export const crop = createAsyncThunk(
                     src,
                     aspectRatio,
                     width,
-                    locked
+                    locked,
+                    slung,
                 }))
             }
             //dispatch hide model
@@ -28,6 +29,7 @@ export const crop = createAsyncThunk(
 
 const initialState = {
   cropped: null,
+  slung: '',
 };
 
 // reducers
@@ -37,6 +39,9 @@ const croptoolSlice = createSlice({
   reducers: {
     updateCroppedImage: (state, action) => {
       state.cropped = action.payload;
+    },
+    updateSlung: (state, action) => {
+      state.slung = action.payload
     },
     hideModal: () => initialState,
   },
@@ -64,5 +69,5 @@ export const { hideModal } = croptoolSlice.actions;
 //     },
 //   }
 // });
-export const { updateCroppedImage } = croptoolSlice.actions;
+export const { updateCroppedImage, updateSlung } = croptoolSlice.actions;
 export default croptoolSlice.reducer;
