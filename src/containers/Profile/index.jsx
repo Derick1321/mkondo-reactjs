@@ -19,6 +19,7 @@ import styles from './index.module.scss';
 import FeatureHome from '../../components/common/FeatureHome';
 import { deleteMedia } from '../../redux/features/media';
 import { showModal } from '$redux/features/modal';
+import { crop } from '../../redux/features/croptool';
 
 const options = [
   { name: 'account', title: 'Account' },
@@ -57,6 +58,8 @@ const Profile = () => {
   const updateUserPending = useSelector((store) => store.user.updateUserPending);
   const token = useSelector((store) => store.authentication.token);
   const userMedia = useSelector((store) => store.user.userMedia);
+  const croppedImage = useSelector((store) => store.croptool.cropped);
+  const croppedImageSlung = useSelector((store) => store.croptool.slung);
   const dispatch = useDispatch();
 
   // effects
@@ -91,6 +94,20 @@ const Profile = () => {
     }
   }, [user]);
 
+  useEffect(async () => {
+    if (!croppedImageSlung) return;
+    const file = await fetch(croppedImage).then(res => res.blob());
+    const url = await generatePreview(file)
+    if (croppedImageSlung == 'cover') {
+      setLocalCoverUrl(url);
+      setCoverFile(file);
+    }
+    if (croppedImageSlung == 'avatar') {
+      setLocalAvatarUrl(url);
+      setFile(file);
+    }
+  }, [croppedImage, croppedImageSlung])
+  
   // handlers
   const handleChange = (name, value) => {
     setValues({
@@ -157,14 +174,24 @@ const Profile = () => {
 
   const handleAvatarChange = async (files) => {
     const url = await generatePreview(files[0]);
-    setLocalAvatarUrl(url);
-    setFile(files[0]);
+    dispatch(crop({
+      src: url,
+      aspectRatio: 1/1,
+      width: 100, 
+      locked: true,
+      slung: 'avatar',
+    }));
   }
 
   const handleCoverChange = async (files) => {
     const url = await generatePreview(files[0]);
-    setLocalCoverUrl(url);
-    setCoverFile(files[0]);
+    dispatch(crop({
+      src: url,
+      aspectRatio: 4/1,
+      width: 100, 
+      locked: true,
+      slung: 'cover',
+    }))
   }
 
   // render
