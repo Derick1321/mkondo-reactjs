@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CroppingTool } from '../../common/CroppingTool/index';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateCroppedImage } from '../../../redux/features/croptool';
+import { updateCroppedImage, updateSlung } from '../../../redux/features/croptool';
 import { getFileURL } from '$common/utils';
 import Button from '../../common/Button/index';
 import { hideModal } from '$redux/features/modal';
@@ -10,13 +10,19 @@ export const CropImageModal = ({
     src,
     aspectRatio,
     width,
-    locked
+    locked,
+    slung,
 }) => {
     //redux
     const dispatch = useDispatch();
     // aspectRatio, width, locked, onChange
     //redux
     // const modalProps = useSelector((store) => store.modal.modalProps);
+
+    useEffect(() => {
+        if (!slung) return;
+        dispatch(updateSlung(slung))
+    }, [slung]);
 
     return (
         <div className="row">
