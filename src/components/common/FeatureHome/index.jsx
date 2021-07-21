@@ -152,6 +152,7 @@ const FeatureHome = (props) => {
 
   // handlers
   const handlePlay = async () => {
+    console.log("Handle Play Triggered");
     if (category !== 'audio') {
       handleView();
       return;
@@ -262,11 +263,12 @@ FeatureHome.defaultProps = {
   artistId: null,
   mediaUrl: '',
   showHeader: true,
+  subtitle: '',
   likes: [],
 }
 
 FeatureHome.propTypes = {
-  subtitle: PropTypes.string.string,
+  subtitle: PropTypes.string,
   title: PropTypes.string.isRequired,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,

@@ -48,7 +48,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
     const props = {};
 
     if (data && data.file) {
-        console.log("File Upload", path);
+        // console.log("File Upload", path);
         const res = buildFormData(`/${path}`, data, baseUrl);
         url = res.url;
         headers = res.headers;
@@ -58,9 +58,9 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
             headers.Authorization = `Bearer ${token}`;
         }
 
-        console.log("File Upload -> Returning Promise");
+        // console.log("File Upload -> Returning Promise");
         return await new Promise((resolve, reject) => {
-            console.log("File Upload -> Promise -> Create Request");
+            // console.log("File Upload -> Promise -> Create Request");
             let request = new XMLHttpRequest();
             request.open(method,`${URL}/${url}`);
 
@@ -69,7 +69,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
                 //upload progress as percentage
                 let progress = (e.loaded/e.total)*100;
                 if (onProgressCallback) onProgressCallback(progress, e.loaded, e.total);
-                console.log(`File Upload -> Progress: ${progress}%`);
+                // console.log(`File Upload -> Progress: ${progress}%`);
             });
 
             //request finished event
@@ -78,7 +78,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
                 if (onProgressCallback) onProgressCallback(0);
                 const status = request.status;
                 const result = request.response;
-                console.log(`File Upload -> Complete`, status, result, url);
+                // console.log(`File Upload -> Complete`, status, result, url);
                 if (![200, 201, 204].includes(status)) {
                     reject(result);
                     return;
@@ -97,7 +97,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
             for (const key in headers) {
                 request.setRequestHeader(key, headers[key]);
             }
-            console.log("File Upload -> Sending the Request");
+            // console.log("File Upload -> Sending the Request");
             request.send(props.body);
         })
     } else {

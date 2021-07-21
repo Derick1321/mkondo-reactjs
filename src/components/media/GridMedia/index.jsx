@@ -78,9 +78,9 @@ const GridMedia = (props) => {
     <div className="row">
       {
         values.map((item, idx) => 
-            {if(type == 'audio') return (<div key={idx} className={`col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-3 ${styles.gridItem}`}>{getMedia(item, idx)}</div>)
+            {if(type == 'audio') return (<div key={idx} className={`col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-2 ${styles.gridItem}`}>{getMedia(item, idx)}</div>)
             else return (
-              <div key={idx} className={`col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4 ${styles.gridItem}`}>{getMedia(item, idx)}</div>
+              <div key={idx} className={`col-xs-6 col-sm-6 col-md-6 col-lg-4 col-xl-4 ${styles.gridItem}`}>{getMedia(item, idx)}</div>
             )
             }
 

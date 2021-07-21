@@ -157,7 +157,7 @@ export const movieGenres = [
 
 export const getMediaUrl = async (filename, token) => {
   if (!filename) return null;
-  console.log("Getting media Url: ", filename);
+  // console.log("Getting media Url: ", filename);
   const { response } = await handleFetch('GET', `media/presigned-get-url?file_name=${filename}`, null, token);
   return response;
 }

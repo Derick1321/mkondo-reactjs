@@ -16,6 +16,7 @@ export const querySearch = createAsyncThunk(
 const initialState = {
   initialRoute: null,
   isSideMenuOpen: false,
+  isSocialMediaSideMenuOpen: false,
   isMobile: false,
   searchResults: {
     media: [],
@@ -35,6 +36,9 @@ const navSlice = createSlice({
     },
     toggleSideMenu: (state, action) => {
       state.isSideMenuOpen = action.payload;
+    },
+    toggleSocialMediaSideMenu: (state, action) => {
+      state.isSocialMediaSideMenuOpen = action.payload;
     },
     toggleIsMobile: (state, action) => {
       state.isMobile = action.payload;
@@ -81,6 +85,7 @@ export const {
   toggleIsMobile,
   clearSearch,
   toggleFooterPlayer,
+  toggleSocialMediaSideMenu,
 } = navSlice.actions;
 
 // reducer

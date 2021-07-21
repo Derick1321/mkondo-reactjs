@@ -135,6 +135,7 @@ const SideMenu = (props) => {
         <img src={logo} alt="" className={styles.sidemenu_logo} />
       </div>
       <div className={`d-flex flex-column ${styles.sideMenusWrapper}`}>
+        <span onClick={() => history.push(routePaths.socialmedia)} className={`${styles.socialButton}`}><span>Switch to <br/></span> Mkondo Social</span>
         <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
         {
           icons.map((item, idx) => (
