@@ -14,9 +14,7 @@ const HamburgerMenu = () => {
 
   // effects
   useEffect(() => {
-    if (!isSideMenuOpen) {
-      return;
-    }
+    if (!isSideMenuOpen) return;
     dispatch(toggleSideMenu(false));
   }, [location.pathname]);
 
