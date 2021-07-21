@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { SocialMediaCreatePost } from '../../components/social/post/createPost';
 import { SocialMediaStoryList } from '../../components/social/post/storyList';
 import { CompleteProfile } from '../../components/social/completeProfile';
+import { SocialMediaGroupsHighlight } from '../../components/social/GroupsHighlight';
 
 const DateBox = styled.div`
     background: rgba(255,255,255,0.7);
@@ -58,7 +59,7 @@ export const SocialMediaFeed = () => {
                     </div>
                 </div>
                 <div className="col-lg-3">
-                    
+                    <SocialMediaGroupsHighlight />
                 </div>
             </div>
         </div>
