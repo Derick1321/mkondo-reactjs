@@ -102,3 +102,19 @@
 .sidemenu_logo {
     width: 100px;
 }
+
+.socialButton {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    padding: 0 20px;
+    cursor: pointer;
+    background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+
+    span {
+        font-weight: 400;
+        -webkit-text-fill-color:grey;
+    }
+}

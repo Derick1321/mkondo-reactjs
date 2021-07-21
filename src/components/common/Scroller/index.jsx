@@ -97,7 +97,7 @@ const Scroller = (props) => {
 
   // render
   return (
-    <div>
+    <>
       {
         showHeader && (
           <div className="d-flex align-items-center my-4">
@@ -153,7 +153,7 @@ const Scroller = (props) => {
           {children}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
