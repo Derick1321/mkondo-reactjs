@@ -3,6 +3,7 @@ import styles from './index.module.scss';
 import styled from 'styled-components'
 import { SocialMediaCreatePost } from '../../components/social/post/createPost';
 import { SocialMediaStoryList } from '../../components/social/post/storyList';
+import { CompleteProfile } from '../../components/social/completeProfile';
 
 const DateBox = styled.div`
     background: rgba(255,255,255,0.7);
@@ -47,12 +48,17 @@ export const SocialMediaFeed = () => {
                             <h1>{date.getHours()}:{date.getMinutes()}</h1>
                             <h3 className="mt-3">{days[date.getDay()]}, {date.getDate()} {months[date.getMonth()]} {date.getFullYear()}</h3>
                     </DateBox>
+                    <div className="mt-3"></div>
+                    <CompleteProfile />
                 </div>
-                <div className="col-lg-6">
+                <div className="col-lg-6 mb-3 mb-lg-0">
                     <SocialMediaCreatePost />
                     <div className="mt-4">
                         <SocialMediaStoryList />
                     </div>
+                </div>
+                <div className="col-lg-3">
+                    
                 </div>
             </div>
         </div>
