@@ -39,61 +39,61 @@ const Scroller = (props) => {
   const scrollRef = useRef(0);
 
   // handlers
-  const applyBoounds = useCallback(() => {
-    const container = document.getElementById(containerId);
-    var minx = window.innerWidth - container.clientWidth - 450;
-    var maxx = 0;
-    Draggable.get(container).applyBounds({
-      minX: minx,
-      maxX: maxx
-    });
-  }, [children]);
+  // const applyBoounds = useCallback(() => {
+  //   const container = document.getElementById(containerId);
+  //   var minx = window.innerWidth - container.clientWidth - 450;
+  //   var maxx = 0;
+  //   Draggable.get(container).applyBounds({
+  //     minX: minx,
+  //     maxX: maxx
+  //   });
+  // }, [children]);
 
-  const setup = useCallback(() => {
-    const container = document.getElementById(containerId);
-    var left = children.length * 230;
-    gsap.set(container, {
-      width: left,
-    });
+  // const setup = useCallback(() => {
+  //   const container = document.getElementById(containerId);
+  //   var left = children.length * 230;
+  //   gsap.set(container, {
+  //     width: left,
+  //   });
 
-    Draggable.create(container, {
-      type: 'x',
-      throwProps: true,
-      edgeResistance: 0.95,
-      allowNativeTouchScrolling: false,
-      onDragStart: (elem) => scrollRef.current = elem.x,
-      onDragEnd: (elem) => scrollRef.current = Math.abs(scrollRef.current - elem.x),
-    })[0];
-  }, [children]);
+  //   Draggable.create(container, {
+  //     type: 'x',
+  //     throwProps: true,
+  //     edgeResistance: 0.95,
+  //     allowNativeTouchScrolling: false,
+  //     onDragStart: (elem) => scrollRef.current = elem.x,
+  //     onDragEnd: (elem) => scrollRef.current = Math.abs(scrollRef.current - elem.x),
+  //   })[0];
+  // }, [children]);
 
-  const handleNavRight = () => {
-    scrollRef.current += 400;
-    gsap.to(`#outer${name}`, {
-      duration: 1,
-      scrollTo: {
-        x: scrollRef.current,
-      },
-      ease: gsap.Power2,
-    });
-  }
+  // const handleNavRight = () => {
+  //   scrollRef.current += 400;
+  //   gsap.to(`#outer${name}`, {
+  //     duration: 1,
+  //     scrollTo: {
+  //       x: scrollRef.current,
+  //     },
+  //     ease: gsap.Power2,
+  //   });
+  // }
 
-  const handleNavLeft = () => {
-    console.log('scrollRef.current ', scrollRef.current);
-    scrollRef.current -= 400;
-    console.log('scrollRef.current left ', scrollRef.current);
-    gsap.to(`#outer${name}`, {
-      duration: 2,
-      scrollTo: {
-        x: scrollRef.current,
-      },
-      ease: gsap.Power2,
-    });
-  }
+  // const handleNavLeft = () => {
+  //   console.log('scrollRef.current ', scrollRef.current);
+  //   scrollRef.current -= 400;
+  //   console.log('scrollRef.current left ', scrollRef.current);
+  //   gsap.to(`#outer${name}`, {
+  //     duration: 2,
+  //     scrollTo: {
+  //       x: scrollRef.current,
+  //     },
+  //     ease: gsap.Power2,
+  //   });
+  // }
 
-  useEffect(() => {
-    setup();
-    applyBoounds();
-  }, [children]);
+  // useEffect(() => {
+  //   setup();
+  //   applyBoounds();
+  // }, [children]);
 
   // render
   return (
@@ -107,7 +107,7 @@ const Scroller = (props) => {
               </span>
             </div>
             <div className="d-flex justify-content-end">
-              <Button
+              {/* <Button
                 onClick={handleNavLeft}
                 isCustom
                 hideDefault
@@ -120,7 +120,7 @@ const Scroller = (props) => {
                 hideDefault
               >
                 <img src={arrowRightIcon} />
-              </Button>
+              </Button> */}
               {viewMore ? <button
                 onClick={() => push(viewMore)}
                 className="btn btn-primary"
