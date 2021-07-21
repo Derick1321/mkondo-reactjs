@@ -39,7 +39,7 @@ const Social = (props) => {
           }
 
           return (
-            <div className="col-3">
+            <div className="col-3" key={`social-wrapper-${idx}`}>
               <Button
                 key={`social-btn-${idx}`}
                 onClick={() => handleClick(item.name)}
