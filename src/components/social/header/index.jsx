@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
 import { getMediaUrl } from '../../../common/utils';
-import { toggleSocailMediaSideMenu, toggleSocialMediaSideMenu } from '../../../redux/features/nav';
+import { toggleSocialMediaSideMenu } from '../../../redux/features/nav';
 import styles from './index.module.scss';
 
 export const SocialMediaHeader = () => {
