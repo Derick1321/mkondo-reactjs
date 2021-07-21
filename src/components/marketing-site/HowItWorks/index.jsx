@@ -6,6 +6,7 @@ import List from '$components/marketing-site/List';
 import model from './model';
 
 import styles from './index.module.scss';
+import FeatureHome from '../../common/FeatureHome';
 
 const HowItWorks = () => {
   // render
@@ -28,7 +29,7 @@ const HowItWorks = () => {
         </div>
         <div className="col-12 col-md-1"></div>
         <div className={`col-12 col-md-5 ${styles.howItWorksFeature}`}>
-          <FeatureMark
+          <FeatureHome
               avatar="zja5uydd1795854_10152370111653109_115441845_o.jpg"
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
               description="This is a music description that can can be upto 2 lines large."
