@@ -31,6 +31,8 @@ import { Sliders } from '../containers/Configuration/Sliders';
 import TopMedias from '../containers/TopMedias';
 import GuestViewMedia from '$containers/GuestViewMedia';
 import { ManagerPanel } from '../containers/ManagerPanel';
+import { SocialMediaMain } from '../containers/socialmediaMain';
+import { SocialMediaFeed } from '../containers/socialMediaFeed';
 
 export const routePaths = {
   main: '/app',
@@ -69,6 +71,13 @@ export const routePaths = {
   configurations: '/app/settings',
   configSliders: '/app/settings/sliders',
   managerPanel: '/app/manager',
+
+  socialmedia: '/social',
+  feed: '/social/feed',
+  timeline: '/social/timeline',
+  page: '/social/page',
+  chat: '/social/chat',
+  socialprofile: '/social/profile',
 };
 
 const roles = {
@@ -307,6 +316,20 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.managerPanel,
         component: ManagerPanel,
+      },
+    ],
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.socialmedia,
+    component: SocialMediaMain,
+    exact: false,
+    routes: [
+      {
+        ...defaultConfig,
+        path: routePaths.feed,
+        component: SocialMediaFeed,
+        redirect: redirectFunctions.app
       },
     ],
   }

@@ -27,7 +27,7 @@ const NewItem = (props) => {
     values,
   } = props;
 
-  console.log(menus);
+  // console.log(menus);
 
   // state
   const [selected, setSelected] = useState(options[0].name);
