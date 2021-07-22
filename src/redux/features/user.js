@@ -44,6 +44,7 @@ export const removeFavorite = createAsyncThunk(
 export const addLikes = createAsyncThunk(
     ADD_LIKE,
     async(data, param) => {
+        // payload {media_id: value}
         const { token, user } = param.getState().authentication;
         return await handleFetch('POST', `users/${user.user_id}/likes`, data, token);
     }
@@ -52,6 +53,7 @@ export const addLikes = createAsyncThunk(
 export const removeLikes = createAsyncThunk(
     REMOVE_LIKE,
     async(data, param) => {
+        // payload {media_id: value}
         const { token, user } = param.getState().authentication;
         return await handleFetch('DELETE', `users/${user.user_id}/likes`, data, token);
     }
