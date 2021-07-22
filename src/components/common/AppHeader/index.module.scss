@@ -58,12 +58,11 @@
     @media screen and (min-width: 576px) {
         display: none;
     }
-    color: #A0A0FF;
-    font-size: 1.5rem;
-    font-weight: bold;
-    position: absolute;
-    top: 25%;
-    left: 25%;
+    background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5em;
+    font-weight: 700;
 }
 
 .optSecondary {
