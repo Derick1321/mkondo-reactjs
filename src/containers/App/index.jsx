@@ -30,6 +30,7 @@ const App = () => {
   // I18n initial setting
   const { t, i18n } = useTranslation('common');
   const [constructorHasRun, setConstructorHasRun] = useState(false);
+  
   const constructor = () => {
     if (constructorHasRun) return;
     i18n.changeLanguage('en')

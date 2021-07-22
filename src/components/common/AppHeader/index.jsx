@@ -47,6 +47,7 @@ const AppHeader = (props) => {
   const token = useSelector((store) => store.authentication.token);
   const modalActive = useSelector((store) => store.modal.type);
   const isMobile = useSelector((store) => store.nav.isMobile);
+  const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
   const forceClearSearch = useSelector((store) => store.nav.forceClearSearch);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -111,10 +112,9 @@ const AppHeader = (props) => {
   return (
     <>
       <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
-        <div className={`d-block d-sm-none ${styles.menuWrapper}`}>
+        <div className={`d-flex align-items-center d-sm-none ${styles.menuWrapper}`}>
           <HamburgerMenu />
-          <span className={styles.mobile_logo}>MKONDO</span>
-
+          {!isSideMenuOpen && <span className={styles.mobile_logo}>Mkondo</span>}
         </div>
         {
           showSearch && (
