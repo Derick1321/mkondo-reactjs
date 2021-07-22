@@ -68,7 +68,7 @@ const NewItem = (props) => {
         />
       </div>
       <div  className={styles.newContent}>
-        <div className="d-flex flex-column mt-4">
+        {/* <div className="d-flex flex-column mt-4">
           <TabsArtist
             options={options}
             onSelect={handleSelect}
@@ -76,7 +76,7 @@ const NewItem = (props) => {
             name="newItem"
             activeColor="#8C8C8C"
           />
-        </div>
+        </div> */}
         <div className={`row mt-4 ${selected === 'basic' ? '' : 'd-none'}`}>
           <div className="col-12 col-md-6 col-lg-5">
             <div className={styles.avatar}>
@@ -151,6 +151,10 @@ const NewItem = (props) => {
               </div>
             ))
           }
+        </div>
+        <div className="d-flex justify-content-end">
+          {selected == "basic" && <button className="btn btn-primary" onClick={() => handleSelect(options[1].name)}>Next</button>}
+          {selected == "metadata" && <button className="btn btn-warning" onClick={() => handleSelect(options[0].name)}>Previous</button>}
         </div>
       </div>
     </div>
