@@ -135,6 +135,10 @@ const Monitor = () => {
 
   }, [addMediaComplete]);
 
+  useEffect(() => {
+
+  }, []);
+
   // render
   return (
     <div />

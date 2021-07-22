@@ -53,10 +53,10 @@ export const SimilarMediaItem = (props) => {
 
     return (
         <div className="row mb-2" onClick={() => handlePlay(media)}>
-            <div className="col-md-5 col-lg-4">
+            <div className="col-5 col-md-5 col-lg-4">
                 <StyledImage src={coverUrl ? coverUrl : placeholder} alt="" />
             </div>
-            <div className="col-md-7 col-lg-8">
+            <div className="col-7 col-md-7 col-lg-8">
                 <h5>{media.name}</h5>
                 <StyledOwner onClick={() => push(generatePath(routePaths.viewArtist, { id: media.owner_id }))}>{media.owner_name}</StyledOwner>
             </div>
