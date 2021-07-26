@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './index.module.scss';
 import styled from 'styled-components'
 import { SocialMediaCreatePost } from '../../components/social/post/createPost';
 import { SocialMediaStoryList } from '../../components/social/post/storyList';
 import { CompleteProfile } from '../../components/social/completeProfile';
 import { SocialMediaGroupsHighlight } from '../../components/social/GroupsHighlight';
+import { FeaturedAudioPost } from '../../components/social/post/featuredAudio';
+import ImageListPost from '../../components/social/post/imageList';
+import { useDispatch, useSelector } from 'react-redux';
+import { getPosts } from '../../redux/features/post';
 
 const DateBox = styled.div`
     background: rgba(255,255,255,0.7);
@@ -40,6 +44,17 @@ export const SocialMediaFeed = () => {
         'Sat'
       ]
 
+    //store
+    const dispatch = useDispatch();
+    const feed = useSelector((state) => state.post.feed);
+    const isFetched = useSelector((state) => state.post.getPostsSuccess);
+    const isLoading = useSelector((state) => state.post.getPostsLPending);
+
+    //effects
+    useEffect(() => {
+        dispatch(getPosts());
+    }, []);
+
     const date = new Date();
     return (
         <div className={`container mt-5`}>
@@ -56,6 +71,26 @@ export const SocialMediaFeed = () => {
                     <SocialMediaCreatePost />
                     <div className="mt-4">
                         <SocialMediaStoryList />
+                    </div>
+
+                    <div className="mt-3">
+                        <div className="my-2">
+                            <FeaturedAudioPost />
+                        </div>
+
+                        <div className="my-2">
+                            {isLoading && <p>Loading...</p>}
+                            {isFetched && <p>Fetch Complete</p>}
+                            {feed.map((post, key)=> {
+                                if (!post) return;
+                                return (
+                                    <div className="mb-3">
+                                        <ImageListPost key={key} post={post} />
+                                    </div>
+                                );
+                            })}
+                            
+                        </div>
                     </div>
                 </div>
                 <div className="col-lg-3">
