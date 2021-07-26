@@ -9,6 +9,7 @@ import player from './features/player';
 import slider from './features/slider';
 import configuration from './features/configuration';
 import croptool from './features/croptool';
+import post from './features/post';
 
 export default {
   authentication,
@@ -22,4 +23,5 @@ export default {
   slider,
   configuration,
   croptool,
+  post,
 };
