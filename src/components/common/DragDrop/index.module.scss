@@ -1,10 +1,10 @@
 @import '$assets/scss/main.scss';
 
 .dragDropWrapper {
+  @include card;
   height: 160px;
   width: 100%;
   color: $black;
-  background-color: $white;
   padding: 5px;
 }
 
@@ -26,7 +26,7 @@
 }
 
 .btnWrapper {
-  background-color: $primary-blue;
+  background-color: $accent-color;
   padding: 2rem;
   height: 40px;
   border-radius: 42px;
