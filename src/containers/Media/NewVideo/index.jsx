@@ -85,7 +85,7 @@ const NewVideo = () => {
       production_company: values.productionCompany,
       movie_director: values.director,
       staring: values.starring,
-      release_date: new Date(values.startingDate).toISOString(),
+      release_date: values.startingDate,
       file,
     }));
   }
