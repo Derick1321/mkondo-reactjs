@@ -63,6 +63,8 @@ const NewMedia = () => {
   const handleSave = async () => {
     const mediaRes = await dispatch(saveMedia(file));
     const avatarRes = await dispatch(saveMedia(values.file)); // avatar
+    //release date is not added
+    //TODO: add release date
     dispatch(addMedia({
       name: values.title,
       description: values.description,
