@@ -6,9 +6,9 @@ import { SocialMediaStoryList } from '../../components/social/post/storyList';
 import { CompleteProfile } from '../../components/social/completeProfile';
 import { SocialMediaGroupsHighlight } from '../../components/social/GroupsHighlight';
 import { FeaturedAudioPost } from '../../components/social/post/featuredAudio';
-import ImageListPost from '../../components/social/post/imageList';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPosts } from '../../redux/features/post';
+import PostItem from '../../components/social/post/item';
 
 const DateBox = styled.div`
     background: rgba(255,255,255,0.7);
@@ -74,23 +74,17 @@ export const SocialMediaFeed = () => {
                     </div>
 
                     <div className="mt-3">
-                        <div className="my-2">
+                        {/* <div className="my-2">
                             <FeaturedAudioPost />
-                        </div>
+                        </div> */}
 
-                        <div className="my-2">
-                            {isLoading && <p>Loading...</p>}
-                            {isFetched && <p>Fetch Complete</p>}
-                            {feed.map((post, key)=> {
-                                if (!post) return;
-                                return (
-                                    <div className="mb-3">
-                                        <ImageListPost key={key} post={post} />
-                                    </div>
-                                );
-                            })}
-                            
-                        </div>
+                        {
+                            feed.map(post => (
+                                <div key={post.post_id} className="my-2">
+                                    <PostItem post={post} />
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
                 <div className="col-lg-3">
