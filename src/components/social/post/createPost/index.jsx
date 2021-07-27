@@ -55,10 +55,14 @@ export const SocialMediaCreatePost = () => {
     const [payload, setPayload] = useState(postInitial);
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
+    const [isLoading, setIsLoading] = useState([]);
 
     //store
     const dispatch = useDispatch();
     const userId = useSelector((state) => state.authentication.user.user_id);
+    const addPostPending = useSelector((state) => state.post.addPostPending);
+    const saveMediaPending = useSelector((state) => state.post.saveMediaPending);
+    const addPostSuccess = useSelector((state) => state.post.addPostSuccess);
 
     //effects
     useEffect(() => {
@@ -68,6 +72,22 @@ export const SocialMediaCreatePost = () => {
             "user_id": userId
         });
     }, [userId]);
+
+    useEffect(() => {
+        if (!addPostSuccess) return;
+        setPayload(postInitial);
+        setImages([]);
+        setImages([]);
+        setShowForm(false);
+    }, [addPostSuccess]);
+
+    useEffect(() => {
+        if (addPostPending || saveMediaPending) {
+            setIsLoading(true);
+        } else {
+            setIsLoading(false);
+        }
+    }, [addPostPending, saveMediaPending]);
 
     const handleChange = (name, value) => {
         if (payload.hasOwnProperty(name)) {
@@ -94,11 +114,14 @@ export const SocialMediaCreatePost = () => {
         let _images = []
         for (let i = 0; i < images.length; i++) {
             const { payload: url} = await dispatch(saveMedia(images[i]));
+            console.log(url);
             _images.push({
                 url,
                 caption: '',
             });
         }
+
+        
 
         dispatch(addPost(
             { ...payload, 
@@ -179,7 +202,7 @@ export const SocialMediaCreatePost = () => {
                                 )}
                                 <div className="row mt-3">
                                     <div className="col-lg-12">
-                                        <button onClick={() => handlePublish()} className="btn btn-primary w-100">Publish</button>
+                                        <button onClick={() => handlePublish()} className="btn btn-primary w-100" disabled={isLoading}>Publish {isLoading && <span className="spinner-border"></span>}</button>
                                     </div>
                                 </div>
                             </div>

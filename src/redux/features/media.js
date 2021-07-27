@@ -287,7 +287,7 @@ export const saveMedia = createAsyncThunk(
                 request.send(formData);
             })
 
-            console.log(res);
+            // console.log(res);
             return fileName;
         } catch (error) {
             throw error;
