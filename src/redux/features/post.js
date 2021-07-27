@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import { handleFetch } from "../../common/requestUtils";
+import { async } from 'regenerator-runtime';
 
 const initialState = {
     addPostPending: false,
@@ -8,6 +9,9 @@ const initialState = {
     getPostsPending: false,
     getPostsSuccess: false,
     getPostsError: null,
+    deletePostPending: false,
+    deletePostSuccess: false,
+    deletePostError: null,
     feed: [],
 }
 
@@ -32,6 +36,14 @@ export const getPosts = createAsyncThunk(
     }
 )
 
+export const deletePost = createAsyncThunk(
+    DELETE_POST,
+    async (post_id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('DELETE', `posts/${post_id}`, null, token)
+    } 
+)
+
 const postSlice = createSlice({
     name: 'post',
     initialState,
@@ -39,18 +51,19 @@ const postSlice = createSlice({
     extraReducers: {
         [addPost.pending]: (state, action) => {
             state.addPostPending = true;
-            state.addPostSuccess = true;
+            state.addPostSuccess = false;
             state.addPostError = null;
         },
         [addPost.fulfilled]: (state, action) => {
             state.addPostPending = false;
             state.addPostSuccess = true;
             state.addPostError = null;
+            state.feed.unshift(action.payload.post);
         },
         [addPost.rejected]: (state, action) => {
             state.addPostPending = false;
             state.addPostSuccess = false;
-            state.addPostError = action.payload;
+            state.addPostError = action.error;
         },
         [getPosts.pending]: (state, action) => {
             state.getPostsPending = true;
@@ -68,6 +81,22 @@ const postSlice = createSlice({
             state.getPostsPending = false;
             state.getPostsSuccess = false;
             state.getPostsError = action.payload;
+        },
+        [deletePost.pending]: (state, action) => {
+            state.deletePostPending = true;
+            state.deletePostSuccess = false;
+            state.deletePostError = null;
+        },
+        [deletePost.fulfilled]: (state, action) => {
+            state.deletePostPending = false;
+            state.deletePostSuccess = true;
+            state.deletePostError = null;
+            state.feed = state.feed.filter(post => post.post_id != action.meta.arg);
+        }, 
+        [deletePost.rejected]: (state, action) => {
+            state.deletePostPending = false;
+            state.deletePostSuccess = false;
+            state.deletePostError = action.error;
         }
     }
 });
