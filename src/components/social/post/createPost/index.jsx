@@ -121,6 +121,8 @@ export const SocialMediaCreatePost = () => {
             });
         }
 
+        
+
         dispatch(addPost(
             { ...payload, 
                 "images": _images
