@@ -1,0 +1,11 @@
+@import '$assets/scss/socialmedia.scss';
+
+.imageWrapper {
+    min-width: 200px;
+
+    img {
+        object-fit: contain;
+        height: 300px;
+        width: 100%;
+    }
+}
