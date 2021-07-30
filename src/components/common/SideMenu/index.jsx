@@ -52,6 +52,13 @@ const SideMenu = (props) => {
       permission: 'artist',
     },
     {
+      icon: require('$assets/images/icons/series.svg'),
+      activeIcon: require('$assets/images/icons/series.svg'),
+      title: 'My Series',
+      path: routePaths.mySeries,
+      permission: 'artist',
+    },
+    {
       icon: require('$assets/images/icons/upload.svg'),
       activeIcon: require('$assets/images/icons/upload.svg'),
       title: 'Manager Panel',

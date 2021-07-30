@@ -33,6 +33,8 @@ import GuestViewMedia from '$containers/GuestViewMedia';
 import { ManagerPanel } from '../containers/ManagerPanel';
 import { SocialMediaMain } from '../containers/socialmediaMain';
 import { SocialMediaFeed } from '../containers/socialMediaFeed';
+import { NewSeries } from '../containers/Media/NewSeries';
+import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
 
 export const routePaths = {
   main: '/app',
@@ -48,6 +50,9 @@ export const routePaths = {
   feeds: '/app/feeds',
   media: '/app/media',
   newAlbum: '/app/media/new-album',
+  newSeries: "/app/media/new-series",
+  mySeries: '/app/media/series',
+  manageSeries: '/app/media/series/:series_id?',
   newVideo: '/app/media/new-video',
   newMediaCategory: '/app/media/select-category',
   mediaUpload: '/app/media/upload',
@@ -252,6 +257,24 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.newAlbum,
             component: NewAlbum,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.newSeries,
+            component: NewSeries,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.manageSeries,
+            component: ManageSeriesProfile,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.mySeries,
+            component: ManageSeriesProfile,
             redirect: redirectFunctions.app,
           },
           {

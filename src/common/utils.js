@@ -148,7 +148,6 @@ export const movieGenres = [
   { value: 'comedy', label: 'Comedy' },
   { value: 'drama', label: 'Drama' },
   { value: 'fantasy', label: 'Fantasy' },
-  { value: 'drama', label: 'Drama' },
   { value: 'horror', label: 'Horror' },
   { value: 'mystery', label: 'Mystery' },
   { value: 'romance', label: 'Romance' },

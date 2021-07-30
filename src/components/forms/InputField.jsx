@@ -9,7 +9,7 @@ import SocialInput from '$components/forms/SocialInput';
 
 const InputField = (props) => {
   // props
-  const { field, onChange, isGrey } = props;
+  const { field, error, onChange, isGrey } = props;
 
   // handlers
   const buildField = (field) => {
@@ -21,6 +21,7 @@ const InputField = (props) => {
           <TextInput
             {...field}
             isGrey
+            error={error}
             onChange={onChange}
           />
         );
@@ -29,6 +30,7 @@ const InputField = (props) => {
           <TextArea
             {...field}
             isGrey
+            error={error}
             onChange={onChange}
           />
         );
@@ -38,6 +40,7 @@ const InputField = (props) => {
             <SelectInput
               {...field}
               isGrey
+              error={error}
               onChange={onChange}
             />
           </div>

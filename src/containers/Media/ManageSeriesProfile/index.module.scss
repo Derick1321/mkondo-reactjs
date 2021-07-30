@@ -1,0 +1,72 @@
+@import '$assets/scss/main.scss';
+
+.itemWrapper {
+    position: relative;
+
+    img {
+        height: 225px;
+        width: 150px;
+        object-fit: cover;
+    }
+
+    div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0, 0.1);
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        transition: all 0.3s ease-in;
+        cursor: pointer;
+
+        p {
+            margin: 0;
+            padding: 5px;
+            color: #F4F4F4;
+        }
+    }
+
+    div:hover {
+        background-color: rgba(0,0,0, 0.3);
+        transition: all 0.3s ease-out;
+    }
+}
+
+.tileCard {
+    @include card;
+
+    .header {
+        display: flex;
+
+        .saveButton {
+            margin-left: auto;
+        }
+
+        .progress {
+            margin-left: 10px;
+            height: 30px;
+            width: 30px;
+        }
+    
+        .iconButton {
+            margin-left: 10px;
+            img {
+                height: 30px;
+                width: 30px;
+            }
+        }
+    
+        @media (max-width: 992px) { 
+            h4 {
+                font-size: 13px;
+            }
+        }
+    }
+}
+
+.tileCard.uploadComplete {
+    border: 1px solid $primary-color;
+}
