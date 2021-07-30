@@ -84,6 +84,12 @@ export const newMedia = [{
         icon: require('$assets/images/home/movies-active.svg'),
         iconActive: require('$assets/images/home/movies-active.svg'),
     },
+    {
+        name: 'series',
+        title: 'Series',
+        icon: require('$assets/images/icons/series.svg'),
+        iconActive: require('$assets/images/icons/series.svg'),
+    },
 ];
 
 export default menus;

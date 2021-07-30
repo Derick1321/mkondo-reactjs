@@ -15,6 +15,7 @@ const SelectInput = (props) => {
     placeholder,
     name,
     isGrey,
+    error,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -36,7 +37,8 @@ const SelectInput = (props) => {
     control: (provided, state) => ({
       ...provided,
       color: isGrey? 'white': '',
-      backgroundColor: isGrey? '#818181': ''
+      backgroundColor: isGrey? '#818181': '',
+      borderColor: error ? 'red' : '',
     }),
     placeholder: (provided, state) => ({
       ...provided,
@@ -57,6 +59,7 @@ const SelectInput = (props) => {
         placeholder={t(placeholder)}
         styles={customStyles}
       />
+      {error && typeof error == 'string' && <p style={{color: 'red'}}>{t(error)}</p>}
     </>
   );
 }
