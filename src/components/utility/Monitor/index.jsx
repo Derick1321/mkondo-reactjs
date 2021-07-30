@@ -120,7 +120,7 @@ const Monitor = () => {
   useEffect(() => {
     if (!addMediaComplete
       || !lastUploaded
-      || lastUploaded.category === 'audio') { // TODO: use same for audio
+      || ['audio', 'episode'].includes(lastUploaded.category)) { // TODO: use same for audio
       return;
     }
 

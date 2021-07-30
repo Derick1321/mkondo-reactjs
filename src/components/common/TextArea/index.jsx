@@ -14,6 +14,7 @@ const TextArea = (props) => {
     placeholder,
     title,
     isGrey,
+    error
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -30,7 +31,7 @@ const TextArea = (props) => {
   return (
     <>
       <p style={{color: 'white'}}>{t(title)}</p>
-      <div className={styles.formTextAreaWrapper}>
+      <div className={`${styles.formTextAreaWrapper} ${error ? styles.isInvalid : ''}`}>
         <textarea
           name={name}
           className={`${styles.formTextArea} ${isGrey?styles.textareaGrey:''}`}
@@ -40,6 +41,7 @@ const TextArea = (props) => {
           rows={1}
         />
       </div>
+      <p className={styles.invalidFeedback}>{error}</p>
     </>
   );
 }
