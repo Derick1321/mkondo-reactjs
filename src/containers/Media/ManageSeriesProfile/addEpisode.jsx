@@ -25,6 +25,7 @@ export const AddSeriesEpisode = (props) => {
     const [progress, setProgress] = useState(0);
     const [uploadComplete, setUploadComplete] = useState(false);
     const [payload, setPayload] = useState(initialPayload);
+    const [submitError, setSubmitError] = useState()
 
     //store
     const dispatch = useDispatch();
@@ -88,6 +89,16 @@ export const AddSeriesEpisode = (props) => {
 
     const handleSave = async () => {
         const res = await dispatch(addMedia(payload));
+        
+        if (res.error && res.error.message) {
+            const errors = JSON.parse(res.error.message);
+            if (errors.description || errors.title || errors.genres || errors.release_date) {
+
+            }
+            return;
+        }
+
+        //cleanup
         console.log(res);
     }
 
@@ -104,7 +115,7 @@ export const AddSeriesEpisode = (props) => {
                     ): null}
                 </div>
                 <div className={styles.saveButton}>
-                    {!isOpen ? <button onClick={handleSave} className="btn btn-sm btn-primary">Save</button> : null }
+                    {/* {!isOpen ? <button onClick={handleSave} className="btn btn-sm btn-primary">Save</button> : null } */}
                 </div>
                 <div className={styles.progress}>
                     {progress > 0 ? <DonutProgress progress={progress} /> : null}
