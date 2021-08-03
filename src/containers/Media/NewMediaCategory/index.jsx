@@ -31,6 +31,11 @@ const NewMediaCategory = () => {
       return;
     }
 
+    if (selected[0] === 'series') {
+      history.push(routePaths.newSeries);
+      return; 
+    }
+
     history.push(routePaths.mediaUpload);
   }
 

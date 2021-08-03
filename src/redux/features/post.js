@@ -12,6 +12,15 @@ const initialState = {
     deletePostPending: false,
     deletePostSuccess: false,
     deletePostError: null,
+    addPostCommentPending: false,
+    addPostCommentSuccess: false,
+    addPostCommentError: null,
+    addPostLikePending: false,
+    addPostLikeSuccess: false,
+    addPostLikeError: null,
+    removePostLikePending: false,
+    removePostLikeSuccess: false,
+    removePostLikeError: null,
     feed: [],
 }
 
@@ -19,6 +28,9 @@ const initialState = {
 const ADD_POST = 'post/ADD_POST';
 const GET_POSTS = 'post/GET_POSTS';
 const DELETE_POST = 'post/DELETE_POST';
+const ADD_POST_COMMENT = 'post/ADD_POST_COMMENT';
+const ADD_POST_LIKE = 'post/ADD_POST_LIKE';
+const REMOVE_POST_LIKE = 'post/REMOVE_POST_LIKE';
 
 export const addPost = createAsyncThunk(
     ADD_POST,
@@ -40,8 +52,38 @@ export const deletePost = createAsyncThunk(
     DELETE_POST,
     async (post_id, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('DELETE', `posts/${post_id}`, null, token)
+        return await handleFetch('DELETE', `posts/${post_id}`, null, token);
     } 
+)
+
+export const addPostComment = createAsyncThunk(
+    ADD_POST_COMMENT,
+    async (payload, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('POST', `posts/${payload['post_id']}`, payload, token);
+    }
+)
+
+export const addPostLike = createAsyncThunk(
+    ADD_POST_LIKE,
+    async (post_id, store) => {
+        const { token, user } = store.getState().authentication;
+        const payload = {
+            user_id: user.user_id,
+        };
+        return await handleFetch('POST', `posts/${post_id}`, payload, token);
+    }
+)
+
+export const removePostLike = createAsyncThunk(
+    REMOVE_POST_LIKE,
+    async (post_id, store) => {
+        const { token, user } = store.getState().authentication;
+        const payload = {
+            user_id: user.user_id,
+        };
+        return await handleFetch('DELETE', `posts/${post_id}`, payload, token);
+    }
 )
 
 const postSlice = createSlice({
@@ -97,6 +139,39 @@ const postSlice = createSlice({
             state.deletePostPending = false;
             state.deletePostSuccess = false;
             state.deletePostError = action.error;
+        },
+        [addPostComment.pending]: (state, action) => {
+            state.addPostCommentPending = true;
+            state.addPostCommentSuccess = false;
+            state.addPostCommentError = null;
+        },
+        [addPostComment.fulfilled]: (state, action) => {
+            state.addPostCommentPending = false;
+            state.addPostCommentSuccess = true;
+            state.addPostCommentError = null;
+        },
+        [addPostComment.rejected]: (state, action) => {
+            state.addPostCommentPending = false;
+            state.addPostCommentSuccess = false;
+            state.addPostCommentError = action.error;
+        },
+        [addPostLike.pending]: (state, action) => {
+            state.addPostLikePending = true;
+            state.addPostLikeSuccess = false;
+            state.addPostLikeError = null;
+        },
+        [addPostLike.fulfilled]: (state, action) => {
+            state.addPostLikePending = false;
+            state.addPostLikeSuccess = true;
+            state.addPostLikeError = null;
+        }, 
+        [addPostLike.rejected]: (state, action) => {
+            state.addPostLikePending = false;
+            state.addPostLikeSuccess = false;
+            state.addPostLikeError = action.error;
+        },
+        [removePostLike.pending]: (state, action) => {
+            
         }
     }
 });
