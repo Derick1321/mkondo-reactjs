@@ -25,6 +25,7 @@ const TextInput = (props) => {
     title,
     onIconClick,
     isGrey,
+    error,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -41,7 +42,7 @@ const TextInput = (props) => {
   return (
     <>
       <p style={{color: 'white'}}>{t(title)}</p>
-      <div className={`d-flex justify-content-center align-items-center ${styles.textInputContainer} ${customWrapperClass}  ${isGrey && styles.GreyStyleWrapper}`}>
+      <div className={`d-flex justify-content-center align-items-center ${error ? styles.isInvalid : ''} ${styles.textInputContainer} ${customWrapperClass}  ${isGrey && styles.GreyStyleWrapper}`}>
         <input
           name={name}
           className={`${styles.textInputWrapper} ${isGrey && styles.GreyStyle}`}
@@ -62,6 +63,7 @@ const TextInput = (props) => {
           )
         }
       </div>
+      {error && typeof error == 'string' && <p className={styles.invalidFeedback}>{error}</p>}
     </>
   );
 };
