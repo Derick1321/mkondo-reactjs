@@ -8,6 +8,7 @@ const ADD_MEDIA = 'media/ADD_MEDIA';
 const DELETE_MEDIA = 'media/DELETE_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
+const SAVE_MEDIA_PRO = 'media/SAVE_MEDIA_PRO'
 const GET_MEDIA = 'media/GET_MEDIA';
 const UPDATE_MEDIA = 'media/UPDATE_MEDIA';
 const GET_NEW_RELEASES = 'media/GET_NEW_RELEASES';
@@ -30,6 +31,8 @@ const GET_POPULAR_RECOMENDED = 'media/GET_POPULAR_RECOMENDED';
 const GET_SIMILAR_RECOMENDED = 'media/GET_SIMILAR_RECOMENDED';
 const UPDATE_LIKE = 'media/UPDATE_LIKE';
 const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
+const ADD_SERIES = 'media/ADD_SERIES';
+const GET_SERIES = 'media/GET_SERIES';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -295,6 +298,105 @@ export const saveMedia = createAsyncThunk(
     }
 );
 
+//save media pro
+// save to digital ocean spaces
+export const saveMediaPro = createAsyncThunk(
+    SAVE_MEDIA_PRO,
+    async(file, param) => {
+        const { token } = param.getState().authentication;
+        const fileName = `${Math.random().toString(36).substring(5)}${file.fileName}`;
+        const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
+        const { fields, url } = result.response;
+
+        const uploading = {
+            fileName: file.filename,
+            isUploading: true,
+            isUploaded: false,
+            error: null,
+            progress: 0,
+            uploaded: 0,
+            total: 0,
+        }
+
+        param.dispatch(pushUploadQueue(uploading))
+
+        try {
+            const { headers, body: formData } = buildFormData(url, {
+                ...fields,
+                file: file.file,
+            });
+
+            const res = await new Promise((resolve, reject) => {
+                let request = new XMLHttpRequest();
+                request.open('POST', url);
+                
+                //upload progress event
+                request.upload.addEventListener('progress', (e) => {
+                    //upload progress as percentage
+                    let progress = (e.loaded/e.total)*100;
+                    param.dispatch(updateUploadQueueItemProgress({
+                        key: uploading.fileName,
+                        value: progress,
+                    }));
+                    param.dispatch(updateUploadQueueItemUploaded({
+                        key: uploading.fileName,
+                        value: e.loaded,
+                    }));
+                    param.dispatch(updateUploadQueueItemTotal({
+                        key: uploading.fileName,
+                        value: e.total,
+                    }));
+                    // console.log(`Progress: ${progress}%`);
+                });
+    
+                //request finished event
+                request.addEventListener('load', (e) => {
+                    //http status message
+                    //TODO: check if the ui is good
+                    param.dispatch(updateUploadQueueItemState({
+                        key: uploading.fileName,
+                        state: 'isUploading',
+                        value: false,
+                    }));
+                    param.dispatch(updateUploadQueueItemState({
+                        key: uploading.fileName,
+                        state: 'isUploaded',
+                        value: true,
+                    }));
+
+                    const status = request.status;
+                    const result = request.response;
+                
+                    if (![200, 201, 204].includes(status)) {
+                        reject(result);
+                        return;
+                    }
+                
+                    if ([204].includes(status)) {
+                        resolve(true);
+                        return;
+                    }
+                
+                    resolve(JSON.parse(result));
+                    return;
+                });
+    
+                //setting the request headers
+                for (const key in headers) {
+                    request.setRequestHeader(key, headers[key]);
+                }
+                
+                request.send(formData);
+            })
+
+            // console.log(res);
+            return fileName;
+        } catch (error) {
+            throw error;
+        }
+    }
+);
+
 // get similar media
 export const getSimilar = createAsyncThunk(
     GET_SIMILAR_MEDIA, 
@@ -302,6 +404,24 @@ export const getSimilar = createAsyncThunk(
         const { token } = store.getState().authentication
         return await handleFetch('GET', `media/${id}/similar`, null, token);
 })
+
+//add series
+export const addSeries = createAsyncThunk(
+    ADD_SERIES,
+    async (data, store) => {
+        const { token } = store.getState().authentication
+        return await handleFetch('POST', '/series', data, token);
+    }
+)
+
+//get series
+export const getSeries = createAsyncThunk(
+    GET_SERIES,
+    async (params, store) => {
+        const { token } = store.getState().authentication
+        return await handleFetch('GET', '/series', params, token);
+    }
+)
 
 const initialState = {
     addMediaPending: false,
@@ -366,6 +486,13 @@ const initialState = {
     getSimilarPending: false,
     getSimilarError: null,
     getSimilarComplete: false,
+    addSeriesPending: false,
+    addSeriesSuccess: false,
+    addSeriesError: null,
+    getSeriesPending: false,
+    getSeriesSuccess: false,
+    getSeriesError: null,
+    uploadQueue: [],
     currentMedia: {
         media_id: null,
         name: '',
@@ -405,6 +532,7 @@ const initialState = {
         success: '',
         media: []
     },
+    mySeries: [],
     lastUploaded: null,
 };
 
@@ -432,6 +560,44 @@ const mediaSlice = createSlice({
         },
         updateAddMediaTotalSize(state, action) {
             state.addMediaTotalSize = action.payload ?? state.addMediaTotalSize;
+        },
+        pushUploadQueue(state, action) {
+            state.uploadQueue.push(action.payload);
+        },
+        updateUploadQueueItemProgress(state, action) {
+            //selecting a proper a correct item
+            state.uploadQueue = state.uploadQueue.map((item) => {
+                if (item.fileName == action.payload.key) {
+                    item.progress = action.payload.value;
+                }
+                return item;
+            });
+        },
+        updateUploadQueueItemUploaded(state, action) {
+            state.uploadQueue = state.uploadQueue.map((item) => {
+                if (item.fileName == action.payload.key) {
+                    item.uploaded = action.payload.value;
+                }
+                return item;
+            });
+        },
+        updateUploadQueueItemTotal(state, action) {
+            state.uploadQueue = state.uploadQueue.map((item) => {
+                if (item.fileName == action.payload.key) {
+                    item.total = action.payload.value;
+                }
+                return item;
+            });
+        },
+        updateUploadQueueItemState(state, action) {
+            state.uploadQueue = state.uploadQueue.map((item) => {
+                if (item.fileName == action.payload.key) {
+                    if (action.payload.state in item) {
+                        item[action.payload.state] = action.payload.value;
+                    }
+                }
+                return item;
+            });
         }
     },
     extraReducers: {
@@ -535,6 +701,16 @@ const mediaSlice = createSlice({
             state.saveMediaComplete = false;
             state.saveMediaError = action.error;
             state.saveMediaPending = false;
+        },
+        [saveMediaPro.pending]: (state, action) => {
+            console.log('saveMediaPro: pending - ', action.meta.arg.fileName);
+        },
+        [saveMediaPro.fulfilled]: (state, action) => {
+            console.log('saveMediaPro: fulfilled - ', action.meta.arg.fileName);
+            console.log('saveMediaPro: fulfilled: payload ==  - ', action.payload);
+        },
+        [saveMediaPro.rejected]: (state, action) => {
+            console.log('saveMediaPro: rejected - ', action.meta.arg.fileName);
         },
         [getRecommended.pending]: (state, action) => {
             state.getRecommendedPending = true;
@@ -822,9 +998,41 @@ const mediaSlice = createSlice({
             state.getSimilarPending = false;
             state.getSimilarComplete = false;
             state.getSimilarError = action.payload;
+        },
+        [addSeries.pending]: (state, action) => {
+            state.addSeriesPending = true;
+            state.addSeriesSuccess = false;
+            state.addSeriesError = null;
+        }, 
+        [addSeries.fulfilled]: (state, action) => {
+            state.addSeriesPending = false;
+            state.addSeriesSuccess = true;
+            state.addSeriesError = null;
+            state.mySeries.unshift(action.payload.series);
+        }, 
+        [addSeries.rejected]: (state, action) => {
+            state.addSeriesPending = false;
+            state.addSeriesSuccess = false;
+            state.addSeriesError = action.error;
+        },
+        [getSeries.pending]: (state, action) => {
+            state.getSeriesPending = true;
+            state.getSeriesSuccess = false;
+            state.getSeriesError = null;
+        },
+        [getSeries.fulfilled]: (state, action) => {
+            state.getSeriesPending = false;
+            state.getSeriesSuccess = true;
+            state.getSeriesError = null;
+            state.mySeries = action.payload.series;
+        }, 
+        [getSeries.rejected]: (state, action) => {
+            state.getSeriesPending = false;
+            state.getSeriesSuccess = false;
+            state.getSeriesError = action.error;
         }
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState } = mediaSlice.actions;
 export default mediaSlice.reducer;
