@@ -111,6 +111,7 @@ export const ManageSeriesProfile = (props) => {
             <div className="row pt-5">
                 <div className="col-lg-9">
                     <h1 className="text-light">{series ? series.title : 'My Series'}</h1>
+                    {series ? <p>Has {series.episodes.length} episodes</p> : ''}
                 </div>
                 {series && (
                     <div className="col-lg-3">

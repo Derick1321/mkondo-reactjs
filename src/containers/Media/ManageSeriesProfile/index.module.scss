@@ -3,13 +3,31 @@
 .itemWrapper {
     position: relative;
 
-    img {
+    img.cover {
         height: 225px;
         width: 150px;
         object-fit: cover;
     }
 
-    div {
+    div.deleteBtn {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: red;
+        border-radius: 50%;
+        display: flex;
+        height: 20px;
+        width: 20px;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            height: 13px;
+            width: 13px;
+        }
+    }
+
+    div.details {
         position: absolute;
         top: 0;
         left: 0;
@@ -33,6 +51,8 @@
         background-color: rgba(0,0,0, 0.3);
         transition: all 0.3s ease-out;
     }
+
+    
 }
 
 .tileCard {
