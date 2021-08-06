@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useHistory, useParams } from 'react-router-dom'
 import { routePaths } from '../../../common/routeConfig';
-import { getDuration } from '../../../common/utils';
+import { getDuration, getMediaUrl } from '../../../common/utils';
 import { getSeries } from '../../../redux/features/media';
 import { AddSeriesEpisode } from './addEpisode';
 import { SeriesListItem } from './item';
+import FeatureHome from '../../../components/common/FeatureHome/index';
+import { EpisodeItem } from './episodeItem';
 
 const initialEpisode = {
     file: null,
@@ -133,13 +135,23 @@ export const ManageSeriesProfile = (props) => {
 
             {/* Managing a Series Profile */}
             {series && (
-                <div className="mt-3">
-                    {episodes.map(ep => (
-                        <div className="mb-2">
-                            <AddSeriesEpisode key={ep.filename} episode={ep} />
-                        </div>
-                    ))}
-                </div>
+                <>
+                    <div className="mt-3">
+                        {episodes.map(ep => (
+                            <div className="mb-2">
+                                <AddSeriesEpisode key={ep.filename} episode={ep} />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="d-flex">
+                        {series.episodes.map(episode => (
+                            <div className="mr-3">
+                                <EpisodeItem episode={episode} />
+                            </div>
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     )
