@@ -59,7 +59,7 @@ const SelectInput = (props) => {
         placeholder={t(placeholder)}
         styles={customStyles}
       />
-      {error && typeof error == 'string' && <p style={{color: 'red'}}>{t(error)}</p>}
+      {error && <p style={{color: 'red'}}>{t(error)}</p>}
     </>
   );
 }

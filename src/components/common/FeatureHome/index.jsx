@@ -51,7 +51,7 @@ const PlayButton = styled.div`
     right: 5px;
     bottom: 5px;
   `}
-  ${props => props.category == 'video' && `
+  ${props => ['video', 'movie', 'episode'].includes(props.category) && `
     left: 50%;
     margin-left: -20px;
     top: 50%;

@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { generatePath, useHistory, useParams } from 'react-router-dom'
 import { routePaths } from '../../../common/routeConfig';
-import { getDuration } from '../../../common/utils';
+import { getDuration, getMediaUrl } from '../../../common/utils';
 import { getSeries } from '../../../redux/features/media';
 import { AddSeriesEpisode } from './addEpisode';
 import { SeriesListItem } from './item';
+import FeatureHome from '../../../components/common/FeatureHome/index';
+import { EpisodeItem } from './episodeItem';
 
 const initialEpisode = {
     file: null,
@@ -53,7 +55,7 @@ export const ManageSeriesProfile = (props) => {
         if (mySeries.some(_series => _series.series_id == series_id)) {
             setSeries(mySeries.find(_series => _series.series_id == series_id));
         }
-    }, [series_id])
+    }, [series_id, getSeriesSuccess])
     
     //handlers
     const handleManageSeries = (series_id) => {
@@ -84,11 +86,14 @@ export const ManageSeriesProfile = (props) => {
             if (!_episodes.some(ep => ep.filename == file.name)) {
                 //get duration
                 const duration = new Promise((resolve, reject) => {
+                    console.log("Trying to get the duration");
                     try {
                         getDuration(file, 'video', (duration) => {
+                            console.log("Obtained the duration ", duration);
                             resolve(duration)
                         });
                     } catch (e) {
+                        console.error(e);
                         reject(e);
                     }
                 })
@@ -106,11 +111,17 @@ export const ManageSeriesProfile = (props) => {
         }
         setEpisodes(_episodes);
     }
+
+    const handleAddEpisodeComplete = (filename) => {
+        setEpisodes(episodes.filter(ep => ep.filename != filename));
+    }
+
     return (
         <div className="container mt-5">
             <div className="row pt-5">
                 <div className="col-lg-9">
                     <h1 className="text-light">{series ? series.title : 'My Series'}</h1>
+                    {series ? <p>Has {series.episodes.length} episodes</p> : ''}
                 </div>
                 {series && (
                     <div className="col-lg-3">
@@ -132,13 +143,23 @@ export const ManageSeriesProfile = (props) => {
 
             {/* Managing a Series Profile */}
             {series && (
-                <div className="mt-3">
-                    {episodes.map(ep => (
-                        <div className="mb-2">
-                            <AddSeriesEpisode key={ep.filename} episode={ep} />
-                        </div>
-                    ))}
-                </div>
+                <>
+                    <div className="mt-3">
+                        {episodes.map(ep => (
+                            <div className="mb-2">
+                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} />
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="d-flex">
+                        {series.episodes.map(episode => (
+                            <div className="mr-3">
+                                <EpisodeItem episode={episode} />
+                            </div>
+                        ))}
+                    </div>
+                </>
             )}
         </div>
     )
