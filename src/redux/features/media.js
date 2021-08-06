@@ -33,6 +33,7 @@ const UPDATE_LIKE = 'media/UPDATE_LIKE';
 const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
 const ADD_SERIES = 'media/ADD_SERIES';
 const GET_SERIES = 'media/GET_SERIES';
+const REMOVE_SERIES = 'media/REMOVE_SERIES';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -418,8 +419,17 @@ export const addSeries = createAsyncThunk(
 export const getSeries = createAsyncThunk(
     GET_SERIES,
     async (params, store) => {
-        const { token } = store.getState().authentication
+        const { token } = store.getState().authentication;
         return await handleFetch('GET', '/series', params, token);
+    }
+)
+
+//delete series
+export const removeSeries = createAsyncThunk(
+    REMOVE_SERIES,
+    async (series_id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('DELETE', `/series/${series_id}`, null, token);
     }
 )
 
@@ -492,6 +502,9 @@ const initialState = {
     getSeriesPending: false,
     getSeriesSuccess: false,
     getSeriesError: null,
+    removeSeriesPending: false,
+    removeSeriesSuccess: false,
+    removeSeriesError: null,
     uploadQueue: [],
     currentMedia: {
         media_id: null,
@@ -1030,6 +1043,19 @@ const mediaSlice = createSlice({
             state.getSeriesPending = false;
             state.getSeriesSuccess = false;
             state.getSeriesError = action.error;
+        },
+        [removeSeries.pending]: (state, action) => {
+            state.removeSeriesPending = true;
+            state.removeSeriesSuccess = false;
+            state.removeSeriesError = null;
+        },
+        [removeSeries.fulfilled]: (state, action) => {
+            state.removeSeriesPending = false;
+            state.removeSeriesSuccess = true;
+            state.removeSeriesError = null;
+
+            //remove the series from my series
+            state.mySeries = state.mySeries.filter(series => series.series_id != action.meta.arg);
         }
     }
 });

@@ -57,6 +57,7 @@ const InputField = (props) => {
           <InputDate
             {...field}
             isGrey
+            error={error}
             onChange={onChange}
           />
         )
