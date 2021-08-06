@@ -109,11 +109,16 @@ export const NewSeries = () => {
         } catch (e) {
             console.error(e)
         }
-    }, [addSeriesError])
+    }, [addSeriesError]);
 
     useEffect(() => {
         setIsLoading(addSeriesPending);
-    }, [addSeriesPending])
+    }, [addSeriesPending]);
+
+    // useEffect(() => {
+    //     if (!addSeriesSuccess) return;
+    //     // push(generatePath(routePaths.manageSeries, {series_id: }));
+    // }, [addSeriesSuccess]);
 
     useEffect(() => {
         // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
@@ -180,8 +185,11 @@ export const NewSeries = () => {
 
     const handleSaveSeries = async () => {
         // save the series
-        const res = await dispatch(addSeries(payload));
-        console.log()
+        const action = await dispatch(addSeries(payload));
+        if (action.payload) {
+            push(generatePath(routePaths.manageSeries, {series_id: action.payload.series.series_id}));
+        }
+        // console.log(res)
     }
 
     return (

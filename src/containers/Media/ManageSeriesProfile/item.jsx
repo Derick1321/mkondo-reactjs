@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getMediaUrl } from '../../../common/utils';
+import { removeSeries } from '../../../redux/features/media';
 import styles from './index.module.scss';
 
 export const SeriesListItem = (props) => {
@@ -11,6 +12,7 @@ export const SeriesListItem = (props) => {
     const [coverUrl, setCoverUrl] = useState(null)
 
     //store
+    const dispatch = useDispatch();
     const token = useSelector(state => state.authentication.token);
     
     //effects
@@ -19,11 +21,20 @@ export const SeriesListItem = (props) => {
         const _url = await getMediaUrl(series.cover_url, token);
         setCoverUrl(_url);
     }, [series.cover_url]);
+
+    //handlers
+    const handleDeleteSeries = () => {
+        dispatch(removeSeries(series.series_id));
+    }
+
     return (
         <div className={styles.itemWrapper}>
-            <img src={coverUrl} alt="" />
+            <img className={styles.cover} src={coverUrl} alt="" />
+            {/* <div className={styles.deleteBtn}>
+                <img onClick={handleDeleteSeries} src={require("$assets/images/icons/delete.svg")} alt="" />
+            </div> */}
             {/* <p>{series.title}</p>
-            <p>{series.genres.join(', ')}</p>
+           
             <p>{series.description}</p>
             <p>{series.cover_url}</p>
             <p>{series.trailer_url}</p> */}
