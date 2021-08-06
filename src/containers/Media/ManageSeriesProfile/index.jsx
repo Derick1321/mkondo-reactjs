@@ -55,7 +55,7 @@ export const ManageSeriesProfile = (props) => {
         if (mySeries.some(_series => _series.series_id == series_id)) {
             setSeries(mySeries.find(_series => _series.series_id == series_id));
         }
-    }, [series_id])
+    }, [series_id, getSeriesSuccess])
     
     //handlers
     const handleManageSeries = (series_id) => {
@@ -86,11 +86,14 @@ export const ManageSeriesProfile = (props) => {
             if (!_episodes.some(ep => ep.filename == file.name)) {
                 //get duration
                 const duration = new Promise((resolve, reject) => {
+                    console.log("Trying to get the duration");
                     try {
                         getDuration(file, 'video', (duration) => {
+                            console.log("Obtained the duration ", duration);
                             resolve(duration)
                         });
                     } catch (e) {
+                        console.error(e);
                         reject(e);
                     }
                 })
@@ -108,6 +111,11 @@ export const ManageSeriesProfile = (props) => {
         }
         setEpisodes(_episodes);
     }
+
+    const handleAddEpisodeComplete = (filename) => {
+        setEpisodes(episodes.filter(ep => ep.filename != filename));
+    }
+
     return (
         <div className="container mt-5">
             <div className="row pt-5">
@@ -139,7 +147,7 @@ export const ManageSeriesProfile = (props) => {
                     <div className="mt-3">
                         {episodes.map(ep => (
                             <div className="mb-2">
-                                <AddSeriesEpisode key={ep.filename} episode={ep} />
+                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} />
                             </div>
                         ))}
                     </div>
