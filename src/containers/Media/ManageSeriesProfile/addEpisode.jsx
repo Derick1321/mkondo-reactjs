@@ -25,7 +25,7 @@ export const AddSeriesEpisode = (props) => {
     const [progress, setProgress] = useState(0);
     const [uploadComplete, setUploadComplete] = useState(false);
     const [payload, setPayload] = useState(initialPayload);
-    const [submitError, setSubmitError] = useState()
+    const [submitErrors, setSubmitErrors] = useState({})
 
     //store
     const dispatch = useDispatch();
@@ -93,7 +93,7 @@ export const AddSeriesEpisode = (props) => {
         if (res.error && res.error.message) {
             const errors = JSON.parse(res.error.message);
             if (errors.description || errors.title || errors.genres || errors.release_date) {
-
+                setSubmitErrors(errors);
             }
             return;
         }
@@ -124,6 +124,7 @@ export const AddSeriesEpisode = (props) => {
                     <img src={require('$assets/images/icons/settings.svg')} alt="" />
                 </div>
             </div>
+            
             {isOpen && (
                 <div className={`mt-4 ${styles.body}`}>
                     <div className="row">
@@ -138,7 +139,7 @@ export const AddSeriesEpisode = (props) => {
                                         type: 'text',
                                         placeholder: 'Episode Name',
                                         value: payload.name,
-                                     }} onChange={handleInputChange} />
+                                     }} error={submitErrors.name} onChange={handleInputChange} />
                                 </div>
                                 <div className="col-lg-4">
                                     <InputField field={{ 
@@ -146,7 +147,7 @@ export const AddSeriesEpisode = (props) => {
                                         type: 'date',
                                         placeholder: 'Release Date',
                                         value: payload.release_date,
-                                     }} onChange={handleInputChange} />
+                                     }} error={submitErrors.release_date} onChange={handleInputChange} />
                                 </div>
                                 <div className="col-lg-12">
                                     <InputField field={{ 
@@ -156,7 +157,7 @@ export const AddSeriesEpisode = (props) => {
                                         placeholder: 'Choose Genres',
                                         value: movieGenres.filter(genre => payload.genres.includes(genre.value)),
                                         isMulti: true,
-                                     }} onChange={handleInputChange} />
+                                     }} error={submitErrors.genres} onChange={handleInputChange} />
                                 </div>
                                 <div className="col-lg-12">
                                     <InputField field={{ 
@@ -164,7 +165,7 @@ export const AddSeriesEpisode = (props) => {
                                         type: 'area',
                                         placeholder: 'Describe the episode.',
                                         value: payload.description,
-                                     }} onChange={handleInputChange} />
+                                     }} error={submitErrors.description} onChange={handleInputChange} />
                                 </div>
                             </div>
                             <div className="row">

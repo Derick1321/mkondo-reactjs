@@ -63,7 +63,7 @@ const TextInput = (props) => {
           )
         }
       </div>
-      {error && typeof error == 'string' && <p className={styles.invalidFeedback}>{error}</p>}
+      {error && <p className={styles.invalidFeedback}>{error}</p>}
     </>
   );
 };
