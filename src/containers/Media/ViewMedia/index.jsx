@@ -192,10 +192,6 @@ const ViewMedia = () => {
       </div>
     </div>
   );
-  
-  if (!currentMedia.media_id) {
-    return <p>Loading...</p>
-  }
 
   const handleLike = () => {
     if (isLiked) {
@@ -228,6 +224,10 @@ const ViewMedia = () => {
       mediaId: currentMedia.media_id,
       title: currentMedia.name,
     }));
+  }
+
+  if (!currentMedia.media_id) {
+    return <p>Loading...</p>
   }
   // render
   return (

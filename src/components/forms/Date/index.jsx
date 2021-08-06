@@ -12,6 +12,7 @@ const InputDate = (props) => {
     name,
     onChange,
     value,
+    error,
   } = props;
 
   // handlers
@@ -27,11 +28,12 @@ const InputDate = (props) => {
       <div className="d-flex flex-column custom-date-wrapper">
         <input
           name={name}
-          className="custom-date"
+          className={`custom-date ${error && 'isInvalid'}`}
           type="date"
           onChange={handleChange}
           value={value || defaultDate}
         />
+        {error && <p style={{color: 'red'}}>{error}</p>}
       </div>
     </div>
   )
