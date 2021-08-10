@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPostLike, removePostLike, getPost } from '../../../../../redux/features/post';
+import PostItemComments from '../comments';
 
 const PostItemFooter = (props) => {
     //props
@@ -12,6 +13,7 @@ const PostItemFooter = (props) => {
     //state
     const [isLiked, setIsLiked] = useState(false);
     const [focus, setFocus] = useState(false); //There are multiple of this component that listen to the same state, we should be able to differentiate the active component
+    const [commentMode, setCommentMode] = useState(false);
 
     //store
     const dispatch = useDispatch();
@@ -69,7 +71,7 @@ const PostItemFooter = (props) => {
     return (
         <div className={styles.wrapper}>
             <div className="d-flex mt-3">
-                <div className="mr-3 d-flex align-items-center" onClick={handleLike}>
+                <div className={`mr-3 d-flex align-items-center ${styles.iconButton}`} onClick={handleLike}>
                     {(addPostLikePending || removePostLikePending) && focus ? (
                         <div class="spinner-border text-light" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -79,11 +81,17 @@ const PostItemFooter = (props) => {
                         : <img src={require("$assets/images/icons/like-solid.svg")} alt="" height="20px" />}
                     <span className="ml-2">{likes ? likes.length : 0} likes</span>
                 </div>
-                <div className="d-flex align-items-center">
+                <div className={`d-flex align-items-center ${styles.iconButton}`} onClick={() => setCommentMode(!commentMode)}>
                     <img src={require("$assets/images/icons/comment.svg")} alt="" height="20px" />
                     <span className="ml-2">{comments ? comments.length : 0} comments</span>
                 </div>
             </div>
+
+            {commentMode ? (
+                <div className="mt-3">
+                    <PostItemComments post={post} />
+                </div>
+            ): null}
         </div>
     )
 }

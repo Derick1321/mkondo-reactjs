@@ -72,7 +72,7 @@ export const addPostComment = createAsyncThunk(
     ADD_POST_COMMENT,
     async (payload, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('POST', `posts/${payload['post_id']}`, payload, token);
+        return await handleFetch('POST', `posts/${payload['post_id']}/comments`, payload, token);
     }
 )
 
