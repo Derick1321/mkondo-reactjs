@@ -106,7 +106,7 @@ const VideoPlayer = (props) => {
           position: isFixed ? 'fixed' : 'relative',
         }}>
         <div className={styles.reactPlayer}>
-          {/* <ReactPlayer
+          <ReactPlayer
             ref={playerRef}
             url={url || localUrl}
             playing={isPlaying}
@@ -118,14 +118,6 @@ const VideoPlayer = (props) => {
             onReady={() => setIsReady(true)}
             width='100%'
             height='100%'
-            controls={true}
-          /> */}
-          <video 
-            ref={playerRef } 
-            src={url || localUrl}
-            onCanPlay={() => setIsLoading(false)}
-            height="400px"
-            width="100%"
             controls={true}
           />
           {
