@@ -8,7 +8,16 @@ const PostItemFooter = (props) => {
 
     return (
         <div className={styles.wrapper}>
-            <p>Post Footer</p>
+            <div className="d-flex mt-3">
+                <div className="mr-3 d-flex align-items-center">
+                    <img src={require("$assets/images/icons/like-solid.svg")} alt="" height="20px" />
+                    <span className="ml-2">106 likes</span>
+                </div>
+                <div className="d-flex align-items-center">
+                    <img src={require("$assets/images/icons/comment.svg")} alt="" height="20px" />
+                    <span className="ml-2">44 comments</span>
+                </div>
+            </div>
         </div>
     )
 }
