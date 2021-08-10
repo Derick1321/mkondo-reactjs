@@ -48,6 +48,11 @@ export const CompleteProfile = () => {
         });
         setFields(_fields);
     }, [profile]);
+
+    if (progress >= 100) {
+        return <span></span>
+    }
+
     return (
         <div className={`${styles.card}`}>
             <h3>Complete Profile</h3>
