@@ -39,7 +39,7 @@ const PostItemHeader = (props) => {
                     <h4 className={`m-0 text-light`}>{fullname}</h4>
                     <span className="m-0 ml-2">{postType}</span>
                 </div>
-                <span>Published: {created_at}</span>
+                <span>{formatDate(created_at)}</span>
             </div>
             <div className={`ml-auto align-self-start ${styles.dropdown}`}>
                 <span onClick={() => setShowOptions(!showOptions)}>•••</span>
