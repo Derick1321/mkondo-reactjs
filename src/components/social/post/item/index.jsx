@@ -6,6 +6,7 @@ import { getMediaUrl } from '../../../../common/utils';
 import { useSelector } from 'react-redux';
 import PostItemImageSlider from './imageSlider';
 import PostItemVideoSlider from './videoSlider';
+import PostItemFooter from './footer';
 
 export const PostTypes = {
     TEXT: 1,
@@ -51,7 +52,10 @@ const PostItem = (props) => {
                     <PostItemHeader post={post} postType="College Post" />
                     <div className="my-2"></div>
                     <p>{content}</p>
-                    <PostItemImageSlider images={images} />
+                    <div className="mb-2">
+                        <PostItemImageSlider images={images} />
+                    </div>
+                    <PostItemFooter post={post} />
                 </div>
             )
             break;
@@ -59,10 +63,13 @@ const PostItem = (props) => {
         case PostTypes.VIDEOS:
             return (
                 <div className={`${styles.wrapper}`}>
-                    <PostItemHeader post={post} postType="College Post" />
+                    <PostItemHeader post={post} postType="Videos" />
                     <div className="my-2"></div>
                     <p>{content}</p>
-                    <PostItemVideoSlider videos={videos}  />
+                    <div className="mb-2">
+                        <PostItemVideoSlider videos={videos}  />
+                    </div>
+                    <PostItemFooter post={post} />
                 </div>
             )
     
@@ -72,6 +79,7 @@ const PostItem = (props) => {
                     <PostItemHeader post={post} postType="Text Post"  />
                     <div className="my-2"></div>
                     <p>{content}</p>
+                    <PostItemFooter post={post} />
                 </div>
             )
     }

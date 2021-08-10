@@ -1,39 +1,18 @@
 import React, { useState } from 'react'
 import { PropTypes } from 'prop-types';
 import VideoSliderVideo from './video';
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
 
 const PostItemVideoSlider = (props) => {
     //props
     const { videos } = props;
-
-     //state
-    const [current, setCurrent] = useState(0);
-    const [total, setTotal] = useState(videos.length);
-
-    //handles
-    const handleNext = () => {
-        if (current < (total - 1)) {
-            setCurrent(current + 1);
-        } else {
-            setCurrent(0);
-        }  
-    }
-
-    const handlePrev = () => {
-        if (current > 0) {
-            setCurrent(current - 1);
-        } else {
-            setCurrent(total - 1);
-        }  
-    }
     
     return (
         <div>
-            <VideoSliderVideo key={videos[current].url} filename={videos[current].url} />
-            <div className="d-flex">
-                <button onClick={handleNext}>Next</button>
-                <button onClick={handlePrev}>Previous</button>
-            </div>
+            <Carousel>
+                {videos.map(video => <VideoSliderVideo key={video.url} filename={video.url} />)}
+            </Carousel>
         </div>
     )
 }
