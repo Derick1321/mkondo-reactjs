@@ -5,6 +5,7 @@ import PostItemHeader from './header';
 import { getMediaUrl } from '../../../../common/utils';
 import { useSelector } from 'react-redux';
 import PostItemImageSlider from './imageSlider';
+import PostItemVideoSlider from './videoSlider';
 
 export const PostTypes = {
     TEXT: 1,
@@ -19,7 +20,7 @@ export const PostTypes = {
 const PostItem = (props) => {
     //props
     const { post } = props;
-    const { content, images, user, created_at } = post;
+    const { content, images, videos, user, created_at } = post;
     const { full_name, avatar_url } = user
 
     //state
@@ -31,10 +32,15 @@ const PostItem = (props) => {
 
     //effects
     useEffect(() => {
-        if (!images) {
+        if (!images && !videos) {
             setpostType(PostTypes.TEXT);
         } else {
-            setpostType(PostTypes.IMAGES);
+            if (images) {
+                setpostType(PostTypes.IMAGES);
+            }
+            if (videos) {
+                setpostType(PostTypes.VIDEOS);
+            }
         }
     }, [])
 
@@ -49,6 +55,16 @@ const PostItem = (props) => {
                 </div>
             )
             break;
+
+        case PostTypes.VIDEOS:
+            return (
+                <div className={`${styles.wrapper}`}>
+                    <PostItemHeader post={post} postType="College Post" />
+                    <div className="my-2"></div>
+                    <p>{content}</p>
+                    <PostItemVideoSlider videos={videos}  />
+                </div>
+            )
     
         default: //text post
             return (
