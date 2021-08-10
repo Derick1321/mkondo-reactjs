@@ -50,18 +50,20 @@ export const AddSeriesEpisode = (props) => {
         })
 
         //starting uploading
-        const res = await dispatch(saveMediaPro({
+        dispatch(saveMediaPro({
             'filename': episode.filename,
             'file': episode.file,
         }));
-        setPayload({...payload, media_url: res.payload });
+        setPayload({..._payload});
     }, [episode])
 
     useEffect(() => {
         if (uploadQueue.some(uploading => uploading.fileName == episode.filename)) {
-            const { progress, isUploaded } = uploadQueue.find(_uploading => _uploading.fileName == episode.filename);
+            const { progress, isUploaded, mediaUrl } = uploadQueue.find(_uploading => _uploading.fileName == episode.filename);
             setProgress(progress);
             if (isUploaded && !uploadComplete) {
+                console.log("Upload complete");
+                setPayload({...payload, 'media_url': mediaUrl});
                 setUploadComplete(true);
             }
         }

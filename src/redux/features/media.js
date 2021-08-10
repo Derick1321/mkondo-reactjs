@@ -305,7 +305,7 @@ export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
     async(file, param) => {
         const { token } = param.getState().authentication;
-        const fileName = `${Math.random().toString(36).substring(5)}${file.fileName}`;
+        const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
         const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
         const { fields, url } = result.response;
 
@@ -317,9 +317,15 @@ export const saveMediaPro = createAsyncThunk(
             progress: 0,
             uploaded: 0,
             total: 0,
+            mediaUrl: null,
         }
 
         param.dispatch(pushUploadQueue(uploading))
+        param.dispatch(updateUploadQueueItemState({
+            key: uploading.fileName,
+            state: 'mediaUrl',
+            value: fileName,
+        }));
 
         try {
             const { headers, body: formData } = buildFormData(url, {
