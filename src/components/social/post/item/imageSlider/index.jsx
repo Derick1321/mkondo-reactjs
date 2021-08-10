@@ -15,7 +15,7 @@ const PostItemImageSlider = (props) => {
 
     return (
         <div className={`${styles.wrapper}`}>
-            <Carousel>
+            <Carousel showThumbs={false}>
                 {images.map((image, index) => <ImageSliderImage key={image.url} filename={image.url} />)}
             </Carousel>
         </div>
