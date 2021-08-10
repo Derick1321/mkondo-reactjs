@@ -8,6 +8,7 @@ import { generatePreview } from '../../../../common/utils';
 import DragDrop from '../../../common/DragDrop';
 import { saveMedia } from '../../../../redux/features/media';
 import { addPost } from '../../../../redux/features/post';
+import { generatePath } from 'react-router-dom';
 //styled models
 const Background = styled.div`
     position: fixed;
@@ -55,6 +56,8 @@ export const SocialMediaCreatePost = () => {
     const [payload, setPayload] = useState(postInitial);
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState([]);
+    const [videos, setVideos] = useState([]);
+    const [videoPreviews, setVideoPreviews] = useState([]);
     const [isLoading, setIsLoading] = useState([]);
 
     //store
@@ -76,7 +79,6 @@ export const SocialMediaCreatePost = () => {
     useEffect(() => {
         if (!addPostSuccess) return;
         setPayload(postInitial);
-        setImages([]);
         setImages([]);
         setShowForm(false);
     }, [addPostSuccess]);
@@ -108,24 +110,50 @@ export const SocialMediaCreatePost = () => {
         setImagePreviews(urls);
     }
 
+    const handleVideoChange = async (files) => {
+        setVideos(files);
+        let urls = [];
+        for (var i = 0; i < files.length; i++) {
+            let url = await generatePreview(files[i]);
+            urls.push(url);
+        }
+        setVideoPreviews(urls);
+    }
+
     const handlePublish = async () => {
         //saving the post
         // uploading the images
-        let _images = []
-        for (let i = 0; i < images.length; i++) {
-            const { payload: url} = await dispatch(saveMedia(images[i]));
-            console.log(url);
-            _images.push({
-                url,
-                caption: '',
-            });
+        let _images = [];
+        if (images.length) {
+            for (let i = 0; i < images.length; i++) {
+                const { payload: url} = await dispatch(saveMedia(images[i]));
+                _images.push({
+                    url,
+                    caption: '',
+                });
+            }
+        }
+        
+        let _videos = [];
+        if (videos.length) {
+            for (let j = 0; j < videos.length; j++) {
+                console.log("Uploading video no ", j)
+                const { payload: _url } = await dispatch(saveMedia(videos[j]));
+                console.log("Response url: ", _url);
+                _videos.push({
+                    url: _url,
+                    caption: '',
+                })
+                console.log(_videos);
+            }
         }
 
-        
+        console.log("Videos, ", _videos);
 
         dispatch(addPost(
             { ...payload, 
-                "images": _images
+                "images": _images,
+                "videos": _videos,
             }));
     }
 
@@ -152,7 +180,13 @@ export const SocialMediaCreatePost = () => {
                                             <div className="col-6 mb-2">
                                                 <div onClick={() => setActiveMode(1)} className={`d-flex align-items-center py-1 px-3 ${styles.iconPill}  ${modes[activeMode] == "PICTURES" ? styles.active : ''}`}>
                                                     <img src={require("$assets/images/icons/camera.svg")} alt="" height="12"  />
-                                                    <span className="ml-2">Photo/Video</span>
+                                                    <span className="ml-2">Pictures</span>
+                                                </div>
+                                            </div>
+                                            <div className="col-6 mb-2">
+                                                <div onClick={() => setActiveMode(2)} className={`d-flex align-items-center py-1 px-3 ${styles.iconPill}  ${modes[activeMode] == "VIDEOS" ? styles.active : ''}`}>
+                                                    <img src={require("$assets/images/icons/video-camera.svg")} alt="" height="12"  />
+                                                    <span className="ml-2">Vidoes</span>
                                                 </div>
                                             </div>
                                             <div className="col-6 mb-2">
@@ -196,6 +230,16 @@ export const SocialMediaCreatePost = () => {
                                         {!images.length ? <DragDrop onChange={(files) => handleImageChange(files)} isMulti={true} acceptedFiles="image/*" /> : (
                                             <div>
                                                 {imagePreviews.map((preview) => <img src={preview} height="150"></img>)}
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+                                {modes[activeMode] == 'VIDEOS' && (
+                                    <div className="mt-3" style={{ minHeight: 200 }}>
+                                        {!videos.length ? <DragDrop onChange={(files) => handleVideoChange(files)} isMulti={true} acceptedFiles="video/*" /> : (
+                                            <div>
+                                                <h5 className="text-light">Previews</h5>
+                                                {videoPreviews.map((preview) => <video src={preview} height="150px" controls></video>)}
                                             </div>
                                         )}
                                     </div>
