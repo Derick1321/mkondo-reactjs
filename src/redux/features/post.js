@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit"
 import { handleFetch } from "../../common/requestUtils";
 import { async } from 'regenerator-runtime';
 
@@ -9,6 +9,9 @@ const initialState = {
     getPostsPending: false,
     getPostsSuccess: false,
     getPostsError: null,
+    getPostPending: false,
+    getPostSuccess: false,
+    getPostError: false,
     deletePostPending: false,
     deletePostSuccess: false,
     deletePostError: null,
@@ -27,6 +30,7 @@ const initialState = {
 //Actions
 const ADD_POST = 'post/ADD_POST';
 const GET_POSTS = 'post/GET_POSTS';
+const GET_POST = 'post/GET_POST';
 const DELETE_POST = 'post/DELETE_POST';
 const ADD_POST_COMMENT = 'post/ADD_POST_COMMENT';
 const ADD_POST_LIKE = 'post/ADD_POST_LIKE';
@@ -45,6 +49,14 @@ export const getPosts = createAsyncThunk(
     async (params, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('GET', '/posts', params, token);
+    }
+)
+
+export const getPost = createAsyncThunk(
+    GET_POST,
+    async (post_id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('GET', `/posts/${post_id}`, null, token);
     }
 )
 
@@ -71,7 +83,7 @@ export const addPostLike = createAsyncThunk(
         const payload = {
             user_id: user.user_id,
         };
-        return await handleFetch('POST', `posts/${post_id}`, payload, token);
+        return await handleFetch('POST', `posts/${post_id}/likes`, payload, token);
     }
 )
 
@@ -82,7 +94,7 @@ export const removePostLike = createAsyncThunk(
         const payload = {
             user_id: user.user_id,
         };
-        return await handleFetch('DELETE', `posts/${post_id}`, payload, token);
+        return await handleFetch('DELETE', `posts/${post_id}/likes`, payload, token);
     }
 )
 
@@ -123,6 +135,28 @@ const postSlice = createSlice({
             state.getPostsPending = false;
             state.getPostsSuccess = false;
             state.getPostsError = action.payload;
+        },
+        [getPost.pending]: (state, action) => {
+            state.getPostPending = true;
+            state.getPostSuccess = false;
+            state.getPostError = null;
+        },
+        [getPost.fulfilled]: (state, action) => {
+            state.getPostPending = false;
+            state.getPostSuccess = true;
+            state.getPostError = null;
+
+            //updating the feed
+            const updatedPost = action.payload.post;
+            const index = state.feed.findIndex(_post => _post.post_id == updatedPost.post_id);
+            if (index || index === 0) {
+                state.feed[index] = updatedPost;
+            }
+        },
+        [getPost.rejected]: (state, action) => {
+            state.getPostPending = false;
+            state.getPostSuccess = false;
+            state.getPostError = action.error;
         },
         [deletePost.pending]: (state, action) => {
             state.deletePostPending = true;
@@ -171,7 +205,19 @@ const postSlice = createSlice({
             state.addPostLikeError = action.error;
         },
         [removePostLike.pending]: (state, action) => {
-            
+            state.removePostLikePending = true;
+            state.removePostLikeSuccess = false;
+            state.removePostLikeError = null;
+        },
+        [removePostLike.fulfilled]: (state, action) => {
+            state.removePostLikePending = false;
+            state.removePostLikeSuccess = true;
+            state.removePostLikeError = null;
+        },
+        [removePostLike.rejected]: (state, action) => {
+            state.removePostLikePending = false;
+            state.removePostLikeSuccess = false;
+            state.removePostLikeError = action.error;
         }
     }
 });
