@@ -35,7 +35,6 @@ export const EpisodeItem = ({ episode }) => {
                   country={episode.country}
                   category={episode.category}
                   description={episode.description}
-  
                   likes={episode.likes || undefined}
                   plays={episode.plays}
                   comment_num={episode.comment_num}
