@@ -10,7 +10,7 @@ const PostItemVideoSlider = (props) => {
     
     return (
         <div>
-            <Carousel>
+            <Carousel showThumbs={false}>
                 {videos.map(video => <VideoSliderVideo key={video.url} filename={video.url} />)}
             </Carousel>
         </div>

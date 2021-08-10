@@ -1,3 +1,8 @@
 .wrapper {
+    display: flex;
     color: white;
+
+    img {
+        display: inline-block;
+    }
 }
