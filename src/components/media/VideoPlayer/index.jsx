@@ -33,7 +33,7 @@ const VideoPlayer = (props) => {
   const [duration, setDuration] = useState(0);
   const [position, setPosition] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [isReady, setIsReady] = useState(true);
   const [isFixed, setIsFixed] = useState(false)
 
   // effects
