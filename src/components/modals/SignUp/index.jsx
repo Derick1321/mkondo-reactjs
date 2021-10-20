@@ -100,11 +100,19 @@ const initialValues = {
   userType: 'user',
 };
 
+const initalErrors = {
+  full_name: null,
+  phone_number: null,
+  email: null,
+  password: null,
+}
+
 
 const SignupModal = () => {
   // state
   const [values, setValues] = useState(initialValues);
   const [error, setError] = useState(null);
+  const [errObj, setErrorObj] = useState({});
   const [currentPage, setFirstPage] = useState(true);
 
   // store
@@ -124,6 +132,63 @@ const SignupModal = () => {
     history.replace(routePaths.onBoarding);
   }, [signUpComplete]);
 
+  useEffect(() => {
+    if (!signupError) return;
+
+    //populate the errors
+    console.log("sign up error triggered");
+    console.log(signupError);
+    setErrorObj(initalErrors);
+    
+    //display errors
+    //error structure to purse addSeriesError is Null or {message: jsonString}
+    //get the message and parse the jsonString and look for fields of interest
+    const message = signupError.message;
+    try {
+        const json = JSON.parse(message)
+        let _errors;
+        if (json.message) {
+            _errors = json.message;
+        } else {
+            _errors = json;
+        }
+        console.log("Errors converted to json", _errors);
+        console.log("The current page", currentPage);
+        if (typeof _errors == 'object') {
+          console.log("Errors is object");
+            if (currentPage == 2) {
+              console.log("The current page is 2");
+              const fields = ['full_name', 'email', 'phone_number'];
+              const isInvalid = fields.some(key => {
+                if (Object.keys(_errors).includes(key)) {
+                  setErrorObj({...errObj, [key]: _errors[key]});
+                  return true;
+                }
+              });
+              console.log("Is invalid", isInvalid, _errors);
+              if (!isInvalid) {
+                setError(null);
+                setErrorObj(initalErrors)
+                setFirstPage(3);
+              }
+              return
+            }
+            if (currentPage == 3) {
+              if ('password' in _errors) {
+                setErrorObj({...errObj, password: _errors.password})
+              }
+              return
+            }
+            setError("Your phone contains errors");
+        }
+        
+        //if there is no validation error go to the next page
+    } catch (e) {
+        console.log("json decoding error");
+        console.error(e)
+    }
+  }, [signupError]);
+
   // handlers
   const handleChange = (name, value) => {
     setValues({
@@ -137,32 +202,8 @@ const SignupModal = () => {
   };
 
   const handleSignUp = () => {
-    if (values.password !== values.confirmPassword) {
-      setError('Passwords don\'t match');
-      return;
-    }
+    console.log("Handle signup called");
 
-    let isValid = true;
-
-    for (const value in values) {
-      if (!values[value]) {
-        console.log(values, values[value])
-        isValid = false;
-      }
-    }
-
-    if (!isValid) {
-      setError('Please fill all fields to proceed.');
-      return;
-    }
-    console.log({
-      full_name: values.fullName,
-      phone_number: values.phoneNumber,
-      email: values.email,
-      password: values.password,
-      user_type: values.userType.value, // user, creator, admin
-      country: 'TZ',
-    });
     dispatch(signup({
       full_name: values.fullName,
       phone_number: values.phoneNumber,
@@ -174,20 +215,48 @@ const SignupModal = () => {
   };
 
   const handlePage = (index) => {
-    if (index == 3 && (values.fullName == '' || values.email == '' || values.phoneNumber == '')) {
-      setError('Please fill all fields to proceed.');
-      return;
-    }
-    if (index == 4 && (values.password == '' || values.confirmPassword == '')) {
-      setError('Please fill all fields to proceed.');
-      if (values.password != values.confirmPassword) {
-        setError('Passwords don\'t match');
-      }
-      setError(null);
-      handleSignUp()
-      return;
-    }
+    console.log('handle page called');
     setError(null);
+    setErrorObj(initalErrors)
+
+    if (index == 3 && (values.fullName == '' || values.email == '' || values.phoneNumber == '')) {
+      setError(setErrorObj({
+        ...error,
+        full_name: values.fullName == '' ? 'Fullname cannot be empty' : null,
+        email: values.email == '' ? 'Email cannot be empty' : null,
+        phone_number: values.phoneNumber == '' ? 'Phone cannot be empty' : null, 
+      }));
+      return;
+    }
+
+    if (index == 4) {
+      let isInvalid = false;
+      if (!values.password) {
+        isInvalid = true;
+        setErrorObj({...errObj, password: 'Password cannot be empty'})
+      }
+      if (!values.confirmPassword) {
+        isInvalid = true;
+        setErrorObj({...errObj, password_confirm: 'Password confirm connot be empty'})
+      }
+      if (values.password != values.confirmPassword) {
+        isInvalid = true;
+        setErrorObj({...errObj, password_confirm: 'Passwords do not match'})
+      }
+      if (!isInvalid) {
+        
+        handleSignUp()
+      }
+      return;
+    }
+
+    if (index == 3) {
+      console.log("dispatching handle signup method");
+      handleSignUp();
+      return;
+    }
+
+    
     setFirstPage(index);
   }
 
@@ -212,7 +281,7 @@ const SignupModal = () => {
           <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
               <div className="f25 mb-4">Register</div>
               {
-                (error || signupError)
+                (error)
                 && (
                   <Alert
                     content={error || "Failed to sign up. Try again"}
@@ -276,31 +345,33 @@ const SignupModal = () => {
                 )}
               {currentPage == 2 && (
                 <>
-                  <label class="label">Full Name</label>
-                  <TextInput
-                    name="fullName"
-                    placeholder="Fullname"
-                    value={values.fullName}
-                    onChange={handleChange}
-                  />
-                  <label class="label">Email</label>
-                  <TextInput
-                    name="email"
-                    placeholder="Email Address"
-                    type="email"
-                    value={values.email}
-                    onChange={handleChange}
-                  />
-                  <label class="label">Phone</label>
-                  <TextInput
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    type="text"
-                    value={values.phoneNumber}
-                    onChange={handleChange}
-                  />
+                  <InputField field={{ 
+                        type: "text",
+                        name: "fullName",
+                        title: "Fullname",
+                        placeholder: "Fullname",
+                        value: values.fullName,
+                    }} error={errObj.full_name} onChange={handleChange} isGrey={false} />
+
+                  <InputField field={{ 
+                        type: "text",
+                        name: "email",
+                        title: "Email",
+                        placeholder: "Email Address",
+                        value: values.email,
+                    }} error={errObj.email} onChange={handleChange} isGrey={false} />
+
+                  <InputField field={{ 
+                        type: "text",
+                        name: "phoneNumber",
+                        title: "Phone",
+                        placeholder: "Phone Number",
+                        value: values.phoneNumber,
+                    }} error={errObj.phone_number} onChange={handleChange} isGrey={false} />
+
+                  
                   <div className="d-flex mt-2 mb-2 align-items-center">
-                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register</button>
+                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
                     <button className="btn btn-outline-primary"  onClick={() => handlePage(1)}>Back</button>
 
 
@@ -313,22 +384,21 @@ const SignupModal = () => {
               )}
               {currentPage == 3 && (
                 <>
-                  <label class="label">Password</label>
-                  <TextInput
-                    name="password"
-                    placeholder="Password"
-                    type="password"
-                    value={values.password}
-                    onChange={handleChange}
-                  />
-                  <label class="label">Confirm Password</label>
-                  <TextInput
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                    type="password"
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                  />
+                  <InputField field={{ 
+                        type: "password",
+                        name: "password",
+                        title: "Password",
+                        placeholder: "Password",
+                        value: values.password,
+                    }} error={errObj.password} onChange={handleChange} isGrey={false} />
+
+                  <InputField field={{ 
+                        type: "password",
+                        name: "confirmPassword",
+                        title: "Confirm Password",
+                        placeholder: "Confirm Password",
+                        value: values.confirmPassword,
+                    }} error={errObj.password_confirm} onChange={handleChange} isGrey={false} />
                   <button
                     onClick={() => handlePage(2)}
                     className="btn btn-outline-primary mr-2"
@@ -336,7 +406,7 @@ const SignupModal = () => {
                     Back
                     </button>
                   <button
-                    onClick={() => handleSignUp()}
+                    onClick={() => handlePage(4)}
                     className="btn btn-primary"
                     disabled={signupPending}
                   >

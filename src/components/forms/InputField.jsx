@@ -20,7 +20,7 @@ const InputField = (props) => {
         return (
           <TextInput
             {...field}
-            isGrey
+            isGrey={isGrey ?? true}
             error={error}
             onChange={onChange}
           />
