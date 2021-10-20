@@ -51,7 +51,7 @@ const FacebookLoginComponent = (props) => {
             autoLoad={false}
             disableMobileRedirect={true}
             fields="name,email,picture"
-            scope="public_profile,user_friends,user_actions.books,email"
+            scope="public_profile,user_friends,email"
             callback={responseFacebook}
             onClick={componentClicked}
             cssClass={`d-flex ${styles.mkBtn} ${styles.mkBtnStretch}`}

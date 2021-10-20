@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -238,7 +238,11 @@ const Marketing = () => {
         <div className="row">
           <div className={`col-12 d-flex align-items-center justify-content-center ${styles.marketingFooter}`}>
             <p>Copyright &copy;{getCurrentYear()} Mkondo. All Rights Reserved</p>
+            
           </div>
+            <div className="d-block">
+              <Link to="/privacy">Privacy</Link>
+            </div>
         </div>
       </div>
     </div >
