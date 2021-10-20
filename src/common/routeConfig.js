@@ -35,6 +35,7 @@ import { SocialMediaMain } from '../containers/socialmediaMain';
 import { SocialMediaFeed } from '../containers/socialMediaFeed';
 import { NewSeries } from '../containers/Media/NewSeries';
 import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
+import { PrivacyPolicyPage } from '../containers/LegalPages/privacy';
 
 export const routePaths = {
   main: '/app',
@@ -83,6 +84,9 @@ export const routePaths = {
   page: '/social/page',
   chat: '/social/chat',
   socialprofile: '/social/profile',
+
+  privacy: '/privacy',
+  tos: '/TOS',
 };
 
 const roles = {
@@ -137,6 +141,16 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.resetPassword,
     component: ResetPassword,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.privacy,
+    component: PrivacyPolicyPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.tos,
+    component: PrivacyPolicyPage,
   },
   {
     ...defaultConfig,
