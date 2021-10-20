@@ -69,7 +69,7 @@ const Button = (props) => {
 
   const content = isLoading ? (
     <div
-      className={`spinner-border ${customStyle}`}
+      className={`spinner-border`}
       role="status"
     />
   ) : (
