@@ -164,8 +164,10 @@ const SignupModal = () => {
           });
           console.log("Is invalid", isInvalid, _errors);
           if (!isInvalid) {
-            setError(null);
+            setError(null)
             setErrorObj(initalErrors)
+          } else {
+            setError("Sorry! Signup Failed.")
           }
         }
 
