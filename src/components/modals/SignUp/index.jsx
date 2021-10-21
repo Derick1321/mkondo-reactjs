@@ -289,61 +289,7 @@ const SignupModal = () => {
                   />
                 )
               }
-              {currentPage == 1 &&
-                (
-                  <div className="mb-5">
-                    <h5>Choose User Group</h5>
-                    <div className="d-flex w-100">
-                      {
-                        values['userType'] == 'user' ? (
-                          <button className="group-item item-active">
-                            <img src={user_icon_white} className="w40" />
-                            <div>User</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'user')}>
-                            <img src={user_icon} className="w40" />
-                            <div>User</div>
-                          </button>
-                        )
-                      }
-                      {
-                        values['userType'] == 'creator' ? (
-                          <button className="group-item item-active" >
-                            <img src={music_icon_white} className="w40" />
-                            <div>Artist</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'creator')}>
-                            <img src={music_icon} className="w40" />
-                            <div>Artist</div>
-                          </button>
-                        )
-                      }
-                      {
-                        values['userType'] == 'admin' ? (
-                          <button className="group-item item-active">
-                            <img src={manager_icon_white} className="w40" />
-                            <div>Manager</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'admin')}>
-                            <img src={manager_icon} className="w40" />
-                            <div>Manager</div>
-                          </button>
-                        )
-                      }
 
-                    </div>
-                    <button
-                      onClick={() => handlePage(2)}
-                      className="btn btn-primary mt-2"
-                    >
-                      CONTINUE
-                    </button>
-                  </div>
-                )}
-              {currentPage == 2 && (
                 <>
                   <InputField field={{ 
                         type: "text",
@@ -372,50 +318,12 @@ const SignupModal = () => {
                   
                   <div className="d-flex mt-2 mb-2 align-items-center">
                     <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
-                    <button className="btn btn-outline-primary"  onClick={() => handlePage(1)}>Back</button>
-
-
                     <button className="gotoLogin" onClick={() => handleLogin()}>Already have an account?</button>
                   </div>
                   <GoogleLoginComponent />
-                  <FacebookLoginComponent />
-
+                  <div className="my-2"></div>
+                  <FacebookSignUpButton />
                 </>
-              )}
-              {currentPage == 3 && (
-                <>
-                  <InputField field={{ 
-                        type: "password",
-                        name: "password",
-                        title: "Password",
-                        placeholder: "Password",
-                        value: values.password,
-                    }} error={errObj.password} onChange={handleChange} isGrey={false} />
-
-                  <InputField field={{ 
-                        type: "password",
-                        name: "confirmPassword",
-                        title: "Confirm Password",
-                        placeholder: "Confirm Password",
-                        value: values.confirmPassword,
-                    }} error={errObj.password_confirm} onChange={handleChange} isGrey={false} />
-                  <button
-                    onClick={() => handlePage(2)}
-                    className="btn btn-outline-primary mr-2"
-                  >
-                    Back
-                    </button>
-                  <button
-                    onClick={() => handlePage(4)}
-                    className="btn btn-primary"
-                    disabled={signupPending}
-                  >
-                    Finish {signupPending ? <small>loading...</small> : null }
-                  </button>
-                  <div className="mb-5" style={{ clear: "both" }}></div>
-                </>
-              )
-              }
             </div>
             </div>
       </div>
