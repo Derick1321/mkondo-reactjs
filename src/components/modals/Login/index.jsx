@@ -180,7 +180,7 @@ const LoginModal = () => {
               <div className="mt-4">
                 <GoogleLoginComponent />
               </div>
-              <div className="mt-4">
+              <div className="my-2">
                 <FacebookLoginComponent />
               </div>
               <div className="d-flex justify-content-center my-2">

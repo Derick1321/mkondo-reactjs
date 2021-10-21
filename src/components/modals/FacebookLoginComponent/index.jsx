@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 
@@ -34,7 +34,9 @@ const FacebookLoginComponent = (props) => {
     const dispatch = useDispatch();
     const loginPending = useSelector((store) => store.authentication.loginPending);
 
+
     const responseFacebook = (res) => {
+        if (res.status == "unknown") return;
         dispatch(login({
             login_strategy: 'facebook',
             username: 'facebooklogin@email.com',
@@ -54,8 +56,8 @@ const FacebookLoginComponent = (props) => {
             scope="public_profile,user_friends,email"
             callback={responseFacebook}
             onClick={componentClicked}
-            cssClass={`d-flex ${styles.mkBtn} ${styles.mkBtnStretch}`}
-            icon={<img className="ml-0" src={facebook_icon} height="40" />}
+            cssClass={styles.facebookButton}
+            icon={<img src={facebook_icon} />}
         >Facebook</FacebookLogin>
     )
 }
