@@ -152,11 +152,9 @@ const SignupModal = () => {
         } else {
             _errors = json;
         }
-        console.log("Errors converted to json", _errors);
-        console.log("The current page", currentPage);
+        console.log("Errors converted to json: currentType:", _errors);
         if (typeof _errors == 'object') {
           console.log("Errors is object");
-          console.log("The current page is 2");
           const fields = ['full_name', 'email', 'phone_number', 'password'];
           const isInvalid = fields.some(key => {
             if (Object.keys(_errors).includes(key)) {
@@ -166,10 +164,17 @@ const SignupModal = () => {
           });
           console.log("Is invalid", isInvalid, _errors);
           if (!isInvalid) {
-            setError(null);
+            setError(null)
             setErrorObj(initalErrors)
-            setFirstPage(3);
+          } else {
+            setError("Sorry! Signup Failed.")
           }
+        }
+
+        if (typeof _errors == 'string') {
+          console.log("Errors is string");
+          setError(_errors);
+          setErrorObj(initalErrors);
         }
         //if there is no validation error go to the next page
     } catch (e) {

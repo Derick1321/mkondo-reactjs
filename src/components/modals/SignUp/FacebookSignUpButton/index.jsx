@@ -11,7 +11,6 @@ import { FACEBOOK_APP_ID } from '$common/constants';
 const FacebookSignUpButton = (props) => {
 
     const dispatch = useDispatch();
-    const loginPending = useSelector((store) => store.authentication.loginPending);
 
     const responseFacebook = (res) => {
         console.log('Facebook Response', res);
