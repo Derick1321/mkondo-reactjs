@@ -156,32 +156,21 @@ const SignupModal = () => {
         console.log("The current page", currentPage);
         if (typeof _errors == 'object') {
           console.log("Errors is object");
-            if (currentPage == 2) {
-              console.log("The current page is 2");
-              const fields = ['full_name', 'email', 'phone_number'];
-              const isInvalid = fields.some(key => {
-                if (Object.keys(_errors).includes(key)) {
-                  setErrorObj({...errObj, [key]: _errors[key]});
-                  return true;
-                }
-              });
-              console.log("Is invalid", isInvalid, _errors);
-              if (!isInvalid) {
-                setError(null);
-                setErrorObj(initalErrors)
-                setFirstPage(3);
-              }
-              return
+          console.log("The current page is 2");
+          const fields = ['full_name', 'email', 'phone_number', 'password'];
+          const isInvalid = fields.some(key => {
+            if (Object.keys(_errors).includes(key)) {
+              setErrorObj({...errObj, [key]: _errors[key]});
+              return true;
             }
-            if (currentPage == 3) {
-              if ('password' in _errors) {
-                setErrorObj({...errObj, password: _errors.password})
-              }
-              return
-            }
-            setError("Your phone contains errors");
+          });
+          console.log("Is invalid", isInvalid, _errors);
+          if (!isInvalid) {
+            setError(null);
+            setErrorObj(initalErrors)
+            setFirstPage(3);
+          }
         }
-        
         //if there is no validation error go to the next page
     } catch (e) {
         console.log("json decoding error");
@@ -302,8 +291,8 @@ const SignupModal = () => {
                   <InputField field={{ 
                         type: "text",
                         name: "email",
-                        title: "Email",
-                        placeholder: "Email Address",
+                        title: "Username",
+                        placeholder: "Email/Phone",
                         value: values.email,
                     }} error={errObj.email} onChange={handleChange} isGrey={false} />
 
@@ -314,6 +303,14 @@ const SignupModal = () => {
                         placeholder: "Phone Number",
                         value: values.phoneNumber,
                     }} error={errObj.phone_number} onChange={handleChange} isGrey={false} />
+
+                  <InputField field={{ 
+                        type: "password",
+                        name: "password",
+                        title: "Password",
+                        placeholder: "Password",
+                        value: values.password,
+                    }} error={errObj.password} onChange={handleChange} isGrey={false} />
 
                   
                   <div className="d-flex mt-2 mb-2 align-items-center">
