@@ -44,9 +44,7 @@ p.invalidFeedback {
     -webkit-box-shadow: none !important;
 }
 
-.GreyStyle::placeholder {
-    color: white;
-}
+
 
 .textInputWrapper {
     padding: 1px 20px;
@@ -56,6 +54,16 @@ p.invalidFeedback {
     -webkit-box-shadow: 0 0 0px 1000px #F4F4F4 inset;
     &:focus {
         outline: none;
+    }
+
+    &::placeholder {
+        color: black;
+        opacity: 0.618
+    }
+
+    &.GreyStyle::placeholder {
+        color: white;
+        opacity: 0.75;
     }
 }
 
