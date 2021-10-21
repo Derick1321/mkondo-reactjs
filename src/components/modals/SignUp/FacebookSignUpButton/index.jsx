@@ -35,7 +35,7 @@ const FacebookSignUpButton = (props) => {
             appId={FACEBOOK_APP_ID}
             autoLoad={false}
             disableMobileRedirect={true}
-            fields="name,email,picture"
+            fields="id,name,email"
             scope="public_profile,email"
             callback={responseFacebook}
             onClick={componentClicked}
