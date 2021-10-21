@@ -4,6 +4,7 @@ import FacebookLogin from 'react-facebook-login';
 import { signup } from '$redux/features/authentication';
 import Button from '$components/common/Button';
 import styles from './index.module.scss';
+const facebook_icon = require('$assets/images/icons/facebook-icon.svg');
 
 import { FACEBOOK_APP_ID } from '$common/constants';
 
@@ -14,6 +15,7 @@ const FacebookSignUpButton = (props) => {
 
     const responseFacebook = (res) => {
         console.log('Facebook Response', res);
+        if (res.status == "unknown") return;
         dispatch(signup({
             signup_strategy: 'facebook',
             tokenId: res.accessToken,
@@ -34,11 +36,12 @@ const FacebookSignUpButton = (props) => {
             autoLoad={false}
             disableMobileRedirect={true}
             fields="name,email,picture"
-            scope="public_profile,user_friends,user_actions.books,email,user_address,user_mobile_phone"
+            scope="public_profile,email"
             callback={responseFacebook}
             onClick={componentClicked}
-            cssClass={`d-flex ${styles.mkBtn} ${styles.mkBtnStretch}`}
-            textButton="Sign Up with Facebook"></FacebookLogin>
+            cssClass={`${styles.facebookButton}`}
+            textButton="Sign Up with Facebook"
+            icon={<img src={facebook_icon} />}>Register with Facebook</FacebookLogin>
     )
 }
 

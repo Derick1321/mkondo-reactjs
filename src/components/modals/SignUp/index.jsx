@@ -156,32 +156,21 @@ const SignupModal = () => {
         console.log("The current page", currentPage);
         if (typeof _errors == 'object') {
           console.log("Errors is object");
-            if (currentPage == 2) {
-              console.log("The current page is 2");
-              const fields = ['full_name', 'email', 'phone_number'];
-              const isInvalid = fields.some(key => {
-                if (Object.keys(_errors).includes(key)) {
-                  setErrorObj({...errObj, [key]: _errors[key]});
-                  return true;
-                }
-              });
-              console.log("Is invalid", isInvalid, _errors);
-              if (!isInvalid) {
-                setError(null);
-                setErrorObj(initalErrors)
-                setFirstPage(3);
-              }
-              return
+          console.log("The current page is 2");
+          const fields = ['full_name', 'email', 'phone_number', 'password'];
+          const isInvalid = fields.some(key => {
+            if (Object.keys(_errors).includes(key)) {
+              setErrorObj({...errObj, [key]: _errors[key]});
+              return true;
             }
-            if (currentPage == 3) {
-              if ('password' in _errors) {
-                setErrorObj({...errObj, password: _errors.password})
-              }
-              return
-            }
-            setError("Your phone contains errors");
+          });
+          console.log("Is invalid", isInvalid, _errors);
+          if (!isInvalid) {
+            setError(null);
+            setErrorObj(initalErrors)
+            setFirstPage(3);
+          }
         }
-        
         //if there is no validation error go to the next page
     } catch (e) {
         console.log("json decoding error");
@@ -289,61 +278,7 @@ const SignupModal = () => {
                   />
                 )
               }
-              {currentPage == 1 &&
-                (
-                  <div className="mb-5">
-                    <h5>Choose User Group</h5>
-                    <div className="d-flex w-100">
-                      {
-                        values['userType'] == 'user' ? (
-                          <button className="group-item item-active">
-                            <img src={user_icon_white} className="w40" />
-                            <div>User</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'user')}>
-                            <img src={user_icon} className="w40" />
-                            <div>User</div>
-                          </button>
-                        )
-                      }
-                      {
-                        values['userType'] == 'creator' ? (
-                          <button className="group-item item-active" >
-                            <img src={music_icon_white} className="w40" />
-                            <div>Artist</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'creator')}>
-                            <img src={music_icon} className="w40" />
-                            <div>Artist</div>
-                          </button>
-                        )
-                      }
-                      {
-                        values['userType'] == 'admin' ? (
-                          <button className="group-item item-active">
-                            <img src={manager_icon_white} className="w40" />
-                            <div>Manager</div>
-                          </button>
-                        ) : (
-                          <button className="group-item" onClick={() => handleChange('userType', 'admin')}>
-                            <img src={manager_icon} className="w40" />
-                            <div>Manager</div>
-                          </button>
-                        )
-                      }
 
-                    </div>
-                    <button
-                      onClick={() => handlePage(2)}
-                      className="btn btn-primary mt-2"
-                    >
-                      CONTINUE
-                    </button>
-                  </div>
-                )}
-              {currentPage == 2 && (
                 <>
                   <InputField field={{ 
                         type: "text",
@@ -356,8 +291,8 @@ const SignupModal = () => {
                   <InputField field={{ 
                         type: "text",
                         name: "email",
-                        title: "Email",
-                        placeholder: "Email Address",
+                        title: "Username",
+                        placeholder: "Email/Phone",
                         value: values.email,
                     }} error={errObj.email} onChange={handleChange} isGrey={false} />
 
@@ -369,21 +304,6 @@ const SignupModal = () => {
                         value: values.phoneNumber,
                     }} error={errObj.phone_number} onChange={handleChange} isGrey={false} />
 
-                  
-                  <div className="d-flex mt-2 mb-2 align-items-center">
-                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
-                    <button className="btn btn-outline-primary"  onClick={() => handlePage(1)}>Back</button>
-
-
-                    <button className="gotoLogin" onClick={() => handleLogin()}>Already have an account?</button>
-                  </div>
-                  <GoogleLoginComponent />
-                  <FacebookLoginComponent />
-
-                </>
-              )}
-              {currentPage == 3 && (
-                <>
                   <InputField field={{ 
                         type: "password",
                         name: "password",
@@ -392,30 +312,15 @@ const SignupModal = () => {
                         value: values.password,
                     }} error={errObj.password} onChange={handleChange} isGrey={false} />
 
-                  <InputField field={{ 
-                        type: "password",
-                        name: "confirmPassword",
-                        title: "Confirm Password",
-                        placeholder: "Confirm Password",
-                        value: values.confirmPassword,
-                    }} error={errObj.password_confirm} onChange={handleChange} isGrey={false} />
-                  <button
-                    onClick={() => handlePage(2)}
-                    className="btn btn-outline-primary mr-2"
-                  >
-                    Back
-                    </button>
-                  <button
-                    onClick={() => handlePage(4)}
-                    className="btn btn-primary"
-                    disabled={signupPending}
-                  >
-                    Finish {signupPending ? <small>loading...</small> : null }
-                  </button>
-                  <div className="mb-5" style={{ clear: "both" }}></div>
+                  
+                  <div className="d-flex mt-2 mb-2 align-items-center">
+                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
+                    <button className="gotoLogin" onClick={() => handleLogin()}>Already have an account?</button>
+                  </div>
+                  <GoogleLoginComponent />
+                  <div className="my-2"></div>
+                  <FacebookSignUpButton />
                 </>
-              )
-              }
             </div>
             </div>
       </div>
