@@ -21,7 +21,7 @@ const FacebookSignUpButton = (props) => {
             tokenId: res.accessToken,
             full_name: res.name,
             phone_number: '',
-            email: res.email,
+            email: res.email ?? "facebook@email.com",
             password: '',
             user_type: 'user', // user, creator, admin
             country: 'TZ',
@@ -35,7 +35,7 @@ const FacebookSignUpButton = (props) => {
             appId={FACEBOOK_APP_ID}
             autoLoad={false}
             disableMobileRedirect={true}
-            fields="name,email,picture"
+            fields="id,name,email"
             scope="public_profile,email"
             callback={responseFacebook}
             onClick={componentClicked}
