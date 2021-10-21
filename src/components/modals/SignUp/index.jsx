@@ -145,6 +145,7 @@ const SignupModal = () => {
     //get the message and parse the jsonString and look for fields of interest
     const message = signupError.message;
     try {
+        console.log("Signup Error: ", signupError);
         const json = JSON.parse(message)
         let _errors;
         if (json.message) {
