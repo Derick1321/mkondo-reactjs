@@ -21,7 +21,7 @@ const FacebookSignUpButton = (props) => {
             tokenId: res.accessToken,
             full_name: res.name,
             phone_number: '',
-            email: res.email,
+            email: res.email ?? "facebook@email.com",
             password: '',
             user_type: 'user', // user, creator, admin
             country: 'TZ',
