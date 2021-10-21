@@ -11,4 +11,8 @@
         height: 39px;
         margin-right: 10px;
     }
+
+    &::disabled {
+        background: rgba(#3b5998, 0.75);
+    }
 }
