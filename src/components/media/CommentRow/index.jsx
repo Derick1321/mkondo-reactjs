@@ -54,12 +54,11 @@ const CommentRow = (props) => {
 
 
   // effects
-  useEffect(async () => {
+  useEffect(() => {
     if (!avatarUrl) {
       return;
     }
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${avatarUrl}`, null, token);
-    setUrl(res.response);
+    handleFetch('GET', `media/presigned-get-url?file_name=${avatarUrl}`, null, token).then(res => setUrl(res.response));
   }, [avatarUrl]);
 
   useEffect(() => {
