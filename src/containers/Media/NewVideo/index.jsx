@@ -71,13 +71,17 @@ const NewVideo = () => {
   }
 
   const handleSave = async () => {
+    //saving the cover file
     const mediaRes = await dispatch(saveMedia(coverFile));
+
+    //saving the video file
+    const videoRes = await dispatch(saveMedia(file))
     dispatch(addMedia({
       name: values.title,
       description: values.description,
       genres: values.genre.map((item) => item.value),
       cover_url: mediaRes.payload,
-      media_url: 'placeholderurl',
+      media_url: videoRes.payload,
       owner_id: userId,
       category: uploadType,
       duration: values.duration,
@@ -86,7 +90,6 @@ const NewVideo = () => {
       movie_director: values.director,
       staring: values.starring,
       release_date: values.startingDate,
-      file,
     }));
   }
 
