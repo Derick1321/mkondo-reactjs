@@ -219,7 +219,7 @@ export const NewSeries = () => {
                 <div className="col-8 col-lg-4 p-0 pl-1 pr-3">
                     <div onClick={() => trailerRef.current.click()} className={`${styles.uploadTrailer} ${trailerFile && styles.active} d-flex flex-column justify-content-center h-100 align-items-center`}>
                             {trailerFile && (
-                                <video width="100%" height="100%" autoPlay>
+                                <video width="100%" height="100%" autoPlay muted>
                                     <source src={trailerFile} />
                                     Your browser does not support the video tag.
                                 </video>
