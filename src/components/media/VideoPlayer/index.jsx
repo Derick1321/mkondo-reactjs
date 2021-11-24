@@ -14,6 +14,10 @@ import { pause } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
+import videojs from "video.js";
+import "video.js/dist/video-js.css";
+import { handleFetch } from '../../../common/requestUtils';
+
 const fullscreen = require('$assets/images/icons/fullscreen.svg');
 
 const VideoPlayer = (props) => {
@@ -25,10 +29,12 @@ const VideoPlayer = (props) => {
 
   const dispatch = useDispatch();
 
+  const token = useSelector((store) => store.authentication.token);
   const volume = useSelector((store) => store.player.volume);
 
   // state
   const [localUrl, setLocalUrl] = useState(null);
+  const [mediaUrl, setMediaUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [position, setPosition] = useState(0);
@@ -36,9 +42,11 @@ const VideoPlayer = (props) => {
   const [isReady, setIsReady] = useState(false);
   const [isFixed, setIsFixed] = useState(false)
 
-  // effects
+  
   const playerRef = useRef(null);
+  const videoRef = useRef(null);
 
+  // effects
   useEffect(() => {
     dispatch(toggleFooterPlayer(false));
     window.addEventListener("scroll", listenScrollEvent)
@@ -49,11 +57,47 @@ const VideoPlayer = (props) => {
   }, []);
 
   useEffect(() => {
+    if (!url) return;
+    handleFetch('GET', `media/presigned-get-url?file_name=${url}`, null, token)
+      .then((res) => {
+        setMediaUrl(res.response);
+      });
+  }, [url]);
+
+  useEffect(() => {
     if (!file) {
       return;
     }
     setLocalUrl(getFileURL(file));
   }, [file]);
+
+  useEffect(() => {
+    if (!playerRef.current) {
+      const videoElement = videoRef.current;
+      if (!videoElement) return;
+
+      const player = playerRef.current = videojs(videoElement, {}, () => {
+        console.log("player is ready");
+        setIsReady(true);
+      });
+    } else {
+      // you can update player here [update player through props]
+      // const player = playerRef.current;
+      // player.autoplay(options.autoplay);
+      // player.src(options.sources);
+    }
+  }, [videoRef]);
+
+  useEffect(() => {
+    const player = playerRef.current;
+    
+    return () => {
+      if (player) {
+        player.dispose();
+        playerRef.current = null;
+      }
+    };
+  }, [playerRef])
 
   // handler
   const handleProgress = (data) => {
@@ -96,6 +140,7 @@ const VideoPlayer = (props) => {
   }
 
   // render
+
   if (!url && !localUrl) {
     return null;
   }
@@ -106,7 +151,10 @@ const VideoPlayer = (props) => {
           position: isFixed ? 'fixed' : 'relative',
         }}>
         <div className={styles.reactPlayer}>
-          <ReactPlayer
+          <div style={{ width:"100%", height:"100%" }} data-vjs-player>
+            <video width="100%" height="100%" ref={videoRef} src={mediaUrl} autoPlay="true" controls="true" className="video-js vjs-big-play-centered"></video>
+          </div>
+          {/* <ReactPlayer
             ref={playerRef}
             url={url || localUrl}
             playing={isPlaying}
@@ -119,7 +167,7 @@ const VideoPlayer = (props) => {
             width='100%'
             height='100%'
             controls={true}
-          />
+          /> */}
           {
             !isReady && (
               <div className={`d-flex justify-content-center align-items-center ${styles.videoCover}`}>
@@ -133,7 +181,7 @@ const VideoPlayer = (props) => {
           }
         </div>
       </div>
-      <div className={`d-flex ${styles.playerBar}`}>
+      {/* <div className={`d-flex ${styles.playerBar}`}>
         <Button
           onClick={togglePlay}
           isTransparent
@@ -169,7 +217,7 @@ const VideoPlayer = (props) => {
             />
           </Button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };
