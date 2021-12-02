@@ -152,6 +152,7 @@ export const movieGenres = [
   { value: 'mystery', label: 'Mystery' },
   { value: 'romance', label: 'Romance' },
   { value: 'thriller', label: 'Thriller' },
+  { value: 'animation', label: 'Animation'},
 ];
 
 export const getMediaUrl = async (filename, token) => {
