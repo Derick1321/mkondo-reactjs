@@ -37,6 +37,7 @@ export const ManageSeriesProfile = (props) => {
     //state
     const [series, setSeries] = useState(null);
     const [episodes, setEpisodes] = useState([]);
+    const [sameFileError, setSameFileError] = useState(false);
 
     //store
     const dispatch = useDispatch();
@@ -67,7 +68,6 @@ export const ManageSeriesProfile = (props) => {
     const handleAddEpisodesChanged = async () => {
         //get the files
         const files = fileRef.current.files;
-        console.log(files);
         //initialize the payload & patch it up
         const payload = {
             ...initialEpisode,
@@ -80,8 +80,6 @@ export const ManageSeriesProfile = (props) => {
         let _episodes = episodes;
         for (var i = 0; i < files.length; i++) {
             const file = files[i];
-            console.log(file.name);
-            console.log(_episodes);
             //search if the file is not in the array already
             if (!_episodes.some(ep => ep.filename == file.name)) {
                 //get duration
@@ -107,8 +105,14 @@ export const ManageSeriesProfile = (props) => {
                         duration: await duration,
                     }
                 ];
+            } else {
+                setSameFileError(true);
+                setTimeout(() => {
+                    setSameFileError(false);
+                }, 5000);
             }
         }
+        fileRef.current.value = null;
         setEpisodes(_episodes);
     }
 
@@ -122,6 +126,12 @@ export const ManageSeriesProfile = (props) => {
                 <div className="col-lg-9">
                     <h1 className="text-light">{series ? series.title : 'My Series'}</h1>
                     {series ? <p>Has {series.episodes.length} episodes</p> : ''}
+
+                    {sameFileError ? (
+                        <div class="alert alert-danger" role="alert">
+                            Mkondo has detected you are uploading the same file. Change the file and try again.
+                        </div>
+                    ) : ''}
                 </div>
                 {series && (
                     <div className="col-lg-3">
@@ -135,8 +145,8 @@ export const ManageSeriesProfile = (props) => {
             {!series && (
                 <div className="row">
                     {getSeriesPending && <p>Loading...</p>}
-                    <div className="d-flex">
-                        {mySeries.map(_series => <div onClick={() => handleManageSeries(_series.series_id)} className="mr-2"><SeriesListItem series={_series} /></div>)}
+                    <div className="d-flex flex-wrap">
+                        {mySeries.map(_series => <div onClick={() => handleManageSeries(_series.series_id)} className="mr-2 mb-2"><SeriesListItem series={_series} /></div>)}
                     </div>
                 </div>
             )}
@@ -152,7 +162,7 @@ export const ManageSeriesProfile = (props) => {
                         ))}
                     </div>
 
-                    <div className="d-flex">
+                    <div className="d-flex flex-wrap">
                         {series.episodes.map(episode => (
                             <div className="mr-3">
                                 <EpisodeItem episode={episode} />
