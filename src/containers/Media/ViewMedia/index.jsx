@@ -147,6 +147,27 @@ const ViewMedia = () => {
 
   const commentPane = (
     <div className={selected === 'comments' ? '' : 'd-none'}>
+        
+        <div className="">
+        {
+          [...comments].map((comment, idx) => (
+            <Row
+              key={`comment-row-${idx}`}
+              name={comment.commenter_name}
+              date={comment.modified}
+              value={comment.value}
+              avatarUrl={comment.avatar_user_url}
+              comment_id={comment.comment_id}
+              commenter_id={comment.user_id}
+              deleteComment={handleDeleteComment}
+              no_of_replies={comment.no_of_replies}
+              replies={comment.comments ?? []}
+              likes={comment.likes || undefined}
+            />
+          ))
+        }
+        </div>
+
         <InputField
             field={{
               ...field,
@@ -163,25 +184,6 @@ const ViewMedia = () => {
         >
           Add
         </Button>
-     
-        <div className="mt-3">
-        {
-          comments.map((comment, idx) => (
-            <Row
-              key={`comment-row-${idx}`}
-              name={comment.commenter_name}
-              date={comment.modified}
-              value={comment.value}
-              avatarUrl={comment.avatar_user_url}
-              comment_id={comment.comment_id}
-              deleteComment={handleDeleteComment}
-              no_of_replies={comment.no_of_replies}
-              replies={comment.comments ?? []}
-              likes={comment.likes || undefined}
-            />
-          ))
-        }
-        </div>
     </div>
   );
 

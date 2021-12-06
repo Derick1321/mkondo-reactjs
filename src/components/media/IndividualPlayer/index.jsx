@@ -16,6 +16,8 @@ import { loadMedia } from '$redux/features/player';
 import { COLOR_PRIMARY } from '$common/constants';
 
 import styles from './index.module.scss';
+import { useHistory, generatePath } from 'react-router-dom';
+import { routePaths } from '../../../common/routeConfig';
 
 const prevIcon = require('$assets/images/player/prev.svg');
 const nextIcon = require('$assets/images/player/next.svg');
@@ -63,6 +65,9 @@ const IndividualPlayer = (props) => {
     artistName,
   } = props;
 
+  //hooks
+  const history = useHistory();
+
   // store
   const dispatch = useDispatch();
   const token = useSelector((store) => store.authentication.token);
@@ -71,6 +76,7 @@ const IndividualPlayer = (props) => {
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const position = useSelector((store) => store.player.position);
   const duration = useSelector((store) => store.player.duration);
+  const artistId = useSelector((store) => store.player.currentPlaylist[0].artistId);
 
   const isFavorite = favourites.find((media) => media.media_id === mediaId);
 
@@ -211,9 +217,9 @@ const IndividualPlayer = (props) => {
               />
             </Button>
           </div>
-          <AvatarImage url={avatarSrc} bg={COLOR_PRIMARY} />
+          <AvatarImage onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))} url={avatarSrc} bg={COLOR_PRIMARY} />
           <div className="d-flex flex-column justify-content-center">
-            <p className={styles.artistName}>{artistName}</p>
+            <p className={styles.artistName}  onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}>{artistName}</p>
             <p className={styles.title}>{title}</p>
           </div>
         </div>
