@@ -152,7 +152,6 @@ const FeatureHome = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    console.log("Handle Play Triggered");
     if (category !== 'audio') {
       handleView();
       return;
@@ -165,6 +164,7 @@ const FeatureHome = (props) => {
       avatar: avatarUrl,
       name: title,
       artistName: owner_name,
+      artistId: artistId
     }));
   }
 

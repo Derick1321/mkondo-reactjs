@@ -10,6 +10,8 @@ import { toggleFooterPlayer } from '$redux/features/nav';
 import { getSimilarRecommended } from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { useHistory, generatePath } from 'react-router-dom';
+import { routePaths } from '../../../common/routeConfig';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
@@ -23,6 +25,9 @@ const pinLock = require('$assets/images/player/pin-lock.svg');
 const pinUnlock = require('$assets/images/player/pin-unlock.svg');
 
 const Player = () => {
+  // hooks
+  const history = useHistory()
+
   // state
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
@@ -104,11 +109,13 @@ const Player = () => {
   let album = 'Unknown';
   let avatar = null;
   let artistName = '';
+  let artistId = '';
 
   if (currentPlaylist[0]) {
     avatar = currentPlaylist[0].avatar;
     album = currentPlaylist[0].artistName;
-    artistName = currentPlaylist[0].name
+    artistName = currentPlaylist[0].name;
+    artistId = currentPlaylist[0].artistId
   }
 
   // render
@@ -116,13 +123,14 @@ const Player = () => {
     <div className={`d-flex align-items-center flex-wrap ${styles.playerWrapper}`}>
       <div className={`d-flex ${styles.playerNameWrapper}`}>
         <img
+          onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}
           src={avatar || defaultAvatar}
           className={`${styles.playerAvatar} mx-1`}
         />
         <div className="d-flex flex-column justify-content-center mx-2">
           <span>{artistName}</span>
           {
-            album && <span>{album}</span>
+            album && <span style={{ cursor: 'pointer', }} onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}>{album}</span>
           }
         </div>
       </div>
