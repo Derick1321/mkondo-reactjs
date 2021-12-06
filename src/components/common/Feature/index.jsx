@@ -148,6 +148,7 @@ const Feature = (props) => {
       avatar: avatarUrl,
       name: title,
       artistName: subtitle,
+      artistId: artistId,
     }));
   }
 

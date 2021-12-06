@@ -31,6 +31,7 @@ const CommentRow = (props) => {
     avatarUrl,
     deleteComment,
     comment_id,
+    commenter_id,
     no_of_replies,
     replies,
     likes,
@@ -39,6 +40,7 @@ const CommentRow = (props) => {
   // store
   const token = useSelector((store) => store.authentication.token);
   const user_id = useSelector((store) => store.authentication.user.user_id);
+  const user_role = useSelector((store) => store.authentication.user.user_type);
   const loading = useSelector((store) => store.media.replyCommentPending);
   const currentComment = useSelector((store) => store.media.currentComment);
   const isFetchingReplies = useSelector((store) => store.media.getCommentRepliesPending);
@@ -105,7 +107,7 @@ const CommentRow = (props) => {
             <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
             <p className={styles.text}>{value}</p>
           </div>
-          <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div>
+          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_type) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
         </div>
         <div className="d-flex">
           <div className="">{likes.length} Likes</div>
@@ -124,12 +126,6 @@ const CommentRow = (props) => {
       {isOnReplyView 
       ? (
         <div className={`ml-5`}>
-          <textarea
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="Reply Comment"
-            className={styles.textArea} value={comment}></textarea>
-          <button disabled={loading} className={`${styles.buttonAccent} btn`} onClick={handleSubmitReply}>Reply</button>
-          {loading ? <small className="text-light ml-2">Submitting Reply</small> : ""}
           <div>
             {replies ? replies.map((comment) => {
               return (
@@ -139,7 +135,7 @@ const CommentRow = (props) => {
                             <p className={styles.text}>{comment.commenter_name} <span className={styles.date}>{formatDate(comment.posted)}</span></p>
                             <p className={styles.text}>{comment.value}</p>
                           </div>
-                          <div onClick={e => deleteComment(comment.comment_id)} className={styles.deleteStyle}>Delete</div>
+                          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_type) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
                         </div>
                         <div className="d-flex">
                           
@@ -148,6 +144,13 @@ const CommentRow = (props) => {
                     )
             }) : console.log(replies)}
           </div>
+          
+          <textarea
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Reply Comment"
+            className={styles.textArea} value={comment}></textarea>
+          <button disabled={loading} className={`${styles.buttonAccent} btn`} onClick={handleSubmitReply}>Reply</button>
+          {loading ? <small className="text-light ml-2">Submitting Reply</small> : ""}
         </div>
       ) : null}
     </>
