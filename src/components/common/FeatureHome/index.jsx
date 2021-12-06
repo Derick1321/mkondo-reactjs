@@ -152,7 +152,6 @@ const FeatureHome = (props) => {
 
   // handlers
   const handlePlay = async () => {
-    console.log("Handle Play Triggered");
     if (category !== 'audio') {
       handleView();
       return;
@@ -165,6 +164,7 @@ const FeatureHome = (props) => {
       avatar: avatarUrl,
       name: title,
       artistName: owner_name,
+      artistId: artistId
     }));
   }
 
@@ -191,14 +191,17 @@ const FeatureHome = (props) => {
   }
 
   // render
-  return (
-    <div className={styles.f_featureWrapper}>
-      <FeatureBkg source={avatarUrl}>
-      {
-        showHeader && (
-          <>
-            <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
-              <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+  if (category == "audio") {
+    return (
+    <>
+      <div className={styles.f_featureWrapper}>
+        <FeatureBkg source={avatarUrl}>
+        {
+          showHeader && (
+            <>
+              <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+                <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+                <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
                 <ActionHeader
                   mediaId={mediaId}
                   country={country}
@@ -206,39 +209,44 @@ const FeatureHome = (props) => {
                   avatarUrl={avatarUrl}
                   showPlaylist
                 />
-            </div>
-            <PlayButton
-              category={category}
-              onClick={handlePlay} >
-              <PlayBtn
-                size={category == "audio" ? "30" : "40"}
-                isLoading={isLoading && currentMediaId === mediaId}
-                isPlaying={isPlaying && currentMediaId === mediaId}
-              />
-            </PlayButton>
-          </>
-        )
-      }
-      </FeatureBkg>
-      <div className={`d-flex flex-1 w-100 ${styles.f_featurePane}`}>
-        <div className={styles.f_featureContentWrapper}>
-          <div className="d-flex flex-row align-items-center mt-1">
-            <div className={`text-white-50 text-right ml-auto ${styles.f_fontSize12}`}>{likes.length} {t('likes')}</div>
-            <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
-            <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
-          </div>
-          <div className="d-flex">
-            <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
-              <div style={{flex: 1}}>
-                <div className={styles.f_hoverCursor} onClick={handleArtistView}>
-                  {owner_name}
-                </div>
-                <div className={styles.f_fontSize16}><b>{title}</b></div>
-                <div className={styles.f_description}>{description}</div>
               </div>
 
-              <div onClick={handleView} className={`text-white-50 mt-2 ${styles.f_fontSize10}`}>View all {comment_num} {t('comments')} </div>
+              <div className={`${styles.likeandcomment}`}>
+                <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+              </div>
+              <PlayButton
+                category={category}
+                onClick={handlePlay} >
+                <PlayBtn
+                  size={category == "audio" ? "30" : "40"}
+                  isLoading={isLoading && currentMediaId === mediaId}
+                  isPlaying={isPlaying && currentMediaId === mediaId}
+                />
+              </PlayButton>
+            </>
+          )
+        }
+        </FeatureBkg>
+      </div>
 
+      {/* <div className={`d-flex w-100 px-3`}>
+          <div className={styles.f_hoverCursor} onClick={handleArtistView}>
+            {owner_name}
+          </div>
+        </div> */}
+
+      
+          
+          <div className="d-flex mt-2">
+            <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
+              <div style={{flex: 1}}>
+                
+                <div className={styles.title}><b>{title}</b></div>
+                {/* <div className={styles.f_description}>{description}</div> */}
+              </div>
+
+              {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
             </div>
 
           </div>
@@ -250,10 +258,77 @@ const FeatureHome = (props) => {
             {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
           </div>
 
-        </div>
-      </div>
-    </div>
+ 
+    </>
+  )
+  }
 
+  return (
+    <>
+      <div className={styles.f_featureWrapperVideo}>
+        <FeatureBkg source={avatarUrl}>
+        {
+          showHeader && (
+            <>
+              <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+                <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+                <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                <ActionHeader
+                  mediaId={mediaId}
+                  country={country}
+                  title={title}
+                  avatarUrl={avatarUrl}
+                  showPlaylist
+                />
+              </div>
+
+              <div className={`${styles.likeandcomment}`}>
+                <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+              </div>
+              <PlayButton
+                category={category}
+                onClick={handlePlay} >
+                <PlayBtn
+                  size={category == "audio" ? "30" : "40"}
+                  isLoading={isLoading && currentMediaId === mediaId}
+                  isPlaying={isPlaying && currentMediaId === mediaId}
+                />
+              </PlayButton>
+            </>
+          )
+        }
+        </FeatureBkg>
+      </div>
+
+      {/* <div className={`d-flex w-100 px-3`}>
+          <div className={styles.f_hoverCursor} onClick={handleArtistView}>
+            {owner_name}
+          </div>
+        </div> */}
+
+      
+          
+          <div className="d-flex mt-2">
+            <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
+              <div style={{flex: 1}}>
+                
+                <div className={styles.title}><b>{title}</b></div>
+                {/* <div className={styles.f_description}>{description}</div> */}
+              </div>
+
+              {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
+            </div>
+
+          </div>
+          <div className="d-flex flex-row">
+            <span className="ml-auto">
+              {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
+            </span>
+            {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+            {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+          </div>
+    </>
   )
 }
 

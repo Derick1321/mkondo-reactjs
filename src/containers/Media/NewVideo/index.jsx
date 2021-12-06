@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
 
@@ -24,6 +24,9 @@ const getType = {
 
 const NewVideo = () => {
 
+  // refs
+  const coverRef = useRef(null);
+
   // store
   const history = useHistory();
   const push = history.push;
@@ -35,6 +38,7 @@ const NewVideo = () => {
   const addMediaUploadedSize = useSelector((store) => store.media.addMediaUploadedSize);
   const addMediaTotalSize = useSelector((store) => store.media.addMediaTotalSize);
   const croppedImage = useSelector((state) => state.croptool.cropped)
+  const uploadQueue = useSelector(state => state.media.uploadQueue);
 
   const uploadType = (history.location.state && history.location.state.type) || 'video';
   const type = getType[uploadType];
@@ -44,8 +48,14 @@ const NewVideo = () => {
   const [values, setValues] = useState({
     duration: 0,
   });
-  const [coverFile, setCoverFile] = useState(null);
+  
   const [localCoverUrl, setLocalCoverUrl] = useState(null);
+
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoFileName, setVideoFileName] = useState(null);
+  const [videoFileProgress, setVideoFileProgress] = useState(null);
+
+  const [coverFile, setCoverFile] = useState(null);
 
   useEffect(async () => {
     const file = await fetch(croppedImage).then(res => res.blob());
@@ -55,9 +65,26 @@ const NewVideo = () => {
     setCoverFile(file);
   }, [croppedImage]);
 
+  useEffect(() => {
+    // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+    if (!uploadQueue) return;
+    // console.log(uploadQueue);
+    uploadQueue.map((uploading) => {
+        // console.log(uploading.fileName, coverFileName, trailerFileName);
+        // if (coverFileName && coverFileName === uploading.fileName) {
+        //     setCoverFileProgress(uploading.progress)
+        // }
+        if (videoFileName && videoFileName === uploading.fileName) {
+            setVideoFileProgress(uploading.progress);
+        }
+    })
+}, [uploadQueue, videoFileName]);
+
   // hadnlers
-  const handleFileChange = (files) => {
-    setFile(files[0]);
+  const handleVideoChange = async (files) => {
+    let url = await generatePreview(files[0]);
+    setVideoFile(url);
+    setVideoFileName(files[0].name);
     getDuration(files[0], 'video', (value) => {
       handleChange('duration', value);
     });
@@ -155,9 +182,15 @@ const NewVideo = () => {
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-              <VideoPlayer
-                file={file}
-              />
+            {videoFile && (
+                              <div>
+                                <video width="100%" height="100%" autoPlay muted>
+                                    <source src={videoFile} />
+                                    Your browser does not support the video tag.
+                                </video>
+                                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
+                              </div>
+                            )}
             </div>
             <div className="col-12 col-md-6">
               <InputField
@@ -222,7 +255,7 @@ const NewVideo = () => {
       <div>
         <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
         <DragDrop
-          onChange={handleFileChange}
+          onChange={handleVideoChange}
           acceptedFiles="video/mp4,video/x-m4v,video/*"
         />
       </div>
