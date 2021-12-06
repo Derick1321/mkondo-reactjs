@@ -72,7 +72,11 @@ export const AddSeriesEpisode = (props) => {
     //handlers
     const handleInputChange = (name, value) => {
         if (name in payload) {
-            
+            //reset submit error 
+            if (submitErrors[name]) {
+                setSubmitErrors({...submitErrors, [name]: null,});
+            }
+
             if (name == 'genres') {
                 console.log(value);
                 setPayload({
