@@ -36,11 +36,14 @@ import { SocialMediaFeed } from '../containers/socialMediaFeed';
 import { NewSeries } from '../containers/Media/NewSeries';
 import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
 import { PrivacyPolicyPage } from '../containers/LegalPages/privacy';
+import LoginPage from '../containers/Login/index';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
   guestViewMedia: '/guest/media/:id',
+  login: "/login",
+  register: "/register",
   onBoarding: '/on-boarding',
   notFound: '/not-found',
   resetPassword: '/reset-password',
@@ -124,6 +127,16 @@ export const routes = [
   {
     ...defaultConfig,
     path: routePaths.marketing,
+    component: Marketing,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.login,
+    component: LoginPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.register,
     component: Marketing,
   },
   {
