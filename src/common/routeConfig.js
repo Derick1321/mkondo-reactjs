@@ -37,6 +37,7 @@ import { NewSeries } from '../containers/Media/NewSeries';
 import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
 import { PrivacyPolicyPage } from '../containers/LegalPages/privacy';
 import LoginPage from '../containers/Login/index';
+import RegisterPage from '../containers/Register/index';
 
 export const routePaths = {
   main: '/app',
@@ -137,7 +138,7 @@ export const routes = [
   {
     ...defaultConfig,
     path: routePaths.register,
-    component: Marketing,
+    component: RegisterPage,
   },
   {
     ...defaultConfig,
