@@ -24,8 +24,8 @@ const Marketing = () => {
   const isFetchingSliders = useSelector((store) => store.slider.status == "loading");
   const slider = useSelector((store) => {
     if (!store.slider.data.length) return;
-    if (store.slider.data.some((item, index) => index == 3)) {
-      return store.slider.data[1];
+    if (store.slider.data.some((item, index) => index == 0)) {
+      return store.slider.data[0];
     }
     return null;
   });
