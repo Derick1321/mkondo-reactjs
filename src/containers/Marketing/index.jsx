@@ -9,6 +9,9 @@ import { getMediaUrl } from '../../common/utils';
 import { useHistory } from 'react-router-dom';
 import { routePaths } from '$common/routeConfig';
 import overviewVideo from '../../assets/animations/overview.mov'
+import FAQItem from './widgets/FAQ/faq_item';
+import MkondoLogo from '../../components/common/logo/index';
+
 
 const Marketing = () => {
   //react hooks
@@ -54,10 +57,7 @@ const Marketing = () => {
     <div>
       {/* header */}
       <div class={`${styles.header} px-4 py-3 d-flex`}>
-        <div class="d-flex">
-          <img src={logoIcon} alt="" height="27px" class="mr-1" />
-          <h1 class={styles.logo}>Mkondo</h1>
-        </div>
+        <MkondoLogo />
         <button onClick={() => push(routePaths.login)} class="btn btn-primary ml-auto">Sign In</button>
       </div>
 
@@ -74,62 +74,39 @@ const Marketing = () => {
         </video>
       </div>
 
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>Your Favourite Audio</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
+      <div class={`${styles.section} mt-4 py-5 text-center text-light`}>
+        <h1 className="px-4">Frequently Asked Questions</h1>
+
+        <div className="mt-5">
+          <FAQItem title="What is Mkondo?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          
+          <div className="mt-2">
+            <FAQItem title="How much does Mkondo Cost?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          </div>
+
+          <div className="mt-2">
+            <FAQItem title="Where can i Watch?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          </div>
+
+          <div className="mt-2">
+            <FAQItem title="How do i cancel?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          </div>
+
+          <div className="mt-2">
+            <FAQItem title="What can i watch on Mkondo?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          </div>
+
+          <div className="mt-2">
+            <FAQItem title="Is mkondo good for kids?" description="Mkondo is a Media Platform that offers Premium Audio and Video Contents." />
+          </div>
+        </div>
       </div>
 
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>New Albums</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>Watch Thouthand of Videos</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>Premium Movies on your Finger Tips</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>We Love Series</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
-        <h1>Mkondo Social</h1>
-        <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
-            <source src={overviewVideo} />
-            Your browser does not support the video tag.
-        </video>
-      </div>
+     
     </div>
   )
 }
+
 
 
 export default Marketing;

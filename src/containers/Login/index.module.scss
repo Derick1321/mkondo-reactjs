@@ -1,5 +1,10 @@
 @import '$assets/scss/main.scss';
 
+.background {
+    background-color: black;
+    height: 100vh;
+}
+
 .login-modal-top {
     padding-top: 0;
 }
