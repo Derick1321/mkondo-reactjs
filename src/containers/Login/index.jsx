@@ -17,6 +17,8 @@ import { routePaths } from '$common/routeConfig';
 
 import './index.module.scss';
 import { COLOR_ACCENT, COLOR_PRIMARY } from '$common/constants';
+import styles from './index.module.scss';
+import MkondoLogo from '../../components/common/logo';
 
 const login_banner_top_hd = require('$assets/images/banner-login-top.png');
 const login_mobile_top = require('$assets/images/login_mobile_top.png');
@@ -97,7 +99,7 @@ const LoginPage = () => {
 
   const handleForgotPassword = () => { dispatch(showModal('FORGOT_PASSWORD_MODAL')); };
 
-  const handleSignUp = () => { dispatch(showModal('SIGNUP_MODAL')); };
+  const handleSignUp = () => history.push(routePaths.register);
 
   const handleSignIn = () => {
     const { email, password } = values;
@@ -111,25 +113,13 @@ const LoginPage = () => {
 
   // render
   return (
-    <div className="row">
-      <div className="col-lg-6 d-none d-md-block">
-        <GradientBackground>
-          <div className="d-flex flex-column justify-content-center align-items-center h-100">
-            <h1 className="display-3 text-light pt-20 w-75">Welcome back to mkondo</h1>
-            <div className="w-75 my-4">
-              <div className="py-1 bg-light w-50 rounded-pill"></div>
-            </div>
-            <p className="lead w-75 text-light">Sign in to continue to your account.</p>
-          </div>
-        </GradientBackground>
-      </div>
-      
+    <div className={`${styles.background}`}>
       <div className="col-lg-6">
-        <div id="login-mobile-top-shape" className="d-sm-none"></div>
-        <div className="d-flex flex-column h-100 justify-content-center align-items-center">
-          <div className="w-75">
-          <img src={logo} className="d-block ml-auto mb-5" alt="Mkondo Logo" height="75" />
-          <div className="f25 mb-4">Login</div>
+        <div className="px-3 py-4">
+          <MkondoLogo />
+        </div>
+        <div className="d-flex flex-column h-100 px-4">
+          <span className="font-bold text-light display-2">Sign In</span>
               {
                 error && (
                   <Alert
@@ -138,19 +128,19 @@ const LoginPage = () => {
                   />
                 )
               }
-              <label class="label">Email</label>
               <TextInput
                 name="email"
                 placeholder="Email Address / User Name"
                 value={values.email}
+                isGrey={true}
                 onChange={handleChange}
               />
-              <label class="label">Password</label>
               <TextInput
                 name="password"
                 placeholder="Password"
                 type="password"
                 value={values.password}
+                isGrey={true}
                 onChange={handleChange}
               />
               <div className="d-flex align-items-center my-2 mt-4">
@@ -186,7 +176,7 @@ const LoginPage = () => {
               </div>
           </div>
         </div>
-      </div>
+    
     </div>
   );
 }
