@@ -1,0 +1,33 @@
+@import '$assets/scss/main.scss';
+
+.header {
+    background: black;
+}
+
+.section {
+    background: black;
+}
+
+.faqIcon {
+    width: 10px;
+    transition: all 0.3s ease-in-out;
+    transform: rotate(45deg);
+}
+
+.faqIcon.active {
+    transition: all 0.3s ease-in-out;
+    transform: rotate(0deg);
+}
+
+.description {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease-in-out;
+}
+
+.description.active {
+    height: auto;
+    margin-top: 5px;
+    padding: 10px 20px;
+    transition: height 0.3s ease-in-out;
+}
