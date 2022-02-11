@@ -4,7 +4,7 @@
     top: 0;
     height: 70px;
     padding: 0.5rem 2.5rem;
-    width: calc(100% - 220px);
+    width: calc(100%);
     background-color: #323232;
     z-index: 10000;
     @media screen and (max-width: 576px) {
@@ -58,6 +58,14 @@
     @media screen and (min-width: 576px) {
         display: none;
     }
+    background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+
+.logo_geneneral {
     background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

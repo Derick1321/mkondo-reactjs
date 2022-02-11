@@ -80,14 +80,19 @@ const LoginPage = () => {
   const loginPending = useSelector((store) => store.authentication.loginPending);
   const error = useSelector((store) => store.authentication.loginError);
   const token = useSelector((store) => store.authentication.token);
+  const user = useSelector((store) => store.authentication.user);
 
   // effects
   useEffect(() => {
     if (token) {
+      if (!user.email || !user.phone) {
+        history.push(routePaths.onBoarding);
+        return;
+      }
       history.push(routePaths.home);
       return;
     }
-  }, [token]);
+  }, [token, user]);
 
   // handlers
   const handleChange = (name, value) => {
