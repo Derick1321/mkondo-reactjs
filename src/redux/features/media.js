@@ -305,12 +305,15 @@ export const saveMedia = createAsyncThunk(
 export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
     async(file, param) => {
+        console.log("save media pro triggered", file);
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
         const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
         const { fields, url } = result.response;
+        console.log("fields and url", fields, url);
 
         const uploading = {
+            id: fileName,
             fileName: file.filename,
             isUploading: true,
             isUploaded: false,
@@ -320,6 +323,8 @@ export const saveMediaPro = createAsyncThunk(
             total: 0,
             mediaUrl: null,
         }
+
+        console.log("uploading state", uploading);
 
         param.dispatch(pushUploadQueue(uploading))
         param.dispatch(updateUploadQueueItemState({
@@ -376,15 +381,20 @@ export const saveMediaPro = createAsyncThunk(
                     const result = request.response;
                 
                     if (![200, 201, 204].includes(status)) {
+                        console.log("Save Media Pro Failed");
                         reject(result);
                         return;
                     }
-                
+                    
                     if ([204].includes(status)) {
+                        console.log("Save Media Pro Finished");
+                        param.dispatch(popUploadQueue(uploading.id));
                         resolve(true);
                         return;
                     }
-                
+                    
+                    console.log("Save Media Pro Finished");
+                    param.dispatch(popUploadQueue(uploading.id));
                     resolve(JSON.parse(result));
                     return;
                 });
@@ -583,6 +593,9 @@ const mediaSlice = createSlice({
         },
         pushUploadQueue(state, action) {
             state.uploadQueue.push(action.payload);
+        },
+        popUploadQueue(state, action) {
+            state.uploadQueue = state.uploadQueue.filter((x) => x.id != action.payload);
         },
         updateUploadQueueItemProgress(state, action) {
             //selecting a proper a correct item
@@ -1067,5 +1080,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, popUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState } = mediaSlice.actions;
 export default mediaSlice.reducer;
