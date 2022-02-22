@@ -41,6 +41,7 @@ const NewVideo = () => {
   const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
   const addMediaUploadedSize = useSelector((store) => store.media.addMediaUploadedSize);
   const addMediaTotalSize = useSelector((store) => store.media.addMediaTotalSize);
+  const addMediaError = useSelector((store) => store.media.addMediaError);
   const croppedImage = useSelector((state) => state.croptool.cropped)
   const uploadQueue = useSelector(state => state.media.uploadQueue);
 
@@ -49,6 +50,7 @@ const NewVideo = () => {
 
   // state
   const [file, setFile] = useState(null);
+  const [errors, setErrors] = useState({});
   const [values, setValues] = useState({
     duration: 0,
   });
@@ -77,9 +79,45 @@ const NewVideo = () => {
         if (videoFileName && videoFileName === uploading.fileName) {
             console.debug("File Upload Progress", uploading.progress);
             setVideoFileProgress(uploading.progress);
+
+            if (uploading.isUploaded) {
+              setValues({
+                ...values,
+                media_url: uploading.mediaUrl,
+              })
+              console.debug("File uploaded");
+            }
         }
     })
-}, [uploadQueue, videoFileName]);
+  }, [uploadQueue, videoFileName]);
+
+  useEffect(() => {
+    if (!addMediaError) return;
+    try {
+      let err = addMediaError.message ? JSON.parse(addMediaError.message) : JSON.parse(addMediaError);
+      let _errors = {}
+      let _e = err.message ?? err;
+
+      if (_e) {
+        if ('name' in _e) {
+          _errors['title'] = "Invalid";
+        }
+  
+        if ('description' in _e) {
+          _errors['description'] = "Invalid";
+        }
+  
+        if ('genres' in _e) {
+          _errors['genre'] = "Invalid";
+        }
+      }
+      setErrors(_errors);
+      console.log("Add Media Error equals", _e);
+    } catch (e) {
+      console.log("failed to parse the add media error", addMediaError);
+      console.error(e);
+    }
+  }, [addMediaError]);
 
   // hadnlers
   const handleVideoChange = async (files) => {
@@ -88,13 +126,15 @@ const NewVideo = () => {
     let url = await generatePreview(files[0]);
     setVideoFile(url);
     setVideoFileName(files[0].name);
-    dispatch(saveMediaPro({
-      'filename': videoFileName,
-      'file': file,
-  }));
     getDuration(files[0], 'video', (value) => {
       handleChange('duration', value);
     });
+    console.log("save media pro payload", files[0].name, files[0]);
+    dispatch(saveMediaPro({
+      'filename': files[0].name,
+      'file': files[0],
+    }));
+    
   }
 
   const handleChange = (name, value) => {
@@ -119,9 +159,10 @@ const NewVideo = () => {
       movie_director: values.director,
       staring: values.starring,
       release_date: values.startingDate,
+      media_url: values.media_url,
     }
 
-    if (values.genres) {
+    if (values.genre) {
       payload["genres"] = values.genre.map((item) => item.value);
     }
 
@@ -129,6 +170,8 @@ const NewVideo = () => {
       const mediaRes = await dispatch(saveMedia(coverFile));
       payload['cover_url'] =  mediaRes.payload
     }
+
+
     //saving the video file
     // const videoRes = await dispatch(saveMedia(file))
     const res = await dispatch(addMedia(payload));
@@ -187,6 +230,7 @@ const NewVideo = () => {
                           ...item,
                           value: values[menu.name]
                         }}
+                        error={errors[menu.name]}
                         onChange={handleChange}
                       />
                     </div>
@@ -213,6 +257,7 @@ const NewVideo = () => {
                   ...descriptionMenu,
                   value: values.description
                 }}
+                error={errors.description}
                 onChange={handleChange}
               />
             </div>
