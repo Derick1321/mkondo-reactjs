@@ -39,6 +39,7 @@ const REMOVE_SERIES = 'media/REMOVE_SERIES';
 export const addMedia = createAsyncThunk(
     ADD_MEDIA,
     async(data, param) => {
+        console.log("debugging add media", data);
         const { token } = param.getState().authentication;
         if (data.file) {
             return await handleFetch('POST', 'media', data, token, '', (progress, uploaded, total) => {
@@ -47,7 +48,7 @@ export const addMedia = createAsyncThunk(
                 param.dispatch(updateAddMediaTotalSize(total));
             });
         }
-        return await handleFetch('POST', 'media', data, token, '');
+       return await handleFetch('POST', 'media', data, token, '');
     }
 );
 

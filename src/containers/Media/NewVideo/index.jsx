@@ -16,6 +16,8 @@ import { menus, descriptionMenu } from './menus';
 import styles from './index.module.scss';
 import { routePaths } from '../../../common/routeConfig';
 import { crop } from '../../../redux/features/croptool';
+import DonutProgress from '../../../components/common/DonutProgress/index';
+import { saveMediaPro } from '../../../redux/features/media';
 
 const getType = {
   movie: 'Upload Movie',
@@ -26,6 +28,8 @@ const NewVideo = () => {
 
   // refs
   const coverRef = useRef(null);
+
+  //state
 
   // store
   const history = useHistory();
@@ -66,15 +70,12 @@ const NewVideo = () => {
   }, [croppedImage]);
 
   useEffect(() => {
-    // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+    console.log("Effect", uploadQueue, videoFileName);
     if (!uploadQueue) return;
     // console.log(uploadQueue);
     uploadQueue.map((uploading) => {
-        // console.log(uploading.fileName, coverFileName, trailerFileName);
-        // if (coverFileName && coverFileName === uploading.fileName) {
-        //     setCoverFileProgress(uploading.progress)
-        // }
         if (videoFileName && videoFileName === uploading.fileName) {
+            console.debug("File Upload Progress", uploading.progress);
             setVideoFileProgress(uploading.progress);
         }
     })
@@ -82,9 +83,15 @@ const NewVideo = () => {
 
   // hadnlers
   const handleVideoChange = async (files) => {
+    console.log("Handling video change", files);
+    setFile(files[0]);
     let url = await generatePreview(files[0]);
     setVideoFile(url);
     setVideoFileName(files[0].name);
+    dispatch(saveMediaPro({
+      'filename': videoFileName,
+      'file': file,
+  }));
     getDuration(files[0], 'video', (value) => {
       handleChange('duration', value);
     });
@@ -99,16 +106,11 @@ const NewVideo = () => {
 
   const handleSave = async () => {
     //saving the cover file
-    const mediaRes = await dispatch(saveMedia(coverFile));
-
-    //saving the video file
-    const videoRes = await dispatch(saveMedia(file))
-    dispatch(addMedia({
+    
+    
+    var payload = {
       name: values.title,
       description: values.description,
-      genres: values.genre.map((item) => item.value),
-      cover_url: mediaRes.payload,
-      media_url: videoRes.payload,
       owner_id: userId,
       category: uploadType,
       duration: values.duration,
@@ -117,13 +119,26 @@ const NewVideo = () => {
       movie_director: values.director,
       staring: values.starring,
       release_date: values.startingDate,
-    }));
+    }
+
+    if (values.genres) {
+      payload["genres"] = values.genre.map((item) => item.value);
+    }
+
+    if (coverFile) {
+      const mediaRes = await dispatch(saveMedia(coverFile));
+      payload['cover_url'] =  mediaRes.payload
+    }
+    //saving the video file
+    // const videoRes = await dispatch(saveMedia(file))
+    const res = await dispatch(addMedia(payload));
+    console.log("add media response", res);
   }
 
   const handleClear = () => {
     setFile(null);
-    const fileDom = document.querySelector('#file-input');
-    fileDom.value = '';
+    // const fileDom = document.querySelector('#file-input');
+    // fileDom.value = '';
   }
 
   const handleCoverChange = async (files) => {
@@ -183,14 +198,14 @@ const NewVideo = () => {
           <div className="row">
             <div className="col-12 col-md-6">
             {videoFile && (
-                              <div>
-                                <video width="100%" height="100%" autoPlay muted>
-                                    <source src={videoFile} />
-                                    Your browser does not support the video tag.
-                                </video>
-                                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
-                              </div>
-                            )}
+              <div>
+                <video width="100%" height="100%" autoPlay muted>
+                    <source src={videoFile} />
+                    Your browser does not support the video tag.
+                </video>
+                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
+              </div>
+            )}
             </div>
             <div className="col-12 col-md-6">
               <InputField

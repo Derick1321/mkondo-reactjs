@@ -12,6 +12,7 @@ import styles from './index.module.scss';
 import GeneralSelector from '../../components/common/Selector';
 import InputField from '../../components/forms/InputField';
 import Button from '../../components/common/Button';
+import { updateSystemUser } from '../../redux/features/user';
 
 const OnBoarding = () => {
   // state
@@ -27,7 +28,7 @@ const OnBoarding = () => {
   // effects
   useEffect(() => {
     if (updateUserComplete) {
-      alert("User Updated Successful");
+      dispatch(updateSystemUser());
     }
   }, [updateUserComplete]);
 
@@ -52,7 +53,10 @@ const OnBoarding = () => {
   }
 
   const handleChange = (key, value) => {
-    setPhone(value);
+    if (key == "phone") {
+      setPhone(value);
+    }
+    
   }
 
   const handleNext = async () => {
@@ -91,7 +95,7 @@ const OnBoarding = () => {
     }));
   }
 
-  if (!user.phone) {
+  if (!user.phone_number) {
     return (
       <div className={styles.onboardingWrapper}>
           <div className="d-flex justify-content-end"> 
@@ -105,8 +109,8 @@ const OnBoarding = () => {
             <InputField 
               field={{ 
                   type: "text",
-                  name: "fullName",
-                  placeholder: "Fullname",
+                  name: "phone",
+                  placeholder: "Phone Number",
                   value: phone,
               }} onChange={handleChange} isGrey={false} />
               <Button onClick={handleUpdatePhone}>Save</Button>
