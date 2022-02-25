@@ -108,6 +108,27 @@ const SideMenu = (props) => {
       title: 'top_chart',
       path: routePaths.topChart,
     },
+    {
+      icon: require('$assets/images/icons/video-camera.svg'),
+      activeIcon: require('$assets/images/icons/video-camera.svg'),
+      title: 'Theatre',
+      path: routePaths.theatre,
+    },
+  ];
+
+  const accountRoutes = [
+    {
+      icon: require('$assets/images/icons/shopping-cart.svg'),
+      activeIcon: require('$assets/images/icons/shopping-cart.svg'),
+      title: 'Subscriptions',
+      path: routePaths.subscriptions,
+    },
+    {
+      icon: require('$assets/images/icons/credit-card.svg'),
+      activeIcon: require('$assets/images/icons/credit-card.svg'),
+      title: 'Payment Methods',
+      path: routePaths.payments,
+    },
   ];
 
   const setupRoutes = [
@@ -218,6 +239,36 @@ const SideMenu = (props) => {
             </div>
           )
         }
+
+            <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+              <p className={styles.sideMenuSubtitle}>{t('account')}</p>
+              {
+                accountRoutes.map((item, idx) => {
+                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
+                  if (!canAccess) {
+                    return null;
+                  }
+
+                  return (
+                    <NavLink
+                      to={item.path}
+                      className={styles.sideMenuItem}
+                      activeClassName={styles.sideMenuItemTitle}
+                      key={`sidemenu-${idx}`}
+                    >
+                      {
+                        <img
+                          src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                          className={styles.sideMenuItemIcon}
+                        />
+                      }
+                      <span>{t(item.title)}</span>
+                    </NavLink>
+                  )
+                })
+              }
+            </div>
+
         {
           adminAccess && (
             <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>

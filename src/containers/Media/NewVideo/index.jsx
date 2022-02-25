@@ -16,6 +16,8 @@ import { menus, descriptionMenu } from './menus';
 import styles from './index.module.scss';
 import { routePaths } from '../../../common/routeConfig';
 import { crop } from '../../../redux/features/croptool';
+import DonutProgress from '../../../components/common/DonutProgress/index';
+import { saveMediaPro } from '../../../redux/features/media';
 
 const getType = {
   movie: 'Upload Movie',
@@ -27,6 +29,8 @@ const NewVideo = () => {
   // refs
   const coverRef = useRef(null);
 
+  //state
+
   // store
   const history = useHistory();
   const push = history.push;
@@ -37,6 +41,7 @@ const NewVideo = () => {
   const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
   const addMediaUploadedSize = useSelector((store) => store.media.addMediaUploadedSize);
   const addMediaTotalSize = useSelector((store) => store.media.addMediaTotalSize);
+  const addMediaError = useSelector((store) => store.media.addMediaError);
   const croppedImage = useSelector((state) => state.croptool.cropped)
   const uploadQueue = useSelector(state => state.media.uploadQueue);
 
@@ -45,6 +50,7 @@ const NewVideo = () => {
 
   // state
   const [file, setFile] = useState(null);
+  const [errors, setErrors] = useState({});
   const [values, setValues] = useState({
     duration: 0,
   });
@@ -66,28 +72,69 @@ const NewVideo = () => {
   }, [croppedImage]);
 
   useEffect(() => {
-    // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+    console.log("Effect", uploadQueue, videoFileName);
     if (!uploadQueue) return;
     // console.log(uploadQueue);
     uploadQueue.map((uploading) => {
-        // console.log(uploading.fileName, coverFileName, trailerFileName);
-        // if (coverFileName && coverFileName === uploading.fileName) {
-        //     setCoverFileProgress(uploading.progress)
-        // }
         if (videoFileName && videoFileName === uploading.fileName) {
+            console.debug("File Upload Progress", uploading.progress);
             setVideoFileProgress(uploading.progress);
+
+            if (uploading.isUploaded) {
+              setValues({
+                ...values,
+                media_url: uploading.mediaUrl,
+              })
+              console.debug("File uploaded");
+            }
         }
     })
-}, [uploadQueue, videoFileName]);
+  }, [uploadQueue, videoFileName]);
+
+  useEffect(() => {
+    if (!addMediaError) return;
+    try {
+      let err = addMediaError.message ? JSON.parse(addMediaError.message) : JSON.parse(addMediaError);
+      let _errors = {}
+      let _e = err.message ?? err;
+
+      if (_e) {
+        if ('name' in _e) {
+          _errors['title'] = "Invalid";
+        }
+  
+        if ('description' in _e) {
+          _errors['description'] = "Invalid";
+        }
+  
+        if ('genres' in _e) {
+          _errors['genre'] = "Invalid";
+        }
+      }
+      setErrors(_errors);
+      console.log("Add Media Error equals", _e);
+    } catch (e) {
+      console.log("failed to parse the add media error", addMediaError);
+      console.error(e);
+    }
+  }, [addMediaError]);
 
   // hadnlers
   const handleVideoChange = async (files) => {
+    console.log("Handling video change", files);
+    setFile(files[0]);
     let url = await generatePreview(files[0]);
     setVideoFile(url);
     setVideoFileName(files[0].name);
     getDuration(files[0], 'video', (value) => {
       handleChange('duration', value);
     });
+    console.log("save media pro payload", files[0].name, files[0]);
+    dispatch(saveMediaPro({
+      'filename': files[0].name,
+      'file': files[0],
+    }));
+    
   }
 
   const handleChange = (name, value) => {
@@ -99,16 +146,11 @@ const NewVideo = () => {
 
   const handleSave = async () => {
     //saving the cover file
-    const mediaRes = await dispatch(saveMedia(coverFile));
-
-    //saving the video file
-    const videoRes = await dispatch(saveMedia(file))
-    dispatch(addMedia({
+    
+    
+    var payload = {
       name: values.title,
       description: values.description,
-      genres: values.genre.map((item) => item.value),
-      cover_url: mediaRes.payload,
-      media_url: videoRes.payload,
       owner_id: userId,
       category: uploadType,
       duration: values.duration,
@@ -117,13 +159,29 @@ const NewVideo = () => {
       movie_director: values.director,
       staring: values.starring,
       release_date: values.startingDate,
-    }));
+      media_url: values.media_url,
+    }
+
+    if (values.genre) {
+      payload["genres"] = values.genre.map((item) => item.value);
+    }
+
+    if (coverFile) {
+      const mediaRes = await dispatch(saveMedia(coverFile));
+      payload['cover_url'] =  mediaRes.payload
+    }
+
+
+    //saving the video file
+    // const videoRes = await dispatch(saveMedia(file))
+    const res = await dispatch(addMedia(payload));
+    console.log("add media response", res);
   }
 
   const handleClear = () => {
     setFile(null);
-    const fileDom = document.querySelector('#file-input');
-    fileDom.value = '';
+    // const fileDom = document.querySelector('#file-input');
+    // fileDom.value = '';
   }
 
   const handleCoverChange = async (files) => {
@@ -172,6 +230,7 @@ const NewVideo = () => {
                           ...item,
                           value: values[menu.name]
                         }}
+                        error={errors[menu.name]}
                         onChange={handleChange}
                       />
                     </div>
@@ -183,14 +242,14 @@ const NewVideo = () => {
           <div className="row">
             <div className="col-12 col-md-6">
             {videoFile && (
-                              <div>
-                                <video width="100%" height="100%" autoPlay muted>
-                                    <source src={videoFile} />
-                                    Your browser does not support the video tag.
-                                </video>
-                                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
-                              </div>
-                            )}
+              <div>
+                <video width="100%" height="100%" autoPlay muted>
+                    <source src={videoFile} />
+                    Your browser does not support the video tag.
+                </video>
+                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
+              </div>
+            )}
             </div>
             <div className="col-12 col-md-6">
               <InputField
@@ -198,6 +257,7 @@ const NewVideo = () => {
                   ...descriptionMenu,
                   value: values.description
                 }}
+                error={errors.description}
                 onChange={handleChange}
               />
             </div>

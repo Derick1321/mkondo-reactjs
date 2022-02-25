@@ -5,6 +5,7 @@ import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
 import Main from '$containers/Main';
 import Media from '$containers/Media';
+import Theatre from '$containers/Media/Theatre';
 import MediaUpload from '$containers/Media/MediaUpload';
 import NewMediaCategory from '$containers/Media/NewMediaCategory';
 import NewAlbum from '$containers/Media/NewAlbum';
@@ -38,6 +39,11 @@ import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
 import { PrivacyPolicyPage } from '../containers/LegalPages/privacy';
 import LoginPage from '../containers/Login/index';
 import RegisterPage from '../containers/Register/index';
+import { TheatreContainer } from '../containers/Media/Theatre/index';
+import PaymentContainer from '../containers/Payment';
+import { CreatePaymentMethodContainer } from '../containers/Payment/CreatePaymentMethod/index';
+import { SubscriptionContainer } from '../containers/Subscription/index';
+import SubscriptionShowContainer from '../containers/Subscription/show/index';
 
 export const routePaths = {
   main: '/app',
@@ -54,6 +60,7 @@ export const routePaths = {
   topChart: '/app/top-chart',
   feeds: '/app/feeds',
   media: '/app/media',
+  theatre: '/app/media/theatre',
   newAlbum: '/app/media/new-album',
   newSeries: "/app/media/new-series",
   mySeries: '/app/media/series',
@@ -72,6 +79,10 @@ export const routePaths = {
   playlist: '/app/playlist/:id',
   insights: '/app/insights',
   profile: '/app/profile',
+  payments: '/app/payments',
+  paymentsCreate: '/app/payments/create',
+  subscriptions: '/app/subscriptions',
+  subscriptionShow: '/app/subscriptions/:id',
   slider: '/app/slider',
   sliderCreate: '/app/slider/create',
   sliderEdit: '/app/slider/:slider_id/edit',
@@ -277,6 +288,12 @@ export const routes = [
         routes: [
           {
             ...defaultConfig,
+            path: routePaths.theatre,
+            component: TheatreContainer,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
             path: routePaths.newMediaCategory,
             component: NewMediaCategory,
             redirect: redirectFunctions.app,
@@ -321,6 +338,34 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.viewMedia,
             component: ViewMedia,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.payments,
+        component: PaymentContainer,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.paymentsCreate,
+            component: CreatePaymentMethodContainer,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.subscriptions,
+        component: SubscriptionContainer,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.subscriptionShow,
+            component: SubscriptionShowContainer,
             redirect: redirectFunctions.app,
           },
         ],
