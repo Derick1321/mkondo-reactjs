@@ -42,7 +42,7 @@ const VideoPlayer = (props) => {
   const [isReady, setIsReady] = useState(false);
   const [isFixed, setIsFixed] = useState(false)
 
-  
+  //refs
   const playerRef = useRef(null);
   const videoRef = useRef(null);
 
@@ -51,7 +51,7 @@ const VideoPlayer = (props) => {
     dispatch(toggleFooterPlayer(false));
     window.addEventListener("scroll", listenScrollEvent)
     return () => {
-      dispatch(toggleFooterPlayer(true));
+      // dispatch(toggleFooterPlayer(true));
       window.removeEventListener('scroll', listenScrollEvent);
     }
   }, []);
@@ -76,10 +76,37 @@ const VideoPlayer = (props) => {
       const videoElement = videoRef.current;
       if (!videoElement) return;
 
-      const player = playerRef.current = videojs(videoElement, {}, () => {
+      const player = playerRef.current = videojs(videoElement, {});
+      player.ready(() => {
         console.log("player is ready");
         setIsReady(true);
-      });
+        setDuration(player.duration());
+
+        player.on('waiting', () => {
+          console.log("player is waiting");
+          setIsLoading(true);
+        });
+
+        player.on('canplay', () => {
+          console.log("player can play");
+          setIsLoading(false);
+        });
+
+        player.on('playing', () => {
+          console.log("player is playing");
+          setIsLoading(false);
+        })
+
+        player.on('play', () => {
+          console.log("player play clicked");
+          togglePlay();
+        });
+
+        player.on('pause', () => {
+          console.log("player pause clicked");
+          togglePlay();
+        })
+      })
     } else {
       // you can update player here [update player through props]
       // const player = playerRef.current;
@@ -169,7 +196,7 @@ const VideoPlayer = (props) => {
             controls={true}
           /> */}
           {
-            !isReady && (
+            isLoading && (
               <div className={`d-flex justify-content-center align-items-center ${styles.videoCover}`}>
                 <div
                   className={`spinner-border spinner-dark ${styles.loader}`}
