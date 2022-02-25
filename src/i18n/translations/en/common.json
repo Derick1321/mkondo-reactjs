@@ -8,6 +8,7 @@
     "favorites": "Favorites",
     "history": "History",
     "artist_panel": "Artist Panel",
+    "account": "Account",
     "add_artist": "Add Artist",
     "upload_media": "Upload Media",
     "your_playlists": "Your Playlists",
@@ -78,5 +79,6 @@
     "select_image": "Select Image",
     "track_list": "Track List",
     "complete": "Complete"
+
 
 }

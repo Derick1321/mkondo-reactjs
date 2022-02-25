@@ -10,6 +10,8 @@ import slider from './features/slider';
 import configuration from './features/configuration';
 import croptool from './features/croptool';
 import post from './features/post';
+import theatre from './features/theatre';
+
 
 export default {
   authentication,
@@ -24,4 +26,5 @@ export default {
   configuration,
   croptool,
   post,
+  theatre,
 };
