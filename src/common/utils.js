@@ -36,6 +36,8 @@ export const getDuration = (file, type, callback) => {
 }
 
 export const formatDate = (value) => {
+  if (!value) return;
+  
   const units = [
     'year',
     'month',
