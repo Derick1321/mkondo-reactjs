@@ -1,0 +1,12 @@
+@import '$assets/scss/main.scss';
+
+.wrapper {
+    position: relative;
+    margin: 10px 20px;
+    display: flex;
+    justify-content: end;
+
+    img {
+        margin-left: 10px;
+    }
+}
