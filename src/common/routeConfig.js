@@ -5,7 +5,6 @@ import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
 import Main from '$containers/Main';
 import Media from '$containers/Media';
-import Theatre from '$containers/Media/Theatre';
 import MediaUpload from '$containers/Media/MediaUpload';
 import NewMediaCategory from '$containers/Media/NewMediaCategory';
 import NewAlbum from '$containers/Media/NewAlbum';
@@ -39,7 +38,7 @@ import { ManageSeriesProfile } from '../containers/Media/ManageSeriesProfile';
 import { PrivacyPolicyPage } from '../containers/LegalPages/privacy';
 import LoginPage from '../containers/Login/index';
 import RegisterPage from '../containers/Register/index';
-import { TheatreContainer } from '../containers/Media/Theatre/index';
+import TheatreContainer from '../containers/Media/Theatre/index';
 import PaymentContainer from '../containers/Payment';
 import { CreatePaymentMethodContainer } from '../containers/Payment/CreatePaymentMethod/index';
 import { SubscriptionContainer } from '../containers/Subscription/index';
