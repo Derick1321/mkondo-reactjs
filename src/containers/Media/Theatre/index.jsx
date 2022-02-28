@@ -12,7 +12,7 @@ import { getNewReleases } from '../../../redux/features/media';
 import { handleFetch } from '../../../common/requestUtils';
 import VideoPlayer from '../../../components/media/VideoPlayer/index';
 
-export const TheatreContainer = () => {
+const TheatreContainer = () => {
     //state
     const [cover, setCover] = useState(bg);
     const [mediaUrl, setMediaUrl] = useState(null);
@@ -111,3 +111,5 @@ export const TheatreContainer = () => {
     );
 
 }
+
+export default TheatreContainer;
