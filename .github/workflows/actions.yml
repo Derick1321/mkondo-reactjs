@@ -22,7 +22,7 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install
+    - name: npm install
       run: |
         rm -rfv node_modules
         rm -rfv .parcel-cache
