@@ -10,11 +10,15 @@ const initialState = {
 }
 
 //Actions
-const ADD_SETUP_INTENT = 'subscription/ADD_POST';
+const ADD_SETUP_INTENT = 'subscription/ADD_SETUP_INTENT';
 
 export const addSetupIntent = createAsyncThunk(
     ADD_SETUP_INTENT, 
-    async (payload, store));
+    async (payload, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('POST', '/posts', payload, token);
+    },
+);
 
 const subscriptionSlice = createSlice({
     name: 'subscription',
