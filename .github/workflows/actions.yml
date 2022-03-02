@@ -22,7 +22,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install --force
+    - run: npm install
+      run: |
+        rm -rfv node_modules
+        rm -rfv .parcel-cache
+        npm install
     - run: npm run build
     
     - name: Deploy staging
