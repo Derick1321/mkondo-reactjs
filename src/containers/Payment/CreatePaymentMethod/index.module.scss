@@ -1,0 +1,12 @@
+@import '$assets/scss/main.scss';
+
+.container {
+    margin-top: 100px;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: Montserrat;
+
+    .title {
+        font-weight: 700;
+    }
+}
