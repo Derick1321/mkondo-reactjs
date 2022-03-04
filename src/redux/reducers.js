@@ -11,7 +11,7 @@ import configuration from './features/configuration';
 import croptool from './features/croptool';
 import post from './features/post';
 import theatre from './features/theatre';
-
+import subscription from './features/subscriptions';
 
 export default {
   authentication,
@@ -27,4 +27,5 @@ export default {
   croptool,
   post,
   theatre,
+  subscription,
 };
