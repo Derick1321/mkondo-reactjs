@@ -24,7 +24,7 @@ import LangBar from '../../components/common/LangBar';
 const App = () => {
   // store
   const initialRoute = useSelector((store) => store.nav.initialRoute);
-  const isMobile = useSelector((store) => store.nav.isMobile);
+  const listen = useSelector((store) => store.nav.isMobile);
   const dispatch = useDispatch();
 
   // I18n initial setting

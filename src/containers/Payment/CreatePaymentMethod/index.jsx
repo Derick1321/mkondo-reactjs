@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addSetupIntent } from '../../../redux/features/subscriptions';
 import { Elements } from '@stripe/react-stripe-js';
 import { AddPaymentMethodFormComponent } from './form';
+import { useLocation, useParams } from 'react-router-dom';
 
 
 const stripePromise = loadStripe("pk_test_51KXBZaHrASyjhIVozZjo4RHNRiuKZTLg0AANL6ZyHuGLILPWvqy5jWrgHp6gEqzDd26DjBPFAvqnCmY1LtHELEkW00EFWOQuLd");
@@ -13,6 +14,9 @@ export const CreatePaymentMethodContainer = () => {
   //state
   // const [clientSecret, setClientSecret] = useState("")
 
+  //hooks
+  const location = useLocation();
+
   //store
   const dispatch = useDispatch();
   const clientSecret = useSelector((state) => state.subscription.clientSecret);
@@ -20,7 +24,7 @@ export const CreatePaymentMethodContainer = () => {
 
   //effects
   useEffect(() => {
-    dispatch(addSetupIntent())
+    dispatch(addSetupIntent());
   }, []);
 
   const appearance = {
