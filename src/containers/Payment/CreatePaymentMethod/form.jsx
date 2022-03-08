@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSetupIntent } from '../../../redux/features/subscriptions';
+import { addPaymentMethod, addSetupIntent } from '../../../redux/features/subscriptions';
 import styles from './index.module.scss';
 import { routePaths } from '../../../common/routeConfig';
+import { useHistory } from 'react-router-dom';
 
 const BASE_URL = document.location.hostname === 'localhost' ? 'https://localhost:3000' : 'https://mkondo.co';
 
@@ -14,25 +15,47 @@ export const AddPaymentMethodFormComponent = (props) => {
     const stripe = useStripe();
     const elements = useElements();
 
+    const { push } = useHistory();
+
     //state
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [succeeded, setSucceeded] = useState(false);
 
     //store
     const dispatch = useDispatch()
     const isFetchingPaymentIntent = useSelector((state) => state.subscription.fetchPaymentIntentLoading);
     const clientSecret = useSelector((state) => state.subscription.clientSecret);
+    const paymentMethod = useSelector((state) => state.subscription.paymentMethod);
 
     //on component mount
     useEffect(() => {
+        console.log("effect triggered");
         if (!stripe) return;
-        if (!clientSecret) return;
-        stripe.retrieveSetupIntent(clientSecret).then(({ setupIntent }) => {
+        console.log("stripe exists", stripe);
+        console.log(window.location.search);
+        const re = /setup_intent_client_secret=(.*)&/;
+        const matches = re.exec(window.location.search);
+        var _clientSecret = null;
+        if (matches != null && matches.length > 1) {
+            _clientSecret = matches[1];
+        }
+        
+        
+        if (!_clientSecret) {
+            console.log("client secred does not exists", _clientSecret);
+            return;
+        }
+        console.log("client secret found", _clientSecret);
+
+        console.log("retrieving setup intent");
+        stripe.retrieveSetupIntent(_clientSecret).then(({ setupIntent }) => {
             console.log("setup intent", setupIntent);
             switch(setupIntent.status) {
                 case 'succeeded':
-                    setMessage('Payment Succeeded');
+                    setSucceeded(true);
                     setIsLoading(false);
+                    dispatch(addPaymentMethod(setupIntent.payment_method))
                     break;
                 case 'processing':
                     setMessage('Your payment is processing');
@@ -69,6 +92,19 @@ export const AddPaymentMethodFormComponent = (props) => {
         }
     
         setIsLoading(false);
+    }
+
+    if (succeeded) {
+        return (
+            <div className={styles.banner}>
+                {paymentMethod != null ? (
+                    <>
+                        <h3 className='text-light'>Payment Method Added</h3>
+                        <button className='btn btn-primary' onClick={() => push(routePaths.subscriptions)}>Ok</button>
+                    </>
+                ) : <h4 className='text-light'>Finalizing... <span className='spinner-border text-light'></span></h4>}
+            </div>
+        )
     }
 
     return (

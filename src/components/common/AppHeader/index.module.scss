@@ -59,7 +59,7 @@
         display: none;
     }
     background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.5em;
     font-weight: 700;
@@ -67,7 +67,7 @@
 
 .logo_geneneral {
     background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
-    -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     font-size: 1.5em;
     font-weight: 700;
