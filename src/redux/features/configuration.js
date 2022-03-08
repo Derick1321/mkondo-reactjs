@@ -5,6 +5,8 @@ import { handleFetch } from "../../common/requestUtils";
 const initialState = {
     status: 'idle',
     error: null,
+    isCreating: false,
+    isUpdating: false,
     data: []
 }
 
@@ -61,12 +63,26 @@ const configurationSlice = createSlice({
             state.status = 'error'
             state.error = action.payload
         },
+        [storeConfiguration.pending]: (state, action) => {
+            state.isCreating = true;
+        },
         [storeConfiguration.fulfilled]: (state, action) => {
+            state.isCreating = false;
             state.data.push(action.payload)
+        },
+        [storeConfiguration.rejected]: (state, action) => {
+            state.isCreating = false;
+        },
+        [updateConfiguration.pending]: (state, action) => {
+            state.isUpdating = true;
         },
         [updateConfiguration.fulfilled]: (state, action) => {
             const index = state.data.findIndex(row => row.configuration_id === action.payload.configuration_id)
+            state.isUpdating = false;
             state.data[index] = action.payload
+        },
+        [updateConfiguration.rejected]: (state, action) => {
+            state.isUpdating = false;
         },
         [deleteConfiguration.fulfilled]: (state, action) => {
             const filtered = state.data.filter(row => row.configuration_id === action.payload)
