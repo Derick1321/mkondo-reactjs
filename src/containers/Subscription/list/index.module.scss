@@ -81,3 +81,19 @@
     font-weight: 700;
     color: rgba(255, 255, 255, 0.5);
 }
+
+.panelDanger {
+    background-color: $error-color;
+    padding: 20px;
+    color: #0b0b0b;
+
+    p {
+        color: #0b0b0b;
+    }
+}
+
+.subscribed {
+    background: green;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
