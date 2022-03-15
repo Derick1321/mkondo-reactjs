@@ -25,8 +25,10 @@ export const PaymentMethodsContainer = () => {
 
   //effects
   useEffect(() => {
-    dispatch(fetchPaymentMethods());
-  }, []);
+    if (!isFetchingPaymentMethods && !paymentMethods.length) {
+      dispatch(fetchPaymentMethods());
+    }
+  }, [paymentMethods, isFetchingPaymentMethods]);
 
 
   //handlers

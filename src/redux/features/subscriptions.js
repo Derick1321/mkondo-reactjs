@@ -18,6 +18,12 @@ const initialState = {
     fetchProductsLoading: false,
     products: [],
     fetchProductsError: null,
+    subscriptions: [],
+    createdSubscription: null,
+    createSubscriptionLoading: false,
+    createSubscriptionError: null,
+    fetchSubscriptionsLoading: false,
+    fetchSubscriptionsError: null,
 }
 
 //Actions
@@ -26,6 +32,8 @@ const ADD_PAYMENT_METHOD = 'subscription/ADD_PAYMENT_METHOD';
 const FETCH_PAYMENT_METHODS = 'subscription/FETCH_PAYMENT_METHOD';
 const SET_DEFAULT_PAYMENT_METHOD = 'subscriptions/SET_DEFAULT_PAYMENT_METHOD';
 const FETCH_PRODUCTS = 'subscriptions/FETCH_PRODUCTS';
+const FETCH_SUBSCRIPTIONS = 'subscriptions/FETCH_SUBSCRIPTIONS';
+const CREATE_SUBSCRIPTIONS = 'subscriptions/CREATE_SUBSCRIPTIONS';
 
 export const addSetupIntent = createAsyncThunk(
     ADD_SETUP_INTENT, 
@@ -70,6 +78,21 @@ export const fetchProducts = createAsyncThunk(
     }
 );
 
+export const fetchSubscriptions = createAsyncThunk(
+    FETCH_SUBSCRIPTIONS, 
+    async (filters, store) => {
+        const { token, user } = store.getState().authentication;
+        return await handleFetch("GET", `/users/${user.user_id}/subscriptions`, null, token);
+    }
+);
+
+export const createSubscription = createAsyncThunk(
+    CREATE_SUBSCRIPTIONS,
+    async (payload, store) => {
+        const { token, user } = store.getState().authentication;
+        return await handleFetch("POST", `/users/${user.user_id}/subscriptions`, payload, token);
+    }
+);
 
 const subscriptionSlice = createSlice({
     name: 'subscription',
@@ -148,6 +171,37 @@ const subscriptionSlice = createSlice({
         [fetchProducts.rejected]: (state, action) => {
             state.fetchPaymentIntentLoading = false;
             state.fetchProductsError = action.error;
+        },
+        [fetchSubscriptions.pending]: (state, action) => {
+            state.fetchSubscriptionsLoading = true;
+            state.fetchSubscriptionsError = null;
+        }, 
+        [fetchSubscriptions.fulfilled]: (state, action) => {
+            state.fetchSubscriptionsLoading = false;
+            state.subscriptions = action.payload.subscriptions;
+            state.fetchSubscriptionsError = null;
+        },
+        [fetchSubscriptions.rejected]: (state, action) => {
+            state.fetchSubscriptionsLoading = false;
+            state.fetchSubscriptionsError = action.error;
+        },
+        [createSubscription.pending]: (state, action) => {
+            state.createSubscriptionLoading = true;
+            state.createdSubscription = null;
+            state.createSubscriptionError = null ;
+        },
+        [createSubscription.fulfilled]: (state, action) => {
+            state.createSubscriptionLoading = false;
+            state.createdSubscription = action.payload.subscription;
+            state.createSubscriptionError = null;
+
+            //prepend subscription
+            state.subscriptions = [action.payload.subscription, ...state.subscriptions];
+        },
+        [createSubscription.rejected]: (state, action) => {
+            state.createSubscriptionLoading = false;
+            state.createdSubscription = null;
+            state.createSubscriptionError = action.error; 
         }
     },
 });
