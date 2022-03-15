@@ -316,7 +316,6 @@ const SideMenu = (props) => {
                 to={generatePath(routePaths.playlist, { id: item.playlist_id })}
                 className={styles.sideMenuItem}
                 activeClassName="active"
-                key={`sidemenu-playlist-${idx}`}
               >
                 <img
                   src={playlistIcon}

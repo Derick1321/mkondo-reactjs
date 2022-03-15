@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
 import { getUser, saveUser, clearUser } from '$common/userService';
+import { setDefaultPaymentMethod } from './subscriptions';
+import user from './user';
 
 const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
@@ -216,6 +218,18 @@ const authenticationSlice = createSlice({
             state.visitorColdStartError = action.error;
             state.visitorColdStartComplete = false;
         },
+        [setDefaultPaymentMethod.fulfilled]: (state, action) => {
+            if (state.user) {
+                console.log("state user detected");
+                if (state.user.stripe_customer) {
+                    console.log("stripe customer detected");
+                    if (state.user.stripe_customer.invoice_settings.default_payment_method) {
+                        state.user.stripe_customer.invoice_settings.default_payment_method = action.payload.customer.invoice_settings.default_payment_method;
+                    }
+                }
+            }
+            
+        }
     }
 });
 
