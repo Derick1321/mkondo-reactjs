@@ -8,4 +8,12 @@
     background: $accent-color;
     padding: 20px;
     margin-bottom: 15px;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+
+    &:hover {
+        background-color: rgba($color: $primary-color, $alpha: 1.0);
+        color: white;
+        transition: all 0.1s ease-in-out;
+    }
 }
