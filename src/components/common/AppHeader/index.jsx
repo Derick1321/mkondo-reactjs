@@ -110,7 +110,7 @@ const AppHeader = (props) => {
 
   // render
   return (
-    <>
+ 
       <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
         <div className={`d-flex align-items-center d-sm-none ${styles.menuWrapper}`}>
           <HamburgerMenu />
@@ -118,20 +118,20 @@ const AppHeader = (props) => {
         </div>
         {
           showSearch && (
-            <TextInputCustom
-              name="search"
-              placeholder={t('search')}
-              value={search}
-              onChange={handleChange}
-              customWrapperClass={styles.appHeaderInput}
-              icon={search ? "cancel" : "search"}
-              onIconClick={handleClear}
-              onFocus={handleFocus}
-            />
+                <TextInputCustom
+                  name="search"
+                  placeholder={t('search')}
+                  value={search}
+                  onChange={handleChange}
+                  customWrapperClass={styles.appHeaderInput}
+                  icon={search ? "cancel" : "search"}
+                  onIconClick={handleClear}
+                  onFocus={handleFocus}
+                />
           )
         }
         { !showSearch && (<span className={styles.logo_geneneral}>Mkondo</span>)}
-        <div className={`ml-auto`}></div>
+        
         <DropDown
           options={headerMenus}
           handleSelect={handleSelect}
@@ -146,13 +146,13 @@ const AppHeader = (props) => {
             <img src={dropdown} alt="" style={{width: '10px', marginRight: '5px'}} />
           </div>
         </DropDown>
-      </div>
+   
       {
         search && (
           <SearchResult />
         )
       }
-    </>
+    </div>
   );
 }
 
