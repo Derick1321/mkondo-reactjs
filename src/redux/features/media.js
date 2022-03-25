@@ -34,6 +34,7 @@ const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
 const ADD_SERIES = 'media/ADD_SERIES';
 const GET_SERIES = 'media/GET_SERIES';
 const REMOVE_SERIES = 'media/REMOVE_SERIES';
+const FETCH_MOVIES = 'media/FETCH_MOVIES';
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -450,6 +451,21 @@ export const removeSeries = createAsyncThunk(
     }
 )
 
+export const fetchMovies = createAsyncThunk(
+    FETCH_MOVIES,
+    async (filters, store) => {
+        console.log("fetching movies thunk triggered", filters);
+        const { token } = store.getState().authentication;
+        const _filters = {
+            category: 'movie',
+            ...filters
+        };
+        console.log("the filters are ", _filters);
+        
+        return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }  
+);
+
 const initialState = {
     addMediaPending: false,
     addMediaError: null,
@@ -502,6 +518,7 @@ const initialState = {
     deleteCommentError: null,
     deleteCommentComplete: false,
     updateMediaPending: false,
+    updateMediaPendingQueue: [],
     updateMediaError: null,
     updateMediaComplete: false,
     addCommentLikePending: false,
@@ -564,6 +581,9 @@ const initialState = {
     },
     mySeries: [],
     lastUploaded: null,
+    fetchMoviesPending: false,
+    movies: [],
+    fetchMoviesError: null,
 };
 
 const mediaSlice = createSlice({
@@ -971,18 +991,24 @@ const mediaSlice = createSlice({
         },
         [updateMedia.pending]: (state, action) => {
             state.updateMediaPending = true;
+            state.updateMediaPendingQueue.push(action.meta.arg.id);
             state.updateMediaComplete = false;
             state.updateMediaError = null;
             state.comments = [];
         },
         [updateMedia.fulfilled]: (state, action) => {
             state.updateMediaPending = false;
+            state.updateMediaPendingQueue = state.updateMediaPendingQueue.filter((id) => action.meta.arg.id != id)
             state.updateMediaComplete = true;
             state.updateMediaError = null;
+
+            //updating movies
+            state.movies = state.movies.map((movie) => movie.media_id == action.meta.arg.id ? action.payload.media : movie);
         },
         [updateMedia.rejected]: (state, action) => {
             state.updateMediaPending = false;
             state.updateMediaComplete = true;
+            state.updateMediaPendingQueue = state.updateMediaPendingQueue.filter((id) => action.meta.arg.id != id)
             state.updateMediaError = action.error;
         },
         [addCommentLike.pending]: (state, action) => {
@@ -1076,6 +1102,19 @@ const mediaSlice = createSlice({
 
             //remove the series from my series
             state.mySeries = state.mySeries.filter(series => series.series_id != action.meta.arg);
+        },
+        [fetchMovies.pending]: (state, action) => {
+            state.fetchMoviesPending = true;
+            state.fetchMoviesError = null;
+        },
+        [fetchMovies.fulfilled]: (state, action) => {
+            state.fetchMoviesPending = false;
+            state.movies = action.payload.media;
+            state.fetchMoviesError = null;
+        },
+        [fetchMovies.rejected]: (state, action) => {
+            state.fetchMoviesPending = false;
+            state.fetchMoviesError = action.error;
         }
     }
 });
