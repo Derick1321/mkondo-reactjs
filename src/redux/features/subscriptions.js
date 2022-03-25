@@ -19,6 +19,7 @@ const initialState = {
     products: [],
     fetchProductsError: null,
     subscriptions: [],
+    paymentIntents: [],
     createdSubscription: null,
     createSubscriptionLoading: false,
     createSubscriptionError: null,
@@ -192,11 +193,18 @@ const subscriptionSlice = createSlice({
         },
         [createSubscription.fulfilled]: (state, action) => {
             state.createSubscriptionLoading = false;
-            state.createdSubscription = action.payload.subscription;
+            state.createdSubscription = action.payload;
             state.createSubscriptionError = null;
 
             //prepend subscription
-            state.subscriptions = [action.payload.subscription, ...state.subscriptions];
+            if (action.payload.subscription) {
+                state.subscriptions.push(action.payload.subscription);
+            }
+
+            if (action.payload.payment_intent) {
+                state.paymentIntents.push(action.payload.payment_intent);
+            }
+            
         },
         [createSubscription.rejected]: (state, action) => {
             state.createSubscriptionLoading = false;
