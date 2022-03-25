@@ -518,6 +518,7 @@ const initialState = {
     deleteCommentError: null,
     deleteCommentComplete: false,
     updateMediaPending: false,
+    updateMediaPendingQueue: [],
     updateMediaError: null,
     updateMediaComplete: false,
     addCommentLikePending: false,
@@ -990,18 +991,24 @@ const mediaSlice = createSlice({
         },
         [updateMedia.pending]: (state, action) => {
             state.updateMediaPending = true;
+            state.updateMediaPendingQueue.push(action.meta.arg.id);
             state.updateMediaComplete = false;
             state.updateMediaError = null;
             state.comments = [];
         },
         [updateMedia.fulfilled]: (state, action) => {
             state.updateMediaPending = false;
+            state.updateMediaPendingQueue = state.updateMediaPendingQueue.filter((id) => action.meta.arg.id != id)
             state.updateMediaComplete = true;
             state.updateMediaError = null;
+
+            //updating movies
+            state.movies = state.movies.map((movie) => movie.media_id == action.meta.arg.id ? action.payload.media : movie);
         },
         [updateMedia.rejected]: (state, action) => {
             state.updateMediaPending = false;
             state.updateMediaComplete = true;
+            state.updateMediaPendingQueue = state.updateMediaPendingQueue.filter((id) => action.meta.arg.id != id)
             state.updateMediaError = action.error;
         },
         [addCommentLike.pending]: (state, action) => {

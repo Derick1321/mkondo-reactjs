@@ -13,7 +13,6 @@ const buildUrl = (url, data) => {
         url: newUrl,
         headers,
     };
-
     if (data) {
         props.body = JSON.stringify(data);
         headers['Content-Type'] = 'application/json';
