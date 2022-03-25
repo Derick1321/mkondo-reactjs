@@ -45,6 +45,7 @@ import { CreatePaymentMethodContainer } from '../containers/Payment/CreatePaymen
 import { SubscriptionContainer } from '../containers/Subscription/index';
 import SubscriptionShowContainer from '../containers/Subscription/show/index';
 import { SubscriptionConfiguration } from '../containers/Configuration/Subscription/index';
+import { ManageMovies } from '../containers/ManagerPanel/movies';
 
 export const routePaths = {
   main: '/app',
@@ -90,7 +91,13 @@ export const routePaths = {
   sliderShow: '/app/slider/:slider_id',
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
-  managerPanel: '/app/manager',
+  managerPanel: '/app/manage',
+  manageMovies: '/app/manage/movies',
+  manageSongs: '/app/manage/songs',
+  manageVideos: '/app/manage/videos',
+  manageAlbums: '/app/manage/albums',
+  manageSeries: '/app/manage/series',
+  manageArtist: '/app/manage/artists',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -422,6 +429,15 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.managerPanel,
         component: ManagerPanel,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.manageMovies,
+            component: ManageMovies,
+            redirect: redirectFunctions.app
+          }
+        ],
       },
     ],
   },
