@@ -121,13 +121,11 @@ const SubscriptionsListContainer = (props) => {
     console.log("Handling subscription", product.prices);
     setSubscribing(product);
     var payload = {
+      "type": "reccuring",
       "items": [{"price": product.prices[0].id}],
     }
     dispatch(createSubscription(payload))
   }
-
-
-
 
   return (
     <div className={styles.container}>

@@ -25,10 +25,11 @@ export const PaymentMethodsContainer = () => {
 
   //effects
   useEffect(() => {
-    if (!isFetchingPaymentMethods && !paymentMethods.length) {
+    console.log("fetching payment methods triggered", isFetchingPaymentMethods, paymentMethods);
+    if (!paymentMethods.length) {
       dispatch(fetchPaymentMethods());
     }
-  }, [paymentMethods, isFetchingPaymentMethods]);
+  }, []);
 
 
   //handlers
