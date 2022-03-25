@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import videoCamera from '$assets/images/icons/video-camera.svg';
 import styles from './index.module.scss';
 import { handleFetch } from '$common/requestUtils';
+import { updateMedia } from '$redux/features/media';
 
 const TheatrePlaylistCoverComponent = (props) => {
   //props
