@@ -1,0 +1,26 @@
+@import '$assets/scss/main.scss';
+
+.container {
+    margin-top: 100px;
+    margin-left: 30px;
+    margin-right: 30px;
+    font-family: Montserrat;
+
+    .title {
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.5);
+    }
+}
+
+.stripeFormWrapper {
+    width: 50vw;
+    @media only screen and (min-width: 992px) {
+        
+    }
+}
+
+.banner {
+    background-color: green;
+    border-radius: 10px;
+    padding: 20px;
+}
