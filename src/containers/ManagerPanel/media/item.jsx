@@ -7,6 +7,8 @@ import { SuccessPage } from '$containers/Success';
 import { updateMedia } from '../../../redux/features/media';
 
 export const ManageMoviesItem = ( props ) => {
+    //hooks
+    
     //props
     const { movie, key } = props;
 
@@ -14,8 +16,6 @@ export const ManageMoviesItem = ( props ) => {
     const [isLoadingCoverImage, setIsLoadingCoverImage] = useState(true);
     const [coverUrl, setCoverUrl] = useState(null);
     const [isUpdating, setIsUpdating] = useState(false);
-
-    
 
     //store
     const token = useSelector((state) => state.authentication.token);
@@ -111,7 +111,7 @@ export const ManageMoviesItem = ( props ) => {
             </div>
             <div className='p-2'>
                     <div className="col-3 mb-2">
-                        <button className='btn btn-primary'>View</button>
+                        <button className='btn btn-primary' onClick={() => push('')}>View</button>
                     </div>
                     <div className="col-3">
                         {!movie.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
