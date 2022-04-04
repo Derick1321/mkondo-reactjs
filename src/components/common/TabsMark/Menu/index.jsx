@@ -36,7 +36,6 @@ const TabMenu = (props) => {
       type="button"
     >
       <span style={customStyle}>{title}</span>
-
     </button>
   );
 }

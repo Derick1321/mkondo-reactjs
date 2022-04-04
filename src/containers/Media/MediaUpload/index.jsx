@@ -104,6 +104,8 @@ const MediaUpload = () => {
         binary: result[index],
       });
 
+      
+
       getDuration(result[index], 'audio', (duration) => {
         handleChange(result[index].name, {
           ...values[result[index].name],
