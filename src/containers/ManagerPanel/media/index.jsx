@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { ManageMoviesItem } from './item';
 
 
-export const ManageMovies = () => {
+export const ManageMedia = () => {
     //store
     const movies = useSelector((state) => state.media.movies);
 
