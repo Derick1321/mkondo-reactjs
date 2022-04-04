@@ -44,6 +44,10 @@ const UploadCard = (props) => {
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
+  useEffect(() => { 
+    console.log("")
+    handleChange('title', name); 
+  }, [name]);
 
   // state
   const [isOpen, setIsOpen] = useState(false);

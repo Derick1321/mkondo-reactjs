@@ -30,6 +30,10 @@
     color: $secondary-gray;
 }
 
+.genreSelectorMenu:hover {
+    cursor: pointer;
+}
+
 .genreSelectorMenuActive {
     background-color: #FC0136;
     color: $white;

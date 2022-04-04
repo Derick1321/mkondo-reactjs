@@ -24,6 +24,7 @@ const TheatrePlaylistItemHeaderComponent = (props) => {
 
     return (
         <div className={styles.wrapper}>
+            <span className='mr-auto'>PREMIUM</span>
             <img src={favorite} alt="" />
             <img src={share} alt="" />
         </div>
