@@ -35,6 +35,9 @@ const ADD_SERIES = 'media/ADD_SERIES';
 const GET_SERIES = 'media/GET_SERIES';
 const REMOVE_SERIES = 'media/REMOVE_SERIES';
 const FETCH_MOVIES = 'media/FETCH_MOVIES';
+const FETCH_AUDIOS = 'media/FETCH_AUDIO';
+const FETCH_VIDEOS = 'media/FETCH_VIDEOS';
+
 
 // actions
 export const addMedia = createAsyncThunk(
@@ -466,6 +469,37 @@ export const fetchMovies = createAsyncThunk(
     }  
 );
 
+export const fetchAudios = createAsyncThunk(
+    FETCH_AUDIOS,
+    async (filters, store) => {
+        console.log("fetching movies thunk triggered", filters);
+        const { token } = store.getState().authentication;
+        const _filters = {
+            category: 'movie',
+            ...filters
+        };
+        console.log("the filters are ", _filters);
+        
+        return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }  
+);
+
+export const fetchVideos = createAsyncThunk(
+    FETCH_MOVIES,
+    async (filters, store) => {
+        console.log("fetching movies thunk triggered", filters);
+        const { token } = store.getState().authentication;
+        const _filters = {
+            category: 'movie',
+            ...filters
+        };
+        console.log("the filters are ", _filters);
+        
+        return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }  
+);
+
+
 const initialState = {
     addMediaPending: false,
     addMediaError: null,
@@ -584,6 +618,12 @@ const initialState = {
     fetchMoviesPending: false,
     movies: [],
     fetchMoviesError: null,
+    fetchAudioPending: false,
+    audios: null,
+    fetchAudioError: null,
+    fetchVideoPending: null,
+    videos: [],
+    fetchVideoError: null,
 };
 
 const mediaSlice = createSlice({
