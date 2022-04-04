@@ -1,6 +1,6 @@
 import React from 'react'
 import { PropTypes } from 'prop-types';
-import TheatrePlaylistCoverComponent from '../cover';
+import TheatrePlaylistCoverComponent from './cover';
 import styles from "./index.module.scss";
 import ActionHeader from '../../../../../../components/media/ActionHeader/index';
 import TheatrePlaylistItemHeaderComponent from './header';
@@ -29,7 +29,6 @@ const TheatrePlaylistItemComponent = (props) => {
         </div>
       </TheatrePlaylistCoverComponent>
       <h4 className={styles.title}>{name}</h4>
-      <p className={styles.description}>{description}</p>
     </div>
   )
 }

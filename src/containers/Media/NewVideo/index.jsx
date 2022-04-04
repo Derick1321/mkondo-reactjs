@@ -120,11 +120,10 @@ const NewVideo = () => {
   }, [addMediaError]);
 
   // hadnlers
-  const handleVideoChange = async (files) => {
+  const handleVideoChange = (files) => {
     console.log("Handling video change", files);
     setFile(files[0]);
-    let url = await generatePreview(files[0]);
-    setVideoFile(url);
+    generatePreview(files[0]).then(url =>  setVideoFile(url));
     setVideoFileName(files[0].name);
     getDuration(files[0], 'video', (value) => {
       handleChange('duration', value);
@@ -247,9 +246,10 @@ const NewVideo = () => {
                     <source src={videoFile} />
                     Your browser does not support the video tag.
                 </video>
-                <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
+                
               </div>
             )}
+            <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
             </div>
             <div className="col-12 col-md-6">
               <InputField
