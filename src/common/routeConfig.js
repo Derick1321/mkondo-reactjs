@@ -44,7 +44,7 @@ import { CreatePaymentMethodContainer } from '../containers/Payment/CreatePaymen
 import { SubscriptionContainer } from '../containers/Subscription/index';
 import SubscriptionShowContainer from '../containers/Subscription/show/index';
 import { SubscriptionConfiguration } from '../containers/Configuration/Subscription/index';
-import { ManageMovies } from '../containers/ManagerPanel/movies';
+import { ManageMovies } from '../containers/ManagerPanel/media';
 
 export const routePaths = {
   main: '/app',

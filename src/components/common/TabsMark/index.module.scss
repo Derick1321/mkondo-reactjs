@@ -2,7 +2,10 @@
 .wrapper {
     margin-top: 20px;
     margin-bottom: 15px;
-    justify-content: center;
+    justify-content: start;
+    border-bottom: solid 1px rgba($color: white, $alpha: 0.2);
+    width: 100%;
+
     @media screen and (max-width: 768px) {
         margin-top: 20px;
     }
