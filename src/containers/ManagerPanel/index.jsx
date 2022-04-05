@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, useHistory } from 'react-router-dom';
+import { Switch, useHistory, generatePath } from 'react-router-dom';
 import RouteWithSubRoutes from '../../components/common/RouteWithSubRoutes';
-import { fetchMovies } from '../../redux/features/media';
+import { fetchMovies, fetchAudios, fetchVideos } from '../../redux/features/media';
 import styles from './index.module.scss';
 import { routePaths } from '../../common/routeConfig';
 
@@ -20,6 +20,10 @@ export const ManagerPanel = (props) => {
     const dispatch = useDispatch();
     const movies = useSelector((state) => state.media.movies);
     const isFetchingMovies = useSelector((state) => state.media.fetchMoviesLoading);
+    const audios = useSelector((state) => state.media.audios);
+    const isFetchingAudios = useSelector((state) => state.media.fetchAudiosLoading);
+    const videos = useSelector((state) => state.media.videos);
+    const isFetchingVideos = useSelector((state) => state.media.fetchVideoesLoading);
 
     //effects
     useEffect(() => {
@@ -28,7 +32,15 @@ export const ManagerPanel = (props) => {
             console.log("dispatching fetching movies action");
             dispatch(fetchMovies());
         }
-    }, [dispatch]);
+        if (!audios.length) {
+            console.log("dispatching fetching audios action");
+            dispatch(fetchAudios());
+        }
+        if (!videos.length) {
+            console.log("dispatching fetching videos action");
+            dispatch(fetchVideos());
+        }
+    }, []);
 
 
     return (
@@ -51,19 +63,19 @@ export const ManagerPanel = (props) => {
                             <span>0</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Songs</h3>
-                            <span>0</span>
+                            <span>{audios.length}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'video'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Videos</h3>
-                            <span>0</span>
+                            <span>{videos.length}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`} onClick={() => push(routePaths.manageMovies)}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Movies</h3>
                             {isFetchingMovies ? <span className='spinner-border'></span> : <span>{movies.length}</span>}
