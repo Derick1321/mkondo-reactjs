@@ -128,6 +128,14 @@ export const addAlbum = createAsyncThunk(
     }
 );
 
+export const fetchAlbums = createAsyncThunk(
+    GET_ALBUMS,
+    async (data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('GET', 'albums', data, token);
+    }
+);
+
 export const addComment = createAsyncThunk(
     ADD_COMMENT,
     async(data, param) => {
@@ -620,9 +628,12 @@ const initialState = {
     fetchAudioPending: false,
     audios: [],
     fetchAudioError: null,
-    fetchVideoPending: null,
+    fetchVideoPending: false,
     videos: [],
     fetchVideoError: null,
+    fetchAlbumsPending: false,
+    albums: [],
+    fetchAlbumsError: null,
 };
 
 const mediaSlice = createSlice({
@@ -1180,6 +1191,18 @@ const mediaSlice = createSlice({
         [fetchVideos.rejected]: (state, action) => {
             state.fetchVideoPending = false;
             state.fetchVideoError = action.error;
+        },
+        [fetchAlbums.pending]: (state, action) => {
+            state.fetchAlbumsPending = true;
+            state.fetchAlbumsError = null;
+        },
+        [fetchAlbums.fulfilled]: (state, action) => {
+            state.fetchAlbumsPending = false;
+            state.albums = action.payload.albums;
+        },
+        [fetchAlbums.rejected]: (state, action) => {
+            state.fetchAlbumsPending = false;
+            state.fetchAlbumsError = action.error;
         }
     }
 });
