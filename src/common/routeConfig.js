@@ -91,12 +91,7 @@ export const routePaths = {
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
   managerPanel: '/app/manage',
-  manageMovies: '/app/manage/movies',
-  manageSongs: '/app/manage/songs',
-  manageVideos: '/app/manage/videos',
-  manageAlbums: '/app/manage/albums',
-  manageSeries: '/app/manage/series',
-  manageArtist: '/app/manage/artists',
+  manageMedia: '/app/manage/:category',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -432,7 +427,7 @@ export const routes = [
         routes: [
           {
             ...defaultConfig,
-            path: routePaths.manageMovies,
+            path: routePaths.manageMedia,
             component: ManageMedia,
             redirect: redirectFunctions.app
           }

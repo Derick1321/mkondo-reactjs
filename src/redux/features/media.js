@@ -472,25 +472,24 @@ export const fetchMovies = createAsyncThunk(
 export const fetchAudios = createAsyncThunk(
     FETCH_AUDIOS,
     async (filters, store) => {
-        console.log("fetching movies thunk triggered", filters);
+        console.log("fetching audios thunk triggered", filters);
         const { token } = store.getState().authentication;
         const _filters = {
-            category: 'movie',
+            category: 'audio',
             ...filters
         };
         console.log("the filters are ", _filters);
-        
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
     }  
 );
 
 export const fetchVideos = createAsyncThunk(
-    FETCH_MOVIES,
+    FETCH_VIDEOS,
     async (filters, store) => {
-        console.log("fetching movies thunk triggered", filters);
+        console.log("fetching videos thunk triggered", filters);
         const { token } = store.getState().authentication;
         const _filters = {
-            category: 'movie',
+            category: 'video',
             ...filters
         };
         console.log("the filters are ", _filters);
@@ -619,7 +618,7 @@ const initialState = {
     movies: [],
     fetchMoviesError: null,
     fetchAudioPending: false,
-    audios: null,
+    audios: [],
     fetchAudioError: null,
     fetchVideoPending: null,
     videos: [],
@@ -1155,6 +1154,32 @@ const mediaSlice = createSlice({
         [fetchMovies.rejected]: (state, action) => {
             state.fetchMoviesPending = false;
             state.fetchMoviesError = action.error;
+        },
+        [fetchAudios.pending]: (state, action) => {
+            state.fetchAudioPending = true;
+            state.fetchAudioError = null;
+        },
+        [fetchAudios.fulfilled]: (state, action) => {
+            state.fetchAudioPending = false;
+            state.audios = action.payload.media;
+            state.fetchAudioError = null;
+        },
+        [fetchAudios.rejected]: (state, action) => {
+            state.fetchAudioPending = false;
+            state.fetchAudioError = action.error;
+        },
+        [fetchVideos.pending]: (state, action) => {
+            state.fetchVideoPending = true;
+            state.fetchVideoError = null;
+        },
+        [fetchVideos.fulfilled]: (state, action) => {
+            state.fetchVideoPending = false;
+            state.audios = action.payload.media;
+            state.fetchVideoError = null;
+        },
+        [fetchVideos.rejected]: (state, action) => {
+            state.fetchVideoPending = false;
+            state.fetchVideoError = action.error;
         }
     }
 });
