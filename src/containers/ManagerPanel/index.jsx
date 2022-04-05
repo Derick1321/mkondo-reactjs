@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Switch, useHistory, generatePath } from 'react-router-dom';
 import RouteWithSubRoutes from '../../components/common/RouteWithSubRoutes';
-import { fetchMovies, fetchAudios, fetchVideos } from '../../redux/features/media';
+import { fetchMovies, fetchAudios, fetchVideos, fetchAlbums, getSeries } from '../../redux/features/media';
 import styles from './index.module.scss';
 import { routePaths } from '../../common/routeConfig';
+import { getArtists } from '../../redux/features/artist';
 
 export const ManagerPanel = (props) => {
      // props
@@ -24,6 +25,13 @@ export const ManagerPanel = (props) => {
     const isFetchingAudios = useSelector((state) => state.media.fetchAudiosLoading);
     const videos = useSelector((state) => state.media.videos);
     const isFetchingVideos = useSelector((state) => state.media.fetchVideoesLoading);
+    const artists = useSelector((state) => state.artist.artists);
+    const isFetchingArtists = useSelector((state) => state.artist.getArtistPending);
+    const albums = useSelector((state) => state.media.albums);
+    const isFetchingAlbums = useSelector((state) => state.media.fetchAlbumsPending);
+    const series = useSelector((state) => state.media.mySeries);
+    const isFetchingSeries = useSelector((state) => state.media.getSeriesPending);
+
 
     //effects
     useEffect(() => {
@@ -39,6 +47,18 @@ export const ManagerPanel = (props) => {
         if (!videos.length) {
             console.log("dispatching fetching videos action");
             dispatch(fetchVideos());
+        }
+        if (!artists.length) {
+            console.log("dispatching fetching artists action");
+            dispatch(getArtists());
+        }
+        if (!albums.length) {
+            console.log("dispatching fetching albums action");
+            dispatch(fetchAlbums());
+        }
+        if (!series.length) {
+            console.log("dispatching fetching series action");
+            dispatch(getSeries());
         }
     }, []);
 
@@ -58,12 +78,12 @@ export const ManagerPanel = (props) => {
                 <h1 className="text-light">Manager Panel</h1>
                 <div className="row">
                     <div className={`col-md-4`}>
-                        <div className={`${styles.tile}`}>
+                        <div className={`${styles.tile}`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'artist'}))}>
                             <h3>Artists</h3>
-                            <span>0</span>
+                            <span>{artists.length}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'audio'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Songs</h3>
                             <span>{audios.length}</span>
@@ -84,13 +104,13 @@ export const ManagerPanel = (props) => {
                     <div className={`col-md-4`}>
                         <div className={`${styles.tile}`}>
                             <h3>Albums</h3>
-                            <span>0</span>
+                            <span>{albums.length}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`}>
                         <div className={`${styles.tile}`}>
                             <h3>Series</h3>
-                            <span>0</span>
+                            <span>{series.length}</span>
                         </div>
                     </div>
                 </div>
