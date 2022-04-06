@@ -54,6 +54,8 @@ const NewVideo = () => {
   const [values, setValues] = useState({
     duration: 0,
   });
+  const [mediaUploadComplete, setMediaUploadComplete] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
   
   const [localCoverUrl, setLocalCoverUrl] = useState(null);
 
@@ -85,6 +87,11 @@ const NewVideo = () => {
                 ...values,
                 media_url: uploading.mediaUrl,
               })
+              setMediaUploadComplete(true);
+              setSuccessMessage("File Uploaded")
+              setTimeout(() => {
+                setSuccessMessage(null);
+              }, 1000);
               console.debug("File uploaded");
             }
         }
@@ -184,10 +191,11 @@ const NewVideo = () => {
   }
 
   const handleCoverChange = async (files) => {
+    console.log("Cover photo changed");
     const url = await generatePreview(files[0]);
     dispatch(crop({
       src: url,
-      aspectRatio: 4/1,
+      aspectRatio: 27/40,
       width: 1000, 
       locked: false,
     }))
@@ -196,70 +204,86 @@ const NewVideo = () => {
   const buildInputPanel = () => {
     return (
       <>
-
+        {successMessage && <div className={styles.notification}>{successMessage}</div>}
         <p className={styles.paneTitle}>{type}</p>
 
         <div className={styles.inputContainer}>
           <p className={styles.title}>{file.name} - {bytesToSize(file.size)}</p>
-          <div className={styles.cover}>
-            <AvatarInput
-              url={localCoverUrl}
-              onChange={handleCoverChange}
-            />
-          </div>
+          
           <div className={styles.inputFormWrapper}>
             <div className="row">
-              {
-                menus.map((menu) => {
-                  const item = {
-                    ...menu,
-                  };
+              <div className="col-md-4">
+                <div className={styles.cover}>
+                  <AvatarInput
+                    url={localCoverUrl}
+                    onChange={handleCoverChange}
+                  />
+                </div>
+              </div>
 
-                  if (item.options && uploadType === 'movie') {
-                    item.options = movieGenres;
+              <div className="col-md-8">
+                <div className="row">
+                  {
+                    menus.map((menu) => {
+                      const item = {
+                        ...menu,
+                      };
+
+                      if (item.options && uploadType === 'movie') {
+                        item.options = movieGenres;
+                      }
+
+                      return (
+                        <div
+                          className='col-12 col-md-6'
+                          key={`new-video-${menu.name}`}
+                        >
+                          <InputField
+                            field={{
+                              ...item,
+                              value: values[menu.name]
+                            }}
+                            error={errors[menu.name]}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      )
+                    })
                   }
-
-                  return (
-                    <div
-                      className='col-12 col-md-6'
-                      key={`new-video-${menu.name}`}
-                    >
-                      <InputField
-                        field={{
-                          ...item,
-                          value: values[menu.name]
-                        }}
-                        error={errors[menu.name]}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  )
-                })
-              }
+                </div>
+                <div className="row">
+                  <div className="col">
+                    <InputField
+                      field={{
+                        ...descriptionMenu,
+                        value: values.description
+                      }}
+                      error={errors.description}
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="row">
             <div className="col-12 col-md-6">
-            {videoFile && (
-              <div>
-                <video width="100%" height="100%" autoPlay muted>
-                    <source src={videoFile} />
-                    Your browser does not support the video tag.
-                </video>
-                
+              {videoFile && (
+                <div>
+                  <video width="100%" height="100%" autoPlay muted>
+                      <source src={videoFile} />
+                      Your browser does not support the video tag.
+                  </video>
+                  
+                </div>
+              )}
+              <div className="d-flex align-items-center">
+                <div className=''>
+                  <DonutProgress progress={videoFileProgress} height="50px" width="50px" />
+                </div>
+                {mediaUploadComplete ? <span className='ml-2 text-success'>Upload Complete!</span> : <span className='ml-2'>Uploading...</span>}
               </div>
-            )}
-            <DonutProgress progress={videoFileProgress} height="30px" width="30px" />
-            </div>
-            <div className="col-12 col-md-6">
-              <InputField
-                field={{
-                  ...descriptionMenu,
-                  value: values.description
-                }}
-                error={errors.description}
-                onChange={handleChange}
-              />
+
             </div>
           </div>
         </div>
@@ -272,6 +296,7 @@ const NewVideo = () => {
               </Button>
           <Button
             onClick={handleSave}
+            disabled={!mediaUploadComplete}
           >
             Save
           </Button>
