@@ -63,7 +63,7 @@ const SideMenu = (props) => {
       activeIcon: require('$assets/images/icons/upload.svg'),
       title: 'Manager Panel',
       path: routePaths.managerPanel,
-      permission: 'artist',
+      permission: 'super admin',
     },
   ];
 

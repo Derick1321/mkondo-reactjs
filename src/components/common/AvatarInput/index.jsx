@@ -71,6 +71,8 @@ const AvatarInput = (props) => {
   }
 
   const handleSelectFile = () => {
+    console.log("resetting the file value");
+    fileRef.current.value = null;
     fileRef.current.click();
   }
 

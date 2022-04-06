@@ -30,8 +30,13 @@
 
 .cards {
     display: grid;
-    grid-template-columns: auto auto auto auto auto;
     gap: 10px;
+    
+    @media only screen and (min-width: 768px) {
+        display: grid;
+        grid-template-columns: auto auto auto auto auto;
+        gap: 10px;
+    }
 }
 
 .card {
