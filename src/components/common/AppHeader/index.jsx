@@ -114,7 +114,7 @@ const AppHeader = (props) => {
       <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
         <div className={`d-flex align-items-center d-sm-none ${styles.menuWrapper}`}>
           <HamburgerMenu />
-          {(isSideMenuOpen  ) && <span className={styles.mobile_logo}>Mkondo</span>}
+          {(!isSideMenuOpen  ) && <span className={styles.mobile_logo}>Mkondo</span>}
         </div>
         {
           showSearch && (
