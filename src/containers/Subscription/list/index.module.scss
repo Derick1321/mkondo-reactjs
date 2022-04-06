@@ -7,11 +7,16 @@
 }
 
 .cardWrapper {
-    display: flex;
-    margin-top: 50px;
-    
     div:first-child {
-        margin-right: 10px;
+        margin-bottom: 20px;
+    }
+    @media only screen and (min-width: 768px) {
+        display: flex;
+        margin-top: 50px;
+        
+        div:first-child {
+            margin-right: 10px;
+        }
     }
 }
 
@@ -26,12 +31,18 @@
     color: white;
     display: flex;
     flex-direction: column;
+    padding-bottom: 20px;
 
     h1 {
         font-family: Montserrat;
         font-weight: 700;
         font-size: 36px;
-        margin-bottom: 81px;
+        margin-top: 90px;
+
+        @media only screen and (min-width: 768px) {
+            margin-top: 0;
+            margin-bottom: 81px;
+        }
     }
 
     p {
