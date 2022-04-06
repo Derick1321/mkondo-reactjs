@@ -4,13 +4,15 @@ import placeholder from '$assets/images/placeholder.png';
 import { getMediaUrl } from '../../../common/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { SuccessPage } from '$containers/Success';
-import { updateMedia } from '../../../redux/features/media';
+import { deleteMedia, updateMedia } from '../../../redux/features/media';
+import { generatePath, useHistory } from 'react-router-dom';
+import { routePaths } from '../../../common/routeConfig';
 
-export const ManageMoviesItem = ( props ) => {
+export const ManageMediaItem = ( props ) => {
     //hooks
-    
+    const { push } = useHistory();
     //props
-    const { movie, key } = props;
+    const { media, key } = props;
 
     //state
     const [isLoadingCoverImage, setIsLoadingCoverImage] = useState(true);
@@ -24,19 +26,19 @@ export const ManageMoviesItem = ( props ) => {
     
     //effects
     useEffect(() => {
-        if (!movie || !token) return;
-        getMediaUrl(movie.cover_url, token).then(url => setCoverUrl(url));
-    }, [movie, token]);
+        if (!media || !token) return;
+        getMediaUrl(media.cover_url, token).then(url => setCoverUrl(url));
+    }, [media, token]);
 
     useEffect(() => {
-        if (!movie) return;
-        console.log("Pending Queue Changed", pendingQueue.length, movie.media_id, pendingQueue);
-        if (pendingQueue.some(id => movie.media_id == id)) {
+        if (!media) return;
+        console.log("Pending Queue Changed", pendingQueue.length, media.media_id, pendingQueue);
+        if (pendingQueue.some(id => media.media_id == id)) {
             setIsUpdating(true);
         } else {
             setIsUpdating(false);
         }
-    }, [pendingQueue.length, movie]);
+    }, [pendingQueue.length, media]);
 
     //handlers
     const handleOnLoad = (e) => {
@@ -55,12 +57,16 @@ export const ManageMoviesItem = ( props ) => {
     const handleUpdateMedia = (key, value) => {
         if (!key) return;
         let payload = {
-            id: movie.media_id, 
+            id: media.media_id, 
             payload: {
                 [key]: value,
             }
         }
         dispatch(updateMedia(payload));
+    }
+
+    const handleArchive = () => {
+        dispatch(deleteMedia(media.media_id));
     }
 
     return (
@@ -78,16 +84,16 @@ export const ManageMoviesItem = ( props ) => {
             <div className='flex-1 ml-2 px-2 py-2 text-light'>
                 <div className='row'>
                     <div className='col-6'>
-                        <h6>Movie Name</h6>
-                        <p>{movie.name}</p>
+                        <h6>Media Name</h6>
+                        <p>{media.name}</p>
                     </div>
                     <div className='col-6'>
-                        <h6>Movie Category</h6>
-                        <p>{movie.category}</p>
+                        <h6>Media Category</h6>
+                        <p>{media.category}</p>
                     </div>
                     <div className='col-6'>
                         <h6>Genres</h6>
-                        <p>{movie.genres.join('')}/</p>
+                        <p>{media.genres.join('')}/</p>
                     </div>
                 </div>
             </div>
@@ -95,15 +101,15 @@ export const ManageMoviesItem = ( props ) => {
                 <div className='row'>
                     <div className='col-12'>
                         <h6>Artist Name</h6>
-                        <p>{movie.owner_name}</p>
+                        <p>{media.owner_name}</p>
                     </div>
                     <div className='col-12'>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked={movie.premium ? true : false} onChange={() => handleUpdateMedia("premium", !movie.premium)} />
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked={media.premium ? true : false} onChange={() => handleUpdateMedia("premium", !media.premium)} />
                             <label class="form-check-label" for="inlineCheckbox1">Premium</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={movie.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !movie.theatre)} />
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
                             <label class="form-check-label" for="inlineCheckbox1">Theatre</label>
                         </div>
                     </div>
@@ -111,10 +117,13 @@ export const ManageMoviesItem = ( props ) => {
             </div>
             <div className='p-2'>
                     <div className="col-3 mb-2">
-                        <button className='btn btn-primary' onClick={() => push('')}>View</button>
+                        <button className='btn btn-primary' onClick={() => push(generatePath(routePaths.viewMedia, { "id": media.media_id }))}>View</button>
                     </div>
-                    <div className="col-3">
-                        {!movie.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
+                    <div className="col-3 mb-2">
+                        {!media.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
+                    </div>
+                    <div className='col-3'>
+                     <button className='btn btn-danger' onClick={handleArchive}>Archive</button>
                     </div>
                 </div>
         </div>

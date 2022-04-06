@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { useSelector } from 'react-redux';
-import { ManageMoviesItem } from './item';
+import { ManageMediaItem } from './item';
 import { useParams } from 'react-router-dom';
 
 
@@ -40,7 +40,7 @@ export const ManageMedia = () => {
         <div className={`${styles.container} container`}>
             <h2 className='text-light'>Manage Media</h2>
             <div>
-                {media.map(movie => <ManageMoviesItem key={movie.id} movie={movie} />)}
+                {media.map(_media => <ManageMediaItem key={_media.id} media={_media} />)}
             </div>
         </div>
     )

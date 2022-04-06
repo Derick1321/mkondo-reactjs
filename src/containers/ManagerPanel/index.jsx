@@ -80,19 +80,19 @@ export const ManagerPanel = (props) => {
                     <div className={`col-md-4`}>
                         <div className={`${styles.tile}`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'artist'}))}>
                             <h3>Artists</h3>
-                            <span>{artists.length}</span>
+                            <span>{artists.length??0}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'audio'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Songs</h3>
-                            <span>{audios.length}</span>
+                            <span>{audios.length??0}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'video'}))}>
-                        <div className={`${styles.tile}`}>
+                        <div className={`${styles.tile??0}`}>
                             <h3>Videos</h3>
-                            <span>{videos.length}</span>
+                            <span>{videos.length??0}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
