@@ -74,7 +74,7 @@ const Button = (props) => {
     />
   ) : (
       <>
-        <div className="w-100 pr-2">
+        <div className={`${icon && 'pr-2'} ${styles.noWrap}`}>
           {children}
         </div>
         {
@@ -91,12 +91,12 @@ const Button = (props) => {
   // render
   return (
     <button
-      className={`d-flex ${!hideDefault ? styles.mkBtn : ''} ${customStyle} ${style}`}
+      className={`d-flex px-3 ${!hideDefault ? styles.mkBtn : ''} ${customStyle} ${style}`}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      { content}
+      { content }
     </button>
   );
 };
