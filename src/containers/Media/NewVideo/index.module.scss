@@ -29,11 +29,34 @@
 }
 
 .cover {
-  height: 200px;
+  width: 100%;
+  aspect-ratio: 27/40;
   margin-top: 1.5rem;
 }
 
 .spinnerLg {
   width: 2rem;
   height: 2rem;
+}
+
+.notification {
+  position: fixed;
+  width: 100%;
+  background: green;
+  z-index: 9999999999999999;
+
+  padding: 20px 40px;
+
+  bottom: 0;
+  left: 0;
+
+  font-weight: 400;
+  color: white;
+
+  transition: all 0.3s ease-in-out;
+
+  .active {
+    bottom: 0;
+    transition: all 0.3s ease-in-out;
+  }
 }

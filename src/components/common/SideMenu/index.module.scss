@@ -109,6 +109,7 @@
     padding: 0 20px;
     cursor: pointer;
     background: -webkit-linear-gradient(45deg, $primary-color, $accent-color);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-weight: 900;
