@@ -106,7 +106,7 @@ const artistSlice = createSlice({
       state.getArtistsPending = false;
       state.getArtistsComplete = true;
       state.getArtistsError = null;
-      state.artists = action.payload;
+      state.artists = action.payload.artists;
     },
     [getArtists.rejected]: (state, action) => {
       state.getArtistsPending = false;

@@ -449,7 +449,7 @@ export const getSeries = createAsyncThunk(
     GET_SERIES,
     async (params, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('GET', '/series', params, token);
+        return await handleFetch('GET', 'series', params, token);
     }
 )
 
@@ -735,6 +735,10 @@ const mediaSlice = createSlice({
             state.deleteCommentPending = false;
             state.deleteMediaError = null;
             state.deleteMediaComplete = true;
+
+            state.movies = state.movies.filter(m => m.media_id != action.meta.arg);
+            state.audios = state.audios.filter(m => m.media_id != action.meta.arg);
+            state.videos = state.videos.filter(m => m.media_id != action.meta.arg);
         },
         [deleteMedia.rejected]: (state, action) => {
             state.deleteMediaPending = false;
@@ -1185,7 +1189,7 @@ const mediaSlice = createSlice({
         },
         [fetchVideos.fulfilled]: (state, action) => {
             state.fetchVideoPending = false;
-            state.audios = action.payload.media;
+            state.videos = action.payload.media;
             state.fetchVideoError = null;
         },
         [fetchVideos.rejected]: (state, action) => {
