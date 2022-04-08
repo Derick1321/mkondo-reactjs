@@ -195,7 +195,7 @@ const NewVideo = () => {
     const url = await generatePreview(files[0]);
     dispatch(crop({
       src: url,
-      aspectRatio: 27/40,
+      aspectRatio: uploadType == 'movie' ? 27/40 : 16/9,
       width: 1000, 
       locked: false,
     }))
@@ -213,7 +213,7 @@ const NewVideo = () => {
           <div className={styles.inputFormWrapper}>
             <div className="row">
               <div className="col-md-4">
-                <div className={styles.cover}>
+                <div className={`${styles.cover} ${uploadType == 'movie' ? styles.movieAspectRatio : styles.videoAspectRatio}`}>
                   <AvatarInput
                     url={localCoverUrl}
                     onChange={handleCoverChange}

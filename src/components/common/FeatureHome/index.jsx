@@ -37,7 +37,6 @@ const FeatureBkg = styled.div`
   background-image: url(${props => props.source}); 
   background-repeat-y: repeat;
   // mix-blend-mode: multiply;
-  border-radius: 10px;
 `;
 
 const PlayButton = styled.div`
@@ -261,6 +260,146 @@ const FeatureHome = (props) => {
  
     </>
   )
+  }
+
+  if (category == "video") {
+    return (
+      <>
+        <div className={styles.f_featureWrapperVideo}>
+          <FeatureBkg source={avatarUrl}>
+          {
+            showHeader && (
+              <>
+                <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+                  <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+                  <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                  <ActionHeader
+                    mediaId={mediaId}
+                    country={country}
+                    title={title}
+                    avatarUrl={avatarUrl}
+                    showPlaylist
+                  />
+                </div>
+  
+                <div className={`${styles.likeandcomment}`}>
+                  <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                  <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                </div>
+                <PlayButton
+                  category={category}
+                  onClick={handlePlay} >
+                  <PlayBtn
+                    size={category == "audio" ? "30" : "40"}
+                    isLoading={isLoading && currentMediaId === mediaId}
+                    isPlaying={isPlaying && currentMediaId === mediaId}
+                  />
+                </PlayButton>
+              </>
+            )
+          }
+          </FeatureBkg>
+        </div>
+  
+        {/* <div className={`d-flex w-100 px-3`}>
+            <div className={styles.f_hoverCursor} onClick={handleArtistView}>
+              {owner_name}
+            </div>
+          </div> */}
+  
+        
+            
+            <div className="d-flex mt-2">
+              <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
+                <div style={{flex: 1}}>
+                  
+                  <div className={styles.title}><b>{title}</b></div>
+                  {/* <div className={styles.f_description}>{description}</div> */}
+                </div>
+  
+                {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
+              </div>
+  
+            </div>
+            <div className="d-flex flex-row">
+              <span className="ml-auto">
+                {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
+              </span>
+              {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+              {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+            </div>
+      </>
+    )
+  }
+
+  if (category == "movie") {
+    return (
+      <>
+        <div className={styles.f_featureWrapperMovie}>
+          <FeatureBkg source={avatarUrl}>
+          {
+            showHeader && (
+              <>
+                <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+                  <div className={`ml-3 ${styles.views}`}>{plays} views</div>
+                  <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                  <ActionHeader
+                    mediaId={mediaId}
+                    country={country}
+                    title={title}
+                    avatarUrl={avatarUrl}
+                    showPlaylist
+                  />
+                </div>
+  
+                <div className={`${styles.likeandcomment}`}>
+                  <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                  <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                </div>
+                <PlayButton
+                  category={category}
+                  onClick={handlePlay} >
+                  <PlayBtn
+                    size={category == "audio" ? "30" : "40"}
+                    isLoading={isLoading && currentMediaId === mediaId}
+                    isPlaying={isPlaying && currentMediaId === mediaId}
+                  />
+                </PlayButton>
+              </>
+            )
+          }
+          </FeatureBkg>
+        </div>
+  
+        {/* <div className={`d-flex w-100 px-3`}>
+            <div className={styles.f_hoverCursor} onClick={handleArtistView}>
+              {owner_name}
+            </div>
+          </div> */}
+  
+        
+            
+            <div className="d-flex mt-2">
+              <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
+                <div style={{flex: 1}}>
+                  
+                  <div className={styles.title}><b>{title}</b></div>
+                  {/* <div className={styles.f_description}>{description}</div> */}
+                </div>
+  
+                {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
+              </div>
+  
+            </div>
+            <div className="d-flex flex-row">
+              <span className="ml-auto">
+                {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
+              </span>
+              {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+              {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+            </div>
+      </>
+    )
   }
 
   return (

@@ -25,6 +25,7 @@ import { formatDate, getMediaUrl } from '../../../common/utils';
 import { SimilarMediaItem } from './similarMediaItem';
 import { showModal } from '$redux/features/modal';
 import styled from 'styled-components';
+import { setCurrentMediaId } from '../../../redux/features/player';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -95,6 +96,7 @@ const ViewMedia = () => {
       return;
     }
 
+    dispatch(setCurrentMediaId(mediaId));
     dispatch(getMedia(mediaId));
     dispatch(getComment(mediaId));
     dispatch(getRecommended(userId));
