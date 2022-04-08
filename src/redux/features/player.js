@@ -33,7 +33,6 @@ const playerSlider = createSlice({
       state.newPosition = action.payload;
     },
     play(state, action) {
-      console.log("Reducer", action);
       if (action.payload) {
         state.currentMediaId = action.payload.mediaId; // TODO: media id fix
         state.currentPlaylist = [action.payload];

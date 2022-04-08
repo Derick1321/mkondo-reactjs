@@ -107,7 +107,7 @@ const CommentRow = (props) => {
             <p className={styles.text}>{name} <span className={styles.date}>{formatDate(date)}</span></p>
             <p className={styles.text}>{value}</p>
           </div>
-          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_type) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
+          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_role) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
         </div>
         <div className="d-flex">
           <div className="">{likes.length} Likes</div>
@@ -127,7 +127,7 @@ const CommentRow = (props) => {
       ? (
         <div className={`ml-5`}>
           <div>
-            {replies ? replies.map((comment) => {
+            {replies && replies.length ? replies.map((comment) => {
               return (
                       <div className={styles.row} key={comment.comment_id}>
                         <div className={`d-flex`}>
@@ -135,7 +135,7 @@ const CommentRow = (props) => {
                             <p className={styles.text}>{comment.commenter_name} <span className={styles.date}>{formatDate(comment.posted)}</span></p>
                             <p className={styles.text}>{comment.value}</p>
                           </div>
-                          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_type) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
+                          {(user_id == commenter_id ) || ['super admin', 'admin'].includes(user_role) ? <div onClick={e => deleteComment(comment_id)} className={styles.deleteStyle}>Delete</div> : null}
                         </div>
                         <div className="d-flex">
                           
