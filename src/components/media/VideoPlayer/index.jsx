@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import ReactPlayer from 'react-player/lazy';
+// import ReactPlayer from 'react-player/lazy';
 import screenfull from 'screenfull'
 
 import PlayBtn from '$components/media/PlayBtn';
@@ -10,13 +10,14 @@ import VolumeSlider from '$components/media/VolumeSlider';
 
 import { getFileURL } from '$common/utils';
 import { toggleFooterPlayer } from '$redux/features/nav';
-import { pause } from '$redux/features/player';
 
 import styles from './index.module.scss';
 
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import { handleFetch } from '../../../common/requestUtils';
+import { async } from 'regenerator-runtime';
+import { play, pause, updateDuration, updateLoading, updateRange } from '../../../redux/features/player';
 
 const fullscreen = require('$assets/images/icons/fullscreen.svg');
 
@@ -27,8 +28,8 @@ const VideoPlayer = (props) => {
     url,
   } = props;
 
+  //store
   const dispatch = useDispatch();
-
   const token = useSelector((store) => store.authentication.token);
   const volume = useSelector((store) => store.player.volume);
 
@@ -76,36 +77,68 @@ const VideoPlayer = (props) => {
       const videoElement = videoRef.current;
       if (!videoElement) return;
 
-      const player = playerRef.current = videojs(videoElement, {});
+      const player = playerRef.current = videojs(videoElement, {
+        controls: true,
+        autoplay: true,
+      });
       player.ready(() => {
-        console.log("player is ready");
+        console.log("player is ready", player);
         setIsReady(true);
-        setDuration(player.duration());
+        setIsLoading(true);
+
+        player.on('durationchange', () => {
+          console.log("Set up player duration", player.duration());
+          setDuration(player.duration());
+          dispatch(updateDuration(player.duration()));
+        })
 
         player.on('waiting', () => {
           console.log("player is waiting");
-          setIsLoading(true);
+          dispatch(updateLoading(true));
+          // setIsLoading(true);
         });
 
         player.on('canplay', () => {
           console.log("player can play");
-          setIsLoading(false);
+          // setIsLoading(false);
         });
 
+        player.on('canplaythrough', () => {
+          console.log("player can play through");
+          setIsLoading(false);
+        })
+        
         player.on('playing', () => {
           console.log("player is playing");
+          dispatch(play());
+          dispatch(updateLoading(false));
           setIsLoading(false);
         })
 
         player.on('play', () => {
           console.log("player play clicked");
-          togglePlay();
+          setIsPlaying(true);
+          dispatch(play());
         });
 
         player.on('pause', () => {
           console.log("player pause clicked");
-          togglePlay();
+          setIsPlaying(false);
+          dispatch(pause());
         })
+
+        player.on('progress', (e) => {
+          // console.log("player progress", player.currentTime());
+          dispatch(updateRange(player.currentTime()));
+          // handleProgress(player.currentTime);
+        })
+
+
+
+        // player.bigPlayButton.on('click', () => {
+        //   console.log("clicked");
+        //   player.trigger("play");
+        // });
       })
     } else {
       // you can update player here [update player through props]
@@ -179,7 +212,7 @@ const VideoPlayer = (props) => {
         }}>
         <div className={styles.reactPlayer}>
           <div style={{ width:"100%", height:"100%" }} data-vjs-player>
-            <video width="100%" height="100%" ref={videoRef} src={mediaUrl} autoPlay="true" controls="true" className="video-js vjs-big-play-centered"></video>
+            <video width="100%" height="100%" ref={videoRef} src={mediaUrl} className="video-js vjs-big-play-centered"></video>
           </div>
           {/* <ReactPlayer
             ref={playerRef}
