@@ -33,7 +33,7 @@ const OnBoarding = () => {
   }, [updateUserComplete]);
 
   useEffect(() => {
-    if (user.user_type != "user" && user.email && user.phone_number) {
+    if (user.user_type && user.email && user.phone_number) {
       history.push(routePaths.home);
     }
   }, [user])
@@ -119,7 +119,7 @@ const OnBoarding = () => {
     )
   }
 
-  if (!user.user_type || user.user_type == "user") {
+  if (!user.user_type) {
     return (
       <div className={styles.onboardingWrapper}>
         <AppHeader showSearch={false} />

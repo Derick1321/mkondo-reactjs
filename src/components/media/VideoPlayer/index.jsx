@@ -26,6 +26,7 @@ const VideoPlayer = (props) => {
   const {
     file,
     url,
+    playlist,
   } = props;
 
   //store
@@ -81,6 +82,7 @@ const VideoPlayer = (props) => {
         controls: true,
         autoplay: true,
       });
+  
       player.ready(() => {
         console.log("player is ready", player);
         setIsReady(true);
@@ -132,8 +134,6 @@ const VideoPlayer = (props) => {
           dispatch(updateRange(player.currentTime()));
           // handleProgress(player.currentTime);
         })
-
-
 
         // player.bigPlayButton.on('click', () => {
         //   console.log("clicked");
