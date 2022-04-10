@@ -73,8 +73,8 @@ const PostItemFooter = (props) => {
             <div className="d-flex mt-3">
                 <div className={`mr-3 d-flex align-items-center ${styles.iconButton}`} onClick={handleLike}>
                     {(addPostLikePending || removePostLikePending) && focus ? (
-                        <div class="spinner-border text-light" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                        <div className="spinner-border text-light" role="status">
+                            <span className="visually-hidden">Loading...</span>
                         </div>
                     ) : isLiked 
                         ? <img src={require("$assets/images/icons/like-solid-pink.svg")} alt="" height="20px" /> 

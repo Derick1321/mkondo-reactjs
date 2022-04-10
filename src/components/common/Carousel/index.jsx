@@ -112,7 +112,7 @@ export const Carousel = ({ items, aspect_ratio_x, aspect_ratio_y }) => {
             <div className={`${styles.brand}`}>
                 <img src={logo} alt="Mkondo Logo" height={containerHeight*0.1} />
             </div>
-            {items.map((item) => <img src={item} alt="" style={{ display: "none" }} onLoad={itemLoaded} />)}
+            {items.map((item, i) => <img key={i} src={item} alt="" style={{ display: "none" }} onLoad={itemLoaded} />)}
         </div>
         // <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
         //     <ol className="carousel-indicators">

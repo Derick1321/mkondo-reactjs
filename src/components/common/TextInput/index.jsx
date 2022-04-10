@@ -41,7 +41,7 @@ const TextInput = (props) => {
   // render
   return (
     <>
-      {title && <label class="label" style={{color: isGrey ? 'white' : 'black'}}>{t(title)}</label>}
+      {title && <label className="label" style={{color: isGrey ? 'white' : 'black'}}>{t(title)}</label>}
       <div className={`d-flex justify-content-center align-items-center ${error ? styles.isInvalid : ''} ${styles.textInputContainer} ${customWrapperClass}  ${isGrey && styles.GreyStyleWrapper}`}>
         <input
           name={name}

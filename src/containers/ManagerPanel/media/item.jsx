@@ -104,13 +104,13 @@ export const ManageMediaItem = ( props ) => {
                         <p>{media.owner_name}</p>
                     </div>
                     <div className='col-12'>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked={media.premium ? true : false} onChange={() => handleUpdateMedia("premium", !media.premium)} />
-                            <label class="form-check-label" for="inlineCheckbox1">Premium</label>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1" checked={media.premium ? true : false} onChange={() => handleUpdateMedia("premium", !media.premium)} />
+                            <label className="form-check-label" for="inlineCheckbox1">Premium</label>
                         </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
-                            <label class="form-check-label" for="inlineCheckbox1">Theatre</label>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
+                            <label className="form-check-label" for="inlineCheckbox1">Theatre</label>
                         </div>
                     </div>
                 </div>

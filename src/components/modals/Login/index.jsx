@@ -140,14 +140,14 @@ const LoginModal = () => {
                   />
                 )
               }
-              <label class="label">Email</label>
+              <label className="label">Email</label>
               <TextInput
                 name="email"
                 placeholder="Email Address / User Name"
                 value={values.email}
                 onChange={handleChange}
               />
-              <label class="label">Password</label>
+              <label className="label">Password</label>
               <TextInput
                 name="password"
                 placeholder="Password"
