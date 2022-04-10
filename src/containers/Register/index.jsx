@@ -99,7 +99,7 @@ const initialValues = {
   email: '',
   password: '',
   confirmPassword: '',
-  userType: 'user',
+  // userType: null,
 };
 
 const initalErrors = {
