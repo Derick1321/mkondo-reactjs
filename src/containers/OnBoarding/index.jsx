@@ -13,6 +13,7 @@ import GeneralSelector from '../../components/common/Selector';
 import InputField from '../../components/forms/InputField';
 import Button from '../../components/common/Button';
 import { updateSystemUser } from '../../redux/features/user';
+import { refreshToken } from '../../redux/features/authentication';
 
 const OnBoarding = () => {
   // state
@@ -81,6 +82,8 @@ const OnBoarding = () => {
       id: user.user_id,
       payload,
     }));
+
+    await dispatch(refreshToken(user.user_id));
   }
 
   const handleUpdatePhone = async () => {
