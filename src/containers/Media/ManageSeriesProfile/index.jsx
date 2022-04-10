@@ -128,7 +128,7 @@ export const ManageSeriesProfile = (props) => {
                     {series ? <p>Has {series.episodes.length} episodes</p> : ''}
 
                     {sameFileError ? (
-                        <div class="alert alert-danger" role="alert">
+                        <div className="alert alert-danger" role="alert">
                             Mkondo has detected you are uploading the same file. Change the file and try again.
                         </div>
                     ) : ''}

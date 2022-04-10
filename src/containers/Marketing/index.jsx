@@ -49,32 +49,39 @@ const Marketing = () => {
 
   useEffect(() => {
     if (!slider) return;
-    slider.items.map((item) => getMediaUrl(item.image_url, visitorToken).then(res => setItems([...items, res])));
+    let _items = [];
+    slider.items.map((item, i) => {
+      getMediaUrl(item.image_url, visitorToken).then(res => {
+        _items.push(res);
+        setItems(_items);
+        console.log(items, _items);
+      })
+    });
   }, [slider])
 
 
   return (
     <div>
       {/* header */}
-      <div class={`${styles.header} px-4 py-3 d-flex`}>
+      <div className={`${styles.header} px-4 py-3 d-flex`}>
         <MkondoLogo />
-        <button onClick={() => push(routePaths.login)} class="btn btn-primary ml-auto">Sign In</button>
+        <button onClick={() => push(routePaths.login)} className="btn btn-primary ml-auto">Sign In</button>
       </div>
 
       <div>
-        {slider ? <Carousel items={items} aspect_ratio_x={slider.aspect_ratio_x} aspect_ratio_y={slider.aspect_ratio_y} /> : "No Slider" }
+        {slider ? <Carousel items={items ?? []} aspect_ratio_x={slider.aspect_ratio_x} aspect_ratio_y={slider.aspect_ratio_y} /> : "No Slider" }
       </div>
 
-      <div class={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
+      <div className={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
         <h1>Home of Entertainment</h1>
         <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" class="mt-2" autoPlay muted loop>
+        <video width="63%" height="90px" className="mt-2" autoPlay muted loop>
             <source src={overviewVideo} />
             Your browser does not support the video tag.
         </video>
       </div>
 
-      <div class={`${styles.section} mt-4 py-5 text-center text-light`}>
+      <div className={`${styles.section} mt-4 py-5 text-center text-light`}>
         <h1 className="px-4">Frequently Asked Questions</h1>
 
         <div className="mt-5">
