@@ -11,6 +11,7 @@ const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
 const RESET_PASSWORD = 'authentication/RESET_PASSWORD';
 const RELOAD_USER = 'authentication/RELOAD_USER';
 const VISITOR_COLD_START = 'authentication/VISITOR_COLD_START';
+const REFRESH_TOKEN = 'authentication/REFRESH_TOKEN';
 
 // actions
 export const login = createAsyncThunk(
@@ -46,6 +47,14 @@ export const reloadUser = createAsyncThunk(
     async(id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', `users/${id}`, null, token);
+    }
+);
+
+export const refreshToken = createAsyncThunk(
+    REFRESH_TOKEN,
+    async(id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('POST', `users/${id}/refresh_token`, null, token);
     }
 );
 
@@ -87,6 +96,9 @@ const initialState = {
     resetPasswordPending: false,
     resetPasswordComplete: false,
     resetPasswordError: null,
+    refreshTokenPending: false,
+    refreshTokenComplete: false,
+    refreshTokenError: null,
 };
 
 // reducers
@@ -133,6 +145,31 @@ const authenticationSlice = createSlice({
             state.loginPending = false;
             state.loginError = err.message;
             state.loginComplete = false;
+        },
+        [refreshToken.pending]: (state, action) => {
+            return {
+                ...state,
+                refreshTokenPending: true,
+                refreshTokenComplete: false,
+                refreshTokenError: null,
+            }
+        },
+        [refreshToken.fulfilled]: (state, action) => {
+            return {
+                ...state,
+                ...handleAuthentication(action.payload),
+                refreshTokenPending: false,
+                refreshTokenComplete: true,
+                refreshTokenError: null,
+            }
+        },
+        [refreshToken.rejected]: (state, action) => {
+            return {
+                ...state,
+                refreshTokenPending: false,
+                refreshTokenComplete: false,
+                refreshTokenError: action.error,
+            }
         },
         [signup.pending]: (state, action) => {
             state.signupPending = true;
