@@ -1,4 +1,11 @@
-const menus = [{
+const menus = [
+    {
+        name: 'user',
+        title: 'User',
+        icon: require('$assets/images/icons/register_user_active.svg'),
+        iconActive: require('$assets/images/icons/register_user_active.svg'),
+    },
+    {
         name: 'creator',
         title: 'Artist',
         icon: require('$assets/images/singer.svg'),
