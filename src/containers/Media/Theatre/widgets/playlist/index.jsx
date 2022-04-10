@@ -9,7 +9,7 @@ const TheatrePlaylistComponent = (props) => {
         <div>
             <h3 className={styles.title}>{title}</h3>
             <p>{isLoading ? 'Loading...' : null}</p>
-            <div class={styles.wrapper}>
+            <div className={styles.wrapper}>
                 {movies.map((movie) => <TheatrePlaylistItemComponent media={movie} />)}
             </div>
         </div>

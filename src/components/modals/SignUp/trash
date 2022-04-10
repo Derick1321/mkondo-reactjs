@@ -75,14 +75,14 @@
                 )}
               {currentPage == 2 && (
                 <>
-                  <label class="label">Full Name</label>
+                  <label className="label">Full Name</label>
                   <TextInput
                     name="fullName"
                     placeholder="Fullname"
                     value={values.fullName}
                     onChange={handleChange}
                   />
-                  <label class="label">Email</label>
+                  <label className="label">Email</label>
                   <TextInput
                     name="email"
                     placeholder="Email Address"
@@ -90,7 +90,7 @@
                     value={values.email}
                     onChange={handleChange}
                   />
-                  <label class="label">Phone</label>
+                  <label className="label">Phone</label>
                   <TextInput
                     name="phoneNumber"
                     placeholder="Phone Number"
@@ -121,7 +121,7 @@
               )}
               {currentPage == 3 && (
                 <>
-                  <label class="label">Password</label>
+                  <label className="label">Password</label>
                   <TextInput
                     name="password"
                     placeholder="Password"
@@ -129,7 +129,7 @@
                     value={values.password}
                     onChange={handleChange}
                   />
-                  <label class="label">Confirm Password</label>
+                  <label className="label">Confirm Password</label>
                   <TextInput
                     name="confirmPassword"
                     placeholder="Confirm Password"
