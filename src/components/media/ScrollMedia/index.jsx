@@ -1,10 +1,12 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Scroller from '$components/common/Scroller';
 import Preview from '$components/common/Preview';
 import FeatureHome from '$components/common/FeatureHome';
 import SimplePreview from '$components/common/SimplePreview';
+import { useDispatch } from 'react-redux';
+import { updatePlaylist } from '../../../redux/features/player';
 
 const ScrollMedia = (props) => {
   // props
@@ -16,6 +18,28 @@ const ScrollMedia = (props) => {
     name,
     viewMore,
   } = props;
+
+  //state
+  const [addedToPlaylist, setAddedToPlaylist] = useState(false);
+
+  //store
+  const dispatch = useDispatch();
+
+  //effect
+  useEffect(() => {
+    if (!addedToPlaylist) return;
+    console.log("Effect triggered, Determining if its time to update the current playlist", addedToPlaylist, values);
+    if (!values.length) return;
+    dispatch(updatePlaylist(values));
+  }, [addedToPlaylist, values]);
+
+  //hanlde
+  const handleFeatureClicked = () => {
+    console.log(`${title} Item has been clicked`);
+    if (!addedToPlaylist) {
+      setAddedToPlaylist(true);
+    }
+  }
 
   const getMedia = useCallback((item, idx) => {
     let avatar_url = item.owner_avatar_url;
@@ -33,7 +57,7 @@ const ScrollMedia = (props) => {
     }
 
     return (
-      <div style={{marginRight: '15px'}} key={`feature-home-wrapper-${idx}`}>
+      <div style={{marginRight: '15px'}} key={`feature-home-wrapper-${idx}`} onClick={handleFeatureClicked}>
         <FeatureHome
           key={`feature-home-${idx}`}
           mediaUrl={item.media_url}
@@ -46,7 +70,6 @@ const ScrollMedia = (props) => {
           country={item.country}
           category={item.category}
           description={item.description}
-
           likes={item.likes || undefined}
           plays={item.plays}
           comment_num={item.comment_num}
@@ -66,7 +89,7 @@ const ScrollMedia = (props) => {
       viewMore={viewMore}
     >
       {
-        values.map((item, idx) => getMedia(item, idx))
+        values.map((item, idx) => getMedia(item, `${title}-${idx}`))
       }
     </Scroller>
   );
