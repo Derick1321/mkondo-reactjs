@@ -15,6 +15,8 @@ import { routePaths } from '$common/routeConfig';
 import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
+import { updatePlaylist } from '../../../redux/features/player';
+import { getRecommended, getSimilar, getSimilarRecommended } from '../../../redux/features/media';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
@@ -71,6 +73,7 @@ const FeatureAvatar = styled.div`
 const FeatureHome = (props) => {
   // props
   const {
+    key,
     avatar,
     source,
     owner_name,
@@ -85,7 +88,9 @@ const FeatureHome = (props) => {
 
     likes,
     plays,
-    comment_num
+    comment_num,
+
+    notifyPlayed,
   } = props;
 
   // store
@@ -96,6 +101,7 @@ const FeatureHome = (props) => {
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const likes_s = useSelector((store) => store.authentication.user.likes);
+  const recommended = useSelector((store) => store.media.similarRecommendedMedia.media);
 
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
@@ -151,6 +157,9 @@ const FeatureHome = (props) => {
 
   // handlers
   const handlePlay = async () => {
+    if (notifyPlayed != null) {
+      notifyPlayed(key);
+    }
     if (category !== 'audio') {
       handleView();
       return;

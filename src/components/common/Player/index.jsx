@@ -12,6 +12,7 @@ import { getSimilarRecommended } from '$redux/features/media';
 import styles from './index.module.scss';
 import { useHistory, generatePath } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
+import { loadNext } from '../../../redux/features/player';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
@@ -42,6 +43,7 @@ const Player = () => {
   const isPlaylistOpened = useSelector((store) => store.player.isPlaylistOpened);
   const showFooterPlayer = useSelector((store) => store.nav.showFooterPlayer);
   const user_id = useSelector((store) => store.authentication.user.user_id);
+  const currentPlaylistIndex = useSelector((store) => store.player.currentPlaylistIndex);
 
   const similarRecommendedMedia = useSelector((store) => store.media.similarRecommendedMedia);
   const getSimilarRecommendedPending = useSelector((store) => store.media.getSimilarRecommendedPending);
@@ -72,6 +74,7 @@ const Player = () => {
   }
 
   const handleNext = () => {
+    dispatch(loadNext());
   }
 
   const handlePrev = () => {
@@ -160,9 +163,9 @@ const Player = () => {
       <div className={`${styles.playList} ${!isPlaylistOpened ? styles.playListHidden : ""}`}>
         <ul className="list-group">
           {
-            similarRecommendedMedia.media.length > 0 ? similarRecommendedMedia.media.map((item, index) => 
-              <li key={index} className="list-group-item">{item.name}</li>
-            ) : <h4>No Item</h4>
+            currentPlaylist.length > 0 ? currentPlaylist.map((item, index) => 
+              <li key={index} className={`list-group-item ${currentPlaylistIndex === index && 'active'}`}>{item.name}</li>
+            ) : <p className='bg-light lead p-2'>No Item</p>
           }
         </ul>
       </div>
