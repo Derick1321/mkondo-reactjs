@@ -12,7 +12,7 @@ import { getSimilarRecommended } from '$redux/features/media';
 import styles from './index.module.scss';
 import { useHistory, generatePath } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
-import { loadNext } from '../../../redux/features/player';
+import { loadNext, loadPrevious } from '../../../redux/features/player';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
@@ -32,6 +32,10 @@ const Player = () => {
   // state
   const [isRepeat, setIsRepeat] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
+  const [album, setAlbum] = useState('Unknown');
+  const [avatar, setAvatar] = useState(null);
+  const [artistName, setArtistName] = useState('');
+  const [artistId, setArtistId] = useState('');
 
   // store
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
@@ -58,6 +62,16 @@ const Player = () => {
     dispatch(getSimilarRecommended(user_id));
   }, []);
 
+  useEffect(() => {
+    if (!currentPlaylist[currentPlaylistIndex]) return;
+
+    setAvatar(currentPlaylist[currentPlaylistIndex].avatar);
+    setAlbum(currentPlaylist[currentPlaylistIndex].artistName);
+    setArtistName(currentPlaylist[currentPlaylistIndex].name);
+    setArtistId(currentPlaylist[currentPlaylistIndex].artistId);
+    
+  }, [currentPlaylistIndex])
+
   // handlers
   const handlePlay = () => {
     if (isPlaying) {
@@ -78,6 +92,7 @@ const Player = () => {
   }
 
   const handlePrev = () => {
+    dispatch(loadPrevious());
   }
 
   const toggleFooter = () => { dispatch(toggleFooterPlayer()); }
@@ -108,18 +123,6 @@ const Player = () => {
       </button>
     </>
   );
-
-  let album = 'Unknown';
-  let avatar = null;
-  let artistName = '';
-  let artistId = '';
-
-  if (currentPlaylist[0]) {
-    avatar = currentPlaylist[0].avatar;
-    album = currentPlaylist[0].artistName;
-    artistName = currentPlaylist[0].name;
-    artistId = currentPlaylist[0].artistId
-  }
 
   // render
   return (

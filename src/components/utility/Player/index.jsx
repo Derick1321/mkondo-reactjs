@@ -27,6 +27,7 @@ const Player = () => {
 
   // functions
   const onPlay = (dur) => {
+    console.log("player: onplay", dur);
     dispatch(updateDuration(dur));
     dispatch(updateLoading(false));
   }
