@@ -45,6 +45,9 @@ import { SubscriptionContainer } from '../containers/Subscription/index';
 import SubscriptionShowContainer from '../containers/Subscription/show/index';
 import { SubscriptionConfiguration } from '../containers/Configuration/Subscription/index';
 import { ManageMedia } from '../containers/ManagerPanel/media';
+import { ManageArtists } from '../containers/ManagerPanel/artists/index';
+import { ManageAlbum } from '../containers/ManagerPanel/albums';
+import { ManageSeries } from '../containers/ManagerPanel/series';
 
 export const routePaths = {
   main: '/app',
@@ -90,8 +93,12 @@ export const routePaths = {
   sliderShow: '/app/slider/:slider_id',
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
-  managerPanel: '/app/manage',
-  manageMedia: '/app/manage/:category',
+  
+  managerPanel: '/app/manager-panel',
+  manageMedia: '/app/manager-panel/media/:category',
+  manageArtist: '/app/manager-panel/artists',
+  manageAlbums: '/app/manager-panel/albums',
+  managerPanelManageSeries: '/app/manager-panel/series',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -429,6 +436,24 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.manageMedia,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.manageArtist,
+            component: ManageArtists,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.manageAlbums,
+            component: ManageAlbum,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelManageSeries,
+            component: ManageSeries,
             redirect: redirectFunctions.app
           }
         ],
