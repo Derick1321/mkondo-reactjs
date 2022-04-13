@@ -17,6 +17,7 @@ const GET_RANDOM_MEDIAS = 'media/GET_RANDOM_MEDIAS';
 const GET_TREND_MEDIAS = 'media/GET_TREND_MEDIAS';
 const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
+const UPDATE_ALBUM = 'media/UPDATE_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
@@ -125,6 +126,14 @@ export const addAlbum = createAsyncThunk(
     async(data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('POST', 'albums', data, token);
+    }
+);
+
+export const updateAlbum = createAsyncThunk(
+    UPDATE_ALBUM,
+    async(data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('PUT', `albums/${data.id}`, data.payload, token);
     }
 );
 
@@ -543,6 +552,9 @@ const initialState = {
     addAlbumPending: false,
     addAlbumError: null,
     addAlbumComplete: false,
+    updateAlbumPending: false,
+    updateAlbumError: null,
+    updateAlbumComplete: false,
     getCommentPending: false,
     getCommentError: null,
     getCommentComplete: false,
@@ -792,6 +804,28 @@ const mediaSlice = createSlice({
             state.addAlbumPending = false;
             state.addAlbumComplete = false;
             state.addAlbumError = action.error;
+        },
+        [updateAlbum.pending]: (state, action) => {
+            state.updateAlbumPending = true;
+            state.updateAlbumComplete = false;
+            state.updateAlbumError = null;
+        },
+        [updateAlbum.fulfilled]: (state, action) => {
+            state.updateAlbumPending = false;
+            state.updateAlbumComplete = true;
+            state.updateAlbumError = null;
+            
+            //updating the album
+            index = state.albums.findIndex(album => album.album_id == action.meta.arg.id);
+            console.log("debbungin index: ", index);
+            if (index > -1) {
+                state.albums[index] = action.payload.album;
+            }
+        },
+        [updateAlbum.rejected]: (state, action) => {
+            state.updateAlbumPending = false;
+            state.updateAlbumComplete = false;
+            state.updateAlbumError = action.error;
         },
         [saveMedia.pending]: (state, action) => {
             state.saveMediaPending = true;

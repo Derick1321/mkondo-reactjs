@@ -78,7 +78,7 @@ export const ManagerPanel = (props) => {
                 <h1 className="text-light">Manager Panel</h1>
                 <div className="row">
                     <div className={`col-md-4`}>
-                        <div className={`${styles.tile}`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'artist'}))}>
+                        <div className={`${styles.tile}`} onClick={() => push(routePaths.manageArtist)}>
                             <h3>Artists</h3>
                             <span>{artists.length??0}</span>
                         </div>
@@ -101,13 +101,13 @@ export const ManagerPanel = (props) => {
                             {isFetchingMovies ? <span className='spinner-border'></span> : <span>{movies.length}</span>}
                         </div>
                     </div>
-                    <div className={`col-md-4`}>
+                    <div className={`col-md-4`} onClick={() => push(routePaths.manageAlbums)}>
                         <div className={`${styles.tile}`}>
                             <h3>Albums</h3>
                             <span>{albums.length}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`}>
+                    <div className={`col-md-4`} onClick={() => push(routePaths.managerPanelManageSeries)}>
                         <div className={`${styles.tile}`}>
                             <h3>Series</h3>
                             <span>{series.length}</span>

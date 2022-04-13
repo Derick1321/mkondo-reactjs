@@ -1,8 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
+import { updateUser } from './user';
 
 const ADD_ARTIST = 'artist/ADD_ARTIST';
+const UPDATE_ARTIST = 'artist/UPDATE_ARTIST'
 const GET_ARTISTS = 'artist/GET_ARTISTS';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
 const GET_INSIGHT = 'artist/GET_INSIGHT';
@@ -49,10 +51,22 @@ export const getInsight = createAsyncThunk(
   }
 );
 
+export const updateArtist = createAsyncThunk(
+  UPDATE_ARTIST,
+  async (payload, store) => {
+    const state = store.getState();
+    const { token } = state.authentication;
+    return await handleFetch('PUT', `artists/${payload.id}`, payload, token);
+  }
+);
+
 const initialState = {
   addArtistPending: false,
   addArtistError: null,
   addArtistComplete: false,
+  updateArtistPending: false,
+  updateArtistError: null,
+  updateArtistComplete: false,
   getArtistsPending: false,
   getArtistsComplete: false,
   getArtistMediaPending: false,
@@ -161,6 +175,31 @@ const artistSlice = createSlice({
       state.getInsightComplete = false;
       state.getInsightError = action.error;
     },
+    [updateUser.fulfilled]: (state, action) => {
+      const index = state.artists.findIndex(artist => artist.user_id == action.meta.arg.id);
+      if (index > -1) {
+        state.artists[index] = action.payload.user;
+      }
+    },
+    [updateArtist.pending]: (state, action) => {
+      state.updateArtistPending = true;
+      state.updateArtistComplete = false;
+      state.updateArtistError = null;
+    },
+    [updateArtist.fulfilled]: (state, action) => {
+      state.updateArtistPending = false;
+      state.updateArtistComplete = true;
+      
+      const index = state.artists.findIndex(artist => artist.user_id == action.meta.arg.id);
+      if (index > -1) {
+        state.artists[index] = action.payload.artist;
+      }
+    },
+    [updateArtist.rejected]: (state, action) => {
+      state.updateArtistPending = false;
+      state.updateArtistComplete = false;
+      state.updateArtistError = action.error;
+    }
   }
 });
 
