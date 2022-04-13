@@ -6,8 +6,19 @@
 
 .cover {
     position: relative;
-    height: 200px;
-    width: calc(200px * 0.618);
+    height: 150px;
+
+    .movie {
+        aspect-ratio: 27/40;
+    }
+
+    .audio {
+        aspect-ratio: 1/1;
+    }
+
+    .video {
+        aspect-ratio: 16/9;
+    }
 
     span {
         position: absolute;

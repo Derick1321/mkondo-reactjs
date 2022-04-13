@@ -3,3 +3,31 @@
 .container {
     margin-top: 60px;
 }
+
+.listWrapper {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.artistItemContainer {
+    width: 150px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+    text-align: center;
+}
+
+.avatarWrapper {
+    height: 150px;
+    width: 150px;
+
+    img {
+        height: 100%;
+        width: 100%;
+        border-radius: 100%;
+    }
+}

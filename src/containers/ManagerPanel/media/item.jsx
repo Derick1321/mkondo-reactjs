@@ -11,6 +11,7 @@ import { routePaths } from '../../../common/routeConfig';
 export const ManageMediaItem = ( props ) => {
     //hooks
     const { push } = useHistory();
+    
     //props
     const { media, key } = props;
 
@@ -18,6 +19,7 @@ export const ManageMediaItem = ( props ) => {
     const [isLoadingCoverImage, setIsLoadingCoverImage] = useState(true);
     const [coverUrl, setCoverUrl] = useState(null);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [coverStyle, setCoverStyle] = useState(styles.movie);
 
     //store
     const token = useSelector((state) => state.authentication.token);
@@ -28,6 +30,19 @@ export const ManageMediaItem = ( props ) => {
     useEffect(() => {
         if (!media || !token) return;
         getMediaUrl(media.cover_url, token).then(url => setCoverUrl(url));
+        switch (media.category) {
+            case 'movie':
+                setCoverStyle(styles.movie);
+                break;
+            case 'audio':
+                setCoverStyle(styles.audio);
+                break;
+            case 'video':
+                setCoverStyle(styles.video);
+                break;
+            default:
+                break;
+        }
     }, [media, token]);
 
     useEffect(() => {
@@ -76,9 +91,9 @@ export const ManageMediaItem = ( props ) => {
                     <span className='text-light spinner spinner-border'></span>
                 </div>
             )}
-            <div className={styles.cover}>
+            <div className={`${styles.cover} ${coverStyle}`}>
                 { isLoadingCoverImage && <span className='spinner-border'></span> }
-                <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
+                <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError}  />
             </div>
 
             <div className='flex-1 ml-2 px-2 py-2 text-light'>
@@ -108,10 +123,13 @@ export const ManageMediaItem = ( props ) => {
                             <input className="form-check-input" type="checkbox" id="inlineCheckbox1" checked={media.premium ? true : false} onChange={() => handleUpdateMedia("premium", !media.premium)} />
                             <label className="form-check-label" for="inlineCheckbox1">Premium</label>
                         </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
-                            <label className="form-check-label" for="inlineCheckbox1">Theatre</label>
-                        </div>
+                        {media.category == 'movie' && (
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
+                                <label className="form-check-label" for="inlineCheckbox1">Theatre</label>
+                            </div>
+                        )}
+                        
                     </div>
                 </div>
             </div>
