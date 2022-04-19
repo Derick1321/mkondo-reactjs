@@ -6,6 +6,7 @@ import ActionHeader from '../../../../../../components/media/ActionHeader/index'
 import TheatrePlaylistItemHeaderComponent from './header';
 import { setTheatreCurrentMedia } from '../../../../../../redux/features/theatre';
 import { useDispatch } from 'react-redux';
+import { retrieveMedia } from '../../../../../../redux/features/media';
 
 const TheatrePlaylistItemComponent = (props) => {
   //props
@@ -16,6 +17,8 @@ const TheatrePlaylistItemComponent = (props) => {
   const dispatch = useDispatch();
 
   const handleSelect = (media) => {
+    console.log("handle selected called");
+    dispatch(retrieveMedia(media.media_id));
     dispatch(setTheatreCurrentMedia(media));
   }
 
