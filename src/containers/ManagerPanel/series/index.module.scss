@@ -3,3 +3,14 @@
 .container {
     margin-top: 60px;
 }
+
+.wrapper {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    width: 150px;
+
+    img {
+        aspect-ratio: 27/40;
+        width: 100%;
+    }
+}

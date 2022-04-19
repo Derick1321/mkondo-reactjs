@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { ManageMediaItem } from './item';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams, generatePath } from 'react-router-dom';
 import { fetchAudios, fetchMovies, fetchVideos } from '../../../redux/features/media';
+import { routePaths } from '../../../common/routeConfig';
 
 
 export const ManageMedia = () => {
     //hooks
-    const { category } = useParams();
+    const { pathname } = useLocation();
+    const { category, id } = useParams();
 
     //state
     const [media, setMedia] = useState([]);
@@ -21,6 +23,8 @@ export const ManageMedia = () => {
     const isFetchingAudios = useSelector((state) => state.media.fetchAudiosLoading);
     const videos = useSelector((state) => state.media.videos);
     const isFetchingVideos = useSelector((state) => state.media.fetchVideoesLoading);
+    const albums = useSelector((state) => state.media.albums);
+    const series = useSelector((state) => state.media.mySeries);
 
      //effects
      useEffect(() => {
@@ -57,6 +61,22 @@ export const ManageMedia = () => {
                 break;
         }
     }, [category, movies, audios, videos]);
+
+    useEffect(() => {
+        if (!id || !pathname || !albums) return;
+        if (pathname == generatePath(routePaths.manageAlbumSongs, { id: id, })) {
+            //albums
+            const album = albums.find(x => x.album_id == id);
+            if (!album.songs) return;
+            setMedia(album.songs);
+        }
+        if (pathname == generatePath(routePaths.managerPanelManageSeriesEpisods, { id: id, })) {
+            //albums
+            const _series = series.find(x => x.series_id == id);
+            if (!_series.episodes) return;
+            setMedia(_series.episodes);
+        }
+    }, [pathname, id, albums])
 
     return (
         <div className={`${styles.container} container`}>
