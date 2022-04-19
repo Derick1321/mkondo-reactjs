@@ -98,7 +98,9 @@ export const routePaths = {
   manageMedia: '/app/manager-panel/media/:category',
   manageArtist: '/app/manager-panel/artists',
   manageAlbums: '/app/manager-panel/albums',
+  manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
+  managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -444,16 +446,29 @@ export const routes = [
             component: ManageArtists,
             redirect: redirectFunctions.app
           },
+          
           {
             ...defaultConfig,
             path: routePaths.manageAlbums,
             component: ManageAlbum,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.manageAlbumSongs,
+            component: ManageMedia,
             redirect: redirectFunctions.app
           },
           {
             ...defaultConfig,
             path: routePaths.managerPanelManageSeries,
             component: ManageSeries,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelManageSeriesEpisods,
+            component: ManageMedia,
             redirect: redirectFunctions.app
           }
         ],
