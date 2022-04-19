@@ -7,6 +7,7 @@ import { async } from 'regenerator-runtime';
 const ADD_MEDIA = 'media/ADD_MEDIA';
 const DELETE_MEDIA = 'media/DELETE_MEDIA';
 const GET_ALL_MEDIA = 'media/GET_ALL_MEDIA';
+const RETRIEVE_MEDIA = 'media/RETRIEVE_MEDIA';
 const SAVE_MEDIA = 'media/SAVE_MEDIA';
 const SAVE_MEDIA_PRO = 'media/SAVE_MEDIA_PRO'
 const GET_MEDIA = 'media/GET_MEDIA';
@@ -34,6 +35,7 @@ const UPDATE_LIKE = 'media/UPDATE_LIKE';
 const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
 const ADD_SERIES = 'media/ADD_SERIES';
 const GET_SERIES = 'media/GET_SERIES';
+const UPDATE_SERIES = 'media/UPDATE_SERIES';
 const REMOVE_SERIES = 'media/REMOVE_SERIES';
 const FETCH_MOVIES = 'media/FETCH_MOVIES';
 const FETCH_AUDIOS = 'media/FETCH_AUDIO';
@@ -462,6 +464,15 @@ export const getSeries = createAsyncThunk(
     }
 )
 
+//update series
+export const udpateSeries = createAsyncThunk(
+    UPDATE_SERIES,
+    async (data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('PUT', `series/${data.id}`, data.payload, token);
+    }
+)
+
 //delete series
 export const removeSeries = createAsyncThunk(
     REMOVE_SERIES,
@@ -514,6 +525,16 @@ export const fetchVideos = createAsyncThunk(
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
     }  
 );
+
+export const retrieveMedia = createAsyncThunk(
+    RETRIEVE_MEDIA,
+    async (media_id, store) => {
+        console.log("Retrieving a media thunk triggered", media_id);
+        const { token, user } = store.getState().authentication;
+        const filters = {user_id: user.user_id};
+        return await handleFetch('GET', `media/${media_id}?${queryString.stringify(filters)}`, null, token);
+    }
+)
 
 
 const initialState = {
@@ -589,6 +610,9 @@ const initialState = {
     getSeriesPending: false,
     getSeriesSuccess: false,
     getSeriesError: null,
+    updateSeriesPending: false,
+    updateSeriesSuccess: false,
+    updateSeriesError: null,
     removeSeriesPending: false,
     removeSeriesSuccess: false,
     removeSeriesError: null,
@@ -646,6 +670,11 @@ const initialState = {
     fetchAlbumsPending: false,
     albums: [],
     fetchAlbumsError: null,
+    retrieveMedia: {
+        loading: false,
+        data: null,
+        error: null, 
+    }
 };
 
 const mediaSlice = createSlice({
@@ -1178,6 +1207,24 @@ const mediaSlice = createSlice({
             state.getSeriesSuccess = false;
             state.getSeriesError = action.error;
         },
+        [udpateSeries.pending]: (state, action) => {
+            state.updateSeriesPending = true;
+            state.updateSeriesSuccess = false;
+            state.updateSeriesError = null;
+        },
+        [udpateSeries.fulfilled]: (state, action) => {
+            state.updateSeriesPending = false;
+            state.updateSeriesSuccess = true;
+
+            let _index = state.mySeries.findIndex(x => x.series_id == action.meta.arg.id);
+            if (_index > -1) {
+                state.mySeries[_index] = action.payload.series;
+            }
+        },
+        [udpateSeries.rejected]: (state, action) => {
+            state.updateSeriesPending = false;
+            state.updateSeriesError = action.error;
+        },
         [removeSeries.pending]: (state, action) => {
             state.removeSeriesPending = true;
             state.removeSeriesSuccess = false;
@@ -1241,6 +1288,19 @@ const mediaSlice = createSlice({
         [fetchAlbums.rejected]: (state, action) => {
             state.fetchAlbumsPending = false;
             state.fetchAlbumsError = action.error;
+        },
+        [retrieveMedia.pending]: (state, action) => {
+            state.retrieveMedia.loading = true;
+            state.retrieveMedia.data = null;
+            state.retrieveMedia.error = null;
+        },
+        [retrieveMedia.fulfilled]: (state, action) => {
+            state.retrieveMedia.loading = false;
+            state.retrieveMedia.data = action.payload;
+        },
+        [retrieveMedia.rejected]: (state, action) => {
+            state.retrieveMedia.loading = false;
+            state.retrieveMedia.error = action.error;
         }
     }
 });

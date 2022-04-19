@@ -122,7 +122,7 @@ const SubscriptionsListContainer = (props) => {
     setSubscribing(product);
     var payload = {
       "type": "reccuring",
-      "items": [{"price": product.prices[0].id}],
+      "items": [{"price": product.prices[1].id}],
     }
     dispatch(createSubscription(payload))
   }
@@ -146,8 +146,8 @@ const SubscriptionsListContainer = (props) => {
             
             <p>{weeklyProduct.description}</p>
             <div className={styles.price}>
-              <h2>{weeklyProduct.prices[0].unit_amount/100}</h2>
-              <h3>{weeklyProduct.prices[0].currency.toUpperCase()} <span>/ {weeklyProduct.prices[0].recurring.interval}</span></h3>
+              <h2>{weeklyProduct.prices[1].unit_amount/100}</h2>
+              <h3>{weeklyProduct.prices[1].currency.toUpperCase()} <span>/ {weeklyProduct.prices[1].recurring.interval}</span></h3>
             </div>
             <div className={styles.spacer}></div>
             {weeklyProduct.subscribed 
@@ -163,8 +163,8 @@ const SubscriptionsListContainer = (props) => {
                 
                 <p>{monthlyProduct.description}</p>
                 <div className={styles.price}>
-                  <h2>{monthlyProduct.prices[0].unit_amount/100}</h2>
-                  <h3>{monthlyProduct.prices[0].currency.toUpperCase()} <span>/ {monthlyProduct.prices[0].recurring.interval}</span></h3>
+                  <h2>{monthlyProduct.prices[1].unit_amount/100}</h2>
+                  <h3>{monthlyProduct.prices[1].currency.toUpperCase()} <span>/ {monthlyProduct.prices[1].recurring.interval}</span></h3>
               </div>
                 <div className={styles.spacer}></div>
 
