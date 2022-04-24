@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PropTypes } from 'prop-types';
 import TheatrePlaylistCoverComponent from './cover';
 import styles from "./index.module.scss";
@@ -31,7 +31,7 @@ const TheatrePlaylistItemComponent = (props) => {
           </div>
         </div>
       </TheatrePlaylistCoverComponent>
-      <h4 className={styles.title}>{name}</h4>
+      {/* <h4 className={styles.title}>{name}</h4> */}
     </div>
   )
 }
