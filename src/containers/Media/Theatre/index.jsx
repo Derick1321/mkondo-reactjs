@@ -7,7 +7,7 @@ import bg from '$assets/images/theatre-video-sample.png';
 import play from '$assets/images/icons/play.svg';
 import favourite from '$assets/images/icons/favorite.svg';
 import share from '$assets/images/icons/share.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getNewReleases } from '../../../redux/features/media';
 import { handleFetch } from '../../../common/requestUtils';
 import VideoPlayer from '../../../components/media/VideoPlayer/index';
@@ -15,16 +15,23 @@ import { createSubscription, fetchPaymentMethods, fetchProducts } from '../../..
 import { fetchConfigurations, selectConfigurationByKey } from '../../../redux/features/configuration';
 import { THEATRE_PER_STREAM_PRODUCT_ID } from '../../Configuration/Subscription/index';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { setTheatreCurrentMedia } from '../../../redux/features/theatre';
+import { getMediaUrl } from '../../../common/utils';
 
 const TheatreContainer = () => {
+    //hooks
+    const heroRef = useRef(null);
+
     //state
     const [cover, setCover] = useState(bg);
     const [mediaUrl, setMediaUrl] = useState(null);
+    const [trailerUrl, setTrailerUrl] = useState(null);
     const [theatreProduct, setTheatreProduct] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
     const [isHandlingWatch, setIsHandlingWatch] = useState(false);
+    const [heroWidth, setHeroWidth] = useState(null);
 
     //store
     const dispatch = useDispatch();
@@ -57,12 +64,14 @@ const TheatreContainer = () => {
     useEffect(() => {
         if (!currentMedia) return;
         setMediaUrl(null);
+        setTrailerUrl(null);
         //check if the current media has a cover url and obtain its url
         const effect = handleFetch('GET', `media/presigned-get-url?file_name=${currentMedia.cover_url}`, null, token);
         effect.then((res) => {
           setCover(res.response);
         });
-    
+        
+        getMediaUrl(currentMedia.media_url, token).then(url => setTrailerUrl(url));
         return () => {
           effect
         }
@@ -78,7 +87,19 @@ const TheatreContainer = () => {
         }
     }, [products, product_id])
 
+    useEffect(() => {
+        if (!newInTheatre) return;
+        if (!newInTheatre.length) return;
+        if (currentMedia) return;
+        dispatch(setTheatreCurrentMedia(newInTheatre[0]));
+    }, [newInTheatre, currentMedia]);
 
+    useEffect(() => {
+        if (!heroRef.current) return;
+        setHeroWidth(heroRef.current.offsetWidth);
+    }, [heroRef.current]);
+
+    //handlers
     const handlePlay = () => {
         // const res = await handleFetch('GET', `media/presigned-get-url?file_name=${currentMedia.media_url}`, null, token);
         setMediaUrl(currentMedia.media_url);
@@ -160,7 +181,17 @@ const TheatreContainer = () => {
                         <p>{errorMessage}</p>
                     </div>
                 )}
-                <div className={styles.theatre} style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.50)), url(${cover})`, }}>
+
+                <div ref={heroRef} className={styles.theatre} style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.50)), url(${cover})`, zIndex: '-1', }}>
+                    {trailerUrl && (
+                        <>
+                            <div style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.50))`, height: '100%', width: '100%', position: 'absolute', zIndex: '0', }}></div>
+                            <div className={styles.fadingBackground}></div>
+                            <video className={styles.backgroundTrailer} style={{ zIndex: '-1', }} height="600px" width={heroWidth} autoplay="autoplay" poster={cover} loop muted>
+                                <source src={trailerUrl} type="video/mp4" />
+                            </video>
+                        </>
+                    )}
                     <div className={styles.actions}>
                         <img src={favourite} alt="" />
                         <img src={share} alt="" />
@@ -184,12 +215,12 @@ const TheatreContainer = () => {
             </div>
         ))}
 
-            <div className={`${styles.container}`}>
+            <div className={`${styles.container} ${currentMedia && styles.floatAbove}`}>
                 <h1 className={styles.heading1}>Movie Theatre</h1>
                 {!theatreProduct && <p>Loading...</p>}
                 <div className={styles.margin}>
                     <TheatrePlaylistComponent
-                        title="New in Theatre"
+                        title="Popular on Mkondo"
                         isLoading={newInTheatreLoading}
                         movies={newInTheatre}
                     />
