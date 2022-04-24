@@ -11,6 +11,11 @@
 .floatAbove {
     margin-top: -12rem !important;
     z-index: 20;
+
+    @media only screen and (max-width: 676px) {
+        margin-top: -2rem !important;
+        height: 200px;
+    }
 }
 .heading1 {
     font-family: Montserrat;
@@ -30,6 +35,10 @@
     background-position: center;
     background-size: cover;
 
+    @media only screen and (max-width: 676px) {
+        height: 200px;
+    }
+
     .actions {
         position: absolute;
         top: 20px;
@@ -40,6 +49,18 @@
             height: 30px;
             width: 30px;
             margin-left: 10px;
+        }
+        
+        @media only screen and (max-width: 676px) {
+            top: 10px;
+            right: 10px;
+    
+    
+            img {
+                height: 15px;
+                width: 15px;
+                margin-left: 5px;
+            }
         }
     }
 
@@ -54,16 +75,30 @@
             width: 400px;
         }
 
+        @media only screen and (max-width: 600px) {
+            left: 40px;
+            top: 50px;
+        }
+        
+
         h1 {
             font-weight: 400;
             font-size: 36px;
             font-style: normal;
             color: white;
+
+            @media only screen and (max-width: 600px) {
+                font-size: 18px;
+            }
         }
 
         p {
             font-size: 18px;
             color: #DADADA;
+
+            @media only screen and (max-width: 600px) {
+                font-size: 10px;
+            }
         }
 
         .details {
@@ -73,6 +108,10 @@
 
             p {
                 font-size: 9px;
+            }
+
+            @media only screen and (max-width: 600px) {
+                display: none;
             }
         }
 
@@ -101,6 +140,11 @@
     position: relative;
     height: 600px;
     z-index: 0;
+
+    @media only screen and (max-width: 676px) {
+        margin-top: 0px;
+        height: 200px;
+    }
 }
 
 .error {
