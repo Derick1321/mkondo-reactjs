@@ -1,7 +1,18 @@
 @import '$assets/scss/main.scss';
 
 .wrapper {
+    display: relative;
     margin-right: 10px;
+    transition: all 0.3s ease-out;
+    overflow: hidden;
+}
+
+.wrapper:hover {
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    transform: scale(1.2);
+    z-index: 5;
+    border-radius: 5px;
 }
 
 .backgroundWrapper {
