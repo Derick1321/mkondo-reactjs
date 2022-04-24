@@ -2,6 +2,8 @@
 
 .wrapper {
     display: flex;
+    overflow-x: scroll;
+    width: 100%;
 }
 
 .title {
