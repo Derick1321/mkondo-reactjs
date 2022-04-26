@@ -38,10 +38,10 @@ const GeneralSelector = (props) => {
           />
           <div className={styles.genreSelectorHeaderWrapper}>
             <div className={styles.genreSelectorHeader}>{title}</div>
-            <div>{subtitle}</div>
+            <div className='text-light'>{subtitle}</div>
           </div>
         </div>
-        <div className={`d-flex flex-wrap justify-content-center ${styles.genreSelectorMenus}`}>
+        <div className={`d-flex justify-content-center ${styles.genreSelectorMenus}`}>
           {
             source.map((menu) => {
               const isActive = selected.indexOf(menu.name) > -1 ? styles.genreSelectorMenuActive : '';

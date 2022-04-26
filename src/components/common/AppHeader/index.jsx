@@ -111,10 +111,10 @@ const AppHeader = (props) => {
   // render
   return (
  
-      <div className={`d-flex ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
-        <div className={`d-flex align-items-center d-sm-none ${styles.menuWrapper}`}>
+      <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
+        <div className={`d-flex align-items-center d-sm-none mr-auto ${styles.menuWrapper}`}>
           <HamburgerMenu />
-          {(!isSideMenuOpen  ) && <span className={styles.mobile_logo}>Mkondo</span>}
+          {(!isSideMenuOpen  ) && <span className={`${styles.mobile_logo}`}>Mkondo</span>}
         </div>
         {
           showSearch && (
@@ -130,7 +130,7 @@ const AppHeader = (props) => {
                 />
           )
         }
-        { !showSearch && (<span className={styles.logo_geneneral}>Mkondo</span>)}
+        { !showSearch && (<span className={`${styles.mobile_logo_plus} mr-auto`}>Mkondo</span>)}
         
         <DropDown
           options={headerMenus}
