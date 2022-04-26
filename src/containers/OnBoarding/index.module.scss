@@ -4,4 +4,11 @@
   min-height: 100vh;
   width: 100%;
   background-color: $primary-green;
+  
+}
+
+
+.error {
+  background-color: $error-color !important;
+  color: white !important;
 }

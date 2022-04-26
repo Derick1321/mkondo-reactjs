@@ -2,6 +2,7 @@
 $heading: 24px;
 $title: 18px;
 $normal-text: 14px;
+
 $margin-top: 2.5rem;
 
 // COLORS
@@ -43,4 +44,11 @@ $z-index-last: 9999;
 @mixin card-dark {
     padding: 1em;
     background: rgba(0, 0, 0, 0.5);
+}
+
+@mixin container {
+    margin: 0 2.5rem;
+    @media only screen and (max-width: 600px) {
+        margin: 0 1.5rem;
+    }
 }
