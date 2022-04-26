@@ -14,16 +14,19 @@ import InputField from '../../components/forms/InputField';
 import Button from '../../components/common/Button';
 import { updateSystemUser } from '../../redux/features/user';
 import { refreshToken } from '../../redux/features/authentication';
+import store from '../../redux/store';
 
 const OnBoarding = () => {
   // state
   const [selected, setSelected] = useState([]);
   const [phone, setPhone] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
   const updateUserComplete = useSelector((store) => store.user.updateUserComplete);
+  const updateUserError = useSelector((state) => state.user.updateUserError);
   const user = useSelector((store) => store.authentication.user);
 
   // effects
@@ -37,7 +40,20 @@ const OnBoarding = () => {
     if (user.user_type && user.email && user.phone_number) {
       history.push(routePaths.home);
     }
-  }, [user])
+  }, [user]);
+
+  useEffect(() => {
+    if (!updateUserError) return;
+
+    try {
+      error = JSON.parse(updateUserError.message)
+      if (error && error.message) {
+        setErrorMessage(error.message)
+      }
+    } catch (e) {
+      setErrorMessage('Sorry, Something went wrong during saving!')
+    }
+  }, [updateUserError])
 
   // handlers
   const handleSelect = (name) => {
@@ -107,8 +123,10 @@ const OnBoarding = () => {
             />
           </div>
           
-          <div className='mt-5 pt-5 container'>
-            <h4>Update Number</h4>
+          
+          <div className='mt-2 mx-4'>
+            {errorMessage && <div className={`alert alert-danger ${styles.error}`}>{errorMessage}</div>}
+            <h4 className='text-light'>Update Number</h4>
             <InputField 
               field={{ 
                   type: "text",

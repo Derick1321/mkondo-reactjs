@@ -7,6 +7,7 @@ import TheatrePlaylistItemHeaderComponent from './header';
 import { setTheatreCurrentMedia } from '../../../../../../redux/features/theatre';
 import { useDispatch } from 'react-redux';
 import { retrieveMedia } from '../../../../../../redux/features/media';
+import { showModal } from '../../../../../../redux/features/modal';
 
 const TheatrePlaylistItemComponent = (props) => {
   //props
@@ -20,6 +21,7 @@ const TheatrePlaylistItemComponent = (props) => {
     console.log("handle selected called");
     dispatch(retrieveMedia(media.media_id));
     dispatch(setTheatreCurrentMedia(media));
+    // dispatch(showModal('ALERT_MODAL'))
   }
 
   return (
