@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '$components/common/Button';
 
 import styles from './index.module.scss';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 const arrowLeftIcon = require('$assets/images/icons/arrow-left.svg');
 const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
