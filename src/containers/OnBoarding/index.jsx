@@ -114,6 +114,20 @@ const OnBoarding = () => {
     }));
   }
 
+  if (!user.user_type || !user.user_type == 'visitor') {
+    return (
+      <div className={styles.onboardingWrapper}>
+        <AppHeader showSearch={false} />
+        <GeneralSelector
+          handleNext={handleNextUserType}
+          handleSelect={handleSelectUserType}
+          selected={selected}
+          subtitle="Select account type"
+        />
+      </div>
+    )
+  }
+
   if (!user.phone_number) {
     return (
       <div className={styles.onboardingWrapper}>
@@ -140,19 +154,7 @@ const OnBoarding = () => {
     )
   }
 
-  if (!user.user_type || !user.user_type == 'visitor') {
-    return (
-      <div className={styles.onboardingWrapper}>
-        <AppHeader showSearch={false} />
-        <GeneralSelector
-          handleNext={handleNextUserType}
-          handleSelect={handleSelectUserType}
-          selected={selected}
-          subtitle="Select account type"
-        />
-      </div>
-    )
-  }
+  
   // render
   if (!user.genres) {
     return (
