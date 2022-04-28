@@ -114,7 +114,7 @@ const OnBoarding = () => {
     }));
   }
 
-  if (!user.user_type || !user.user_type == 'visitor') {
+  if (!user.user_type || user.user_type == 'visitor') {
     return (
       <div className={styles.onboardingWrapper}>
         <AppHeader showSearch={false} />
