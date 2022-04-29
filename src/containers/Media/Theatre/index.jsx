@@ -192,10 +192,10 @@ const TheatreContainer = () => {
                             </video>
                         </>
                     )}
-                    <div className={styles.actions}>
+                    {/* <div className={styles.actions}>
                         <img src={favourite} alt="" />
                         <img src={share} alt="" />
-                    </div>
+                    </div> */}
                     <div className={styles.description}>
                         <h1>{currentMedia.name}</h1>
                         <p>{currentMedia.description}</p>
@@ -216,7 +216,7 @@ const TheatreContainer = () => {
         ))}
 
             <div className={`${styles.container} ${currentMedia && styles.floatAbove}`}>
-                <h1 className={styles.heading1}>Movie Theatre</h1>
+                {/* <h1 className={styles.heading1}>Movie Theatre</h1> */}
                 {!theatreProduct && <p>Loading...</p>}
                 <div className={styles.margin}>
                     <TheatrePlaylistComponent

@@ -1,9 +1,42 @@
 @import '$assets/scss/main.scss';
 @import '$assets/scss/general.scss';
+
+$animation_time: 0.5s;
+
 .content {
-    flex: 1;
+    display: inline-block;
+    width: calc(100% - 220px);
     background-color: #323232;
     overflow-x: hidden;
+    transition: all $animation_time linear;
+    height: 100vh;
+
+    @media only screen and (max-width: 768px) { 
+        width: 100%;
+    }
+}
+
+.sideMenuWrapper {
+    display: inline-block;
+    width: 220px;
+    transition: all $animation_time linear;
+    height: 100vh;
+
+    @media only screen and (max-width: 768px) { 
+        display: none;
+    }
+}
+
+.hideSideMenu {
+    width: 0;
+    // position: absolute;
+    // transform: translateX(-220px);
+    transition: all $animation_time linear;
+}
+
+.expandContent {
+    width: 100% !important;
+    transition: all $animation_time linear;
 }
 
 ///////////////// ADD /////////////////////
@@ -31,18 +64,19 @@
 }
 
 ///////////////// END ////////////////////
-.sideMenuWrapper {
-    width: 220px;
-}
 
 .sideMenuMobile {
-    position: absolute;
-    top: 70px;
-    height: 0;
-    width: 100%;
-    z-index: $z-index-last + 10;
-    overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0), background 0.3s cubic-bezier(0.77, 0.2, 0.05, 1.0), height 0.5s ease;
+    display: none;
+    @media only screen and (max-width: 768px) {
+        display: block;
+        position: absolute;
+        top: 70px;
+        height: 0;
+        width: 100%;
+        z-index: $z-index-last + 10;
+        overflow: hidden;
+        transition: transform $animation_time cubic-bezier(0.77, 0.2, 0.05, 1.0), background $animation_time cubic-bezier(0.77, 0.2, 0.05, 1.0), height 0.5s ease;
+    }
 }
 
 .sideMenuActive {
@@ -54,7 +88,7 @@
     z-index: $z-index-last;
     width: 100%;
     bottom: 0;
-    transition: all 0.3s;
+    transition: all $animation_time;
 }
 
 .hideFooter {
