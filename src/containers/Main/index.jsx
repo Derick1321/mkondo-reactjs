@@ -51,11 +51,11 @@ const Main = (props) => {
 
   // render
   return (
-    <div className="d-flex vh-100" style={{ zIndex: '-3' }}>
-      <div className={`d-none d-sm-block ${styles.sideMenuWrapper}`}>
+    <div className="vh-100" style={{ zIndex: '-3' }}>
+      <div className={`${styles.sideMenuWrapper} ${!isSideMenuOpen && styles.hideSideMenu}`}>
         <SideMenu />
       </div>
-      <div className={styles.content}>
+      <div className={`${styles.content} ${!isSideMenuOpen && styles.expandContent}`}>
         <AppHeader/>
         <Switch>
           {
@@ -68,7 +68,7 @@ const Main = (props) => {
           }
         </Switch>
       </div>
-      <div className={`d-block d-sm-none ${styles.sideMenuMobile} ${isMobile && isSideMenuOpen ? styles.sideMenuActive : ''}`}>
+      <div className={`${styles.sideMenuMobile} ${isMobile && isSideMenuOpen ? styles.sideMenuActive : ''}`}>
         <SideMenu />
       </div>
       {
