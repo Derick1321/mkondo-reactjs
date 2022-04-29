@@ -112,10 +112,10 @@ const AppHeader = (props) => {
   return (
  
       <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
-        <div className={`d-flex align-items-center d-sm-none mr-auto ${styles.menuWrapper}`}>
+        {/* <div className={`d-flex align-items-center d-sm-none mr-auto ${styles.menuWrapper}`}> */}
           <HamburgerMenu />
           {(!isSideMenuOpen  ) && <span className={`${styles.mobile_logo}`}>Mkondo</span>}
-        </div>
+        {/* </div> */}
         {
           showSearch && (
                 <TextInputCustom
