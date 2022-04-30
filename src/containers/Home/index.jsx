@@ -9,13 +9,20 @@ import { getNewReleases, getTopMedias, getRandomMedias, getTrendMedias } from '$
 
 import styles from './index.module.scss';
 import { routePaths } from '../../common/routeConfig';
+import { selectConfigurations, selectConfigurationByKey, fetchConfigurations } from '../../redux/features/configuration';
+import { CONFIG_KEY_SLIDER_DASHBOARD } from '../Configuration/Sliders';
+import { fetchSliders, selectSliderById } from '../../redux/features/slider';
+import { Carousel } from '../../components/common/Carousel';
+import { getMediaUrl } from '../../common/utils';
 
 const Home = () => {
   // state
   const [selected, setSelected] = useState('audio');
+  const [sliderItems, setSliderItems] = useState([]);
 
   // store
   const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.authentication);
   const newReleases = useSelector((store) => store.media.newReleases);
   const getNewReleasesPending = useSelector((store) => store.media.getNewReleasesPending);
   const addLikesPending = useSelector((store) => store.user.addLikesPending);
@@ -27,6 +34,9 @@ const Home = () => {
   const trendMedias = useSelector((store) => store.media.trendMedias);
   const getTrendMediasPending = useSelector((store) => store.media.getTrendMediasPending);
   const favorites = useSelector((store) => store.authentication.user.favourites);
+  const configurations = useSelector((state) => selectConfigurations(state));
+  const slider_configuration = useSelector((state) => selectConfigurationByKey(state, CONFIG_KEY_SLIDER_DASHBOARD));
+  const slider = useSelector((state) => slider_configuration ? selectSliderById(state, slider_configuration.value) : null);
   // const user_id = useSelector((store) => store.authentication.user_id);
 
   const lang = useSelector(store => store.user.language);
@@ -40,6 +50,8 @@ const Home = () => {
     dispatch(getTopMedias({ category: 'audio' }));
     dispatch(getRandomMedias({ category: 'audio' }));
     dispatch(getTrendMedias({ category: 'audio' }));
+    dispatch(fetchConfigurations());
+    dispatch(fetchSliders());
   }, []);
 
   useEffect(() => {
@@ -51,6 +63,19 @@ const Home = () => {
     dispatch(getRandomMedias({ category: selected }));
     dispatch(getTrendMedias({ category: selected }));
   }, [addLikesPending, removeLikesPending]);
+
+  useEffect(() => {
+    if (!slider || !slider.items) return;
+    let _items = [];
+    console.log(slider);
+    slider.items.map((item, i) => {
+      getMediaUrl(item.image_url, token).then(res => {
+        _items.push(res);
+        setSliderItems(_items);
+        console.log(items, _items);
+      })
+    });
+  }, [slider])
 
   // handlers
   const handleSelect = (name) => {
@@ -72,6 +97,7 @@ const Home = () => {
   // render
   return (
     <div className={styles.homeContent}>
+      <Carousel items={sliderItems} aspect_ratio_x={slider ? slider.aspect_ratio_x : 6} aspect_ratio_y={slider ? slider.aspect_ratio_y : 2} />
       <div className={styles.homeTabsWrapper}>
         <TabsMark
           onSelect={handleSelect}

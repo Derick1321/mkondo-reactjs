@@ -1,1 +1,16 @@
 @import '../index.module.scss';
+
+.tile {
+    background: rgba($color: $black, $alpha: 0.5);
+    padding: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    h2 {
+        font-size: medium;
+    }
+}
+
+.capitalize {
+    text-transform: capitalize;
+}
