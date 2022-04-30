@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router'
 import { routePaths } from '../../../common/routeConfig'
 import Button from '../../../components/common/Button'
 import { deleteSlider, fetchSliders, selectAllSliders } from '../../../redux/features/slider'
 import styles from './index.module.scss'
+import { useHistory } from 'react-router-dom';
 
 export const SliderList = () => {
 
     const sliders = useSelector(selectAllSliders)
     const status = useSelector(store => store.slider.status)
     
-    const history = useHistory()
+    const history = useHistory();
     const dispatch = useDispatch()
 
     useEffect(() => {
