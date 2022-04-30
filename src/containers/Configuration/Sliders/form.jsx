@@ -3,16 +3,18 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchConfigurations, selectConfigurationByKey, selectConfigurations, storeConfiguration, updateConfiguration } from '../../../redux/features/configuration'
 import slider, { fetchSliders, selectAllSliders } from '../../../redux/features/slider'
+import styles from './index.module.scss';
 
-export const CONFIG_KEY_HOME_SLIDER = "HOME_SLIDER"
+export const Form = (props) => {
+    //props
+    const { configKey } = props;
 
-export const Form = () => {
     const [payload, setPayload] = useState("")
     const [submitting, setSubmitting] = useState(false)
 
     const slider = useSelector(state => state.slider)
     const configuration = useSelector(state => state.configuration)
-    const home_slider_setting = useSelector(state => selectConfigurationByKey(state, CONFIG_KEY_HOME_SLIDER))
+    const slider_setting = useSelector(state => selectConfigurationByKey(state, configKey))
     
     const dispatch = useDispatch()
 
@@ -29,20 +31,20 @@ export const Form = () => {
     }, [configuration])
 
     useEffect(() => {
-        if (home_slider_setting) {
-            setPayload(home_slider_setting.value)
+        if (slider_setting) {
+            setPayload(slider_setting.value)
         }
-    }, [home_slider_setting])
+    }, [slider_setting])
 
     const handleChange = e => setPayload(e.target.value)
 
     const handleSave = async () => {
         setSubmitting(false)
         try {
-            if (home_slider_setting) {
+            if (slider_setting) {
                 // the configuration already exists so update it
                 const _payload = {
-                    id: home_slider_setting.configuration_id,
+                    id: slider_setting.configuration_id,
                     data: {
                         value: payload
                     }
@@ -51,7 +53,7 @@ export const Form = () => {
             } else {
                 // the configuration does not exist so create it
                 const _payload = {
-                    key: CONFIG_KEY_HOME_SLIDER,
+                    key: configKey,
                     value: payload
                 }
                 const resultActon = await unwrapResult(dispatch(storeConfiguration(_payload)))
@@ -66,10 +68,10 @@ export const Form = () => {
     return (
         <div className="row">
             <div className="col">
-                <h4>Home Slider</h4>
+                <h4 className={styles.capitalize}>{configKey.split('_').join(' ').toLowerCase()}</h4>
             </div>
             <div className="col">
-                {home_slider_setting ? <span>Setting Found</span> : <span>Unknown</span>}
+                {slider_setting ? <span>Setting Found</span> : <span>Unknown</span>}
             </div>
             <div className="col">
                 <p>Select Slider</p>
