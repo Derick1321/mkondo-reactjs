@@ -152,8 +152,8 @@ export const SocialMediaCreatePost = () => {
 
         dispatch(addPost(
             { ...payload, 
-                "images": JSON.stringify(_images),
-                "videos": JSON.stringify(_videos),
+                "images": _images,
+                "videos": _videos,
             }));
     }
 
