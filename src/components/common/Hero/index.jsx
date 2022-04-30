@@ -8,7 +8,7 @@ import { showModal } from '$redux/features/modal';
 
 import styles from './index.module.scss';
 import { fetchConfigurations, selectConfigurationByKey } from '../../../redux/features/configuration';
-import { CONFIG_KEY_HOME_SLIDER } from '../../../containers/Configuration/Sliders/form';
+import { CONFIG_KEY_SLIDER_HOME } from '../../../containers/Configuration/Sliders/form';
 import { fetchSliders, selectAllSliderPictures, selectSliderById } from '../../../redux/features/slider';
 import { async } from 'regenerator-runtime';
 import { Carousel } from '../Carousel';
@@ -58,7 +58,7 @@ const Hero = (props) => {
   const { visitorToken } = useSelector(state => state.authentication)
   const configuration = useSelector(state => state.configuration)
   const slider = useSelector(state => state.slider)
-  const home_slider_setting = useSelector(state => selectConfigurationByKey(state, CONFIG_KEY_HOME_SLIDER))
+  const home_slider_setting = useSelector(state => selectConfigurationByKey(state, CONFIG_KEY_SLIDER_HOME))
   const home_slider = useSelector(state => selectSliderById(state, home_slider_setting ? home_slider_setting.value : ""))
   const _homeSliderItems = useSelector(state => selectAllSliderPictures(state, home_slider_setting ? home_slider_setting.value : ""))
   const dispatch = useDispatch();
