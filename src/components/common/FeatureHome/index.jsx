@@ -207,7 +207,7 @@ const FeatureHome = (props) => {
         {
           showHeader && (
             <>
-              <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+              <div className={`d-flex align-items-center justify-content-between text-light ${styles.f_featureHeaderWrapper}`}>
                 <div className={`ml-3 ${styles.views}`}>{plays} views</div>
                 <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
                 <ActionHeader
