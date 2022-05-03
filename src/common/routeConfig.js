@@ -48,6 +48,8 @@ import { ManageMedia } from '../containers/ManagerPanel/media';
 import { ManageArtists } from '../containers/ManagerPanel/artists/index';
 import { ManageAlbum } from '../containers/ManagerPanel/albums';
 import { ManageSeries } from '../containers/ManagerPanel/series';
+import { MusicContainer } from '../containers/Media/Music/index';
+import { VideosContainer } from '../containers/Media/Videos/index';
 
 export const routePaths = {
   main: '/app',
@@ -65,6 +67,8 @@ export const routePaths = {
   feeds: '/app/feeds',
   media: '/app/media',
   theatre: '/app/media/theatre',
+  music: '/app/media/music',
+  videos: '/app/media/videos',
   newAlbum: '/app/media/new-album',
   newSeries: "/app/media/new-series",
   mySeries: '/app/media/series',
@@ -304,6 +308,18 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.theatre,
             component: TheatreContainer,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.music,
+            component: MusicContainer,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.videos,
+            component: VideosContainer,
             redirect: redirectFunctions.app,
           },
           {
