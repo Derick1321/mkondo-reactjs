@@ -93,6 +93,9 @@ const FeatureHome = (props) => {
     notifyPlayed,
   } = props;
 
+  //state
+  const [hovered, setHovered] = useState(false);
+
   // store
   const userToken = useSelector((store) => store.authentication.token);
   const user = useSelector((store) => store.authentication.user);
@@ -202,11 +205,11 @@ const FeatureHome = (props) => {
   if (category == "audio") {
     return (
     <>
-      <div className={styles.f_featureWrapper}>
+      <div className={styles.f_featureWrapper} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         <FeatureBkg source={avatarUrl}>
         {
           showHeader && (
-            <>
+            <div className={`${styles.content} ${hovered && styles.active}`}>
               <div className={`d-flex align-items-center justify-content-between text-light ${styles.f_featureHeaderWrapper}`}>
                 <div className={`ml-3 ${styles.views}`}>{plays} views</div>
                 <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
@@ -232,7 +235,7 @@ const FeatureHome = (props) => {
                   isPlaying={isPlaying && currentMediaId === mediaId}
                 />
               </PlayButton>
-            </>
+            </div>
           )
         }
         </FeatureBkg>
@@ -273,12 +276,12 @@ const FeatureHome = (props) => {
 
   if (category == "video") {
     return (
-      <>
-        <div className={styles.f_featureWrapperVideo}>
+      <div>
+        <div className={styles.f_featureWrapperVideo} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
           <FeatureBkg source={avatarUrl}>
           {
             showHeader && (
-              <>
+              <div className={`${styles.content} ${hovered && styles.active}`}>
                 <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
                   <div className={`ml-3 ${styles.views}`}>{plays} views</div>
                   <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
@@ -304,7 +307,7 @@ const FeatureHome = (props) => {
                     isPlaying={isPlaying && currentMediaId === mediaId}
                   />
                 </PlayButton>
-              </>
+              </div>
             )
           }
           </FeatureBkg>
@@ -337,18 +340,18 @@ const FeatureHome = (props) => {
               {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
               {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
             </div>
-      </>
+      </div>
     )
   }
 
   if (category == "movie") {
     return (
       <>
-        <div className={styles.f_featureWrapperMovie}>
+        <div className={styles.f_featureWrapperMovie} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
           <FeatureBkg source={avatarUrl}>
           {
             showHeader && (
-              <>
+              <div className={`${styles.content} ${hovered && styles.active}`}>
                 <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
                   <div className={`ml-3 ${styles.views}`}>{plays} views</div>
                   <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
@@ -374,7 +377,7 @@ const FeatureHome = (props) => {
                     isPlaying={isPlaying && currentMediaId === mediaId}
                   />
                 </PlayButton>
-              </>
+              </div>
             )
           }
           </FeatureBkg>
