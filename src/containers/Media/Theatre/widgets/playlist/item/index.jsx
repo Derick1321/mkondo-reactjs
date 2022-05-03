@@ -8,6 +8,7 @@ import { setTheatreCurrentMedia } from '../../../../../../redux/features/theatre
 import { useDispatch } from 'react-redux';
 import { retrieveMedia } from '../../../../../../redux/features/media';
 import { showModal } from '../../../../../../redux/features/modal';
+import FeatureHome from '../../../../../../components/common/FeatureHome/index';
 
 const TheatrePlaylistItemComponent = (props) => {
   //props
@@ -26,13 +27,21 @@ const TheatrePlaylistItemComponent = (props) => {
 
   return (
     <div className={styles.wrapper} onClick={() => handleSelect(media)}>
-      <TheatrePlaylistCoverComponent filename={cover_url}>
-        <div className={styles.backgroundWrapper}>
-          <div className={styles.header}>
-            <TheatrePlaylistItemHeaderComponent media={media} />
-          </div>
-        </div>
-      </TheatrePlaylistCoverComponent>
+      <FeatureHome
+          key={`feature-home-theatre-${media.media_id}`}
+          mediaUrl={media.media_url}
+          mediaId={media.media_id}
+          avatar={media.cover_url}
+          artistId={media.owner_id}
+          owner_name={media.owner_name}
+          title={media.name}
+          country={media.country}
+          category={media.category}
+          description={media.description}
+          likes={media.likes || undefined}
+          plays={media.plays}
+          comment_num={media.comment_num}
+        />
       {/* <h4 className={styles.title}>{name}</h4> */}
     </div>
   )
