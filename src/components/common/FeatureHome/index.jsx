@@ -493,12 +493,20 @@ FeatureHome.defaultProps = {
 FeatureHome.propTypes = {
   subtitle: PropTypes.string,
   title: PropTypes.string.isRequired,
+  category: PropTypes.string.isRequired,
   mediaUrl: PropTypes.string,
   mediaId: PropTypes.string,
   country: PropTypes.string,
   artistId: PropTypes.string,
+  avatar: PropTypes.string,
+  owner_name: PropTypes.string,
+  description: PropTypes.string,
+
   showHeader: PropTypes.bool,
-  likes: PropTypes.array
+  likes: PropTypes.array,
+  plays: PropTypes.number,
+  comment_num: PropTypes.number,
+  notifyPlayed: PropTypes.func,
 }
 
 export default FeatureHome;
