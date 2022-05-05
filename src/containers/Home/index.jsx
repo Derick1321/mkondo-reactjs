@@ -72,7 +72,7 @@ const Home = () => {
       getMediaUrl(item.image_url, token).then(res => {
         _items.push(res);
         setSliderItems(_items);
-        console.log(items, _items);
+        console.log(sliderItems, _items);
       })
     });
   }, [slider])

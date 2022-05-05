@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, generatePath } from 'react-router-dom';
+import { useHistory, generatePath, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import { loadMedia } from '$redux/features/player';
 import styles from './index.module.scss';
 import { updatePlaylist } from '../../../redux/features/player';
 import { getRecommended, getSimilar, getSimilarRecommended } from '../../../redux/features/media';
+import { routePaths } from '../../../common/routeConfig';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
@@ -36,7 +37,7 @@ const FeatureBkg = styled.div`
   width: 100%;
   margin: auto;
   background-size: cover;
-  background-image: url(${props => props.source}); 
+  background-image: url(${props => props.avatar}); 
   background-repeat-y: repeat;
   // mix-blend-mode: multiply;
 `;
@@ -67,7 +68,7 @@ const FeatureAvatar = styled.div`
   border-radius: 40px;
   margin-right: 10px;
   background-size: cover;
-  background-image: url(${props => props.source}); 
+  background-image: url(${props => props.avatar}); 
 `;
 
 const FeatureHome = (props) => {
@@ -92,6 +93,9 @@ const FeatureHome = (props) => {
 
     notifyPlayed,
   } = props;
+
+  //hooks
+  const { push } = useHistory();
 
   //state
   const [hovered, setHovered] = useState(false);
@@ -252,9 +256,8 @@ const FeatureHome = (props) => {
           <div className="d-flex mt-2">
             <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
               <div style={{flex: 1}}>
-                
                 <div className={styles.title}><b>{title}</b></div>
-                {/* <div className={styles.f_description}>{description}</div> */}
+                <div onClick={() => push(generatePath(routePaths.viewArtist, {id: artistId}))} className={styles.f_description}>by {owner_name}</div>
               </div>
 
               {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
