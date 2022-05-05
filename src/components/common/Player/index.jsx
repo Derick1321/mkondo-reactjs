@@ -12,7 +12,7 @@ import { getSimilarRecommended } from '$redux/features/media';
 import styles from './index.module.scss';
 import { useHistory, generatePath } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
-import { goNext, goPrev, loadNext, loadPrevious } from '../../../redux/features/player';
+import { goNext, goPrev, loadNext, loadPrevious, setCurrentMediaId } from '../../../redux/features/player';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
@@ -47,7 +47,7 @@ const Player = () => {
   const isPlaylistOpened = useSelector((store) => store.player.isPlaylistOpened);
   const showFooterPlayer = useSelector((store) => store.nav.showFooterPlayer);
   const user_id = useSelector((store) => store.authentication.user.user_id);
-  const currentPlaylistIndex = useSelector((store) => store.player.currentPlaylistIndex);
+  const currentPlaylistIndex = useSelector((store) => store.player.index);
 
   const similarRecommendedMedia = useSelector((store) => store.media.similarRecommendedMedia);
   const getSimilarRecommendedPending = useSelector((store) => store.media.getSimilarRecommendedPending);
@@ -64,12 +64,12 @@ const Player = () => {
 
   useEffect(() => {
     if (!currentPlaylist[currentPlaylistIndex]) return;
-
+    console.log("Current playlist changed");
     setAvatar(currentPlaylist[currentPlaylistIndex].avatar);
     setAlbum(currentPlaylist[currentPlaylistIndex].artistName);
     setArtistName(currentPlaylist[currentPlaylistIndex].name);
     setArtistId(currentPlaylist[currentPlaylistIndex].artistId);
-    
+    dispatch(setCurrentMediaId(currentPlaylist[currentPlaylistIndex].mediaId))
   }, [currentPlaylistIndex])
 
   // handlers
@@ -88,11 +88,11 @@ const Player = () => {
   }
 
   const handleNext = () => {
-    dispatch(loadNext());
+    dispatch(goNext());
   }
 
   const handlePrev = () => {
-    dispatch(loadPrevious());
+    dispatch(goPrev());
   }
 
   const toggleFooter = () => { dispatch(toggleFooterPlayer()); }
