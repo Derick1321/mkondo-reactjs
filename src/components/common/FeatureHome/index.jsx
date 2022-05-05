@@ -213,7 +213,7 @@ const FeatureHome = (props) => {
         <FeatureBkg source={avatarUrl}>
         {
           showHeader && (
-            <div className={`${styles.content} ${hovered && styles.active}`}>
+            <div className={`${styles.content} ${(hovered || ((mediaId == currentMediaId) && isPlaying)) && styles.active}`}>
               <div className={`d-flex align-items-center justify-content-between text-light ${styles.f_featureHeaderWrapper}`}>
                 <div className={`ml-3 ${styles.views}`}>{plays} views</div>
                 <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>

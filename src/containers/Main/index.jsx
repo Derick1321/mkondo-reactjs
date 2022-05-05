@@ -12,6 +12,7 @@ import { hideModal } from '$redux/features/modal';
 import { listPlaylist } from '$redux/features/playlist';
 
 import styles from './index.module.scss';
+import { pause } from '$redux/features/player';
 
 const Main = (props) => {
   // props
@@ -23,6 +24,8 @@ const Main = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
+  const token = useSelector((store) => store.authentication.token);
+  const isPlaying = useSelector((store) => store.player.isPlaying);
   const userId = useSelector((store) => store.authentication.user.user_id);
   const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
   const isMobile = useSelector((store) => store.nav.isMobile);
@@ -48,6 +51,13 @@ const Main = (props) => {
       dispatch(hideModal()); // ensure the modal is hidden
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    //stoping the player on logout
+    if (!token && isPlaying) {
+      dispatch(pause());
+    }
+  }, [token, isPlaying]);
 
   // render
   return (
