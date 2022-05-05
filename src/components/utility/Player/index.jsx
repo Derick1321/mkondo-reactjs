@@ -17,6 +17,7 @@ const Player = () => {
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
+  const currentPlaylistIndex = useSelector((store) => store.player.currentPlaylistIndex);
   const newPosition = useSelector((store) => store.player.newPosition);
   const volume = useSelector((store) => store.player.volume);
   const isLoading = useSelector((store) => store.player.isLoading);
@@ -72,7 +73,7 @@ const Player = () => {
     }
 
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist))
-    audioRef.current = new AudioPlayer(newPlaylist, callbacks);
+    audioRef.current = new AudioPlayer(newPlaylist, callbacks, true);
   }, []);
 
   useEffect(() => {
@@ -121,6 +122,10 @@ const Player = () => {
     audioRef.current.volume(volume);
   }, [volume]);
 
+  useEffect(() => {
+    if (!audioRef.current.playlist.length) return;
+    audioRef.current.play(currentPlaylistIndex);
+  }, [currentPlaylistIndex])
   // render
   return null;
 }

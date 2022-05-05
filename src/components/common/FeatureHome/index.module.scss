@@ -149,6 +149,10 @@
     white-space: nowrap;
     overflow: hidden;
     color: #aaa;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .f_bottom_icon {

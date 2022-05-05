@@ -15,14 +15,16 @@ export const loadNext = createAsyncThunk(
         // state.currentPlaylistIndex++;
         let _index = state.currentPlaylistIndex + 1;
         let _media = state.currentPlaylist[_index];
+        console.log("loading Next", _index, _media);
         store.dispatch(updateLoading(true));
-        store.dispatch(setCurrentMediaId(_media.mediaId));
+        store.dispatch(setCurrentMediaId(_media.media_id));
 
         let { token, visitorToken } = store.getState().authentication;
         if (!token) token = visitorToken;
 
-        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${_media.url}`, null, token);
+        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${_media.media_url}`, null, token);
         store.dispatch(play({
+          mediaId: _media.media_id,
           ..._media,
           url: res.response,
         }));
@@ -114,7 +116,10 @@ const playerSlider = createSlice({
       }
     },
     goNext(state, action) {
-      // handle prev
+      // handle nex
+      if (state.currentPlaylistIndex < state.currentPlaylist.length) {
+        state.currentPlaylistIndex++;
+      }
     },
     updateVolume(state, action) {
       state.volume = action.payload;
@@ -147,6 +152,8 @@ export const {
   play,
   pause,
   seek,
+  goNext,
+  goPrev,
   updateRange,
   updateLoading,
   updateDuration,

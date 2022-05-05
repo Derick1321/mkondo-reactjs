@@ -38,7 +38,7 @@ class Player {
     let sound;
     let index = typeof idx === 'number' ? idx : this.index;
     const data = this.playlist[index];
-
+    console.log("Playlist from Howl", this.playlist, idx);
     if (data.howl) {
       sound = data.howl;
     } else {
