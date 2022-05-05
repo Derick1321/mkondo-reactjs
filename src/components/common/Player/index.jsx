@@ -12,7 +12,7 @@ import { getSimilarRecommended } from '$redux/features/media';
 import styles from './index.module.scss';
 import { useHistory, generatePath } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
-import { loadNext, loadPrevious } from '../../../redux/features/player';
+import { goNext, goPrev, loadNext, loadPrevious } from '../../../redux/features/player';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
