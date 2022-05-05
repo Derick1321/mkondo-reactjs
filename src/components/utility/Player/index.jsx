@@ -5,11 +5,13 @@ import AudioPlayer from '$common/player';
 
 import { addHistory } from '$redux/features/user';
 import {
+  preLoadMedia,
   updateLoading,
   pause,
   updateRange,
   updateDuration,
 } from '$redux/features/player';
+import { setCurrentIndex } from '../../../redux/features/player';
 
 // hook for handing Audio related commands
 const Player = () => {
@@ -17,10 +19,12 @@ const Player = () => {
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
-  const currentPlaylistIndex = useSelector((store) => store.player.currentPlaylistIndex);
+  const currentIndex = useSelector((store) => store.player.index);
   const newPosition = useSelector((store) => store.player.newPosition);
   const volume = useSelector((store) => store.player.volume);
   const isLoading = useSelector((store) => store.player.isLoading);
+  const next = useSelector((store) => store.player.next);
+  const prev = useSelector((store) => store.player.prev);
 
   // refs
   const audioRef = useRef(null);
@@ -65,6 +69,7 @@ const Player = () => {
 
   // effects
   useEffect(() => {
+    console.log("Player on mount called");
     const callbacks = {
       onPlay,
       onPause,
@@ -72,13 +77,24 @@ const Player = () => {
       onEnd,
     }
 
-    const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist))
+    const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
+    console.log(newPlaylist);
     audioRef.current = new AudioPlayer(newPlaylist, callbacks, true);
+    console.log(audioRef.current);
   }, []);
 
   useEffect(() => {
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
     audioRef.current.updatePlaylist(newPlaylist);
+
+    newPlaylist.forEach((element, i) => {
+      const data = {
+        index: i,
+        payload: element,
+      }
+      dispatch(preLoadMedia(data));
+    });
+    
 
     if (newPlaylist.length < 1) {
       return;
@@ -87,6 +103,19 @@ const Player = () => {
     audioRef.current.play(audioRef.current.index);
     dispatch(updateLoading(true));
   }, [currentPlaylist]);
+
+  useEffect(() => {
+    console.log("index changed triggered");
+    if (!audioRef.current) return;
+    if (currentIndex < 0) return; 
+    if (audioRef.current.index != currentIndex) {
+      if (isPlaying) {
+        console.log("it is playing the previous index");
+        audioRef.current.pause();
+      }
+      audioRef.current.index = currentIndex;
+    }
+  }, [currentIndex])
 
   useEffect(() => {
     if (!isPlaying) {
@@ -123,9 +152,19 @@ const Player = () => {
   }, [volume]);
 
   useEffect(() => {
-    if (!audioRef.current.playlist.length) return;
-    audioRef.current.play(currentPlaylistIndex);
-  }, [currentPlaylistIndex])
+    console.log("Player next clicked");
+    if (!audioRef.current) return;
+    audioRef.current.skip();
+    dispatch(setCurrentIndex(audioRef.current.index));
+  }, [next]);
+
+  useEffect(() => {
+    console.log("player prev clicked");
+    if (!audioRef.current) return;
+    audioRef.current.skip("prev");
+    dispatch(setCurrentIndex(audioRef.current.index));
+  }, [prev]);
+
   // render
   return null;
 }

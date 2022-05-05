@@ -1,73 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
+import { element } from 'screenfull';
 
 const LOAD_MEDIA = 'player/LOAD_MEDIA';
-const LOAD_NEXT_MEDIA = 'player/LOAD_NEXT_MEDIA';
-const LOAD_PREV_MEDIA = 'player/LOAD_PREV_MEDIA';
-
-export const loadNext = createAsyncThunk(
-  LOAD_NEXT_MEDIA,
-  async (data, store) => {
-    return new Promise(async (resolve, reject) => {
-      let state = store.getState().player;
-      if (state.currentPlaylistIndex < (state.currentPlaylist.length - 1)) {
-        // state.currentPlaylistIndex++;
-        let _index = state.currentPlaylistIndex + 1;
-        let _media = state.currentPlaylist[_index];
-        console.log("loading Next", _index, _media);
-        store.dispatch(updateLoading(true));
-        store.dispatch(setCurrentMediaId(_media.media_id));
-
-        let { token, visitorToken } = store.getState().authentication;
-        if (!token) token = visitorToken;
-
-        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${_media.media_url}`, null, token);
-        store.dispatch(play({
-          mediaId: _media.media_id,
-          ..._media,
-          url: res.response,
-        }));
-        resolve(_index);
-      }
-      reject("End of playlist has reached");
-      return;
-    });
-  }
-);
-
-export const loadPrevious = createAsyncThunk(
-  LOAD_PREV_MEDIA,
-  async (data, store) => {
-    return new Promise(async (resolve, reject) => {
-      let state = store.getState().player;
-      if (state.currentPlaylistIndex > 0) {
-        // state.currentPlaylistIndex++;
-        let _index = state.currentPlaylistIndex - 1;
-        let _media = state.currentPlaylist[_index];
-        store.dispatch(updateLoading(true));
-        store.dispatch(setCurrentMediaId(_media.mediaId));
-
-        let { token, visitorToken } = store.getState().authentication;
-        if (!token) token = visitorToken;
-
-        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${_media.url}`, null, token);
-        store.dispatch(play({
-          ..._media,
-          url: res.response,
-        }));
-        resolve(_index);
-      }
-      reject("End of playlist has reached");
-      return;
-    });
-  }
-);
+const PRE_LOAD_MEDIA = 'player/PRE_LOAD_MEDIA';
 
 const INITIAL_STATE = {
   currentMediaId: null,
   isPlaying: false,
-  currentPlaylistIndex: 0,
   currentPlaylist: [],
   isAutoPlay: false,
   isRepeat: false,
@@ -77,7 +18,10 @@ const INITIAL_STATE = {
   duration: 0,
   volume: 1,
   newPosition: -1,
-  isPlaylistOpened: false
+  isPlaylistOpened: false,
+  next: 0,
+  prev: 0,
+  index: 0,
 };
 
 const playerSlider = createSlice({
@@ -86,6 +30,19 @@ const playerSlider = createSlice({
   reducers: {
     setCurrentMediaId(state, action) {
       state.currentMediaId = action.payload;
+    },
+    setCurrentIndex(state, action) {
+      state.index = action.payload;
+    },
+    updatePlaylist(state, action) {
+      state.currentPlaylist = action.payload;
+    },
+    updatePlaylistAtIndex(state, action) {
+      if (action.payload.index && action.payload.data) {
+        if (state.currentPlaylist.length > action.payload.index) {
+          state.currentPlaylist[action.payload.index] = action.payload.data;
+        }
+      }
     },
     pause(state) {
       state.isPlaying = false;
@@ -96,30 +53,24 @@ const playerSlider = createSlice({
     play(state, action) {
       if (action.payload) {
         state.currentMediaId = action.payload.mediaId; // TODO: media id fix
-
         if (state.currentPlaylist.some((media) => media.mediaId == action.payload.mediaId)) {
           let _index = state.currentPlaylist.findIndex((media) => media.mediaId == action.payload.mediaId);
           state.currentPlaylist[_index] = action.payload;
         } else {
-          state.currentPlaylist.unshift(action.payload);
+          //we will know weather to pop or push
+          state.currentPlaylist.splice(state.index + 1, 0, action.payload);
+          state.index++;
         }
       }
       state.isPlaying = true;
     },
-    updatePlaylist(state, action) {
-      state.currentPlaylist = action.payload;
-    },
     goPrev(state, action) {
       // handle prev
-      if (state.currentPlaylistIndex > 0) {
-        state.currentPlaylistIndex--;
-      }
+      state.prev++;
     },
     goNext(state, action) {
       // handle nex
-      if (state.currentPlaylistIndex < state.currentPlaylist.length) {
-        state.currentPlaylistIndex++;
-      }
+      state.next++;
     },
     updateVolume(state, action) {
       state.volume = action.payload;
@@ -137,14 +88,7 @@ const playerSlider = createSlice({
       state.isPlaylistOpened = !state.isPlaylistOpened;
     },
   },
-  extraReducers: {
-    [loadNext.fulfilled]: (state, action) => {
-      state.currentPlaylistIndex = action.payload;
-    },
-    [loadPrevious.fulfilled]: (state, action) => {
-      state.currentPlaylistIndex = action.payload
-    }
-  }
+  extraReducers: {}
 });
 
 export const {
@@ -160,6 +104,8 @@ export const {
   updateVolume,
   togglePlaylistOpened,
   updatePlaylist,
+  setCurrentIndex,
+  updatePlaylistAtIndex,
 } = playerSlider.actions;
 
 // actions
@@ -184,6 +130,41 @@ export const loadMedia = createAsyncThunk(
     param.dispatch(play({
       ...data,
       url: res.response,
+    }));
+  }
+);
+
+export const preLoadMedia = createAsyncThunk(
+  PRE_LOAD_MEDIA,
+  async (data, param) => {
+    
+    if (data.payload.url) {
+      console.log("Pre Loading Media, Ealry Return", data.payload);
+      return;
+    }
+
+    const { currentMediaId, isPlaying } = param.getState().player;
+    
+    // param.dispatch(updateLoading(true));
+    // param.dispatch(setCurrentMediaId(data.mediaId));
+    //populate the queue, by loading the required medias
+    let { token, visitorToken } = param.getState().authentication;
+    if(!token) {token = visitorToken;}
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.payload.media_url}`, null, token);
+    const avatar = await handleFetch('GET', `media/presigned-get-url?file_name=${data.payload.owner_avatar_url}`, null, token);
+    console.log("Pre Loading Media", data.index, data.payload);
+    
+    param.dispatch(updatePlaylistAtIndex({
+      index: data.index,
+      data: {
+        ...data.payload,
+        url: res.response,
+        mediaId: data.payload.media_id,
+        avatar: avatar.response,
+        name: data.payload.name,
+        artistName: data.payload.owner_name,
+        artistId: data.payload.owner_id,
+      }
     }));
   }
 );

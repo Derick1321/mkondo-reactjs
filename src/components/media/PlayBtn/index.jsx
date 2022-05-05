@@ -17,10 +17,11 @@ const PlayBtn = (props) => {
   if (isLoading) {
     return (
       <span
-        className="spinner-border spinner-border-lg text-light m-2"
-        role="status"
-        aria-hidden="true"
-      />
+          className="spinner-border spinner-border-lg text-light"
+          role="status"
+          aria-hidden="true"
+          style={{ height: 20, width: 20, }}
+        />
     );
   }
 
