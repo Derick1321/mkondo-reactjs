@@ -34,7 +34,7 @@ const CarouselFromConfiguration = (props) => {
         getMediaUrl(item.image_url, token).then(res => {
           _items.push(res);
           setSliderItems(_items);
-          console.log(sliderItems, _items);
+          // console.log(sliderItems, _items);
         })
       });
     }, [slider])
