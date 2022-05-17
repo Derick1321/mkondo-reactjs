@@ -1,4 +1,4 @@
-const BASE_URL = document.location.hostname === 'localhost' ? 'http://localhost:5000' : 'https://api.mkondo.co';
+const BASE_URL = document.location.hostname === 'localhost' && false ? 'http://localhost:5000' : 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
 const URL = BASE_URL;

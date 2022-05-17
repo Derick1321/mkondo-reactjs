@@ -57,6 +57,10 @@ export const Carousel = ({ items, aspect_ratio_x, aspect_ratio_y }) => {
     }, [])
 
     useEffect(() => {
+        handleResize();
+    }, [aspect_ratio_x, aspect_ratio_y]);
+
+    useEffect(() => {
         if (loaded) {
             const interval = setInterval(() => {
                 setCount(prev => {
