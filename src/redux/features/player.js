@@ -22,6 +22,7 @@ const INITIAL_STATE = {
   next: 0,
   prev: 0,
   index: 0,
+  skipTo: -1,
 };
 
 const playerSlider = createSlice({
@@ -36,6 +37,7 @@ const playerSlider = createSlice({
     },
     updatePlaylist(state, action) {
       state.currentPlaylist = action.payload;
+      state.index = 0;
     },
     updatePlaylistAtIndex(state, action) {
       if (action.payload.index && action.payload.data) {
@@ -72,6 +74,11 @@ const playerSlider = createSlice({
       // handle nex
       state.next++;
     },
+    skipTo(state, action) {
+      if (action.payload > -1) {
+        state.index = action.payload;
+      }
+    },
     updateVolume(state, action) {
       state.volume = action.payload;
     },
@@ -98,6 +105,7 @@ export const {
   seek,
   goNext,
   goPrev,
+  skipTo,
   updateRange,
   updateLoading,
   updateDuration,
@@ -112,7 +120,7 @@ export const {
 export const loadMedia = createAsyncThunk(
   LOAD_MEDIA,
   async (data, param) => {
-    const { currentMediaId, isPlaying } = param.getState().player;
+    const { currentMediaId, isPlaying, currentPlaylist  } = param.getState().player;
     if (currentMediaId === data.mediaId) {
       if (isPlaying) {
         param.dispatch(pause());
@@ -121,6 +129,13 @@ export const loadMedia = createAsyncThunk(
       param.dispatch(play());
       return;
     }
+
+    if (currentPlaylist.some(m => m.mediaId == data.mediaId)) {
+      let _index = currentPlaylist.findIndex(m => m.mediaId == data.mediaId);
+      param.dispatch(skipTo(_index));
+      return;
+    }
+    
     param.dispatch(updateLoading(true));
     param.dispatch(setCurrentMediaId(data.mediaId));
     //populate the queue, by loading the required medias
