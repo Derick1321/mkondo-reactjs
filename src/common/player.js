@@ -152,7 +152,7 @@ class Player {
 
   skipTo(index) {
     // Stop the current track.
-    if (this.playlist[this.index].howl) {
+    if (this.playlist[this.index] && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
 

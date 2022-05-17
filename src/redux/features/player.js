@@ -179,6 +179,7 @@ export const preLoadMedia = createAsyncThunk(
         name: data.payload.name,
         artistName: data.payload.owner_name,
         artistId: data.payload.owner_id,
+        howl: null,
       }
     }));
   }
