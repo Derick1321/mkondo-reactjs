@@ -47,21 +47,37 @@ const playerSlider = createSlice({
       }
     },
     pause(state) {
+      console.log("triggered pause");
       state.isPlaying = false;
     },
     seek(state, action) {
       state.newPosition = action.payload;
     },
     play(state, action) {
+      console.log("play reducer triggered", state.currentPlaylist.length);
       if (action.payload) {
+        console.log("payload exists..");
         state.currentMediaId = action.payload.mediaId; // TODO: media id fix
-        if (state.currentPlaylist.some((media) => media.mediaId == action.payload.mediaId)) {
-          let _index = state.currentPlaylist.findIndex((media) => media.mediaId == action.payload.mediaId);
+        if (state.currentPlaylist.some((media) => (media.mediaId ?? media.media_id) == action.payload.mediaId)) {
+          console.log("current playlist has the song");
+          let _index = state.currentPlaylist.findIndex((media) => (media.mediaId ?? media.media_id) == action.payload.mediaId);
+          console.log(_index);
           state.currentPlaylist[_index] = action.payload;
+          state.index = _index;
         } else {
+          console.log("The song is not on the current playlist", action.payload, state.currentPlaylist.map(m => m.media_id));
           //we will know weather to pop or push
-          state.currentPlaylist.splice(state.index + 1, 0, action.payload);
-          state.index++;
+          if (state.currentPlaylist.length == 0) {
+            state.currentPlaylist = [action.payload];
+          } else {
+            if (state.currentPlaylist.length == 1) {
+              state.currentPlaylist.push(action.payload);
+            } else {
+              state.currentPlaylist.splice(state.index + 1, 0, action.payload);
+            }
+            state.index++;
+          }
+          
         }
       }
       state.isPlaying = true;
@@ -75,9 +91,7 @@ const playerSlider = createSlice({
       state.next++;
     },
     skipTo(state, action) {
-      if (action.payload > -1) {
-        state.index = action.payload;
-      }
+      state.skipTo = action.payload;
     },
     updateVolume(state, action) {
       state.volume = action.payload;
@@ -120,6 +134,7 @@ export const {
 export const loadMedia = createAsyncThunk(
   LOAD_MEDIA,
   async (data, param) => {
+    console.log("Loading Media...");
     const { currentMediaId, isPlaying, currentPlaylist  } = param.getState().player;
     if (currentMediaId === data.mediaId) {
       if (isPlaying) {
@@ -142,6 +157,9 @@ export const loadMedia = createAsyncThunk(
     let { token, visitorToken } = param.getState().authentication;
     if(!token) {token = visitorToken;}
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.url}`, null, token);
+    console.log("triggered update loading...");
+    param.dispatch(updateLoading(false));
+    console.log("dispatching play...");
     param.dispatch(play({
       ...data,
       url: res.response,
@@ -154,7 +172,7 @@ export const preLoadMedia = createAsyncThunk(
   async (data, param) => {
     
     if (data.payload.url) {
-      console.log("Pre Loading Media, Ealry Return", data.payload);
+      // console.log("Pre Loading Media, Ealry Return", data.payload);
       return;
     }
 
@@ -167,7 +185,7 @@ export const preLoadMedia = createAsyncThunk(
     if(!token) {token = visitorToken;}
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.payload.media_url}`, null, token);
     const avatar = await handleFetch('GET', `media/presigned-get-url?file_name=${data.payload.owner_avatar_url}`, null, token);
-    console.log("Pre Loading Media", data.index, data.payload);
+    // console.log("Pre Loading Media", data.index, data.payload);
     
     param.dispatch(updatePlaylistAtIndex({
       index: data.index,

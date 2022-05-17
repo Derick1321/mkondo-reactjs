@@ -11,7 +11,8 @@ import {
   updateRange,
   updateDuration,
 } from '$redux/features/player';
-import { setCurrentIndex } from '../../../redux/features/player';
+import { play, setCurrentIndex } from '../../../redux/features/player';
+import { toggleFooterPlayer } from '$redux/features/nav';
 
 // hook for handing Audio related commands
 const Player = () => {
@@ -42,12 +43,12 @@ const Player = () => {
   }
 
   const onPause = () => {
-    onEnd();
+    // onEnd();
   }
 
   const onEnd = () => {
     // dispatch(pause());
-    console.log("Skipping on end");
+    console.log("Skipping on end", audioRef.current);
     audioRef.current.skip();
     dispatch(setCurrentIndex(audioRef.current.index));
   }
@@ -64,7 +65,7 @@ const Player = () => {
     if (!sound || isLoading) {
       return;
     }
-    // console.log('getSeekPosition ', isLoading);
+    // console.log('getSeekPosition ', sound.seek());
     dispatch(updateRange(sound.seek()));
   }, [isLoading, audioRef.current]);
 
@@ -76,7 +77,7 @@ const Player = () => {
 
   // effects
   useEffect(() => {
-    console.log("Player on mount called");
+    // console.log("Player on mount called");
     const callbacks = {
       onPlay,
       onPause,
@@ -85,9 +86,9 @@ const Player = () => {
     }
 
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
-    console.log(newPlaylist);
+    // console.log(newPlaylist);
     audioRef.current = new AudioPlayer(newPlaylist, callbacks, true);
-    console.log(audioRef.current);
+    // console.log(audioRef.current);
   }, []);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ const Player = () => {
     const preloadedmedia = [];
     newPlaylist.forEach((element, i) => {
       if (!element.url && !preLoaded.some(m => m.media_id == element.media_id)) {
-        console.log("Calling Pre Loaded Media after Playlist has Changed", preLoaded);
+        // console.log("Calling Pre Loaded Media after Playlist has Changed", preLoaded);
         const data = {
           index: i,
           payload: element,
@@ -114,35 +115,40 @@ const Player = () => {
     }
 
     audioRef.current.play(audioRef.current.index);
-    dispatch(updateLoading(true));
+    // dispatch(updateLoading(true));
   }, [currentPlaylist]);
 
   useEffect(() => {
-    console.log("index changed triggered");
+    console.log("index changed: ", currentIndex);
     if (!audioRef.current) return;
     if (currentIndex < 0) return; 
     if (audioRef.current.index != currentIndex) {
       if (isPlaying) {
-        console.log("it is playing the previous index");
         audioRef.current.pause();
       }
+
       audioRef.current.index = currentIndex;
+      audioRef.current.play(audioRef.current.index);
     }
   }, [currentIndex])
 
   useEffect(() => {
+    console.log("Is playing has changed");
     if (!isPlaying) {
+      console.log("Pausing");
       audioRef.current.pause();
       cancelAnimationFrame(timerRef.current);
       return;
     }
-
+    dispatch(toggleFooterPlayer(true));
     if (!audioRef.current.canPlay()) {
       // display cannot play message
+      console.log("Cannot play");
       dispatch(pause());
       return;
     }
 
+    console.log("Playing", audioRef.current.index, audioRef.playlist);
     audioRef.current.play(audioRef.current.index);
     loop();
     return () => { // Return callback to run on unmount.
@@ -165,23 +171,22 @@ const Player = () => {
   }, [volume]);
 
   useEffect(() => {
-    console.log("Player next clicked");
+    // console.log("Player next clicked");
     if (!audioRef.current) return;
     audioRef.current.skip();
     dispatch(setCurrentIndex(audioRef.current.index));
   }, [next]);
 
   useEffect(() => {
-    console.log("player prev clicked");
+    // console.log("player prev clicked");
     if (!audioRef.current) return;
     audioRef.current.skip("prev");
     dispatch(setCurrentIndex(audioRef.current.index));
   }, [prev]);
 
   useEffect(() => {
-    console.log("skipping to");
-    console.log("player prev clicked");
-    
+    console.log("skipping to", skipTo);
+    // console.log("player skipto clicked");
     if (skipTo == -1) return;
     if (!audioRef.current) return;
     audioRef.current.skipTo(skipTo);
