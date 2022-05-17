@@ -36,7 +36,7 @@ const ModalRoot = () => {
   const modalType = useSelector((store) => store.modal.type);
   const modalProps = useSelector((store) => store.modal.modalProps);
 
-  console.log('[modal]', modalType, modalProps);
+  // console.log('[modal]', modalType, modalProps);
 
   // effects
   useEffect(() => {
