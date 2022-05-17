@@ -72,7 +72,7 @@ const Home = () => {
       getMediaUrl(item.image_url, token).then(res => {
         _items.push(res);
         setSliderItems(_items);
-        console.log(items, _items);
+        console.log(sliderItems, _items);
       })
     });
   }, [slider])
@@ -96,130 +96,132 @@ const Home = () => {
 
   // render
   return (
-    <div className={styles.homeContent}>
+    <>
       <Carousel items={sliderItems} aspect_ratio_x={slider ? slider.aspect_ratio_x : 6} aspect_ratio_y={slider ? slider.aspect_ratio_y : 2} />
-      <div className={styles.homeTabsWrapper}>
-        <TabsMark
-          onSelect={handleSelect}
-          selected={selected}
-          activeColor="white"
-        />
+      <div className={`container`}>
+        <div className={styles.homeTabsWrapper}>
+          <TabsMark
+            onSelect={handleSelect}
+            selected={selected}
+            activeColor="white"
+          />
+        </div>
+        <div style={{clear: 'both'}}></div>
+        <div className={selected !== 'audio' ? 'd-none' : ''}>
+          <ScrollMedia
+            title={t('new_release')}
+            values={newReleases.audio}
+            isLoading={getNewReleasesPending && newReleases.audio.length < 1}
+            name="audio-new-release"
+            viewMore={`${routePaths.newRelease}`}
+            showHeader
+          />
+          <ScrollMedia
+            title={t('top_chart')}
+            values={topMedias.audio}
+            isLoading={getTopMediasPending && topMedias.audio.length < 1}
+            name="audio-top-medias"
+            viewMore={routePaths.topChart}
+            showHeader
+          />
+          <ScrollMedia
+            title={t('random_medias')}
+            values={randomMedias.audio}
+            isLoading={getRandomMediasPending && randomMedias.audio.length < 1}
+            name="audio-random-medias"
+            showHeader
+          />
+          <ScrollMedia
+            title={t('trend_medias')}
+            values={trendMedias.audio}
+            isLoading={getTrendMediasPending && trendMedias.audio.length < 1}
+            name="audio-trend-medias"
+            showHeader
+          />
+          <ScrollMedia
+            title={t('favorites')}
+            name="audio-favorite"
+            values={favorites.filter((item) => item.category === 'audio')}
+          />
+        </div>
+        <div className={selected !== 'video' ? 'd-none' : ''}>
+          <ScrollMedia
+            title={t('new_release')}
+            name="video-new-release"
+            values={newReleases.video}
+            isLoading={getNewReleasesPending && newReleases.video.length < 1}
+            viewMore={routePaths.newRelease}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('top_chart')}
+            name="video-top-medias"
+            values={topMedias.video}
+            isLoading={getTopMediasPending && topMedias.video.length < 1}
+            viewMore={routePaths.topChart}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('random_medias')}
+            name="video-random-medias"
+            values={randomMedias.video}
+            isLoading={getRandomMediasPending && randomMedias.video.length < 1}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('trend_medias')}
+            name="video-trend-medias"
+            values={trendMedias.video}
+            isLoading={getTrendMediasPending && trendMedias.video.length < 1}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('favorites')}
+            name="video-favorite"
+            values={favorites.filter((item) => item.category === 'video')}
+            type="video"
+          />
+        </div>
+        <div className={selected !== 'movie' ? 'd-none' : ''}>
+          <ScrollMedia
+            title={t('new_release')}
+            name="theatre-new-release"
+            values={newReleases.movie}
+            isLoading={getNewReleasesPending && newReleases.movie.length < 1}
+            viewMore={routePaths.newRelease}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('top_chart')}
+            name="theatre-top-medias"
+            values={topMedias.movie}
+            isLoading={getTopMediasPending && topMedias.movie.length < 1}
+            viewMore={routePaths.topChart}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('random_medias')}
+            name="theatre-random-medias"
+            values={randomMedias.movie}
+            isLoading={getRandomMediasPending && randomMedias.movie.length < 1}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('trend_medias')}
+            name="theatre-trend-medias"
+            values={trendMedias.movie}
+            isLoading={getTrendMediasPending && trendMedias.movie.length < 1}
+            type="video"
+          />
+          <ScrollMedia
+            title={t('favorites')}
+            name="movie-favorite"
+            values={favorites.filter((item) => item.category === 'movie')}
+            type="video"
+          />
+        </div>
       </div>
-      <div style={{clear: 'both'}}></div>
-      <div className={selected !== 'audio' ? 'd-none' : ''}>
-        <ScrollMedia
-          title={t('new_release')}
-          values={newReleases.audio}
-          isLoading={getNewReleasesPending && newReleases.audio.length < 1}
-          name="audio-new-release"
-          viewMore={`${routePaths.newRelease}`}
-          showHeader
-        />
-        <ScrollMedia
-          title={t('top_chart')}
-          values={topMedias.audio}
-          isLoading={getTopMediasPending && topMedias.audio.length < 1}
-          name="audio-top-medias"
-          viewMore={routePaths.topChart}
-          showHeader
-        />
-        <ScrollMedia
-          title={t('random_medias')}
-          values={randomMedias.audio}
-          isLoading={getRandomMediasPending && randomMedias.audio.length < 1}
-          name="audio-random-medias"
-          showHeader
-        />
-        <ScrollMedia
-          title={t('trend_medias')}
-          values={trendMedias.audio}
-          isLoading={getTrendMediasPending && trendMedias.audio.length < 1}
-          name="audio-trend-medias"
-          showHeader
-        />
-        <ScrollMedia
-          title={t('favorites')}
-          name="audio-favorite"
-          values={favorites.filter((item) => item.category === 'audio')}
-        />
-      </div>
-      <div className={selected !== 'video' ? 'd-none' : ''}>
-        <ScrollMedia
-          title={t('new_release')}
-          name="video-new-release"
-          values={newReleases.video}
-          isLoading={getNewReleasesPending && newReleases.video.length < 1}
-          viewMore={routePaths.newRelease}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('top_chart')}
-          name="video-top-medias"
-          values={topMedias.video}
-          isLoading={getTopMediasPending && topMedias.video.length < 1}
-          viewMore={routePaths.topChart}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('random_medias')}
-          name="video-random-medias"
-          values={randomMedias.video}
-          isLoading={getRandomMediasPending && randomMedias.video.length < 1}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('trend_medias')}
-          name="video-trend-medias"
-          values={trendMedias.video}
-          isLoading={getTrendMediasPending && trendMedias.video.length < 1}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('favorites')}
-          name="video-favorite"
-          values={favorites.filter((item) => item.category === 'video')}
-          type="video"
-        />
-      </div>
-      <div className={selected !== 'movie' ? 'd-none' : ''}>
-        <ScrollMedia
-          title={t('new_release')}
-          name="theatre-new-release"
-          values={newReleases.movie}
-          isLoading={getNewReleasesPending && newReleases.movie.length < 1}
-          viewMore={routePaths.newRelease}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('top_chart')}
-          name="theatre-top-medias"
-          values={topMedias.movie}
-          isLoading={getTopMediasPending && topMedias.movie.length < 1}
-          viewMore={routePaths.topChart}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('random_medias')}
-          name="theatre-random-medias"
-          values={randomMedias.movie}
-          isLoading={getRandomMediasPending && randomMedias.movie.length < 1}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('trend_medias')}
-          name="theatre-trend-medias"
-          values={trendMedias.movie}
-          isLoading={getTrendMediasPending && trendMedias.movie.length < 1}
-          type="video"
-        />
-        <ScrollMedia
-          title={t('favorites')}
-          name="movie-favorite"
-          values={favorites.filter((item) => item.category === 'movie')}
-          type="video"
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

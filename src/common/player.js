@@ -19,29 +19,37 @@ class Player {
     this.isOnRepeat = false;
     this.isOnShuffle = false;
     this.index = 0;
+
+    // console.log("Player Initialized", this);
   }
 
   updatePlaylist(playlist) {
+    // console.log("upldating playlist", this.playlist, playlist);
     if (this.playlist[this.index]
       && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
     this.playlist = playlist;
     this.index = 0;
+    // console.log("updated playlist", this);
   }
 
   canPlay(idx) {
+    // console.log("checking if it can play", this);
     return this.playlist && this.playlist[idx || this.index];
   }
 
   play(idx) {
+    // console.log("playing", this);
     let sound;
     let index = typeof idx === 'number' ? idx : this.index;
     const data = this.playlist[index];
-
+    // console.log("playing: data", this.playlist[index]);
     if (data.howl) {
+      // console.log("playing: has howl", this, idx);
       sound = data.howl;
     } else {
+      // console.log("playing: does not have howl", this, idx);
       sound = data.howl = new Howl({
         src: [data.url],
         loop: false,
@@ -92,7 +100,7 @@ class Player {
         }
       });
     }
-
+    // console.log("playing: instantiated howl", this, sound);
     // Begin playing the sound.
     sound.play();
 
@@ -116,6 +124,8 @@ class Player {
   }
 
   skip(direction) {
+    if (!this.playlist.length) return;
+    console.log("Skipping... ", this.playlist);
     if (direction === 'prev') {
       const idx = this.index === 0 ? this.playlist.length - 1 : this.index - 1;
       this.skipTo(idx);
@@ -142,7 +152,7 @@ class Player {
 
   skipTo(index) {
     // Stop the current track.
-    if (this.playlist[this.index].howl) {
+    if (this.playlist[this.index] && this.playlist[this.index].howl) {
       this.playlist[this.index].howl.stop();
     }
 
