@@ -20,6 +20,7 @@ const SideMenu = (props) => {
   // store
   const history = useHistory();
   const dispatch = useDispatch();
+  const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
   const userRole = useSelector((store) => store.authentication.user.user_type);
   const isPublished = useSelector((store) => store.authentication.user.publish);
   const playlists = useSelector((store) => store.playlist.playlists);
@@ -90,29 +91,41 @@ const SideMenu = (props) => {
       title: 'home',
       path: routePaths.home,
     },
-    {
-      icon: require('$assets/images/icons/radio_signal.svg'),
-      activeIcon: require('$assets/images/icons/radio_signal.svg'),
-      title: 'recommendation',
-      path: routePaths.recommendation,
-    },
-    {
-      icon: require('$assets/images/icons/star.svg'),
-      activeIcon: require('$assets/images/icons/star.svg'),
-      title: 'new_release',
-      path: routePaths.newRelease,
-    },
-    {
-      icon: require('$assets/images/icons/top-chart.svg'),
-      activeIcon: require('$assets/images/icons/top-chart.svg'),
-      title: 'top_chart',
-      path: routePaths.topChart,
-    },
+    // {
+    //   icon: require('$assets/images/icons/radio_signal.svg'),
+    //   activeIcon: require('$assets/images/icons/radio_signal.svg'),
+    //   title: 'recommendation',
+    //   path: routePaths.recommendation,
+    // },
+    // {
+    //   icon: require('$assets/images/icons/star.svg'),
+    //   activeIcon: require('$assets/images/icons/star.svg'),
+    //   title: 'new_release',
+    //   path: routePaths.newRelease,
+    // },
+    // {
+    //   icon: require('$assets/images/icons/top-chart.svg'),
+    //   activeIcon: require('$assets/images/icons/top-chart.svg'),
+    //   title: 'top_chart',
+    //   path: routePaths.topChart,
+    // },
     {
       icon: require('$assets/images/icons/video-camera.svg'),
       activeIcon: require('$assets/images/icons/video-camera.svg'),
       title: 'Theatre',
       path: routePaths.theatre,
+    },
+    {
+      icon: require('$assets/images/icons/music.svg'),
+      activeIcon: require('$assets/images/icons/music.svg'),
+      title: 'Music',
+      path: routePaths.music,
+    },
+    {
+      icon: require('$assets/images/icons/video.svg'),
+      activeIcon: require('$assets/images/icons/video.svg'),
+      title: 'Videos',
+      path: routePaths.videos,
     },
   ];
 
@@ -158,7 +171,7 @@ const SideMenu = (props) => {
 
   // render
   return (
-    <div className={styles.sideMenu}>
+    <div className={`${styles.sideMenu} ${!isSideMenuOpen && styles.sideMenuHidden}`}>
       <div className={`text-center ${styles.logoWrapper}`}>
         <img src={logo} alt="" className={styles.sidemenu_logo} />
       </div>

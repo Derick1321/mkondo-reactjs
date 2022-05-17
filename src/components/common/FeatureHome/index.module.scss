@@ -58,6 +58,20 @@
 
 }
 
+.content {
+    opacity: 0;
+    transition: all 0.3s ease-in;
+
+    @media only screen and (max-width: 676px) {
+        opacity: 1;
+    }
+}
+
+.content.active {
+    opacity: 1;
+    transition: all 0.3s ease-out;
+}
+
 // .f_featureWrapper:before {
 //     content: " ";
 //     position: absolute;
@@ -135,6 +149,10 @@
     white-space: nowrap;
     overflow: hidden;
     color: #aaa;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .f_bottom_icon {
@@ -183,6 +201,7 @@
 
 .views {
     font-size: 8px;
+    color: white;
 }
 
 .viewallcomments {
@@ -207,6 +226,7 @@
 .no_of_likes {
     margin-left: auto;
     font-size: 8px;
+    color: white;
 }
 
 .title {

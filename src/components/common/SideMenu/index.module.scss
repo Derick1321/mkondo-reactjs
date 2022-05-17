@@ -9,10 +9,18 @@
     overflow-x: hidden
 }
 
+.sideMenu.sideMenuHidden {
+    padding: 0;
+}
+
 //////////////////// ADD ///////////////////////
 .sideMenu::-webkit-scrollbar {
     width: 15px;
 }
+
+// .sideMenu.sideMenuHidden::-webkit-scrollbar {
+//     width: 10px;
+// }
 
 .sideMenu::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey;
