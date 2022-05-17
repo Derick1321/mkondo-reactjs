@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import AudioPlayer from '$common/player';
@@ -15,6 +15,9 @@ import { setCurrentIndex } from '../../../redux/features/player';
 
 // hook for handing Audio related commands
 const Player = () => {
+  //store
+  const [preLoaded, setPreLoaded] = useState([]);
+
   // store
   const dispatch = useDispatch();
   const isPlaying = useSelector((store) => store.player.isPlaying);
@@ -25,6 +28,7 @@ const Player = () => {
   const isLoading = useSelector((store) => store.player.isLoading);
   const next = useSelector((store) => store.player.next);
   const prev = useSelector((store) => store.player.prev);
+  const skipTo = useSelector((store) => store.player.skipTo);
 
   // refs
   const audioRef = useRef(null);
@@ -42,7 +46,10 @@ const Player = () => {
   }
 
   const onEnd = () => {
-    dispatch(pause());
+    // dispatch(pause());
+    console.log("Skipping on end");
+    audioRef.current.skip();
+    dispatch(setCurrentIndex(audioRef.current.index));
   }
 
   const onLoad = (mediaId) => {
@@ -86,15 +93,21 @@ const Player = () => {
   useEffect(() => {
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
     audioRef.current.updatePlaylist(newPlaylist);
-
+    const preloadedmedia = [];
     newPlaylist.forEach((element, i) => {
-      const data = {
-        index: i,
-        payload: element,
+      if (!element.url && !preLoaded.some(m => m.media_id == element.media_id)) {
+        console.log("Calling Pre Loaded Media after Playlist has Changed", preLoaded);
+        const data = {
+          index: i,
+          payload: element,
+        }
+        preloadedmedia.push(element);
+        dispatch(preLoadMedia(data));
       }
-      dispatch(preLoadMedia(data));
     });
-    
+    if (preloadedmedia.length) {
+      setPreLoaded(preloadedmedia);
+    }
 
     if (newPlaylist.length < 1) {
       return;
@@ -164,6 +177,17 @@ const Player = () => {
     audioRef.current.skip("prev");
     dispatch(setCurrentIndex(audioRef.current.index));
   }, [prev]);
+
+  useEffect(() => {
+    console.log("skipping to");
+    console.log("player prev clicked");
+    
+    if (skipTo == -1) return;
+    if (!audioRef.current) return;
+    audioRef.current.skipTo(skipTo);
+    dispatch(setCurrentIndex(audioRef.current.index));
+  }, [skipTo]);
+
 
   // render
   return null;

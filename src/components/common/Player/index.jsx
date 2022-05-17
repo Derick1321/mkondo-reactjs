@@ -12,7 +12,7 @@ import { getSimilarRecommended } from '$redux/features/media';
 import styles from './index.module.scss';
 import { useHistory, generatePath } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
-import { goNext, goPrev, loadNext, loadPrevious, setCurrentMediaId } from '../../../redux/features/player';
+import { goNext, goPrev, loadNext, loadPrevious, setCurrentMediaId, skipToindex, skipTo as skipMedia } from '../../../redux/features/player';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const menuIcon = require('$assets/images/player/list-alt.svg');
@@ -167,7 +167,7 @@ const Player = () => {
         <ul className="list-group">
           {
             currentPlaylist.length > 0 ? currentPlaylist.map((item, index) => 
-              <li key={index} className={`list-group-item ${currentPlaylistIndex === index && 'active'}`}>{item.name}</li>
+              <li key={index} onClick={() => dispatch(skipMedia(index))} className={`list-group-item ${styles.cursor} ${currentPlaylistIndex === index && 'active'}`}>{item.name}</li>
             ) : <p className='bg-light lead p-2'>No Item</p>
           }
         </ul>
