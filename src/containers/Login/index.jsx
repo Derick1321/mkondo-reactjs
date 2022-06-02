@@ -19,6 +19,7 @@ import './index.module.scss';
 import { COLOR_ACCENT, COLOR_PRIMARY } from '$common/constants';
 import styles from './index.module.scss';
 import MkondoLogo from '../../components/common/logo';
+import { visitorColdStart } from '../../redux/features/authentication';
 
 const login_banner_top_hd = require('$assets/images/banner-login-top.png');
 const login_mobile_top = require('$assets/images/login_mobile_top.png');
@@ -83,6 +84,10 @@ const LoginPage = () => {
   const user = useSelector((store) => store.authentication.user);
 
   // effects
+  useEffect(() => {
+    dispatch(visitorColdStart());
+  }, []);
+  
   useEffect(() => {
     if (token) {
       if (!user.email || !user.phone) {

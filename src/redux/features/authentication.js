@@ -139,11 +139,15 @@ const authenticationSlice = createSlice({
             };
         },
         [login.rejected]: (state, action) => {
-            let err = action.error.message;
-            err = JSON.parse(err);
-            console.log(err);
+            try {
+                let err = action.error.message;
+                err = JSON.parse(err);
+                console.log(err);
+                state.loginError = err.message;
+            } catch (e) {
+                console.error(e);
+            }
             state.loginPending = false;
-            state.loginError = err.message;
             state.loginComplete = false;
         },
         [refreshToken.pending]: (state, action) => {
