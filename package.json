@@ -6,7 +6,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "start": "parcel serve index.html -p 3000 --https",
+        "start": "parcel serve index.html -p 3000",
         "build": "parcel build --no-cache index.html"
     },
     "proxy": "http://127.0.0.1:5000",
@@ -49,7 +49,8 @@
         "regenerator-runtime": "^0.13.7",
         "screenfull": "^5.1.0",
         "storage": "^0.2.0",
-        "styled-components": "^5.2.1"
+        "styled-components": "^5.2.1",
+        "videojs-playlist": "^5.0.0"
     },
     "devDependencies": {
         "buffer": "^6.0.3",
@@ -58,7 +59,7 @@
         "postcss": "^8.4.7",
         "postcss-modules": "^4.3.1",
         "sass": "^1.29.0",
-        "video.js": "^7.18.1"
+        "video.js": "^7.19.2"
     },
     "alias": {
         "$assets": "./src/assets",
