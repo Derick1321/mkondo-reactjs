@@ -33,6 +33,7 @@ const VideoPlayer = (props) => {
   const dispatch = useDispatch();
   const token = useSelector((store) => store.authentication.token);
   const volume = useSelector((store) => store.player.volume);
+  const isAudioPlaying = useSelector((store) => store.player.isPlaying);
 
   // state
   const [localUrl, setLocalUrl] = useState(null);
@@ -91,13 +92,13 @@ const VideoPlayer = (props) => {
         player.on('durationchange', () => {
           console.log("Set up player duration", player.duration());
           setDuration(player.duration());
-          dispatch(updateDuration(player.duration()));
+          // dispatch(updateDuration(player.duration()));
         })
 
         player.on('waiting', () => {
           console.log("player is waiting");
-          dispatch(updateLoading(true));
-          // setIsLoading(true);
+          // dispatch(updateLoading(true));
+          setIsLoading(true);
         });
 
         player.on('canplay', () => {
@@ -112,34 +113,43 @@ const VideoPlayer = (props) => {
         
         player.on('playing', () => {
           console.log("player is playing");
-          dispatch(play());
-          dispatch(updateLoading(false));
+          // dispatch(pause());
+          // dispatch(updateLoading(false));
           setIsLoading(false);
         })
 
         player.on('play', () => {
           console.log("player play clicked");
+          videoRef.current.play();
           setIsPlaying(true);
-          dispatch(play());
+          // dispatch(play());
+        });
+
+        player.controlBar.playToggle.on("click", () => {
+          if (player.controlBar.playToggle.el_.classList.contains("vjs-paused")) {
+            videoRef.current.play();
+            setIsPlaying(true);
+          } else {
+          }
+        })
+
+        player.bigPlayButton.on('click', () => {
+          videoRef.current.play();
+          setIsPlaying(false);
         });
 
         player.on('pause', () => {
           console.log("player pause clicked");
           setIsPlaying(false);
-          dispatch(pause());
+          // dispatch(pause());
         })
 
         player.on('progress', (e) => {
-          // console.log("player progress", player.currentTime());
-          dispatch(updateRange(player.currentTime()));
-          // handleProgress(player.currentTime);
-        })
-
-        // player.bigPlayButton.on('click', () => {
-        //   console.log("clicked");
-        //   player.trigger("play");
-        // });
-      })
+          console.log("player progress", player.currentTime());
+          // dispatch(updateRange(player.currentTime()));
+          handleProgress(player.currentTime);
+        });
+      });
     } else {
       // you can update player here [update player through props]
       // const player = playerRef.current;
@@ -157,7 +167,19 @@ const VideoPlayer = (props) => {
         playerRef.current = null;
       }
     };
-  }, [playerRef])
+  }, [playerRef]);
+
+  useEffect(() => {
+    if (isAudioPlaying && isPlaying && videoRef.current) {
+      videoRef.current.pause();
+    }
+  }, [isAudioPlaying]);
+
+  useEffect(() => {
+    if (isPlaying && isAudioPlaying && videoRef.current) {
+      dispatch(pause());
+    }
+  }, [isPlaying]);
 
   // handler
   const handleProgress = (data) => {
