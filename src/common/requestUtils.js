@@ -1,4 +1,4 @@
-const BASE_URL = document.location.hostname === 'localhost' && false ? 'http://localhost:5000' : 'https://api.mkondo.co';
+const BASE_URL = document.location.hostname === 'localhost' ? 'http://127.0.0.1:5000' : 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
 const URL = BASE_URL;
@@ -111,7 +111,9 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
         if (token) {
             headers.Authorization = `Bearer ${token}`;
         }
-
+        
+        props.referrerPolicy = 'no-referrer';
+        props.mode = "cors";
         const response = await fetch(url, {
             ...props,
             headers,

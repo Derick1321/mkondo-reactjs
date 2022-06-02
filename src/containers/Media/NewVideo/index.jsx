@@ -152,7 +152,7 @@ const NewVideo = () => {
 
   const handleSave = async () => {
     //saving the cover file
-    
+    console.log("handling save");
     
     var payload = {
       name: values.title,
@@ -166,20 +166,23 @@ const NewVideo = () => {
       staring: values.starring,
       release_date: values.startingDate,
       media_url: values.media_url,
+      cover_url: "cover"
     }
-
+    
     if (values.genre) {
       payload["genres"] = values.genre.map((item) => item.value);
     }
 
     if (coverFile) {
+      console.log("cover url uploading")
       const mediaRes = await dispatch(saveMedia(coverFile));
-      payload['cover_url'] =  mediaRes.payload
+      // payload['cover_url'] =  mediaRes.payload
     }
 
 
     //saving the video file
     // const videoRes = await dispatch(saveMedia(file))
+    console.log("payload", payload);
     const res = await dispatch(addMedia(payload));
     console.log("add media response", res);
   }
