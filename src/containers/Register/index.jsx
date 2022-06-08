@@ -195,7 +195,8 @@ const RegisterPage = () => {
   };
 
   const handleLogin = () => {
-    dispatch(showModal('LOGIN_MODAL'));
+    // dispatch(showModal('LOGIN_MODAL'));
+    history.push(routePaths.login);
   };
 
   const handleSignUp = () => {
@@ -306,7 +307,7 @@ const RegisterPage = () => {
                   
                   <div className="d-flex mt-2 mb-2 align-items-center">
                     <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
-                    <button className="gotoLogin" onClick={() => handleLogin()}>Already have an account?</button>
+                    <button className="btn btn-link text-light" onClick={() => handleLogin()}>Already have an account? Login Now!</button>
                   </div>
                   <GoogleLoginComponent />
                   <div className="my-2"></div>
