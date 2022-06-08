@@ -574,6 +574,7 @@ const initialState = {
     addAlbumError: null,
     addAlbumComplete: false,
     updateAlbumPending: false,
+    updateAlbumPendingQueue: [],
     updateAlbumError: null,
     updateAlbumComplete: false,
     getCommentPending: false,
@@ -611,6 +612,7 @@ const initialState = {
     getSeriesSuccess: false,
     getSeriesError: null,
     updateSeriesPending: false,
+    updateSeriesPendingQueue: [],
     updateSeriesSuccess: false,
     updateSeriesError: null,
     removeSeriesPending: false,
@@ -836,11 +838,13 @@ const mediaSlice = createSlice({
         },
         [updateAlbum.pending]: (state, action) => {
             state.updateAlbumPending = true;
+            state.updateAlbumPendingQueue.push(action.meta.arg.id);
             state.updateAlbumComplete = false;
             state.updateAlbumError = null;
         },
         [updateAlbum.fulfilled]: (state, action) => {
             state.updateAlbumPending = false;
+            state.updateAlbumPendingQueue = state.updateAlbumPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateAlbumComplete = true;
             state.updateAlbumError = null;
             
@@ -853,6 +857,7 @@ const mediaSlice = createSlice({
         },
         [updateAlbum.rejected]: (state, action) => {
             state.updateAlbumPending = false;
+            state.updateAlbumPendingQueue = state.updateAlbumPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateAlbumComplete = false;
             state.updateAlbumError = action.error;
         },
@@ -1121,6 +1126,8 @@ const mediaSlice = createSlice({
 
             //updating movies
             state.movies = state.movies.map((movie) => movie.media_id == action.meta.arg.id ? action.payload.media : movie);
+            state.videos = state.videos.map((video) => video.media_id == action.meta.arg.id ? action.payload.media : video);
+            state.audios = state.audios.map((audio) => audio.media_id == action.meta.arg.id ? action.payload.media : audio);
         },
         [updateMedia.rejected]: (state, action) => {
             state.updateMediaPending = false;
@@ -1209,11 +1216,13 @@ const mediaSlice = createSlice({
         },
         [udpateSeries.pending]: (state, action) => {
             state.updateSeriesPending = true;
+            state.updateSeriesPendingQueue.push(action.meta.arg.id);
             state.updateSeriesSuccess = false;
             state.updateSeriesError = null;
         },
         [udpateSeries.fulfilled]: (state, action) => {
             state.updateSeriesPending = false;
+            state.updateSeriesPendingQueue = state.updateSeriesPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateSeriesSuccess = true;
 
             let _index = state.mySeries.findIndex(x => x.series_id == action.meta.arg.id);
@@ -1223,6 +1232,7 @@ const mediaSlice = createSlice({
         },
         [udpateSeries.rejected]: (state, action) => {
             state.updateSeriesPending = false;
+            state.updateSeriesPendingQueue = state.updateSeriesPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateSeriesError = action.error;
         },
         [removeSeries.pending]: (state, action) => {

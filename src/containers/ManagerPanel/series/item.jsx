@@ -19,11 +19,13 @@ export const ManageSeriesItem = (props) => {
     //state
     const [coverUrl, setCoverUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     
     //store
     const dispatch = useDispatch();
     const { token } = useSelector(state => state.authentication);
     const { updateSeriesPending } = useSelector(state => state.media);
+    const pendingQueue = useSelector((state) => state.media.updateSeriesPendingQueue);
 
     //effects
     useEffect(() => {
@@ -36,7 +38,17 @@ export const ManageSeriesItem = (props) => {
             console.log("got cover url", res);
             setCoverUrl(res);
         });
-    }, [series])
+    }, [series]);
+
+    useEffect(() => {
+        if (!series) return;
+        console.log("Pending Queue Changed", pendingQueue.length, series.series_id, pendingQueue);
+        if (pendingQueue.some(id => series.series_id == id)) {
+            setIsUpdating(true);
+        } else {
+            setIsUpdating(false);
+        }
+    }, [pendingQueue.length, series]);
 
     //handlers
     const handleOnLoad = (e) => {
@@ -70,12 +82,12 @@ export const ManageSeriesItem = (props) => {
             <div className="mt-2">
                 <div className="d-flex">
                     {series.published ? (
-                        <button className="btn btn-warning text-light mr-2 text-dark" onClick={() => handleUpdate("published", false)} disabled={updateSeriesPending}>
-                            draft { updateSeriesPending && <span className='spinner-border'></span>}
+                        <button className="btn btn-warning text-light mr-2 text-dark" onClick={() => handleUpdate("published", false)} disabled={isUpdating}>
+                            draft { isUpdating && <span className='spinner-border'></span>}
                         </button>
                     ) : (
-                        <button className="btn btn-success text-light mr-2"  onClick={() => handleUpdate("published", true)} disabled={updateSeriesPending}>
-                            publish { updateSeriesPending && <span className='spinner-border'></span>}
+                        <button className="btn btn-success text-light mr-2"  onClick={() => handleUpdate("published", true)} disabled={isUpdating}>
+                            publish { isUpdating && <span className='spinner-border'></span>}
                         </button>
                     ) }
                     <button className='btn btn-info text-light mr-1' onClick={() => push(generatePath(routePaths.managerPanelManageSeriesEpisods, {id: series.series_id}))}>
