@@ -19,11 +19,13 @@ export const ManageAlbumsItem = (props) => {
     //state
     const [coverUrl, setCoverUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false);
     
     //store
     const dispatch = useDispatch();
     const { token } = useSelector(state => state.authentication);
     const { updateAlbumPending } = useSelector(state => state.media);
+    const pendingQueue = useSelector((state) => state.media.updateAlbumPendingQueue);
 
     //effects
     useEffect(() => {
@@ -37,6 +39,16 @@ export const ManageAlbumsItem = (props) => {
             setCoverUrl(res);
         });
     }, [album])
+
+    useEffect(() => {
+        if (!album) return;
+        console.log("Pending Queue Changed", pendingQueue.length, album.album_id, pendingQueue);
+        if (pendingQueue.some(id => album.album_id == id)) {
+            setIsUpdating(true);
+        } else {
+            setIsUpdating(false);
+        }
+    }, [pendingQueue.length, album]);
 
     //handlers
     const handleOnLoad = (e) => {
@@ -70,12 +82,12 @@ export const ManageAlbumsItem = (props) => {
             <div className="mt-2">
                 <div className="d-flex">
                     {album.published ? (
-                        <button className="btn btn-warning text-light mr-2 text-dark" onClick={() => handleUpdate("published", false)} disabled={updateAlbumPending}>
-                            draft { updateAlbumPending && <span className='spinner-border'></span>}
+                        <button className="btn btn-warning text-light mr-2 text-dark" onClick={() => handleUpdate("published", false)} disabled={isUpdating}>
+                            draft { isUpdating && <span className='spinner-border'></span>}
                         </button>
                     ) : (
-                        <button className="btn btn-success text-light mr-2"  onClick={() => handleUpdate("published", true)} disabled={updateAlbumPending}>
-                            publish { updateAlbumPending && <span className='spinner-border'></span>}
+                        <button className="btn btn-success text-light mr-2"  onClick={() => handleUpdate("published", true)} disabled={isUpdating}>
+                            publish { isUpdating && <span className='spinner-border'></span>}
                         </button>
                     ) }
                     <button className='btn btn-info text-light mr-1' onClick={() => push(generatePath(routePaths.manageAlbumSongs, {id: album.album_id}))}>
