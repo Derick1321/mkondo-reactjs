@@ -23,7 +23,8 @@ export const menus = [{
     {
         name: 'policy',
         type: 'checkbox',
-        title: 'policy_text'
+        title: 'policy_text',
+        link: '/privacy',
     }
 ];
 

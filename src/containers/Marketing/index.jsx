@@ -65,7 +65,8 @@ const Marketing = () => {
       {/* header */}
       <div className={`${styles.header} px-4 py-3 d-flex`}>
         <MkondoLogo />
-        <button onClick={() => push(routePaths.login)} className="btn btn-primary ml-auto">Sign In</button>
+        <button onClick={() => push(routePaths.login)} className="btn btn-primary ml-auto">Login</button>
+        <button onClick={() => push(routePaths.register)} className="btn btn-primary ml-2">Register</button>
       </div>
 
       <div>
