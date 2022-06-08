@@ -81,8 +81,12 @@ export const ManageMedia = () => {
     return (
         <div className={`${styles.container} container`}>
             <h2 className='text-light'>Manage Media</h2>
-            <div>
-                {media.map(_media => <ManageMediaItem key={_media.id} media={_media} />)}
+            <div className="row">
+                {media.map(_media => (
+                    <div className="col-lg-3 mb-3 align-items-stretch">
+                        <ManageMediaItem key={_media.id} media={_media} />
+                    </div>
+                ))}
             </div>
         </div>
     )
