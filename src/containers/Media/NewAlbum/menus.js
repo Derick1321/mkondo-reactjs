@@ -23,7 +23,7 @@ export const menus = [{
     {
         name: 'description',
         type: 'area',
-        placeholder: 'Describe your track',
+        placeholder: 'Describe your Album',
         title: 'Description',
     },
     {
