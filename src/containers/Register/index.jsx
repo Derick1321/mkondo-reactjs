@@ -292,7 +292,7 @@ const RegisterPage = () => {
                   <InputField field={{ 
                         type: "text",
                         name: "phoneNumber",
-                        placeholder: "Phone Number",
+                        placeholder: "eg. +255654303333",
                         value: values.phoneNumber,
                     }} error={errObj.phone_number} onChange={handleChange} isGrey={false} />
 
