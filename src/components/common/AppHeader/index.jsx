@@ -23,6 +23,7 @@ import styles from './index.module.scss';
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const dropdown = require('$assets/images/icons/dropdown.svg');
 import { GOOGLE_CLIENT_ID } from '$common/constants';
+import { toggleSideMenu } from '../../../redux/features/nav';
 const headerMenus = [
   { name: 'account', title: 'My Account', },
   { name: 'logout', title: 'Log Out', style: styles.optSecondary },
@@ -100,6 +101,10 @@ const AppHeader = (props) => {
     history.push(routePaths.profile);
   }
 
+  const handleToggle = (evt) => {
+    dispatch(toggleSideMenu(false));
+  }
+
   const handleFocus = () => { // a hacky way to hideModal
     dispatch(hideModal());
   }
@@ -135,6 +140,7 @@ const AppHeader = (props) => {
         <DropDown
           options={headerMenus}
           handleSelect={handleSelect}
+          handleToggle={handleToggle}
         >
           <div className={`d-flex align-items-center ${styles.appHeaderName}`}>
             <img

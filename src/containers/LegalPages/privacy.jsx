@@ -539,7 +539,7 @@ export const PrivacyPolicyPage = () => {
               <p>
                 The security of Your Personal Data is important to Us, but
                 remember that no method of transmissioimport { useHistory } from 'react-router';
-n over the Internet, orimport { Link, useHistory } from 'react-router-dom';
+n over the Internet, orimport { Link } from 'react-router-dom';
 
                 method of electronic storage is 100% secure. While We strive to
                 use commercially acceptable means to protect Your Personal Data,
