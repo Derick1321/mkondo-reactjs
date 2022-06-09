@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import placeholder from '$assets/images/placeholder.png';
 import { getMediaUrl } from '../../../common/utils';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAlbum } from '../../../redux/features/media';
+import { updateAlbum, deleteAlbum } from '../../../redux/features/media';
 import trash from '$assets/images/icons/trash.svg';
 import cogs from '$assets/images/icons/settings.svg';
 import { generatePath, useHistory } from 'react-router-dom';
@@ -20,11 +20,13 @@ export const ManageAlbumsItem = (props) => {
     const [coverUrl, setCoverUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
     
     //store
     const dispatch = useDispatch();
     const { token } = useSelector(state => state.authentication);
     const { updateAlbumPending } = useSelector(state => state.media);
+    const areDeleting = useSelector(state => state.media.deleteAlbumPendingQueue);
     const pendingQueue = useSelector((state) => state.media.updateAlbumPendingQueue);
 
     //effects
@@ -50,6 +52,14 @@ export const ManageAlbumsItem = (props) => {
         }
     }, [pendingQueue.length, album]);
 
+    useEffect(() => {
+        if (!areDeleting.length) return;
+        if (areDeleting.some(id => album.album_id == id)) {
+            setIsDeleting(true);
+            return;
+        }
+        setIsDeleting(false);
+    }, [areDeleting]);
     //handlers
     const handleOnLoad = (e) => {
         if (e.timestamp < 1000) return;
@@ -74,6 +84,12 @@ export const ManageAlbumsItem = (props) => {
         dispatch(updateAlbum(data));
     }
 
+    const handleDelete = () => {
+        dispatch(deleteAlbum({
+            id: album.album_id
+        }));
+    }
+
     return (
         <div className={styles.wrapper}>
             <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
@@ -93,8 +109,8 @@ export const ManageAlbumsItem = (props) => {
                     <button className='btn btn-info text-light mr-1' onClick={() => push(generatePath(routePaths.manageAlbumSongs, {id: album.album_id}))}>
                         <img src={cogs} className="text-light" alt="" height="18px" width="18px" />
                     </button>
-                    <button  className="btn btn-danger text-light">
-                        <img src={trash} className="text-light" alt="" height="18px" width="18px" />
+                    <button  className="btn btn-danger text-light" onClick={handleDelete} disabled={isDeleting}>
+                        {isDeleting ? <span className='spinner-border text-white'></span> : <img src={trash} className="text-light" alt="" height="18px" width="18px" />}
                     </button>
                 </div>
             </div>
