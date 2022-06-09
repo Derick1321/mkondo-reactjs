@@ -20,6 +20,7 @@ const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const UPDATE_ALBUM = 'media/UPDATE_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
+const DELETE_ALBUM = 'media/DELETE_ALBUM';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
 const ADD_COMMENT_COMMENT = 'media/ADD_COMMENT_COMMENT';
@@ -144,6 +145,14 @@ export const fetchAlbums = createAsyncThunk(
     async (data, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('GET', 'albums', data, token);
+    }
+);
+
+export const deleteAlbum = createAsyncThunk(
+    DELETE_ALBUM,
+    async (id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('DELETE', `albums/${id}`, null, token);
     }
 );
 
@@ -670,6 +679,9 @@ const initialState = {
     videos: [],
     fetchVideoError: null,
     fetchAlbumsPending: false,
+    deleteAlbumErrors: [],
+    deleteAlbumPendingQueue: [],
+    deletedAblums: [],
     albums: [],
     fetchAlbumsError: null,
     retrieveMedia: {
@@ -1298,6 +1310,18 @@ const mediaSlice = createSlice({
         [fetchAlbums.rejected]: (state, action) => {
             state.fetchAlbumsPending = false;
             state.fetchAlbumsError = action.error;
+        },
+        [deleteAlbum.pending]: (state, action) => {
+            state.deleteAlbumPendingQueue.push(action.meta.arg.id);
+        },
+        [deleteAlbum.success]: (state, action) => {
+            state.deletedAblums.push(action.meta.args.id);
+            state.albums.filter(album => album.album_id != action.meta.arg.id);
+            state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
+        },
+        [deleteAlbum.rejected]: (state, action) => {
+            state.deleteAlbumErrors.push({album_id: action.meta.arg.id, error: action.error.message,});
+            state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [retrieveMedia.pending]: (state, action) => {
             state.retrieveMedia.loading = true;
