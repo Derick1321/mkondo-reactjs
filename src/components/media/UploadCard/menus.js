@@ -20,12 +20,7 @@ export const menus = [{
         placeholder: 'describe_your_track',
         title: 'description',
     },
-    {
-        name: 'policy',
-        type: 'checkbox',
-        title: 'policy_text',
-        link: '/privacy',
-    }
+    
 ];
 
 export const metamenus = [
@@ -34,4 +29,10 @@ export const metamenus = [
     { name: 'releaseDate', type: 'date', placeholder: 'release_date', title: 'release_date' },
     { name: 'songWriter', type: 'text', placeholder: 'enter_song_writer', title: 'song_writer' },
     { name: 'recordLabel', type: 'text', placeholder: 'enter_record_label', title: 'record_label' },
+    {
+        name: 'policy',
+        type: 'checkbox',
+        title: 'policy_text',
+        link: '/privacy',
+    }
 ];

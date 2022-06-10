@@ -150,9 +150,9 @@ export const fetchAlbums = createAsyncThunk(
 
 export const deleteAlbum = createAsyncThunk(
     DELETE_ALBUM,
-    async (id, store) => {
+    async (data, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('DELETE', `albums/${id}`, null, token);
+        return await handleFetch('DELETE', `albums/${data.id}`, null, token);
     }
 );
 
@@ -625,6 +625,7 @@ const initialState = {
     updateSeriesSuccess: false,
     updateSeriesError: null,
     removeSeriesPending: false,
+    removeSeriesPendingQueue: [],
     removeSeriesSuccess: false,
     removeSeriesError: null,
     uploadQueue: [],
@@ -794,6 +795,19 @@ const mediaSlice = createSlice({
             state.movies = state.movies.filter(m => m.media_id != action.meta.arg);
             state.audios = state.audios.filter(m => m.media_id != action.meta.arg);
             state.videos = state.videos.filter(m => m.media_id != action.meta.arg);
+
+            state.albums = state.albums.map((album) => {
+                return {
+                    ...album, 
+                    songs: album.songs.filter(song => song.media_id != action.meta.arg),
+                };
+            });
+            state.mySeries = state.mySeries.map((series) => {
+                return {
+                    ...series, 
+                    episodes: series.episodes.map(episode => episode.media_id != action.meta.arg),
+                };
+            });   
         },
         [deleteMedia.rejected]: (state, action) => {
             state.deleteMediaPending = false;
@@ -1140,6 +1154,18 @@ const mediaSlice = createSlice({
             state.movies = state.movies.map((movie) => movie.media_id == action.meta.arg.id ? action.payload.media : movie);
             state.videos = state.videos.map((video) => video.media_id == action.meta.arg.id ? action.payload.media : video);
             state.audios = state.audios.map((audio) => audio.media_id == action.meta.arg.id ? action.payload.media : audio);
+            state.albums = state.albums.map((album) => {
+                return {
+                    ...album, 
+                    songs: album.songs.map(song => song.media_id == action.meta.arg.id ? action.payload.media: song),
+                };
+            });
+            state.mySeries = state.mySeries.map((series) => {
+                return {
+                    ...series, 
+                    episodes: series.episodes.map(episode => episode.media_id == action.meta.arg.id ? action.payload.media: episode),
+                };
+            });
         },
         [updateMedia.rejected]: (state, action) => {
             state.updateMediaPending = false;
@@ -1249,11 +1275,13 @@ const mediaSlice = createSlice({
         },
         [removeSeries.pending]: (state, action) => {
             state.removeSeriesPending = true;
+            state.removeSeriesPendingQueue.push(action.meta.arg);
             state.removeSeriesSuccess = false;
             state.removeSeriesError = null;
         },
         [removeSeries.fulfilled]: (state, action) => {
             state.removeSeriesPending = false;
+            state.removeSeriesPendingQueue = state.removeSeriesPendingQueue.filter(id => id != action.meta.arg);
             state.removeSeriesSuccess = true;
             state.removeSeriesError = null;
 
@@ -1262,6 +1290,7 @@ const mediaSlice = createSlice({
         },
         [fetchMovies.pending]: (state, action) => {
             state.fetchMoviesPending = true;
+            state.removeSeriesPendingQueue = state.removeSeriesPendingQueue.filter(id => id != action.meta.arg);
             state.fetchMoviesError = null;
         },
         [fetchMovies.fulfilled]: (state, action) => {
@@ -1314,14 +1343,14 @@ const mediaSlice = createSlice({
         [deleteAlbum.pending]: (state, action) => {
             state.deleteAlbumPendingQueue.push(action.meta.arg.id);
         },
-        [deleteAlbum.success]: (state, action) => {
-            state.deletedAblums.push(action.meta.args.id);
-            state.albums.filter(album => album.album_id != action.meta.arg.id);
-            state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
+        [deleteAlbum.fulfilled]: (state, action) => {
+            state.deletedAblums.push(action.meta.arg.id);
+            state.albums = state.albums.filter(album => album.album_id != action.meta.arg.id);
+            state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [deleteAlbum.rejected]: (state, action) => {
             state.deleteAlbumErrors.push({album_id: action.meta.arg.id, error: action.error.message,});
-            state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
+            state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [retrieveMedia.pending]: (state, action) => {
             state.retrieveMedia.loading = true;

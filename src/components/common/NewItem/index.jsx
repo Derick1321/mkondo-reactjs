@@ -93,6 +93,7 @@ const NewItem = (props) => {
                       ...menu,
                       value: values[menu.name]
                     }}
+                    error={menu.error}
                     isGrey
                     onChange={onChange}
                   />
@@ -109,6 +110,7 @@ const NewItem = (props) => {
                       ...menu,
                       value: values[menu.name]
                     }}
+                    error={menu.error}
                     isGrey
                     onChange={onChange}
                   />
