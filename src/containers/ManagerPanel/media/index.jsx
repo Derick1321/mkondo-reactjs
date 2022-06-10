@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { ManageMediaItem } from './item';
-import { useLocation, useParams, generatePath } from 'react-router-dom';
+import { useLocation, useParams, generatePath, useHistory } from 'react-router-dom';
 import { fetchAudios, fetchMovies, fetchVideos } from '../../../redux/features/media';
 import { routePaths } from '../../../common/routeConfig';
 
@@ -11,6 +11,7 @@ export const ManageMedia = () => {
     //hooks
     const { pathname } = useLocation();
     const { category, id } = useParams();
+    const { push, goBack } = useHistory();
 
     //state
     const [media, setMedia] = useState([]);
@@ -80,6 +81,7 @@ export const ManageMedia = () => {
 
     return (
         <div className={`${styles.container} container`}>
+            <button className='btn btn-primary' onClick={() => goBack()}>Back</button>
             <h2 className='text-light'>Manage Media</h2>
             <div className="row">
                 {media.map(_media => (
