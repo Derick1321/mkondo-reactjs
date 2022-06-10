@@ -53,7 +53,6 @@ export const ManageAlbumsItem = (props) => {
     }, [pendingQueue.length, album]);
 
     useEffect(() => {
-        if (!areDeleting.length) return;
         if (areDeleting.some(id => album.album_id == id)) {
             setIsDeleting(true);
             return;

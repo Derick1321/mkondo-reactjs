@@ -29,7 +29,10 @@ const initialState = {
 
 const NewAlbum = () => {
   // state
+  const [fields, setFields] = useState(menus);
+  const [metaFields, setMetaFields] = useState(metamenus);
   const [values, setValues] = useState(initialState);
+  const [coverImage, setCoverImage] = useState(null);
 
   // store
   const dispatch = useDispatch();
@@ -60,7 +63,50 @@ const NewAlbum = () => {
     });
   }
 
+  const handleValidation = () => {
+    let hasErrors = false;
+    var _fields = fields
+    if (!values.album) {
+      _fields = _fields.map(field => {
+        if (field.name == "album") {
+          return {...field, error: "Required"}
+        }
+        return field;
+      });
+      
+      hasErrors = true;
+    }
+
+    if (!values.artist) {
+      _fields = _fields.map(field => {
+        if (field.name == "artist") {
+          return {...field, error: "Required"}
+        }
+        return field;
+      });
+      hasErrors = true;
+    }
+
+    if (!values.genres) {
+      _fields = _fields.map(field => {
+        if (field.name == "genres") {
+          return {...field, error: "Required"}
+        }
+        return field;
+      });
+      hasErrors = true;
+    }
+
+    setFields(_fields);
+    return hasErrors;
+  }
+
   const handleSave = async () => {
+    if (handleValidation()) {
+      alert('Fill required fields before submitting');
+      return;
+    }
+
     if (!values.file) {
       alert('No album avatar file submitted!');
       return;
@@ -95,11 +141,11 @@ const NewAlbum = () => {
   return (
     <div className={`row ${styles.albumWrapper}`}>
       <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
-        <button className="btn btn-primary" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
+        <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
 
         <NewItem
-          menus={menus}
-          metamenus={metamenus}
+          menus={fields}
+          metamenus={metaFields}
           onChange={handleChange}
           values={values}
         />
