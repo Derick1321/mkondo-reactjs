@@ -4,33 +4,29 @@ export const menus = [{
         name: 'artist',
         type: 'text',
         placeholder: 'Enter Artist Name',
-        title: 'Artist',
+        title: 'Artist *',
     },
     {
         name: 'album',
         type: 'text',
         placeholder: 'Enter Album Title',
-        title: 'Album',
+        title: 'Album *',
     },
     {
         name: 'genre',
         type: 'select',
         placeholder: 'Enter Genre',
-        title: 'Genre',
+        title: 'Genre *',
         options: genres,
         isMulti: true,
     },
     {
         name: 'description',
         type: 'area',
-        placeholder: 'Describe your track',
+        placeholder: 'Describe your Album',
         title: 'Description',
     },
-    {
-        name: 'policy',
-        type: 'checkbox',
-        title: 'policy_text'
-    }
+    
 ];
 
 export const metamenus = [
@@ -39,4 +35,10 @@ export const metamenus = [
     { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
     { name: 'location', type: 'text', placeholder: 'Enter Region', title: 'Region' },
     { name: 'country', type: 'text', placeholder: 'Enter Country', title: 'Country' },
+    {
+        name: 'policy',
+        type: 'checkbox',
+        title: 'policy_text',
+        link: '/privacy',
+    }
 ];

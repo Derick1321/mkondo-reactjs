@@ -20,6 +20,7 @@ const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const UPDATE_ALBUM = 'media/UPDATE_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
+const DELETE_ALBUM = 'media/DELETE_ALBUM';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
 const ADD_COMMENT_COMMENT = 'media/ADD_COMMENT_COMMENT';
@@ -144,6 +145,14 @@ export const fetchAlbums = createAsyncThunk(
     async (data, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('GET', 'albums', data, token);
+    }
+);
+
+export const deleteAlbum = createAsyncThunk(
+    DELETE_ALBUM,
+    async (data, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('DELETE', `albums/${data.id}`, null, token);
     }
 );
 
@@ -328,12 +337,12 @@ export const saveMedia = createAsyncThunk(
 export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
     async(file, param) => {
-        console.log("save media pro triggered", file);
+        // console.log("save media pro triggered", file);
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
         const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
         const { fields, url } = result.response;
-        console.log("fields and url", fields, url);
+        // console.log("fields and url", fields, url);
 
         const uploading = {
             id: fileName,
@@ -347,7 +356,7 @@ export const saveMediaPro = createAsyncThunk(
             mediaUrl: null,
         }
 
-        console.log("uploading state", uploading);
+        // console.log("uploading state", uploading);
 
         param.dispatch(pushUploadQueue(uploading))
         param.dispatch(updateUploadQueueItemState({
@@ -404,19 +413,19 @@ export const saveMediaPro = createAsyncThunk(
                     const result = request.response;
                 
                     if (![200, 201, 204].includes(status)) {
-                        console.log("Save Media Pro Failed");
+                        // console.log("Save Media Pro Failed");
                         reject(result);
                         return;
                     }
                     
                     if ([204].includes(status)) {
-                        console.log("Save Media Pro Finished");
+                        // console.log("Save Media Pro Finished");
                         param.dispatch(popUploadQueue(uploading.id));
                         resolve(true);
                         return;
                     }
                     
-                    console.log("Save Media Pro Finished");
+                    // console.log("Save Media Pro Finished");
                     param.dispatch(popUploadQueue(uploading.id));
                     resolve(JSON.parse(result));
                     return;
@@ -574,6 +583,7 @@ const initialState = {
     addAlbumError: null,
     addAlbumComplete: false,
     updateAlbumPending: false,
+    updateAlbumPendingQueue: [],
     updateAlbumError: null,
     updateAlbumComplete: false,
     getCommentPending: false,
@@ -611,9 +621,11 @@ const initialState = {
     getSeriesSuccess: false,
     getSeriesError: null,
     updateSeriesPending: false,
+    updateSeriesPendingQueue: [],
     updateSeriesSuccess: false,
     updateSeriesError: null,
     removeSeriesPending: false,
+    removeSeriesPendingQueue: [],
     removeSeriesSuccess: false,
     removeSeriesError: null,
     uploadQueue: [],
@@ -668,13 +680,17 @@ const initialState = {
     videos: [],
     fetchVideoError: null,
     fetchAlbumsPending: false,
+    deleteAlbumErrors: [],
+    deleteAlbumPendingQueue: [],
+    deletedAblums: [],
     albums: [],
     fetchAlbumsError: null,
     retrieveMedia: {
         loading: false,
         data: null,
         error: null, 
-    }
+    },
+    addedAlbumPayload: {},
 };
 
 const mediaSlice = createSlice({
@@ -780,6 +796,19 @@ const mediaSlice = createSlice({
             state.movies = state.movies.filter(m => m.media_id != action.meta.arg);
             state.audios = state.audios.filter(m => m.media_id != action.meta.arg);
             state.videos = state.videos.filter(m => m.media_id != action.meta.arg);
+
+            state.albums = state.albums.map((album) => {
+                return {
+                    ...album, 
+                    songs: album.songs.filter(song => song.media_id != action.meta.arg),
+                };
+            });
+            state.mySeries = state.mySeries.map((series) => {
+                return {
+                    ...series, 
+                    episodes: series.episodes.map(episode => episode.media_id != action.meta.arg),
+                };
+            });   
         },
         [deleteMedia.rejected]: (state, action) => {
             state.deleteMediaPending = false;
@@ -828,6 +857,7 @@ const mediaSlice = createSlice({
             state.addAlbumComplete = true;
             state.addAlbumError = null;
             state.albumId = action.payload.album_id;
+            state.addedAlbumPayload = action.meta.arg
         },
         [addAlbum.rejected]: (state, action) => {
             state.addAlbumPending = false;
@@ -836,11 +866,13 @@ const mediaSlice = createSlice({
         },
         [updateAlbum.pending]: (state, action) => {
             state.updateAlbumPending = true;
+            state.updateAlbumPendingQueue.push(action.meta.arg.id);
             state.updateAlbumComplete = false;
             state.updateAlbumError = null;
         },
         [updateAlbum.fulfilled]: (state, action) => {
             state.updateAlbumPending = false;
+            state.updateAlbumPendingQueue = state.updateAlbumPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateAlbumComplete = true;
             state.updateAlbumError = null;
             
@@ -853,6 +885,7 @@ const mediaSlice = createSlice({
         },
         [updateAlbum.rejected]: (state, action) => {
             state.updateAlbumPending = false;
+            state.updateAlbumPendingQueue = state.updateAlbumPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateAlbumComplete = false;
             state.updateAlbumError = action.error;
         },
@@ -873,11 +906,11 @@ const mediaSlice = createSlice({
             state.saveMediaPending = false;
         },
         [saveMediaPro.pending]: (state, action) => {
-            console.log('saveMediaPro: pending - ', action.meta.arg.fileName);
+            // console.log('saveMediaPro: pending - ', action.meta.arg.fileName);
         },
         [saveMediaPro.fulfilled]: (state, action) => {
-            console.log('saveMediaPro: fulfilled - ', action.meta.arg.fileName);
-            console.log('saveMediaPro: fulfilled: payload ==  - ', action.payload);
+            // console.log('saveMediaPro: fulfilled - ', action.meta.arg.fileName);
+            // console.log('saveMediaPro: fulfilled: payload ==  - ', action.payload);
         },
         [saveMediaPro.rejected]: (state, action) => {
             console.log('saveMediaPro: rejected - ', action.meta.arg.fileName);
@@ -1121,6 +1154,20 @@ const mediaSlice = createSlice({
 
             //updating movies
             state.movies = state.movies.map((movie) => movie.media_id == action.meta.arg.id ? action.payload.media : movie);
+            state.videos = state.videos.map((video) => video.media_id == action.meta.arg.id ? action.payload.media : video);
+            state.audios = state.audios.map((audio) => audio.media_id == action.meta.arg.id ? action.payload.media : audio);
+            state.albums = state.albums.map((album) => {
+                return {
+                    ...album, 
+                    songs: album.songs.map(song => song.media_id == action.meta.arg.id ? action.payload.media: song),
+                };
+            });
+            state.mySeries = state.mySeries.map((series) => {
+                return {
+                    ...series, 
+                    episodes: series.episodes.map(episode => episode.media_id == action.meta.arg.id ? action.payload.media: episode),
+                };
+            });
         },
         [updateMedia.rejected]: (state, action) => {
             state.updateMediaPending = false;
@@ -1209,11 +1256,13 @@ const mediaSlice = createSlice({
         },
         [udpateSeries.pending]: (state, action) => {
             state.updateSeriesPending = true;
+            state.updateSeriesPendingQueue.push(action.meta.arg.id);
             state.updateSeriesSuccess = false;
             state.updateSeriesError = null;
         },
         [udpateSeries.fulfilled]: (state, action) => {
             state.updateSeriesPending = false;
+            state.updateSeriesPendingQueue = state.updateSeriesPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateSeriesSuccess = true;
 
             let _index = state.mySeries.findIndex(x => x.series_id == action.meta.arg.id);
@@ -1223,15 +1272,18 @@ const mediaSlice = createSlice({
         },
         [udpateSeries.rejected]: (state, action) => {
             state.updateSeriesPending = false;
+            state.updateSeriesPendingQueue = state.updateSeriesPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateSeriesError = action.error;
         },
         [removeSeries.pending]: (state, action) => {
             state.removeSeriesPending = true;
+            state.removeSeriesPendingQueue.push(action.meta.arg);
             state.removeSeriesSuccess = false;
             state.removeSeriesError = null;
         },
         [removeSeries.fulfilled]: (state, action) => {
             state.removeSeriesPending = false;
+            state.removeSeriesPendingQueue = state.removeSeriesPendingQueue.filter(id => id != action.meta.arg);
             state.removeSeriesSuccess = true;
             state.removeSeriesError = null;
 
@@ -1240,6 +1292,7 @@ const mediaSlice = createSlice({
         },
         [fetchMovies.pending]: (state, action) => {
             state.fetchMoviesPending = true;
+            state.removeSeriesPendingQueue = state.removeSeriesPendingQueue.filter(id => id != action.meta.arg);
             state.fetchMoviesError = null;
         },
         [fetchMovies.fulfilled]: (state, action) => {
@@ -1288,6 +1341,18 @@ const mediaSlice = createSlice({
         [fetchAlbums.rejected]: (state, action) => {
             state.fetchAlbumsPending = false;
             state.fetchAlbumsError = action.error;
+        },
+        [deleteAlbum.pending]: (state, action) => {
+            state.deleteAlbumPendingQueue.push(action.meta.arg.id);
+        },
+        [deleteAlbum.fulfilled]: (state, action) => {
+            state.deletedAblums.push(action.meta.arg.id);
+            state.albums = state.albums.filter(album => album.album_id != action.meta.arg.id);
+            state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
+        },
+        [deleteAlbum.rejected]: (state, action) => {
+            state.deleteAlbumErrors.push({album_id: action.meta.arg.id, error: action.error.message,});
+            state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [retrieveMedia.pending]: (state, action) => {
             state.retrieveMedia.loading = true;

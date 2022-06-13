@@ -14,8 +14,10 @@ import { bytesToSize, generatePreview, getDuration } from '$common/utils';
 import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 
 import styles from './index.module.scss';
+import { saveMediaPro } from '../../../redux/features/media';
 
 const MediaUpload = () => {
+  //hooks
 
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
@@ -29,6 +31,7 @@ const MediaUpload = () => {
   const [values, setValues] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState({});
+  const [mediaUrls, setMediaUrls] = useState({});
 
   // store
   const dispatch = useDispatch();
@@ -37,6 +40,7 @@ const MediaUpload = () => {
   const userId = useSelector((store) => store.authentication.user.user_id);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
   const newMediaId = useSelector((store) => store.media.newMediaId);
+  const addedAlbumPayload = useSelector(state => state.media.addedAlbumPayload);
 
   // refs
   const currentSaved = useRef(null);
@@ -97,22 +101,49 @@ const MediaUpload = () => {
   // handlers
   const handleFileChange = (result) => {
     const fileList = [];
+    const __values = {};
     for (let index = 0; index < result.length; index += 1) {
       fileList.push({
         name: result[index].name,
         size: bytesToSize(result[index].size),
         binary: result[index],
       });
-
+      const _file = {
+        filename: result[index].name,
+        file: result[index],
+      };
+      dispatch(saveMediaPro(_file));
       
-
       getDuration(result[index], 'audio', (duration) => {
-        handleChange(result[index].name, {
+        var _payload = {
           ...values[result[index].name],
           duration,
-        });
+        };
+        console.debug("CALLING HANLDE CHANGE FROM UPDATE DURATION", result[index].name, _payload);
+        // handleChange(result[index].name, _payload);
       });
+
+      const { state } = history.location;
+      var __data = {
+        ...values[result[index].name],
+        title: result[index].name.split(".")[0],
+        media_url: result[index].name,
+      };
+      if (state && state.albumId) {
+        __data["genres"] = addedAlbumPayload.genres;
+        __data["description"] = addedAlbumPayload.description;
+        __data["cover_url"] = addedAlbumPayload.cover_image;
+      }
+      console.log("Trouble Shooting");
+      console.debug("album id: ", state.albumId);
+      console.debug("added album: ", addedAlbumPayload);
+      console.debug("result: ", index, result[index]);
+      console.debug("data", __data);
+      console.debug("values", values);
+      __values[result[index].name] = __data;
     }
+    console.debug("CALLING SET VALUES WITH PAYLOAD", __values);
+    setValues(__values);
     setFiles(fileList);
   }
 
@@ -125,11 +156,12 @@ const MediaUpload = () => {
   }
 
   const handleChange = (name, value) => {
-    console.log('name ', name, value);
+    // console.log('handle change called ', name, value);
     setValues({
       ...values,
       [name]: value,
     });
+    // console.debug(values);
   }
 
   const handleContinue = () => {
@@ -137,31 +169,34 @@ const MediaUpload = () => {
     files.forEach(async (file) => {
       currentSaved.current = file.name;
       const item = values[file.name];
-      const mediaRes = await dispatch(saveMedia(file.binary));
-      const avatarRes = await dispatch(saveMedia(item.file));
+      console.log(item);
+      // const mediaRes = await dispatch(saveMedia(file.binary));
+      // const avatarRes = await dispatch(saveMedia(item.file));
 
-      const data = {
-        name: item.title,
-        description: item.description,
-        genres: item.genre.map((item) => item.value),
-        cover_url: avatarRes.payload,
-        media_url: mediaRes.payload,
-        owner_id: userId,
-        category: 'audio',
-        duration: values.duration || 0,
-        composer: item.composer,
-        record_label: item.recordLabel,
-        song_writer: item.songWriter,
-        owner_avatar_url: userAvatarUrl,
-      };
-      
-      const { state } = history.location;
-
-      if (state && state.albumId) {
-        data.album_id = state.albumId;
+      if (item) {
+        const data = {
+          name: item.title,
+          description: item.description,
+          genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : [],
+          cover_url: item.cover_url,
+          media_url: item.media_url,
+          owner_id: userId,
+          category: 'audio',
+          duration: values.duration || 0,
+          composer: item.composer,
+          record_label: item.recordLabel,
+          song_writer: item.songWriter,
+          owner_avatar_url: userAvatarUrl,
+        };
+        
+        const { state } = history.location;
+  
+        if (state && state.albumId) {
+          data.album_id = state.albumId;
+        }
+  
+        await dispatch(addMedia(data));
       }
-
-      await dispatch(addMedia(data));
     });
 
     // handleNext();

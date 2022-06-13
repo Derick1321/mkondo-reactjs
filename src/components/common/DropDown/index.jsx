@@ -11,6 +11,7 @@ import {
 import { showModal, hideModal } from '$redux/features/modal';
 
 import styles from './index.module.scss';
+import { toggleSideMenu } from '$redux/features/nav';
 
 const DropDown = (props) => {
   // props
@@ -19,6 +20,7 @@ const DropDown = (props) => {
     options,
     optionElement,
     handleSelect,
+    handleToggle,
   } = props;
 
   // store
@@ -31,6 +33,13 @@ const DropDown = (props) => {
     dispatch(showModal('EMPTY', {
       noWrapper: true,
     }));
+  }
+
+  // handle menu toggle
+  const handleMenuToggle = (evt) => {
+    if (handleToggle) {
+      handleToggle();
+    }
   }
 
   // deprecated
@@ -67,6 +76,7 @@ const DropDown = (props) => {
     <Wrapper
       className='MyMenuButton'
       onSelection={handleClick}
+      onMenuToggle={handleMenuToggle}
     >
       <Button className='MyMenuButton-button'>
         { children }
