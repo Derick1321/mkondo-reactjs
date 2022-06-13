@@ -1,4 +1,5 @@
 import { genres } from '$common/utils';
+import { routePaths } from '../../../common/routeConfig';
 
 export const menus = [{
         name: 'title',
@@ -23,7 +24,8 @@ export const menus = [{
     {
         name: 'policy',
         type: 'checkbox',
-        title: 'policy_text'
+        title: 'policy_text',
+        link: routePaths.privacy,
     }
 ];
 

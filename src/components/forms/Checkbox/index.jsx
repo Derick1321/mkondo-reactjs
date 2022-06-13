@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 
 const Checkbox = (props) => {
@@ -11,6 +12,7 @@ const Checkbox = (props) => {
     name,
     onChange,
     value,
+    link,
   } = props;
 
   const lang = useSelector(store => store.user.language);
@@ -39,7 +41,10 @@ const Checkbox = (props) => {
           className="form-check-label"
           htmlFor="gridCheck"
         >
-          {t(title)}
+          {link ? (
+            <Link to={link} target="_blank" >{t(title)}</Link>
+          ): t(title)}
+          {}
         </label>
       </div>
     </div>
