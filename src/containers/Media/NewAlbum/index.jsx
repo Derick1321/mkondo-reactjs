@@ -18,6 +18,7 @@ const initialState = {
   album: '',
   genre: '',
   description: '',
+  cover_image: '',
   policy: false,
   recordLabel: '',
   releaseDate: '',
@@ -87,9 +88,9 @@ const NewAlbum = () => {
       hasErrors = true;
     }
 
-    if (!values.genres) {
+    if (!values.genre) {
       _fields = _fields.map(field => {
-        if (field.name == "genres") {
+        if (field.name == "genre") {
           return {...field, error: "Required"}
         }
         return field;
@@ -118,14 +119,13 @@ const NewAlbum = () => {
     }
 
     initiatedSave.current = true;
-    const res = await dispatch(saveMedia(values.file));
     dispatch(addAlbum({
       name: values.album,
       description: values.description,
       genres: values.genre.map((item) => item.value),
       country: values.country,
       region: values.region,
-      cover_image: res.payload,
+      cover_image: values.file,
       owner_id: userId, // OR artistId
     }));
   }

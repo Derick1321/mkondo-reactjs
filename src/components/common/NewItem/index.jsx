@@ -12,6 +12,8 @@ import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { showModal } from '$redux/features/modal';
 import { crop } from '../../../redux/features/croptool';
+import DonutProgress from '../DonutProgress';
+import { saveMediaPro } from '../../../redux/features/media';
 
 const options = [
   { name: 'basic', title: 'basic' },
@@ -30,18 +32,37 @@ const NewItem = (props) => {
   // console.log(menus);
 
   // state
+  const [mediaUploadProgress, setMediaUploadProgress] = useState(0);
   const [selected, setSelected] = useState(options[0].name);
+  const [avatarFileName, setAvatarFileName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(null);
 
   // redux
   const croppedImage = useSelector((state) => state.croptool.cropped)
   const dispatch = useDispatch();
 
+  const uploadQueue = useSelector(state => state.media.uploadQueue);
+
+  //effects
+  useEffect(() => {
+    // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+    if (!uploadQueue) return;
+    // console.log(uploadQueue);
+    uploadQueue.map((uploading) => {
+          // console.log(uploading.fileName, coverFileName, trailerFileName);
+          if (avatarFileName === uploading.fileName) {
+              setMediaUploadProgress(uploading.progress);
+          }
+      })
+  }, [uploadQueue]);
+
   useEffect(async () => {
+    if (!croppedImage) return;
     const file = await fetch(croppedImage).then(res => res.blob());
     const url = await generatePreview(file)
     setAvatarUrl(url);
-    onChange('file', file);
+    dispatch(saveMediaPro({filename: avatarFileName, file: file}));
+    // onChange('file', file);
   }, [croppedImage]);
 
   // handlers
@@ -51,6 +72,8 @@ const NewItem = (props) => {
 
   const handleAvatarChange = async (file) => {
     const url = await generatePreview(file[0]);
+    setAvatarFileName(file[0].name);
+    onChange('file', file[0].name);
     dispatch(crop({
       src: url,
       aspectRatio: 1/1,
@@ -84,6 +107,9 @@ const NewItem = (props) => {
                 url={avatarUrl}
                 onChange={handleAvatarChange}
               />
+              <div className={styles.avatarUploadProgress}>
+                <DonutProgress progress={mediaUploadProgress} />
+              </div>
             </div>
             {
               menus.map((menu, idx) => (
