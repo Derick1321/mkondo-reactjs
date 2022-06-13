@@ -337,12 +337,12 @@ export const saveMedia = createAsyncThunk(
 export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
     async(file, param) => {
-        console.log("save media pro triggered", file);
+        // console.log("save media pro triggered", file);
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
         const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
         const { fields, url } = result.response;
-        console.log("fields and url", fields, url);
+        // console.log("fields and url", fields, url);
 
         const uploading = {
             id: fileName,
@@ -356,7 +356,7 @@ export const saveMediaPro = createAsyncThunk(
             mediaUrl: null,
         }
 
-        console.log("uploading state", uploading);
+        // console.log("uploading state", uploading);
 
         param.dispatch(pushUploadQueue(uploading))
         param.dispatch(updateUploadQueueItemState({
@@ -413,19 +413,19 @@ export const saveMediaPro = createAsyncThunk(
                     const result = request.response;
                 
                     if (![200, 201, 204].includes(status)) {
-                        console.log("Save Media Pro Failed");
+                        // console.log("Save Media Pro Failed");
                         reject(result);
                         return;
                     }
                     
                     if ([204].includes(status)) {
-                        console.log("Save Media Pro Finished");
+                        // console.log("Save Media Pro Finished");
                         param.dispatch(popUploadQueue(uploading.id));
                         resolve(true);
                         return;
                     }
                     
-                    console.log("Save Media Pro Finished");
+                    // console.log("Save Media Pro Finished");
                     param.dispatch(popUploadQueue(uploading.id));
                     resolve(JSON.parse(result));
                     return;
@@ -689,7 +689,8 @@ const initialState = {
         loading: false,
         data: null,
         error: null, 
-    }
+    },
+    addedAlbumPayload: {},
 };
 
 const mediaSlice = createSlice({
@@ -856,6 +857,7 @@ const mediaSlice = createSlice({
             state.addAlbumComplete = true;
             state.addAlbumError = null;
             state.albumId = action.payload.album_id;
+            state.addedAlbumPayload = action.meta.arg
         },
         [addAlbum.rejected]: (state, action) => {
             state.addAlbumPending = false;
@@ -904,11 +906,11 @@ const mediaSlice = createSlice({
             state.saveMediaPending = false;
         },
         [saveMediaPro.pending]: (state, action) => {
-            console.log('saveMediaPro: pending - ', action.meta.arg.fileName);
+            // console.log('saveMediaPro: pending - ', action.meta.arg.fileName);
         },
         [saveMediaPro.fulfilled]: (state, action) => {
-            console.log('saveMediaPro: fulfilled - ', action.meta.arg.fileName);
-            console.log('saveMediaPro: fulfilled: payload ==  - ', action.payload);
+            // console.log('saveMediaPro: fulfilled - ', action.meta.arg.fileName);
+            // console.log('saveMediaPro: fulfilled: payload ==  - ', action.payload);
         },
         [saveMediaPro.rejected]: (state, action) => {
             console.log('saveMediaPro: rejected - ', action.meta.arg.fileName);
