@@ -8,6 +8,7 @@ import NewItem from '$components/common/NewItem';
 
 import { menus, metamenus } from './menus';
 import styles from './index.module.scss';
+import DonutProgress from '../../common/DonutProgress';
 
 const dragIcon = require('$assets/images/icons/drag-icon.svg');
 const settingsIcon = require('$assets/images/icons/settings.svg');
@@ -41,16 +42,35 @@ const UploadCard = (props) => {
   } = props;
   const values = allFields[name];
 
+  //hooks
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
-  useEffect(() => { 
-    console.log("")
-    handleChange('title', name); 
-  }, [name]);
+  // useEffect(() => { 
+  //   console.log("")
+  //   handleChange('title', name); 
+  // }, [name]);
 
   // state
   const [isOpen, setIsOpen] = useState(false);
+  const [mediaUploadProgress, setMediaUploadProgress] = useState(0);
+
+  //redux
+  // const addedAlbumPayload = useSelector(state => state.media.addedAlbumPayload);
+  const uploadQueue = useSelector(state => state.media.uploadQueue);
+
+  //effects
+  useEffect(() => {
+    // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+    if (!uploadQueue) return;
+    // console.log(uploadQueue);
+    uploadQueue.map((uploading) => {
+          // console.log(uploading.fileName, coverFileName, trailerFileName);
+          if (name === uploading.fileName) {
+              setMediaUploadProgress(uploading.progress)
+          }
+      })
+  }, [uploadQueue]);
 
   // handlers
   const handleView = () => {
@@ -87,7 +107,10 @@ const UploadCard = (props) => {
             placeholder={t('uploading')}
           />
         </div>
-        <div>
+        <div className='d-flex'>
+          <div style={{ height: 20, width: 20 }}>
+            <DonutProgress progress={mediaUploadProgress} />
+          </div>
           <Button
             onClick={handleView}
             isCustom
@@ -99,6 +122,7 @@ const UploadCard = (props) => {
               alt=""
             />
           </Button>
+
         </div>
       </div>
       {
