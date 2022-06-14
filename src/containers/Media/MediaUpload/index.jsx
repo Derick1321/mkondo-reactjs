@@ -32,6 +32,8 @@ const MediaUpload = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [saveStatus, setSaveStatus] = useState({});
   const [mediaUrls, setMediaUrls] = useState({});
+  const [dirty, setDirty] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   // store
   const dispatch = useDispatch();
@@ -41,6 +43,7 @@ const MediaUpload = () => {
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
   const newMediaId = useSelector((store) => store.media.newMediaId);
   const addedAlbumPayload = useSelector(state => state.media.addedAlbumPayload);
+  const lastUploaded = useSelector(state => state.media.lastUploaded);
 
   // refs
   const currentSaved = useRef(null);
@@ -98,11 +101,25 @@ const MediaUpload = () => {
     }
   }, [newMediaId]);
 
+  useEffect(() => {
+    console.log("last uploaded changed", lastUploaded);
+    if (!lastUploaded) return;
+    let _files = files.filter(file => file.name != lastUploaded.media_url);
+    setFiles(_files);
+    if (_files.length == 0 && dirty) {
+      setSuccessMessage("Album Tracks Uploaded Successfull");
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 10000);
+    }
+  }, [lastUploaded]);
+
   // handlers
   const handleFileChange = (result) => {
     const fileList = [];
     const __values = {};
     for (let index = 0; index < result.length; index += 1) {
+      setDirty(true);
       fileList.push({
         name: result[index].name,
         size: bytesToSize(result[index].size),
@@ -208,6 +225,7 @@ const MediaUpload = () => {
     <div className={`row ${styles.wrapper}`}>
       <div className="col-md-8 offset-md-2 col-10">
         <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
+        {successMessage && <div className='alert alert-success'>{successMessage}</div>}
         <DragDrop
           onChange={handleFileChange}
           isMulti
