@@ -107,7 +107,7 @@ const MediaUpload = () => {
     let _files = files.filter(file => file.name != lastUploaded.media_url);
     setFiles(_files);
     if (_files.length == 0 && dirty) {
-      setSuccessMessage("Album Tracks Uploaded Successfull");
+      setSuccessMessage("Tracks Uploaded Successfull");
       setTimeout(() => {
         setSuccessMessage(null);
       }, 10000);
@@ -116,6 +116,7 @@ const MediaUpload = () => {
 
   // handlers
   const handleFileChange = (result) => {
+    console.log("File Changed");
     const fileList = [];
     const __values = {};
     for (let index = 0; index < result.length; index += 1) {
@@ -152,7 +153,7 @@ const MediaUpload = () => {
         __data["cover_url"] = addedAlbumPayload.cover_image;
       }
       console.log("Trouble Shooting");
-      console.debug("album id: ", state.albumId);
+      // console.debug("album id: ", state.albumId);
       console.debug("added album: ", addedAlbumPayload);
       console.debug("result: ", index, result[index]);
       console.debug("data", __data);
@@ -173,7 +174,7 @@ const MediaUpload = () => {
   }
 
   const handleChange = (name, value) => {
-    // console.log('handle change called ', name, value);
+    console.log('handle change called ', name, value);
     setValues({
       ...values,
       [name]: value,
@@ -194,8 +195,8 @@ const MediaUpload = () => {
         const data = {
           name: item.title,
           description: item.description,
-          genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : [],
-          cover_url: item.cover_url,
+          genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : (item.genre && item.genre.length ? item.genre.map((item) => item.value ?? item) : []),
+          cover_url: item.cover_url ?? item.file,
           media_url: item.media_url,
           owner_id: userId,
           category: 'audio',
