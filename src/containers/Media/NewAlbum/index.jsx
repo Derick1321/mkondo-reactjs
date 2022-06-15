@@ -12,7 +12,6 @@ import { saveMedia, addAlbum } from '$redux/features/media';
 import { menus, metamenus } from './menus';
 
 import styles from './index.module.scss';
-import { getCountriesOptions } from '../../../common/utils';
 
 const initialState = {
   artist: '',
@@ -48,9 +47,7 @@ const NewAlbum = () => {
   const initiatedSave = useRef(false);
 
   // effects
-  useEffect(() => {
-    getCountriesOptions();
-  }, []);
+  
   
   useEffect(() => {
     if (!addAlbumComplete || !initiatedSave.current) {
