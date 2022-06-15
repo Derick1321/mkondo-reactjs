@@ -1,4 +1,4 @@
-import allCountries from 'country-region-data';
+// import allCountries from 'country-region-data';
 import { DateTime, Duration } from 'luxon';
 import { handleFetch } from './requestUtils';
 
@@ -165,8 +165,8 @@ export const getMediaUrl = async (filename, token) => {
   return response;
 }
 
-export const getCountriesOptions = () => {
-  console.log("Get Countries Options Triggered");
-  console.debug(allCountries);
-  return [];
-}
+// export const getCountriesOptions = () => {
+//   console.log("Get Countries Options Triggered");
+//   console.debug(allCountries);
+//   return [];
+// }
