@@ -95,9 +95,10 @@ const TheatreContainer = () => {
     }, [newInTheatre, currentMedia]);
 
     useEffect(() => {
+        console.log("Hero Ref Changed", heroRef.current);
         if (!heroRef.current) return;
         setHeroWidth(heroRef.current.offsetWidth);
-    }, [heroRef.current]);
+    }, [heroRef]);
 
     //handlers
     const handlePlay = () => {
@@ -187,7 +188,7 @@ const TheatreContainer = () => {
                         <>
                             <div style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.50))`, height: '100%', width: '100%', position: 'absolute', zIndex: '0', }}></div>
                             <div className={styles.fadingBackground}></div>
-                            <video className={styles.backgroundTrailer} style={{ zIndex: '-1', }} height="100%" width={heroWidth} autoplay="autoplay" poster={cover} loop muted>
+                            <video className={styles.backgroundTrailer} style={{ zIndex: '-1', }} height="auto" width="100%" autoplay="autoplay" poster={cover} loop muted>
                                 <source src={trailerUrl} type="video/mp4" />
                             </video>
                         </>

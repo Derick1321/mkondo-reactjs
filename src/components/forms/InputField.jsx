@@ -6,6 +6,7 @@ import Checkbox from '$components/forms/Checkbox';
 import InputDate from '$components/forms/Date';
 import SelectInput from '$components/forms/Select';
 import SocialInput from '$components/forms/SocialInput';
+import { CountryDropdown, CountryRegionData } from 'react-country-region-selector';
 
 const InputField = (props) => {
   // props
@@ -69,6 +70,20 @@ const InputField = (props) => {
             isGrey
           />
         )
+      case 'country':
+        return (
+          <div style={{ width: 100 }}>
+            <SelectInput
+              {...field}
+              options={CountryRegionData.map(data => {
+                return {label: data[0], value: data[1]};
+              })}
+              isGrey
+              error={error}
+              onChange={onChange}
+            />
+          </div>
+        );
       default:
         return null; 
     }

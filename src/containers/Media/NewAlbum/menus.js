@@ -34,7 +34,7 @@ export const metamenus = [
     { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
     { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
     { name: 'location', type: 'text', placeholder: 'Enter Region', title: 'Region' },
-    { name: 'country', type: 'text', placeholder: 'Enter Country', title: 'Country' },
+    { name: 'country', type: 'country', placeholder: 'Enter Country', title: 'Country' },
     {
         name: 'policy',
         type: 'checkbox',
