@@ -31,12 +31,13 @@
 .theatre {
     position: absolute;
     width: 100%;
-    height: 600px;
+    height: 100vh;
     background-position: center;
     background-size: cover;
+    overflow: hidden;
 
     @media only screen and (max-width: 676px) {
-        height: 200px;
+        height: 36vh;
     }
 
     .actions {
@@ -185,7 +186,7 @@
     background-repeat: repeat-x;
     background-color: transparent;
     width: 100%;
-    height: 14.7vw;
+    height: 100%;
     top: auto;
     bottom: -1px;
     opacity: 1;
