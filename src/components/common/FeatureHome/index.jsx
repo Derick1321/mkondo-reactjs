@@ -37,7 +37,7 @@ const FeatureBkg = styled.div`
   width: 100%;
   margin: auto;
   background-size: cover;
-  background-image: url(${props => props.avatar}); 
+  background-image: url(${props => props.source}); 
   background-repeat-y: repeat;
   // mix-blend-mode: multiply;
 `;
@@ -75,23 +75,9 @@ const FeatureHome = (props) => {
   // props
   const {
     key,
-    avatar,
-    source,
-    owner_name,
-    title,
-    mediaUrl,
-    mediaId,
-    artistId,
-    country,
-    category,
     showHeader,
-    description,
-
-    likes,
-    plays,
-    comment_num,
-
     notifyPlayed,
+    media,
   } = props;
 
   //hooks
@@ -123,8 +109,7 @@ const FeatureHome = (props) => {
 
   // state
   const [avatarUrl, setAvatarUrl] = useState('');
-  const [sourceUrl, setSourceUrl] = useState('');
-  const [isLiked, setIsLiked] = useState(likes && typeof likes.some == 'function' ? likes.some(like => like.user_id == user.user_id) : false);
+  const [isLiked, setIsLiked] = useState(false);
 
   // ref
   const isMounted = useRef(false);
@@ -139,28 +124,27 @@ const FeatureHome = (props) => {
   }, []);
 
   useEffect(async () => {
-    if (!token || !isMounted.current) {
+    if (!token) {
       return;
     }
 
-    handleFetch('GET', `media/presigned-get-url?file_name=${avatar}`, null, token)
+    handleFetch('GET', `media/presigned-get-url?file_name=${media.cover_url}`, null, token)
       .then((res) => {
-        if (!isMounted.current) {
-          return;
-        }
+        // if (!isMounted.current) {
+        //   return;
+        // }
         setAvatarUrl(res.response);
       });
-  }, [token, avatar]);
+  }, [token, media]);
 
   // effects
   useEffect(() => {
-    if (typeof likes.some == 'function' && likes.some((like) => like.user_id == user.user_id)) {
+    if (media && media.likes && typeof media.likes.some == 'function' && media.likes.some((like) => like.user_id == user.user_id)) {
       setIsLiked(true);
     } else {
       setIsLiked(false);
     }
-    
-  }, [likes]);
+  }, [media]);
 
   // handlers
   const handlePlay = async () => {
@@ -173,28 +157,28 @@ const FeatureHome = (props) => {
     }
 
     dispatch(loadMedia({
-      mediaId,
-      url: mediaUrl,
+      mediaId: media.media_id,
+      url: media.media_url,
       howl: null,
       avatar: avatarUrl,
-      name: title,
-      artistName: owner_name,
-      artistId: artistId
+      name: media.name,
+      artistName: media.owner_name,
+      artistId: media.owner_id
     }));
   }
 
   const handleView = () => {
-    history.push(generatePath(routePaths.viewMedia, { id: mediaId }));
+    history.push(generatePath(routePaths.viewMedia, { id: media.media_id }));
   }
 
   const handleArtistView = () => {
-    history.push(generatePath(routePaths.viewArtist, { id: artistId }));
+    history.push(generatePath(routePaths.viewArtist, { id: media.owner_id }));
   }
 
   // Likes
   const handleLikes = () => {
     const data = {
-      media_id: mediaId,
+      media_id: media.media_id,
     };
 
     if (!isLiked) {
@@ -206,21 +190,21 @@ const FeatureHome = (props) => {
   }
 
   // render
-  if (category == "audio") {
+  if (media && media.category == "audio") {
     return (
     <>
       <div className={styles.f_featureWrapper} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         <FeatureBkg source={avatarUrl}>
         {
           showHeader && (
-            <div className={`${styles.content} ${(hovered || ((mediaId == currentMediaId) && isPlaying)) && styles.active}`}>
+            <div className={`${styles.content} ${(hovered || ((media.media_id == currentMediaId) && isPlaying)) && styles.active}`}>
               <div className={`d-flex align-items-center justify-content-between text-light ${styles.f_featureHeaderWrapper}`}>
-                <div className={`ml-3 ${styles.views}`}>{plays} views</div>
-                <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                <div className={`ml-3 ${styles.views}`}>{media.plays} views</div>
+                <div className={`ml-2 ${styles.no_of_likes}`}>{media.likes ? media.likes.length : 0} Likes</div>
                 <ActionHeader
-                  mediaId={mediaId}
-                  country={country}
-                  title={title}
+                  mediaId={media.media_id}
+                  country={media.country}
+                  title={media.name}
                   avatarUrl={avatarUrl}
                   showPlaylist
                 />
@@ -231,12 +215,12 @@ const FeatureHome = (props) => {
                 <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
               </div>
               <PlayButton
-                category={category}
+                category={media.category}
                 onClick={handlePlay} >
                 <PlayBtn
-                  size={category == "audio" ? "30" : "40"}
-                  isLoading={isLoading && currentMediaId === mediaId}
-                  isPlaying={isPlaying && currentMediaId === mediaId}
+                  size={media.category == "audio" ? "30" : "40"}
+                  isLoading={isLoading && currentMediaId === media.media_id}
+                  isPlaying={isPlaying && currentMediaId === media.media_id}
                 />
               </PlayButton>
             </div>
@@ -256,8 +240,8 @@ const FeatureHome = (props) => {
           <div className="d-flex mt-2">
             <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
               <div style={{flex: 1}}>
-                <div className={styles.title}><b>{title}</b></div>
-                <div onClick={() => push(generatePath(routePaths.viewArtist, {id: artistId}))} className={styles.f_description}>by {owner_name}</div>
+                <div className={styles.title}><b>{media.name}</b></div>
+                <div onClick={() => push(generatePath(routePaths.viewArtist, {id: artistId}))} className={styles.f_description}>by {media.owner_name}</div>
               </div>
 
               {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
@@ -277,7 +261,7 @@ const FeatureHome = (props) => {
   )
   }
 
-  if (category == "video") {
+  if (media && media.category == "video") {
     return (
       <div>
         <div className={styles.f_featureWrapperVideo} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
@@ -286,12 +270,12 @@ const FeatureHome = (props) => {
             showHeader && (
               <div className={`${styles.content} ${hovered && styles.active}`}>
                 <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
-                  <div className={`ml-3 ${styles.views}`}>{plays} views</div>
-                  <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                  <div className={`ml-3 ${styles.views}`}>{media.plays} views</div>
+                  <div className={`ml-2 ${styles.no_of_likes}`}>{media.likes ? media.likes.length : 0} Likes</div>
                   <ActionHeader
-                    mediaId={mediaId}
-                    country={country}
-                    title={title}
+                    mediaId={media.media_id}
+                    country={media.country}
+                    title={media.name}
                     avatarUrl={avatarUrl}
                     showPlaylist
                   />
@@ -302,12 +286,12 @@ const FeatureHome = (props) => {
                   <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                 </div>
                 <PlayButton
-                  category={category}
+                  category={media.category}
                   onClick={handlePlay} >
                   <PlayBtn
-                    size={category == "audio" ? "30" : "40"}
-                    isLoading={isLoading && currentMediaId === mediaId}
-                    isPlaying={isPlaying && currentMediaId === mediaId}
+                    size={media.category == "audio" ? "30" : "40"}
+                    isLoading={isLoading && currentMediaId === media.media_id}
+                    isPlaying={isPlaying && currentMediaId === media.media_id}
                   />
                 </PlayButton>
               </div>
@@ -328,7 +312,7 @@ const FeatureHome = (props) => {
               <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
                 <div style={{flex: 1}}>
                   
-                  <div className={styles.title}><b>{title}</b></div>
+                  <div className={styles.title}><b>{media.title}</b></div>
                   {/* <div className={styles.f_description}>{description}</div> */}
                 </div>
   
@@ -347,7 +331,7 @@ const FeatureHome = (props) => {
     )
   }
 
-  if (category == "movie") {
+  if (media && media.category == "movie") {
     return (
       <>
         <div className={styles.f_featureWrapperMovie} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
@@ -356,12 +340,12 @@ const FeatureHome = (props) => {
             showHeader && (
               <div className={`${styles.content} ${hovered && styles.active}`}>
                 <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
-                  <div className={`ml-3 ${styles.views}`}>{plays} views</div>
-                  <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
+                  <div className={`ml-3 ${styles.views}`}>{media.plays} views</div>
+                  <div className={`ml-2 ${styles.no_of_likes}`}>{media.likes ? media.likes.length : 0} Likes</div>
                   <ActionHeader
-                    mediaId={mediaId}
-                    country={country}
-                    title={title}
+                    mediaId={media.media_id}
+                    country={media.country}
+                    title={media.name}
                     avatarUrl={avatarUrl}
                     showPlaylist
                   />
@@ -372,12 +356,12 @@ const FeatureHome = (props) => {
                   <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                 </div>
                 <PlayButton
-                  category={category}
+                  category={media.category}
                   onClick={handlePlay} >
                   <PlayBtn
-                    size={category == "audio" ? "30" : "40"}
-                    isLoading={isLoading && currentMediaId === mediaId}
-                    isPlaying={isPlaying && currentMediaId === mediaId}
+                    size={media.category == "audio" ? "30" : "40"}
+                    isLoading={isLoading && currentMediaId === media.media_id}
+                    isPlaying={isPlaying && currentMediaId === media.media_id}
                   />
                 </PlayButton>
               </div>
@@ -398,7 +382,7 @@ const FeatureHome = (props) => {
               <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
                 <div style={{flex: 1}}>
                   
-                  <div className={styles.title}><b>{title}</b></div>
+                  <div className={styles.title}><b>{media.title}</b></div>
                   {/* <div className={styles.f_description}>{description}</div> */}
                 </div>
   
@@ -417,73 +401,77 @@ const FeatureHome = (props) => {
     )
   }
 
-  return (
-    <>
-      <div className={styles.f_featureWrapperVideo}>
-        <FeatureBkg source={avatarUrl}>
-        {
-          showHeader && (
-            <>
-              <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
-                <div className={`ml-3 ${styles.views}`}>{plays} views</div>
-                <div className={`ml-2 ${styles.no_of_likes}`}>{likes.length} Likes</div>
-                <ActionHeader
-                  mediaId={mediaId}
-                  country={country}
-                  title={title}
-                  avatarUrl={avatarUrl}
-                  showPlaylist
-                />
-              </div>
-
-              <div className={`${styles.likeandcomment}`}>
-                <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
-                <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
-              </div>
-              <PlayButton
-                category={category}
-                onClick={handlePlay} >
-                <PlayBtn
-                  size={category == "audio" ? "30" : "40"}
-                  isLoading={isLoading && currentMediaId === mediaId}
-                  isPlaying={isPlaying && currentMediaId === mediaId}
-                />
-              </PlayButton>
-            </>
-          )
-        }
-        </FeatureBkg>
-      </div>
-
-      {/* <div className={`d-flex w-100 px-3`}>
-          <div className={styles.f_hoverCursor} onClick={handleArtistView}>
-            {owner_name}
-          </div>
-        </div> */}
-
-      
-          
-          <div className="d-flex mt-2">
-            <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
-              <div style={{flex: 1}}>
-                
-                <div className={styles.title}><b>{title}</b></div>
-                {/* <div className={styles.f_description}>{description}</div> */}
-              </div>
-
-              {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
+  if (media) {
+    return (
+      <>
+        <div className={styles.f_featureWrapperVideo}>
+          <FeatureBkg source={avatarUrl}>
+          {
+            showHeader && (
+              <>
+                <div className={`d-flex align-items-center justify-content-between ${styles.f_featureHeaderWrapper}`}>
+                  <div className={`ml-3 ${styles.views}`}>{media.plays} views</div>
+                  <div className={`ml-2 ${styles.no_of_likes}`}>{media.likes ? media.likes.length : 0} Likes</div>
+                  <ActionHeader
+                    mediaId={media.media_id}
+                    country={media.country}
+                    title={media.media_id}
+                    avatarUrl={avatarUrl}
+                    showPlaylist
+                  />
+                </div>
+  
+                <div className={`${styles.likeandcomment}`}>
+                  <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                  <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
+                </div>
+                <PlayButton
+                  category={media.category}
+                  onClick={handlePlay} >
+                  <PlayBtn
+                    size={media.category == "audio" ? "30" : "40"}
+                    isLoading={isLoading && currentMediaId === media.media_id}
+                    isPlaying={isPlaying && currentMediaId === media.media_id}
+                  />
+                </PlayButton>
+              </>
+            )
+          }
+          </FeatureBkg>
+        </div>
+  
+        {/* <div className={`d-flex w-100 px-3`}>
+            <div className={styles.f_hoverCursor} onClick={handleArtistView}>
+              {owner_name}
             </div>
+          </div> */}
+  
+        
+            
+            <div className="d-flex mt-2">
+              <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
+                <div style={{flex: 1}}>
+                  
+                  <div className={styles.title}><b>{media.title}</b></div>
+                  {/* <div className={styles.f_description}>{description}</div> */}
+                </div>
+  
+                {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
+              </div>
+  
+            </div>
+            <div className="d-flex flex-row">
+              <span className="ml-auto">
+                {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
+              </span>
+              {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+              {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
+            </div>
+      </>
+    )
+  }
 
-          </div>
-          <div className="d-flex flex-row">
-            <span className="ml-auto">
-              {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
-            </span>
-            {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
-            {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
-          </div>
-    </>
-  )
+  return <div>No Media Found!</div>
 }
 
 FeatureHome.defaultProps = {
