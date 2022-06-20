@@ -57,11 +57,13 @@ const NewItem = (props) => {
   }, [uploadQueue]);
 
   useEffect(async () => {
+    // console.log("dslfjlsdjfl: cropped image detected");
     if (!croppedImage) return;
     const file = await fetch(croppedImage).then(res => res.blob());
     const url = await generatePreview(file)
     setAvatarUrl(url);
-    dispatch(saveMediaPro({filename: avatarFileName, file: file}));
+    // console.log("dslfjlsdjfl: dispatching save media pro")
+    dispatch(saveMediaPro({filename: avatarFileName, file: file})).then(action => onChange('file', action.payload));
     // onChange('file', file);
   }, [croppedImage]);
 
@@ -73,7 +75,7 @@ const NewItem = (props) => {
   const handleAvatarChange = async (file) => {
     const url = await generatePreview(file[0]);
     setAvatarFileName(file[0].name);
-    onChange('file', file[0].name);
+    // onChange('file', file[0].name);
     dispatch(crop({
       src: url,
       aspectRatio: 1/1,

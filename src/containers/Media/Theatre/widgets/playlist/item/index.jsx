@@ -29,18 +29,7 @@ const TheatrePlaylistItemComponent = (props) => {
     <div className={styles.wrapper} onClick={() => handleSelect(media)}>
       <FeatureHome
           key={`feature-home-theatre-${media.media_id}`}
-          mediaUrl={media.media_url}
-          mediaId={media.media_id}
-          avatar={media.cover_url}
-          artistId={media.owner_id}
-          owner_name={media.owner_name}
-          title={media.name}
-          country={media.country}
-          category={media.category}
-          description={media.description}
-          likes={media.likes || undefined}
-          plays={media.plays}
-          comment_num={media.comment_num}
+          media={media}
         />
       {/* <h4 className={styles.title}>{name}</h4> */}
     </div>
