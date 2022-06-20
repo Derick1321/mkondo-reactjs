@@ -60,19 +60,7 @@ const ScrollMedia = (props) => {
       <div style={{marginRight: '15px'}} key={`feature-home-wrapper-${idx}`} onClick={handleFeatureClicked}>
         <FeatureHome
           key={`feature-home-${idx}`}
-          mediaUrl={item.media_url}
-          mediaId={item.media_id}
-          avatar={item.cover_url}
-          artistId={item.owner_id}
-          source={avatar_url}
-          owner_name={item.owner_name}
-          title={item.name}
-          country={item.country}
-          category={item.category}
-          description={item.description}
-          likes={item.likes || undefined}
-          plays={item.plays}
-          comment_num={item.comment_num}
+          media={item}
         />
       </div>
     );

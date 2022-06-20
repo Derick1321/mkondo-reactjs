@@ -130,7 +130,14 @@ const MediaUpload = () => {
         filename: result[index].name,
         file: result[index],
       };
-      dispatch(saveMediaPro(_file));
+      dispatch(saveMediaPro(_file)).then(action => {
+        var _payload = {
+          ...values[result[index].name],
+          media_url: action.payload,
+        };
+        console.debug("CALLING HANLDE CHANGE FROM UPDATE MEDIA URL", result[index].name, _payload);
+        handleChange(result[index].name, _payload);
+      });
       
       getDuration(result[index], 'audio', (duration) => {
         var _payload = {
@@ -138,26 +145,25 @@ const MediaUpload = () => {
           duration,
         };
         console.debug("CALLING HANLDE CHANGE FROM UPDATE DURATION", result[index].name, _payload);
-        // handleChange(result[index].name, _payload);
+        handleChange(result[index].name, _payload);
       });
 
       const { state } = history.location;
+
+      //preparing the payload
       var __data = {
         ...values[result[index].name],
         title: result[index].name.split(".")[0],
-        media_url: result[index].name,
       };
+
+      //patching data from album
       if (state && state.albumId) {
         __data["genres"] = addedAlbumPayload.genres;
         __data["description"] = addedAlbumPayload.description;
         __data["cover_url"] = addedAlbumPayload.cover_image;
       }
-      console.log("Trouble Shooting");
-      // console.debug("album id: ", state.albumId);
-      console.debug("added album: ", addedAlbumPayload);
-      console.debug("result: ", index, result[index]);
-      console.debug("data", __data);
-      console.debug("values", values);
+
+      //adding data to list of files needs to be updated
       __values[result[index].name] = __data;
     }
     console.debug("CALLING SET VALUES WITH PAYLOAD", __values);
@@ -177,7 +183,7 @@ const MediaUpload = () => {
     console.log('handle change called ', name, value);
     setValues({
       ...values,
-      [name]: value,
+      [name]: {...values[name], ...value},
     });
     // console.debug(values);
   }
