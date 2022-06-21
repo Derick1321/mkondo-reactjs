@@ -150,6 +150,11 @@ export const loadMedia = createAsyncThunk(
       param.dispatch(skipTo(_index));
       return;
     }
+
+    //check for subscription
+    if (true) {
+      
+    }
     
     param.dispatch(updateLoading(true));
     param.dispatch(setCurrentMediaId(data.mediaId));

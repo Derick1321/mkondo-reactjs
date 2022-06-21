@@ -151,7 +151,9 @@ const FeatureHome = (props) => {
     if (notifyPlayed != null) {
       notifyPlayed(key);
     }
-    if (category !== 'audio') {
+
+    
+    if (media.category !== 'audio') {
       handleView();
       return;
     }
