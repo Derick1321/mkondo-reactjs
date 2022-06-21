@@ -20,9 +20,9 @@ export const VideosContainer = () => {
                 {videos.map((video, i) => (
                     <div className='col-lg-3'>
                         <FeatureHome
-                                key={`feature-home-video-${i}`}
-                                media={video}
-                                />
+                            key={`feature-home-video-${i}`}
+                            media={video}
+                            />
                     </div>
                 ))}
             </div>
