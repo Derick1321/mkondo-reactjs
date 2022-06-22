@@ -76,7 +76,7 @@ const Marketing = () => {
       <div className={`${styles.section} mt-2 px-4 py-5 text-center text-light`}>
         <h1>Home of Entertainment</h1>
         <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
-        <video width="63%" height="90px" className="mt-2" autoPlay muted loop>
+        <video width="60%" className="mt-2" autoPlay muted loop>
             <source src={overviewVideo} />
             Your browser does not support the video tag.
         </video>
