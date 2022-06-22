@@ -41,6 +41,7 @@ const REMOVE_SERIES = 'media/REMOVE_SERIES';
 const FETCH_MOVIES = 'media/FETCH_MOVIES';
 const FETCH_AUDIOS = 'media/FETCH_AUDIO';
 const FETCH_VIDEOS = 'media/FETCH_VIDEOS';
+const CHECK_SUBSCRIPTION_STATUS = 'media/CHECK_SUBSCRIPTION_STATUS';
 
 
 // actions
@@ -545,6 +546,20 @@ export const retrieveMedia = createAsyncThunk(
     }
 )
 
+export const checkSubscriptionStatus = createAsyncThunk(
+    CHECK_SUBSCRIPTION_STATUS,
+    async (media_id, store) => {
+        return await checkSubscriptionStatusApiRequest(media_id, store.getState());
+    }
+);
+
+export const checkSubscriptionStatusApiRequest = async (media_id, state) => {
+    console.log("Checking subscription status of a media", media_id);
+    const { token, user } = state.authentication;
+    const params = {user_id: user.user_id}
+    return await handleFetch('GET',  `check-media-subscription-status/${media_id}?${queryString.stringify(params)}`, null, token);
+}
+
 
 const initialState = {
     addMediaPending: false,
@@ -628,6 +643,9 @@ const initialState = {
     removeSeriesPendingQueue: [],
     removeSeriesSuccess: false,
     removeSeriesError: null,
+    checkSubscriptionStatusPending: false,
+    checkSubscriptionStatusSuccess: null,
+    checkSubscriptionStatusError: null,
     uploadQueue: [],
     currentMedia: {
         media_id: null,
@@ -1366,6 +1384,21 @@ const mediaSlice = createSlice({
         [retrieveMedia.rejected]: (state, action) => {
             state.retrieveMedia.loading = false;
             state.retrieveMedia.error = action.error;
+        },
+        [checkSubscriptionStatus.pending]: (state, action) => {
+            state.checkSubscriptionStatusPending = true;
+            state.checkSubscriptionStatusSuccess = null;
+            state.checkSubscriptionStatusError = null;
+        },
+        [checkSubscriptionStatus.fulfilled]: (state, action) => {
+            state.checkSubscriptionStatusPending = false;
+            state.checkSubscriptionStatusSuccess = action.payload;
+            state.checkSubscriptionStatusError = null;
+        },
+        [checkSubscriptionStatus.rejected]: (state, action) => {
+            state.checkSubscriptionStatusPending = false;
+            state.checkSubscriptionStatusSuccess = null;
+            state.checkSubscriptionStatusError = action.error;
         }
     }
 });

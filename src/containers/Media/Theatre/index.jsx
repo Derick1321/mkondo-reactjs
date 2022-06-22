@@ -8,7 +8,7 @@ import play from '$assets/images/icons/play.svg';
 import favourite from '$assets/images/icons/favorite.svg';
 import share from '$assets/images/icons/share.svg';
 import { useEffect, useState, useRef } from 'react';
-import { getNewReleases } from '../../../redux/features/media';
+import { getNewReleases, checkSubscriptionStatusApiRequest } from '../../../redux/features/media';
 import { handleFetch } from '../../../common/requestUtils';
 import VideoPlayer from '../../../components/media/VideoPlayer/index';
 import { createSubscription, fetchPaymentMethods, fetchProducts } from '../../../redux/features/subscriptions';
@@ -17,6 +17,7 @@ import { THEATRE_PER_STREAM_PRODUCT_ID } from '../../Configuration/Subscription/
 import { unwrapResult } from '@reduxjs/toolkit';
 import { setTheatreCurrentMedia } from '../../../redux/features/theatre';
 import { getMediaUrl } from '../../../common/utils';
+import { showModal } from '../../../redux/features/modal';
 
 const TheatreContainer = () => {
     //hooks
@@ -32,10 +33,12 @@ const TheatreContainer = () => {
     const [successMessage, setSuccessMessage] = useState("");
     const [isHandlingWatch, setIsHandlingWatch] = useState(false);
     const [heroWidth, setHeroWidth] = useState(null);
+    const [subscriptionStatus, setSubscriptionStatus] = useState(null);
 
     //store
     const dispatch = useDispatch();
     const { token, user } = useSelector((store) => store.authentication);
+    const state = useSelector(state => state);
     const currentMedia = useSelector((store) => store.theatre.currentMedia);
     const newInTheatreLoading = useSelector((store) => store.media.getNewReleasesPending);
     const newInTheatre = useSelector((store) => store.media.newReleases.movie);
@@ -72,6 +75,7 @@ const TheatreContainer = () => {
         });
         
         getMediaUrl(currentMedia.media_url, token).then(url => setTrailerUrl(url));
+        checkSubscription();
         return () => {
           effect
         }
@@ -101,52 +105,34 @@ const TheatreContainer = () => {
     }, [heroRef]);
 
     //handlers
-    const handlePlay = () => {
+    const handlePlay = async () => {
         // const res = await handleFetch('GET', `media/presigned-get-url?file_name=${currentMedia.media_url}`, null, token);
-        setMediaUrl(currentMedia.media_url);
+        if (!subscriptionStatus) {
+            await checkSubscription();
+        }
+
+        if (!subscriptionStatus.success) {
+            dispatch(showModal('ALERT_MODAL', {
+                media: currentMedia,
+            }));
+        }
+
+        if (subscriptionStatus.subscribed) {
+            setMediaUrl(currentMedia.media_url);
+        }
     }
 
-    const handleSubscribe = async (payment_method) => {
-        // console.log("Handling subscription", theatreProduct.prices);
-        var payload = {
-            "type": "one_time",
-            "payment_method": payment_method,
-            "items": [{
-                "price": theatreProduct.prices[0].id,
-                "currency": theatreProduct.prices[0].currency,
-                "amount": theatreProduct.prices[0].unit_amount,
-            }],
-            "metadata": {
-                "media_id": currentMedia.media_id,
-            },
-        }
-
-        //buying the theatre video
-        let action = await dispatch(createSubscription(payload));
-        let response = unwrapResult(action);
-        
-        //if the video is purchased then play it
-        if (!response.payment_intent) {
-            showError("Payment Unsuccessful");
-            setIsHandlingWatch(false);
-            return;
-        }
-        
-        showSuccess("Payment Successful");
-        setIsHandlingWatch(false);
-        setTimeout(() => {
-            handlePlay();
-        }, 1000);
-    }
-
-    const handleWatch = () => {
-        //check if default payment method exists
-        if (!user.stripe_customer || !user.stripe_customer.invoice_settings.default_payment_method) {
-            showError("Oops, You do not have a default payment method.");
-            return;
-        }
+    const checkSubscription = async () => {
         setIsHandlingWatch(true);
-        handleSubscribe(user.stripe_customer.invoice_settings.default_payment_method);
+        try {
+            const res = await checkSubscriptionStatusApiRequest(currentMedia.media_id, state);
+            console.log("Checking Subscription", res);
+            setSubscriptionStatus(res);
+        } catch (e) {
+            const jsonRes = JSON.parse(e);
+            setSubscriptionStatus(jsonRes);
+        }
+        setIsHandlingWatch(false);
     }
 
     const showError = (message) => {
@@ -206,17 +192,17 @@ const TheatreContainer = () => {
                             <p><strong>Genres: </strong>{currentMedia.genres.join()}</p>
                         </div>
 
-                        <div className={styles.play} onClick={isHandlingWatch ? null : handleWatch}>
-                            <img src={play} alt="" />
+                        <div className={styles.play} onClick={isHandlingWatch ? null : handlePlay}>
+                            {isHandlingWatch ? <span className='spinner-border mr-2'></span> : <img src={play} alt="" />}
                             <span>Watch</span>
-                            {isHandlingWatch && <span className='spinner-border ml-2'></span>}
+                            
                         </div>
                     </div>
                 </div>
             </div>
         ))}
 
-            <div className={`${styles.container} ${currentMedia && styles.floatAbove}`}>
+            <div className={`${styles.container} ${currentMedia && !mediaUrl && styles.floatAbove}`}>
                 {/* <h1 className={styles.heading1}>Movie Theatre</h1> */}
                 {!theatreProduct && <p>Loading...</p>}
                 <div className={styles.margin}>

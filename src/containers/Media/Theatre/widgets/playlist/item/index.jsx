@@ -30,6 +30,7 @@ const TheatrePlaylistItemComponent = (props) => {
       <FeatureHome
           key={`feature-home-theatre-${media.media_id}`}
           media={media}
+          disablePlayBtn={true}
         />
       {/* <h4 className={styles.title}>{name}</h4> */}
     </div>

@@ -16,8 +16,9 @@ import { loadMedia } from '$redux/features/player';
 
 import styles from './index.module.scss';
 import { updatePlaylist } from '../../../redux/features/player';
-import { getRecommended, getSimilar, getSimilarRecommended } from '../../../redux/features/media';
+import { checkSubscriptionStatus, getRecommended, getSimilar, getSimilarRecommended, checkSubscriptionStatusApiRequest } from '../../../redux/features/media';
 import { routePaths } from '../../../common/routeConfig';
+import { showModal } from '$redux/features/modal';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
@@ -78,6 +79,7 @@ const FeatureHome = (props) => {
     showHeader,
     notifyPlayed,
     media,
+    disablePlayBtn,
   } = props;
 
   //hooks
@@ -85,6 +87,8 @@ const FeatureHome = (props) => {
 
   //state
   const [hovered, setHovered] = useState(false);
+  const [subscriptionStatus, setSubscriptionStatus] = useState(null);
+  const [isCheckingSubscription, setIsCheckingSubscription] = useState(false);
 
   // store
   const userToken = useSelector((store) => store.authentication.token);
@@ -93,6 +97,7 @@ const FeatureHome = (props) => {
   const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isLoading = useSelector((store) => store.player.isLoading);
   const isPlaying = useSelector((store) => store.player.isPlaying);
+  const state = useSelector(state => state);
   const likes_s = useSelector((store) => store.authentication.user.likes);
   const recommended = useSelector((store) => store.media.similarRecommendedMedia.media);
 
@@ -123,7 +128,7 @@ const FeatureHome = (props) => {
     }
   }, []);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!token) {
       return;
     }
@@ -146,8 +151,45 @@ const FeatureHome = (props) => {
     }
   }, [media]);
 
+  useEffect(() => {
+    if (!media) return;
+    setIsCheckingSubscription(true);
+    checkSubscriptionStatusApiRequest(media.media_id, state)
+      .then(res => {
+        console.log("Success Response", res);
+        setSubscriptionStatus(res);
+        setIsCheckingSubscription(false);
+      })
+      .catch(error => {
+        console.log("Error Response", error);
+        setSubscriptionStatus(JSON.parse(error))
+        setIsCheckingSubscription(false);
+      });
+  }, [media]);
+
   // handlers
   const handlePlay = async () => {
+    if (!subscriptionStatus) {
+      setIsCheckingSubscription(true);
+      try {
+        const res = await checkSubscriptionStatusApiRequest(media.media_id, state);
+        console.log("Checking Subscription", res);
+        setSubscriptionStatus(res);
+      } catch (e) {
+        const jsonRes = JSON.parse(e);
+        setSubscriptionStatus(jsonRes);
+      }
+      setIsCheckingSubscription(false);
+    }
+
+    if (!subscriptionStatus.subscribed) {
+      dispatch(showModal('ALERT_MODAL', {
+        media: media,
+        message: subscriptionStatus.message
+      }));
+      return;
+    }
+
     if (notifyPlayed != null) {
       notifyPlayed(key);
     }
@@ -221,7 +263,7 @@ const FeatureHome = (props) => {
                 onClick={handlePlay} >
                 <PlayBtn
                   size={media.category == "audio" ? "30" : "40"}
-                  isLoading={isLoading && currentMediaId === media.media_id}
+                  isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
                   isPlaying={isPlaying && currentMediaId === media.media_id}
                 />
               </PlayButton>
@@ -292,7 +334,7 @@ const FeatureHome = (props) => {
                   onClick={handlePlay} >
                   <PlayBtn
                     size={media.category == "audio" ? "30" : "40"}
-                    isLoading={isLoading && currentMediaId === media.media_id}
+                    isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
                     isPlaying={isPlaying && currentMediaId === media.media_id}
                   />
                 </PlayButton>
@@ -357,15 +399,17 @@ const FeatureHome = (props) => {
                   <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                   <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                 </div>
-                <PlayButton
-                  category={media.category}
-                  onClick={handlePlay} >
-                  <PlayBtn
-                    size={media.category == "audio" ? "30" : "40"}
-                    isLoading={isLoading && currentMediaId === media.media_id}
-                    isPlaying={isPlaying && currentMediaId === media.media_id}
-                  />
-                </PlayButton>
+                {!disablePlayBtn && (
+                  <PlayButton
+                    category={media.category}
+                    onClick={handlePlay} >
+                    <PlayBtn
+                      size={media.category == "audio" ? "30" : "40"}
+                      isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
+                      isPlaying={isPlaying && currentMediaId === media.media_id}
+                    />
+                  </PlayButton>
+                )}
               </div>
             )
           }
@@ -432,7 +476,7 @@ const FeatureHome = (props) => {
                   onClick={handlePlay} >
                   <PlayBtn
                     size={media.category == "audio" ? "30" : "40"}
-                    isLoading={isLoading && currentMediaId === media.media_id}
+                    isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
                     isPlaying={isPlaying && currentMediaId === media.media_id}
                   />
                 </PlayButton>
