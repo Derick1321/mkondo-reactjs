@@ -24,6 +24,8 @@ const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
 const icon_like_full = require('$assets/images/icons/like-full.svg');
 const icon_comment = require('$assets/images/icons/comment.svg');
+const icon_premium = require('$assets/images/icons/premium.svg');
+const icon_theatre = require('$assets/images/icons/theatre.svg');
 
 const commonStyle = `
   background-repeat: no-repeat;
@@ -254,6 +256,10 @@ const FeatureHome = (props) => {
                 />
               </div>
 
+              <div className='d-flex mx-2 mt-4'>
+                {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_premium} height="10px" width="10px" /> PREMIUM</div>}
+                {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_theatre} height="10px" width="10px" /> THEATRE</div>}
+              </div>
               <div className={`${styles.likeandcomment}`}>
                 <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                 <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
@@ -325,6 +331,11 @@ const FeatureHome = (props) => {
                   />
                 </div>
   
+                <div className='d-flex mx-2 mt-4'>
+                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>PREMIUM</div>}
+                  {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>THEATRE</div>}
+                </div>
+
                 <div className={`${styles.likeandcomment}`}>
                   <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                   <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
@@ -395,6 +406,11 @@ const FeatureHome = (props) => {
                   />
                 </div>
   
+                <div className='d-flex mx-2 mt-4'>
+                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>PREMIUM</div>}
+                  {media.theatre && <div className={`px-2 ml-1 ${styles.f_featureHeaderWrapperTitle}`}>THEATRE</div>}
+                </div>
+
                 <div className={`${styles.likeandcomment}`}>
                   <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
                   <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />

@@ -12,6 +12,7 @@ import { createSubscription, fetchProducts } from '../../../redux/features/subsc
 import { fetchConfigurations, selectConfigurationByKey } from '../../../redux/features/configuration';
 import { THEATRE_PER_STREAM_PRODUCT_ID } from '../../../containers/Configuration/Subscription';
 import { unwrapResult } from '@reduxjs/toolkit';
+import { hideModal } from '../../../redux/features/modal';
 
 const alertIcon = require('$assets/images/alert-icon.svg');
 
@@ -32,6 +33,7 @@ const AlertModal = (props) => {
   const { token, user } = useSelector((state) => state.authentication);
   const product_id = useSelector((state) => selectConfigurationByKey(state, THEATRE_PER_STREAM_PRODUCT_ID));
   const products = useSelector((state) => state.subscription.products);
+  const createdSubscription = useSelector((state) => state.subscription.createdSubscription);
 
   //effects
   useEffect(() => {
@@ -55,6 +57,10 @@ const AlertModal = (props) => {
         setTheatreProduct(product);
     }
   }, [products, product_id])
+
+  useEffect(() => {
+    if (!createdSubscription) return;
+  }, [createdSubscription]);
 
   // handlers
   const handleLogin = () => {
@@ -96,7 +102,7 @@ const AlertModal = (props) => {
           setIsLoading(false);
           return;
       }
-      
+      dispatch(hideModal());
       setIsLoading(false);
       // showSuccess("Payment Successful");
       // setIsHandlingWatch(false);
@@ -127,7 +133,7 @@ const AlertModal = (props) => {
         {media && media.theatre && (
           <div>
             {paymentMethod && <Button onClick={() => handleBuy(paymentMethod)} isLoading={isLoading}>Buy Now!</Button>}
-            {!paymentMethod && <Button onClick={() => history.push(routePaths.paymentMethod)}>Add Payment Method</Button>}
+            {!paymentMethod && <Button onClick={() => history.push(routePaths.paymentsCreate)}>Add Payment Method</Button>}
             {theatreProduct && <p>At only {theatreProduct.prices[0].unit_amount/100} {theatreProduct.prices[0].currency}</p>}
           </div>
         )}
