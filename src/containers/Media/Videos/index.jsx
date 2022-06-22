@@ -20,20 +20,9 @@ export const VideosContainer = () => {
                 {videos.map((video, i) => (
                     <div className='col-lg-3'>
                         <FeatureHome
-                                key={`feature-home-video-${i}`}
-                                mediaUrl={video.media_url}
-                                mediaId={video.media_id}
-                                avatar={video.cover_url}
-                                artistId={video.owner_id}
-                                owner_name={video.owner_name}
-                                title={video.name}
-                                country={video.country}
-                                category={video.category}
-                                description={video.description}
-                                likes={video.likes || undefined}
-                                plays={video.plays}
-                                comment_num={video.comment_num}
-                                />
+                            key={`feature-home-video-${i}`}
+                            media={video}
+                            />
                     </div>
                 ))}
             </div>
