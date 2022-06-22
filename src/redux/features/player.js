@@ -1,7 +1,8 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, unwrapResult } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
 import { element } from 'screenfull';
+import { checkSubscriptionStatus } from './media';
 
 const LOAD_MEDIA = 'player/LOAD_MEDIA';
 const PRE_LOAD_MEDIA = 'player/PRE_LOAD_MEDIA';
@@ -152,11 +153,11 @@ export const loadMedia = createAsyncThunk(
     }
 
     //check for subscription
-    if (true) {
-      
-    }
+    // param.dispatch(updateLoading(true));
+    // var checkSubscription = await unwrapResult(param.dispatch(checkSubscriptionStatus(data.mediaId)))
+    // console.log(checkSubscription);
     
-    param.dispatch(updateLoading(true));
+    
     param.dispatch(setCurrentMediaId(data.mediaId));
     //populate the queue, by loading the required medias
     let { token, visitorToken } = param.getState().authentication;
