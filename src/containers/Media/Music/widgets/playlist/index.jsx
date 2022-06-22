@@ -98,13 +98,8 @@ export const MusicPlaylistComponent = (props) => {
                     {media.map(music => (
                         <div key={music.media_id} className='mr-3'>
                             <FeatureHome 
-                                country='TZ' 
-                                title={music.name}
-                                mediaId={music.media_id} 
-                                artistId={music.owner_id}
-                                mediaUrl={music.media_url}
-                                avatar={music.owner_avatar_url}
-                                category="audio"
+                                key={`${title}-${music.media_id}`}
+                                media={music}
                             />
                         </div>
                     ))}
