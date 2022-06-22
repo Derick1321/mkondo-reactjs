@@ -61,7 +61,7 @@ const Main = (props) => {
 
   // render
   return (
-    <div className="vh-100" style={{ zIndex: '-3' }}>
+    <div className="vh-100 d-flex" style={{ zIndex: '-3' }}>
       <div className={`${styles.sideMenuWrapper} ${!isSideMenuOpen && styles.hideSideMenu}`}>
         <SideMenu />
       </div>
