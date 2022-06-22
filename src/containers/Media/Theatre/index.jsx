@@ -46,6 +46,7 @@ const TheatreContainer = () => {
     const product_id = useSelector((state) => selectConfigurationByKey(state, THEATRE_PER_STREAM_PRODUCT_ID));
     const products = useSelector((state) => state.subscription.products);
     const isFetchingProducts = useSelector((state) => state.subscription.fetchProductsLoading);
+    const createdSubscription = useSelector((state) => state.subscription.createdSubscription);
 
     //effects
     useEffect(() => {
@@ -103,6 +104,14 @@ const TheatreContainer = () => {
         if (!heroRef.current) return;
         setHeroWidth(heroRef.current.offsetWidth);
     }, [heroRef]);
+
+    useEffect(() => {
+        if (!createdSubscription) return;
+        if (!createdSubscription.payment_intent) return;
+        if (createdSubscription.payment_intent.metadata.media_id != currentMedia.media_id) return;
+        showSuccess(`Congrats! You have successfully purchased ${currentMedia.name}.`);
+        checkSubscription();
+    }, [createdSubscription]);
 
     //handlers
     const handlePlay = async () => {
@@ -195,7 +204,6 @@ const TheatreContainer = () => {
                         <div className={styles.play} onClick={isHandlingWatch ? null : handlePlay}>
                             {isHandlingWatch ? <span className='spinner-border mr-2'></span> : <img src={play} alt="" />}
                             <span>Watch</span>
-                            
                         </div>
                     </div>
                 </div>
