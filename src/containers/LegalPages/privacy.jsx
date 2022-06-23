@@ -253,6 +253,18 @@ export const PrivacyPolicyPage = () => {
                 popularity of a certain section and verifying system and server
                 integrity).
               </li>
+              <li>
+                <strong>Facebook Data Deletion Request.</strong> 
+                <p>We have implemented a data deletion callback that is called whenever an app user removes your app and requests that you delete their data. Your app users can do this by going to their Facebook profile and clicking the Send Request button on the Settings - Privacy - Settings. Apps and Websites page.</p>
+                <p>You can track your facebook data deletion by using the link bellow</p>
+                <a
+                  href="https://mkondo.co/facebook-data-deletion-status"
+                  rel="external nofollow noopener"
+                  target="_blank"
+                >
+                  https://mkondo.co/facebook-data-deletion-status
+                </a>
+              </li>
             </ul>
             <p>
               Cookies can be "Persistent" or "Session" Cookies. Persistent
