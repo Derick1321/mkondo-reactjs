@@ -1,2 +1,11 @@
 @import '$assets/scss/main.scss';
 
+.wrapper {
+    position: relative;
+    margin-right: 10px;
+
+    img {
+        object-fit: cover;
+        object-position: center;
+    }
+}

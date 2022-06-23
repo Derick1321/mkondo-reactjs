@@ -51,6 +51,7 @@ import { ManageSeries } from '../containers/ManagerPanel/series';
 import { MusicContainer } from '../containers/Media/Music/index';
 import { VideosContainer } from '../containers/Media/Videos/index';
 import { FacebookDataDeletionStatus } from '../containers/LegalPages/FacebookDataDeletionStatus';
+import ViewMediaCollection from '../containers/Media/ViewCollection/index';
 
 export const routePaths = {
   main: '/app',
@@ -78,6 +79,7 @@ export const routePaths = {
   newMediaCategory: '/app/media/select-category',
   mediaUpload: '/app/media/upload',
   viewMedia: '/app/media/:id',
+  viewCollection: '/app/media/collection',
   artist: '/app/artist',
   newArtist: '/app/artist/new',
   statsArtist: '/app/artist/stats',
@@ -311,6 +313,12 @@ export const routes = [
         component: Media,
         exact: false,
         routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.viewCollection,
+            component: ViewMediaCollection,
+            redirect: redirectFunctions.app,
+          },
           {
             ...defaultConfig,
             path: routePaths.theatre,

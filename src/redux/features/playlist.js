@@ -21,8 +21,8 @@ export const updatePlaylist = createAsyncThunk(
   async (data, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('PUT', `playlists/${data.playlistId}`, {
-      owner_id: data.ownerId,
-      song_id: data.mediaId,
+      owner_id: data.ownerId ?? data.owner_id,
+      song_id: data.mediaId ?? data.media_id,
     }, token);
   }
 );
