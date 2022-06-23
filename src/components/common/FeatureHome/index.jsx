@@ -19,6 +19,8 @@ import { updatePlaylist } from '../../../redux/features/player';
 import { checkSubscriptionStatus, getRecommended, getSimilar, getSimilarRecommended, checkSubscriptionStatusApiRequest } from '../../../redux/features/media';
 import { routePaths } from '../../../common/routeConfig';
 import { showModal } from '$redux/features/modal';
+import Row from '../../media/PlaylistRow/index';
+import RowPro from '../../media/PlaylistRowPro';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
@@ -82,6 +84,7 @@ const FeatureHome = (props) => {
     notifyPlayed,
     media,
     disablePlayBtn,
+    type,
   } = props;
 
   //hooks
@@ -236,6 +239,21 @@ const FeatureHome = (props) => {
   }
 
   // render
+  if (type == "row") {
+    return (
+      <div className={styles.rowBg}>
+        <RowPro
+          name={media.title}
+          avatarUrl={media.cover_url}
+          artistName={media.owner_name}
+          mediaId={media.media_id}
+          mediaUrl={media.media_url}
+
+          onPlay={handlePlay}
+        />
+      </div>
+    );
+  }
   if (media && media.category == "audio") {
     return (
     <>
@@ -537,32 +555,17 @@ const FeatureHome = (props) => {
 }
 
 FeatureHome.defaultProps = {
-  country: '',
-  mediaId: null,
-  artistId: null,
-  mediaUrl: '',
   showHeader: true,
-  subtitle: '',
-  likes: [],
+  disablePlayBtn: false,
+  type: "card", //types so far is 'card' and 'row'
 }
 
 FeatureHome.propTypes = {
-  subtitle: PropTypes.string,
-  title: PropTypes.string.isRequired,
-  category: PropTypes.string.isRequired,
-  mediaUrl: PropTypes.string,
-  mediaId: PropTypes.string,
-  country: PropTypes.string,
-  artistId: PropTypes.string,
-  avatar: PropTypes.string,
-  owner_name: PropTypes.string,
-  description: PropTypes.string,
-
   showHeader: PropTypes.bool,
-  likes: PropTypes.array,
-  plays: PropTypes.number,
-  comment_num: PropTypes.number,
   notifyPlayed: PropTypes.func,
+  media: PropTypes.object.isRequired,
+  disablePlayBtn: PropTypes.bool,
+  type: PropTypes.string,
 }
 
 export default FeatureHome;

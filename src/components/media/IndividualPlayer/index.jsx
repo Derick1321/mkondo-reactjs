@@ -76,7 +76,7 @@ const IndividualPlayer = (props) => {
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const position = useSelector((store) => store.player.position);
   const duration = useSelector((store) => store.player.duration);
-  const artistId = useSelector((store) => store.player.currentPlaylist[0].artistId);
+  const artistId = useSelector((store) => store.player.currentPlaylist.length ? store.player.currentPlaylist[0].artistId : '');
 
   const isFavorite = favourites.find((media) => media.media_id === mediaId);
 

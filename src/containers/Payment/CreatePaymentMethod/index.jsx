@@ -8,7 +8,8 @@ import { AddPaymentMethodFormComponent } from './form';
 import { useLocation, useParams } from 'react-router-dom';
 
 
-const stripePromise = loadStripe("pk_test_51KXBZaHrASyjhIVozZjo4RHNRiuKZTLg0AANL6ZyHuGLILPWvqy5jWrgHp6gEqzDd26DjBPFAvqnCmY1LtHELEkW00EFWOQuLd");
+// const stripePromise = loadStripe("pk_test_51KXBZaHrASyjhIVozZjo4RHNRiuKZTLg0AANL6ZyHuGLILPWvqy5jWrgHp6gEqzDd26DjBPFAvqnCmY1LtHELEkW00EFWOQuLd");
+const stripePromise = loadStripe("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");
 
 export const CreatePaymentMethodContainer = () => {
   //state

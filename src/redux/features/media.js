@@ -729,6 +729,10 @@ const initialState = {
         error: null, 
     },
     addedAlbumPayload: {},
+    collection: {
+        type: 'audio',
+        media: [],
+    },
 };
 
 const mediaSlice = createSlice({
@@ -796,6 +800,9 @@ const mediaSlice = createSlice({
                 }
                 return item;
             });
+        },
+        updateCollectionPayload(state, action) {
+            state.collection[action.payload.key] = action.payload.value;
         }
     },
     extraReducers: {
@@ -1439,5 +1446,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, popUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, popUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState, updateCollectionPayload } = mediaSlice.actions;
 export default mediaSlice.reducer;
