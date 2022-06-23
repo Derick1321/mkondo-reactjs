@@ -20,6 +20,7 @@ const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const UPDATE_ALBUM = 'media/UPDATE_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
+const GET_NEW_ALBUMS = 'media/GET_NEW_ALBUMS';
 const DELETE_ALBUM = 'media/DELETE_ALBUM';
 const ADD_COMMENT = 'media/ADD_COMMENT';
 const ADD_MEDIA_COMMENT = 'media/ADD_MEDIA_COMMENT';
@@ -98,6 +99,14 @@ export const getNewReleases = createAsyncThunk(
     async(data, param) => {
         const { token, visitorToken } = param.getState().authentication;
         return await handleFetch('GET', `media/new-release?${queryString.stringify(data)}`, null, token || visitorToken);
+    }
+);
+
+export const getNewAlbums = createAsyncThunk(
+    GET_NEW_ALBUMS,
+    async (data, store) => {
+        const { token, visitorToken } = store.getState().authentication;
+        return await handleFetch('GET', `media/albums/new-release`, null, token || visitorToken);
     }
 );
 
@@ -646,6 +655,9 @@ const initialState = {
     checkSubscriptionStatusPending: false,
     checkSubscriptionStatusSuccess: null,
     checkSubscriptionStatusError: null,
+    getNewAlbumsPending: false,
+    getNewAlbumsSuccess: false,
+    getNewAlbumsError: null,
     uploadQueue: [],
     currentMedia: {
         media_id: null,
@@ -658,21 +670,29 @@ const initialState = {
         audio: [],
         video: [],
         movie: [],
+        albums: [],
+        series: [],
     },
     topMedias: {
         audio: [],
         video: [],
         movie: [],
+        albums: [],
+        series: [],
     },
     randomMedias: {
         audio: [],
         video: [],
         movie: [],
+        albums: [],
+        series: [],
     },
     trendMedias: {
         audio: [],
         video: [],
         movie: [],
+        albums: [],
+        series: [],
     },
     albumId: null,
     comments: [],
@@ -996,6 +1016,22 @@ const mediaSlice = createSlice({
             state.getNewReleasesPending = false;
             state.getNewReleasesComplete = true;
             state.getNewReleasesError = action.error;
+        },
+        [getNewAlbums.pending]: (state, action) => {
+            state.getNewAlbumsPending = true;
+            state.getNewAlbumsSuccess = false;
+            state.getNewAlbumsError = null;
+        },
+        [getNewAlbums.fulfilled]: (state, action) => {
+            state.getNewAlbumsPending = false;
+            state.getNewAlbumsSuccess = true;
+            state.getNewAlbumsError = null;
+            state.newReleases['albums'] = action.payload.albums;
+        },
+        [getNewAlbums.rejected]: (state, action) => {
+            state.getNewAlbumsPending = false;
+            state.getNewAlbumsSuccess = true;
+            state.getNewAlbumsError = action.error;
         },
         [getTopMedias.pending]: (state, action) => {
             state.getTopMediasPending = true;
