@@ -50,6 +50,7 @@ import { ManageAlbum } from '../containers/ManagerPanel/albums';
 import { ManageSeries } from '../containers/ManagerPanel/series';
 import { MusicContainer } from '../containers/Media/Music/index';
 import { VideosContainer } from '../containers/Media/Videos/index';
+import { FacebookDataDeletionStatus } from '../containers/LegalPages/FacebookDataDeletionStatus';
 
 export const routePaths = {
   main: '/app',
@@ -120,6 +121,7 @@ export const routePaths = {
 
   privacy: '/privacy',
   tos: '/TOS',
+  facebook_data_deletion_status: '/facebook-data-deletion-status/:confirmation_code?',
 };
 
 const roles = {
@@ -194,6 +196,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.tos,
     component: PrivacyPolicyPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.facebook_data_deletion_status,
+    component: FacebookDataDeletionStatus,
   },
   {
     ...defaultConfig,
