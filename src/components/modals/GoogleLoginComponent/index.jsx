@@ -1,5 +1,4 @@
 import React from 'react';
-// import GoogleLogin, { useGoogleLogin } from 'react-google-login';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '$redux/features/authentication';
@@ -8,7 +7,8 @@ import Button from '$components/common/Button';
 import './index.scss';
 
 import { GOOGLE_CLIENT_ID } from '$common/constants';
-import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+import { handleFetch } from '$common/requestUtils';
 const google_icon = require('$assets/images/icons/google-icon.svg');
 
 const refreshTokenSetup = res => {
@@ -29,51 +29,45 @@ const refreshTokenSetup = res => {
     setTimeout(refreshToken, refreshTiming)
 }
 
-const parseJwt = (token) => {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map((c) => {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-};
-
 const GoogleLoginComponent = (props) => {
+    return (
+        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+            <GoogleLoginButton></GoogleLoginButton>
+        </GoogleOAuthProvider>
+        
+    )
+}
 
+export const GoogleLoginButton = (props) => {
     const dispatch = useDispatch();
     // const loginPending = useSelector((store) => store.authentication.loginPending);
 
     const onSuccess = (res) => {
-        console.log('[Login success] response: ', res);
-        _json = parseJwt(res.credential);
-        console.log('[Login success] decoded: ', _json);
+        console.log('[Login success] currentUser: ', res);
 
         dispatch(login({
             login_strategy: 'google',
-            username: _json.email,
+            username: "email@gmail.com",
             password: '',
-            tokenId: res.credential
+            access_token: res.access_token
         }));
+
+        // res.disconnect();
     };
 
     const onFailure = res => {
         console.log('[Login Failed: res: ', res);
     };
 
-    // const { signIn } = useGoogleLogin({
-    //     onSuccess, onFailure, clientId: GOOGLE_CLIENT_ID, isSignedIn: true, cookiePolicy: 'single_host_origin'
-    // });
+    const signIn = useGoogleLogin({
+        onSuccess, 
+        onFailure,
+        
+    });
 
     return (
-        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-            <GoogleLogin
-                onSuccess={onSuccess}
-                onError={onFailure}
-            />
-            {/* <button className="btn btn-secondary btn-google rounded-pill" onClick={signIn}><img src={google_icon} className="google-icon" /> Login with Google</button> */}
-        </GoogleOAuthProvider>
-    )
+        <button className="btn btn-secondary btn-google rounded-pill" onClick={signIn}><img src={google_icon} className="google-icon" /> Login with Google</button>
+    );
 }
 
 export default GoogleLoginComponent;
