@@ -304,18 +304,7 @@ const Profile = () => {
                   </div>
                   <FeatureHome
                     key={`feature-top-songs-${index}`}
-                    mediaId={item.media_id}
-                    mediaUrl={item.media_url}
-                    avatar={item.cover_url}
-                    artistId={item.owner_id}
-                    owner_name={item.owner_name}
-                    title={item.name}
-                    description={item.owner_name}
-                    country={item.country}
-                    category={item.category}
-                    showHeader={true}
-                    likes={item.likes || undefined}
-                    plays={item.plays}
+                    mediaId={item}
                   />
                </div>
               )
@@ -353,18 +342,7 @@ const Profile = () => {
                   </div>
                   <FeatureHome
                     key={`feature-top-videos-${index}`}
-                    mediaId={item.media_id}
-                    mediaUrl={item.media_url}
-                    avatar={item.cover_url}
-                    artistId={item.owner_id}
-                    owner_name={item.owner_name}
-                    title={item.name}
-                    description={item.owner_name}
-                    country={item.country}
-                    category={item.category}
-                    showHeader={true}
-                    likes={item.likes || undefined}
-                    plays={item.plays}
+                    media={item}
                   />
                </div>
               )
@@ -401,18 +379,7 @@ const Profile = () => {
                   </div>
                   <FeatureHome
                     key={`feature-top-movies-${index}`}
-                    mediaId={item.media_id}
-                    mediaUrl={item.media_url}
-                    avatar={item.cover_url}
-                    artistId={item.owner_id}
-                    owner_name={item.owner_name}
-                    title={item.name}
-                    description={item.owner_name}
-                    country={item.country}
-                    category={item.category}
-                    showHeader={true}
-                    likes={item.likes || undefined}
-                    plays={item.plays}
+                    media={item}
                   />
                </div>
               )
