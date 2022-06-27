@@ -23,20 +23,7 @@ const GridMedia = (props) => {
       return (
         <FeatureHome
           key={`feature-home-songs-${idx}`}
-          mediaUrl={item.media_url}
-          mediaId={item.media_id}
-          avatar={item.cover_url}
-          artistId={item.owner_id}
-          source={avatar_url}
-          owner_name={item.owner_name}
-          title={item.name}
-          country={item.country}
-          category={item.category}
-          description={item.description}
-
-          likes={item.likes || undefined}
-          plays={item.plays}
-          comment_num={item.comment_num}
+          media={item}
         />
       );
     }
@@ -55,20 +42,7 @@ const GridMedia = (props) => {
     return (
       <FeatureHome
       key={`feature-home-video-${idx}`}
-      mediaUrl={item.media_url}
-      mediaId={item.media_id}
-      avatar={item.cover_url}
-      artistId={item.owner_id}
-      source={avatar_url}
-      owner_name={item.owner_name}
-      title={item.name}
-      country={item.country}
-      category={item.category}
-      description={item.description}
-
-      likes={item.likes || undefined}
-      plays={item.plays}
-      comment_num={item.comment_num}
+      media={item}
       />
     );
   }, [type]);
