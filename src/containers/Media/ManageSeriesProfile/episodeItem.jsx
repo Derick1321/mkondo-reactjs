@@ -25,19 +25,7 @@ export const EpisodeItem = ({ episode }) => {
           <div>
               <FeatureHome
                   key={`${episode.media_id}`}
-                  mediaUrl={url}
-                  mediaId={episode.media_id}
-                  avatar={episode.cover_url}
-                  artistId={episode.owner_id}
-                  source={episode.avatar_url}
-                  owner_name={episode.owner_name}
-                  title={episode.name}
-                  country={episode.country}
-                  category={episode.category}
-                  description={episode.description}
-                  likes={episode.likes || undefined}
-                  plays={episode.plays}
-                  comment_num={episode.comment_num}
+                  media={episode}
               />
           </div>
       )
