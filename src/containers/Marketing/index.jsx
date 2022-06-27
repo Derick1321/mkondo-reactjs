@@ -116,7 +116,7 @@ const Marketing = () => {
               onSelect={(val) => setSelected(val)}
               selected={selected}
               options={[
-                {title: 'Musics', name: 'music'},
+                {title: 'Songs', name: 'music'},
                 {title: 'Movies', name: 'movies'},
                 {title: 'Videos', name: 'videos'},
               ]} />
@@ -179,9 +179,7 @@ const Marketing = () => {
         <div className="container py-0 my-0">
         <div className="row py-0 my-0 text-light">
             <div className="text-center py-0 my-0">
-              <a href="/privacy">Privacy</a> |
-              <a href="/login">Login</a> |
-              <a href="/register">Register</a> |
+              <a href="/privacy">Privacy</a> | <a href="/login">Login</a> | <a href="/register">Register</a>
             </div>
           </div>
           <div className="row py-0 my-0 text-light">
