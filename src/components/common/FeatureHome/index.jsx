@@ -174,6 +174,13 @@ const FeatureHome = (props) => {
 
   // handlers
   const handlePlay = async () => {
+    if (!userToken) {
+      dispatch(showModal('ALERT_MODAL', {
+        media: media,
+      }));
+      return;
+    }
+    
     if (!subscriptionStatus) {
       setIsCheckingSubscription(true);
       try {

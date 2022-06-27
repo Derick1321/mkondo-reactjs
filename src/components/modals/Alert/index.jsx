@@ -64,11 +64,13 @@ const AlertModal = (props) => {
 
   // handlers
   const handleLogin = () => {
-    dispatch(showModal('LOGIN_MODAL'));
+    history.push(routePaths.login)
+    dispatch(hideModal());
   };
 
   const handleSignUp = () => {
-    dispatch(showModal('SIGNUP_MODAL'));
+    history.push(routePaths.register)
+    dispatch(hideModal());
   };
 
   const handleSubscription = () => {
@@ -124,13 +126,13 @@ const AlertModal = (props) => {
       <div className="col-12 col-md-8 col-lg-9">
         <p className="heading-1 mt-2">OOps</p>
         <p className="mt-2">{message ? message : 'To access premium contents you must first.'}</p>
-        {media && !media.theatre && media.premium && (
+        {token && media && !media.theatre && media.premium && (
           <div>
             <Button onClick={handleSubscription}>Subscribe</Button>
           </div>
         )}
 
-        {media && media.theatre && (
+        {token && media && media.theatre && (
           <div>
             {paymentMethod && <Button onClick={() => handleBuy(paymentMethod)} isLoading={isLoading}>Buy Now!</Button>}
             {!paymentMethod && <Button onClick={() => history.push(routePaths.paymentsCreate)}>Add Payment Method</Button>}
@@ -139,6 +141,9 @@ const AlertModal = (props) => {
         )}
         {!token && (
           <>
+          <div>
+            <Button onClick={handleLogin}>Login</Button>
+          </div>
             <div className="row mt-2 justify-content-center align-items-center">
               <div className="col">
                 Don&apos;t have an account?
