@@ -29,14 +29,14 @@ const HowItWorks = () => {
         </div>
         <div className="col-12 col-md-1"></div>
         <div className={`col-12 col-md-5 ${styles.howItWorksFeature}`}>
-          <FeatureHome
+          {/* <FeatureHome
               avatar="zja5uydd1795854_10152370111653109_115441845_o.jpg"
               source="https://i.ibb.co/0G3Mbwp/image-2.png"
               description="This is a music description that can can be upto 2 lines large."
               title="Song Title"
               numOfSongs=""
               duration=""
-            />
+            /> */}
         </div>
       </div>
     </div>
