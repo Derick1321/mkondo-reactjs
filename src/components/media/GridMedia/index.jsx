@@ -41,8 +41,8 @@ const GridMedia = (props) => {
 
     return (
       <FeatureHome
-      key={`feature-home-video-${idx}`}
-      media={item}
+        key={`feature-home-video-${idx}`}
+        media={item}
       />
     );
   }, [type]);
