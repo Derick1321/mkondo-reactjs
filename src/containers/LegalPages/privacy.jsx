@@ -253,18 +253,6 @@ export const PrivacyPolicyPage = () => {
                 popularity of a certain section and verifying system and server
                 integrity).
               </li>
-              <li>
-                <strong>Facebook Data Deletion Request.</strong> 
-                <p>We have implemented a data deletion callback that is called whenever an app user removes your app and requests that you delete their data. Your app users can do this by going to their Facebook profile and clicking the Send Request button on the Settings - Privacy - Settings. Apps and Websites page.</p>
-                <p>You can track your facebook data deletion by using the link bellow</p>
-                <a
-                  href="https://mkondo.co/facebook-data-deletion-status"
-                  rel="external nofollow noopener"
-                  target="_blank"
-                >
-                  https://mkondo.co/facebook-data-deletion-status
-                </a>
-              </li>
             </ul>
             <p>
               Cookies can be "Persistent" or "Session" Cookies. Persistent
@@ -488,6 +476,16 @@ export const PrivacyPolicyPage = () => {
               place to an organization or a country unless there are adequate
               controls in place including the security of Your data and other
               personal information.
+            </p>
+            <h2>Deletion of Your Personal Data</h2>
+            <p>
+              Our users are allowed to request for their personal data to be deleted. In order to request for personal data deletion. send us an email to <a href="mailto:info@peachtechcorp.com">info@peachtechcorp.com</a> and we will respond within 24 hours on the ways and steps required for an account to be deactivated and your data to be deleted.
+            </p>
+            <h3>Facebook Data Deletion Request</h3>
+            <p>For personal data collected when signing up with facebook. You can request your data to be deleted directly from facebook. All you need to do is to first login into your facebook app, secondly go to settings and privacy. thirdly go to apps and websites. fourth look for our app 'Mkondo Web Platform' and finally click remove button. </p>
+            <p>Facebook will automatically send us a request to our servers and we will process the request by initiating the data deletion process. A confirmation number will be sent to your email address or text message and you can track the status of your facebook data deletion through the link <a href="/facebook-data-deletion-status">facebook data deletion status</a> </p>
+            <p>
+              For more advanced scenarios or failure to follow the above procedure send us an email to <a href="mailto:info@peachtechcorp.com">info@peachtechcorp.com</a> and we will respond within 24 hours on the ways and steps required for an account to be deactivated and your data to be deleted.
             </p>
             <h2>Disclosure of Your Personal Data</h2>
             <h3>Business Transactions</h3>
