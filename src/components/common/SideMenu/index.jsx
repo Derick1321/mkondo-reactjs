@@ -39,6 +39,13 @@ const SideMenu = (props) => {
       permission: 'admin',
     },
     {
+      icon: require('$assets/images/icons/artist.svg'),
+      activeIcon: require('$assets/images/icons/artist.svg'),
+      title: 'Artists',
+      path: routePaths.artistList,
+      permission: 'admin',
+    },
+    {
       icon: require('$assets/images/icons/bar_chart.svg'),
       activeIcon: require('$assets/images/icons/bar_chart.svg'),
       title: 'insights',
