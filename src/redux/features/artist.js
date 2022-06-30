@@ -9,6 +9,7 @@ const GET_ARTISTS = 'artist/GET_ARTISTS';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
 const GET_INSIGHT = 'artist/GET_INSIGHT';
 const GET_ARTIST_MEDIA = 'artist/GET_ARTIST_MEDIA';
+const DELETE_ARTIST = 'artist/DELETE_ARTIST';
 
 // actions
 export const addArtist = createAsyncThunk(
@@ -60,10 +61,21 @@ export const updateArtist = createAsyncThunk(
   }
 );
 
+export const deleteArtist = createAsyncThunk(
+  DELETE_ARTIST,
+  async (payload, store) => {
+    const state = store.getState();
+    const { token } = state.authentication;
+    return await handleFetch('DELETE', `artists/${payload.id}`, null, token);
+  }
+);
+
 const initialState = {
   addArtistPending: false,
   addArtistError: null,
   addArtistComplete: false,
+  deleteArtistPendingQueue: [],
+  deleteArtistsErrors: [],
   updateArtistPending: false,
   updateArtistError: null,
   updateArtistComplete: false,
@@ -110,6 +122,16 @@ const artistSlice = createSlice({
     [addArtist.rejected]: (state, action) => {
       state.addArtistPending = false;
       state.addArtistError = action.error;
+    },
+    [deleteArtist.pending]: (state, action) => {
+      state.deleteArtistPendingQueue.push(action.meta.arg.id);
+    },
+    [deleteArtist.fulfilled]: (state, action) => {
+      state.deleteArtistPendingQueue = state.deleteArtistPendingQueue.filter(artist_id => artist_id != action.meta.arg.id);
+    },
+    [deleteArtist.rejected]: (state, action) => {
+      state.deleteArtistPendingQueue = state.deleteArtistPendingQueue.filter(artist_id => artist_id != action.meta.arg.id);
+      state.deleteArtistsErrors.push({artist_id: action.meta.arg.id, "error": action.error});
     },
     [getArtists.pending]: (state, action) => {
       state.getArtistsPending = true;
