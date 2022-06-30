@@ -124,7 +124,6 @@ export const updateSystemUser = createAsyncThunk(
     }
 );
 
-
 const initialState = {
     updateUserPending: false,
     updateUserError: null,
