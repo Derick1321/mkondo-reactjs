@@ -71,7 +71,6 @@ const NewArtist = () => {
       return;
     }
 
-    const res = await dispatch(saveMedia(values.file));
     dispatch(addArtist({
       full_name: values.name,
       email: values.email,
@@ -85,9 +84,9 @@ const NewArtist = () => {
       instagram_link: values.instagram,
       youtube_link: values.yt,
       twitter_link: values.twitter,
-      avatar_url: res.payload,
-      password: '123456',
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      avatar_url: values.file,
+      password: 'Mkondo@123',
+      genre: values.genre && values.genre.length ? values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, '') : [],
       admin_id: adminId,
     }));
   };
