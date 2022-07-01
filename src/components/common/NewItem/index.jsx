@@ -36,6 +36,7 @@ const NewItem = (props) => {
   const [selected, setSelected] = useState(options[0].name);
   const [avatarFileName, setAvatarFileName] = useState("");
   const [avatarUrl, setAvatarUrl] = useState(null);
+  const [fields, setFields] = useState(menus);
 
   // redux
   const croppedImage = useSelector((state) => state.croptool.cropped)
@@ -55,6 +56,11 @@ const NewItem = (props) => {
           }
       })
   }, [uploadQueue]);
+
+  useEffect(() => {
+    console.log("The menus have just changed");
+    setFields(menus);
+  }, [menus])
 
   useEffect(async () => {
     // console.log("dslfjlsdjfl: cropped image detected");
@@ -114,14 +120,14 @@ const NewItem = (props) => {
               </div>
             </div>
             {
-              menus.map((menu, idx) => (
+              fields.map((menu, idx) => (
                 menu.type == 'area' && <div className="" key={`new-item-menu-${idx}`}>
                   <InputField
                     field={{
                       ...menu,
                       value: values[menu.name]
                     }}
-                    error={menu.error}
+                    error={menu.error ?? null}
                     isGrey
                     onChange={onChange}
                   />
