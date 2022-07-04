@@ -39,7 +39,6 @@ export const ManageArtistItem = (props) => {
     }, [artist]);
 
     useEffect(() => {
-        if (!deleting.length) return;
         if (deleting.some(id => id == artist.user_id)) {
             setIsDeleting(true);
         } else {
