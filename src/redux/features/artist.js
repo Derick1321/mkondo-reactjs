@@ -33,9 +33,9 @@ export const getArtistMedia = createAsyncThunk(
 
 export const getArtists = createAsyncThunk(
   GET_ARTISTS,
-  async (id, param) => {
+  async (params, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('GET', 'artists', null, token);
+    return await handleFetch('GET', `artists?${queryString.stringify(params)}`, null, token);
   }
 );
 
@@ -69,7 +69,7 @@ export const deleteArtist = createAsyncThunk(
   async (payload, store) => {
     const state = store.getState();
     const { token } = state.authentication;
-    return await handleFetch('DELETE', `artists/${payload.id}`, null, token);
+    return await handleFetch('DELETE', `artist/${payload.id}`, null, token);
   }
 );
 
@@ -154,6 +154,7 @@ const artistSlice = createSlice({
     },
     [deleteArtist.fulfilled]: (state, action) => {
       state.deleteArtistPendingQueue = state.deleteArtistPendingQueue.filter(artist_id => artist_id != action.meta.arg.id);
+      state.artists = state.artists.filter(artist => artist.user_id != action.meta.arg.id);
     },
     [deleteArtist.rejected]: (state, action) => {
       state.deleteArtistPendingQueue = state.deleteArtistPendingQueue.filter(artist_id => artist_id != action.meta.arg.id);
