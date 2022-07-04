@@ -367,7 +367,6 @@ export const saveMediaPro = createAsyncThunk(
         }
 
         // console.log("uploading state", uploading);
-
         param.dispatch(pushUploadQueue(uploading))
         param.dispatch(updateUploadQueueItemState({
             key: uploading.fileName,

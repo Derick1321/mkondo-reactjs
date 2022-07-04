@@ -12,6 +12,10 @@ import { saveMedia, addAlbum } from '$redux/features/media';
 import { menus, metamenus } from './menus';
 
 import styles from './index.module.scss';
+import artist, { getArtists } from '../../../redux/features/artist';
+
+import placeholder from '$assets/images/user-placeholder.jpeg'
+import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist';
 
 const initialState = {
   artist: '',
@@ -34,20 +38,26 @@ const NewAlbum = () => {
   const [metaFields, setMetaFields] = useState(metamenus);
   const [values, setValues] = useState(initialState);
   const [coverImage, setCoverImage] = useState(null);
+  const [selectedArtist, setSelectedArtist] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const user = useSelector((store) => store.authentication.user);
   const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
   const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
   const albumId = useSelector((store) => store.media.albumId);
+  const artists = useSelector(state => state.artist.artists);
 
   // refs
   const initiatedSave = useRef(false);
 
   // effects
-  
+  useEffect(() => {
+    dispatch(getArtists({admin_id: userId}));
+  }, [])
   
   useEffect(() => {
     if (!addAlbumComplete || !initiatedSave.current) {
@@ -60,6 +70,7 @@ const NewAlbum = () => {
 
   // handlers
   const handleChange = (name, value) => {
+    console.log(name, value);
     setValues({
       ...values,
       [name]: value,
@@ -111,6 +122,7 @@ const NewAlbum = () => {
     }
 
     if (!values.file) {
+      console.log(values);
       alert('No album avatar file submitted!');
       return;
     }
@@ -128,7 +140,7 @@ const NewAlbum = () => {
       country: values.country,
       region: values.region,
       cover_image: values.file,
-      owner_id: userId, // OR artistId
+      owner_id: values.owner_id ?? userId, // OR artistId
     }));
   }
 
@@ -137,6 +149,39 @@ const NewAlbum = () => {
       return;
     }
     setValues(initialState);
+  }
+
+  const handleSelectArtist = (artist) => {
+    setSelectedArtist(artist);
+  }
+
+  if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+    return (
+      <div className={`row ${styles.albumWrapper}`}>
+        <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+
+          <div className={`card mt-3 ${styles.card}`}>
+            <div className="card-body">
+              <h3 className="card-title text-white">Select an Artist</h3>
+
+              <div className="row text-light">
+                <div className="mb-2 d-flex align-items-center bg-dark">
+                  <ArtistListArtistWidget artist={{ ...user, full_name: "Me" }} />
+                  <button className="btn btn-primary btn-xs ml-auto" onClick={() => handleSelectArtist(user)}>Select</button>
+                </div>
+                {artists.map(artist => (
+                  <div className='mb-2 d-flex align-items-center bg-dark'>
+                    <ArtistListArtistWidget artist={artist} />
+                    <button className="btn btn-primary btn-xs ml-auto" onClick={() => handleSelectArtist(artist)}>Select</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // render
