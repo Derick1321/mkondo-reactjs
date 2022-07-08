@@ -181,7 +181,7 @@ const initialState = {
     userMedia: [],
     currentPagination: {},
     insights: {},
-    admin_insights: {},
+    adminInsights: {},
     users: {
         data: [],
     },
@@ -415,7 +415,7 @@ const userSlice = createSlice({
         [getAdminInsights.fulfilled]: (state, action) => {
             state.getAdminInsightsPending = false;
             state.getAdminInsightsComplete = true;
-            state.admin_insights = action.payload;
+            state.adminInsights = action.payload;
         },
         [getAdminInsights.rejected]: (state, action) => {
             state.getAdminInsightsPending = false;
