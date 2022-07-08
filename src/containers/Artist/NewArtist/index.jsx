@@ -14,6 +14,7 @@ import { addArtist } from '$redux/features/artist';
 import { menus, metamenus } from './menus';
 
 import styles from './index.module.scss';
+import { getMediaUrl } from '../../../common/utils';
 
 const initialState = {
   name: '',
@@ -33,27 +34,57 @@ const initialState = {
 
 const NewArtist = () => {
   // states
+  const [mounted, setMounted] = useState(false);
   const [values, setValues] = useState(initialState);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [mainFields, setMainFields] = useState(menus);
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
+  const token = useSelector(state => state.authentication.token);
   const addArtistComplete = useSelector((store) => store.artist.addArtistComplete);
   const newArtistId = useSelector((store) => store.artist.newArtistId);
   const adminId = useSelector((store) => store.authentication.user.user_id);
+  const addArtistError = useSelector(state => state.artist.addArtistError);
 
   // effects
-  useEffect(async () => {
-    if (addArtistComplete && values.file) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    console.log("Add Artist Complete Triggered", addArtistComplete);
+    if (!mounted) return;
+    if (!addArtistComplete) return;
+    console.log("Finally Here");
+    getMediaUrl(values.file, token).then(res => {
       history.push(routePaths.success, {
         message: 'Congratulations you are all set!',
         link: `https//:mkondo.co/app/artist/${newArtistId}`,
         country: values.country,
         name: values.name,
-        avatar: await generatePreview(values.file),
+        avatar: res,
       });
-    }
+    });
   }, [addArtistComplete]);
+
+  useEffect(() => {
+    if (!addArtistError) return;
+    try {
+      json = JSON.parse(addArtistError.message);
+      console.log(json)
+      if ("message" in json) {
+        console.log("passed", json["message"]);
+        setErrorMessage(json["message"]);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 15000);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }, [addArtistError])
 
   // handlers
   const handleCancel = () => {
@@ -71,7 +102,21 @@ const NewArtist = () => {
       return;
     }
 
-    const res = await dispatch(saveMedia(values.file));
+    //do some offline validation
+    const _clone = [...mainFields];
+    var hasErrors = false;
+    ['name', 'email', 'phoneNumber', 'genre'].map((v,i) => {
+      if (!values[v]) {
+        hasErrors = true;
+        const index = _clone.findIndex(f => f.name == v);
+        if (index > -1) {
+          _clone[index] = {..._clone[index], error: "Required"};
+        }
+      }
+    });
+    setMainFields(_clone);
+    if (hasErrors) return;
+
     dispatch(addArtist({
       full_name: values.name,
       email: values.email,
@@ -85,9 +130,9 @@ const NewArtist = () => {
       instagram_link: values.instagram,
       youtube_link: values.yt,
       twitter_link: values.twitter,
-      avatar_url: res.payload,
-      password: '123456',
-      genre: values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, ''),
+      avatar_url: values.file,
+      password: 'Mkondo@123',
+      genre: values.genre && values.genre.length ? values.genre.reduce((acc, v) => `${acc}${acc ? ',' : ''}${v.value}`, '') : [],
       admin_id: adminId,
     }));
   };
@@ -97,6 +142,14 @@ const NewArtist = () => {
       ...values,
       [name]: value,
     });
+    const index = mainFields.findIndex(f => f.name == name);
+    if (index > -1) {
+      if (mainFields[index].error) {
+        const _cloned = [...mainFields];
+        _cloned[index] = {..._cloned[index], error: null};
+        setMainFields(_cloned);
+      }
+    }
   };
 
   // render
@@ -105,8 +158,9 @@ const NewArtist = () => {
       <div className="row justify-content-center">
         <div className="col-10 col-sm-8">
           <div className={`d-flex flex-column`}>
+            {errorMessage && <div className='alert alert-danger'>{errorMessage}</div>}
             <NewItem
-              menus={menus}
+              menus={mainFields}
               metamenus={metamenus}
               onChange={handleChange}
               values={values}

@@ -15,6 +15,7 @@ const REMOVE_FOLLOWERS = 'user/REMOVE_FOLLOWERS';
 const GET_SYSTEM_INSIGHT = 'user/GET_SYSTEM_INSIGHT';
 const SEARCH_USERS = 'user/SEARCH_USERS';
 const UPDATE_SYSTEM_USER = 'user/UPDATE_SYSTEM_USER';
+const GET_ADMIN_INSIGHTS = 'user/GET_ADMIN_INSIGHTS';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -124,6 +125,14 @@ export const updateSystemUser = createAsyncThunk(
     }
 );
 
+export const getAdminInsights = createAsyncThunk(
+    GET_ADMIN_INSIGHTS,
+    async (data, store) => {
+        const token = store.getState().authentication.token;
+        const userId = store.getState().authentication.user.user_id;
+        return handleFetch('GET', `admin/${userId}/insights`, null, token);
+    }
+);
 
 const initialState = {
     updateUserPending: false,
@@ -166,9 +175,13 @@ const initialState = {
     getSystemInsightPending: false,
     getSystemInsightError: null,
     getSystemInsightComplete: false,
+    getAdminInsightsPending: false,
+    getAdminInsightsComplete: false,
+    getAdminInsightsError: null,
     userMedia: [],
     currentPagination: {},
     insights: {},
+    adminInsights: {},
     users: {
         data: [],
     },
@@ -394,6 +407,21 @@ const userSlice = createSlice({
             state.updateSystemUserComplete = false;
             state.updateSystemUserError = action.error;
         },
+        [getAdminInsights.pending]: (state, action) => {
+            state.getAdminInsightsPending = true;
+            state.getAdminInsightsComplete = false;
+            state.getAdminInsightsError = null;
+        },
+        [getAdminInsights.fulfilled]: (state, action) => {
+            state.getAdminInsightsPending = false;
+            state.getAdminInsightsComplete = true;
+            state.adminInsights = action.payload;
+        },
+        [getAdminInsights.rejected]: (state, action) => {
+            state.getAdminInsightsPending = false;
+            state.getAdminInsightsComplete = false;
+            state.getAdminInsightsError = action.error;
+        }
     }
 });
 

@@ -15,10 +15,11 @@ import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 
 import styles from './index.module.scss';
 import { saveMediaPro } from '../../../redux/features/media';
+import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
+import ArtistSelectorComponent from '../artistSelector';
 
 const MediaUpload = () => {
   //hooks
-
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
@@ -34,16 +35,20 @@ const MediaUpload = () => {
   const [mediaUrls, setMediaUrls] = useState({});
   const [dirty, setDirty] = useState(false);
   const [successMessage, setSuccessMessage] = useState(null);
+  const [selectedArtist, setSelectedArtist] = useState(null);
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
+  const locationState = history.location.state;
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const user = useSelector(state => state.authentication.user);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
   const newMediaId = useSelector((store) => store.media.newMediaId);
   const addedAlbumPayload = useSelector(state => state.media.addedAlbumPayload);
   const lastUploaded = useSelector(state => state.media.lastUploaded);
+  const artists = useSelector(state => state.artist.artists);
 
   // refs
   const currentSaved = useRef(null);
@@ -57,7 +62,7 @@ const MediaUpload = () => {
       link: `https//:mkondo.co/app/media/${newMediaId}`,
       country: item.recordLabel,
       name: item.title, 
-      avatar: await generatePreview(item.file),
+      avatar: item.file,
     });
 
     completedFiles.current = 0;
@@ -114,6 +119,11 @@ const MediaUpload = () => {
     }
   }, [lastUploaded]);
 
+  useEffect(() => {
+    if (locationState && locationState.albumId) {
+      setSelectedArtist(addedAlbumPayload.owner_id);
+    }
+  }, [locationState])
   // handlers
   const handleFileChange = (result) => {
     console.log("File Changed");
@@ -204,7 +214,7 @@ const MediaUpload = () => {
           genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : (item.genre && item.genre.length ? item.genre.map((item) => item.value ?? item) : []),
           cover_url: item.cover_url ?? item.file,
           media_url: item.media_url,
-          owner_id: userId,
+          owner_id: selectedArtist ? selectedArtist.user_id : userId,
           category: 'audio',
           duration: values.duration || 0,
           composer: item.composer,
@@ -225,6 +235,24 @@ const MediaUpload = () => {
 
     // handleNext();
     setIsLoading(false);
+  }
+
+  const handleSelectArtist = (artist) => {
+    setSelectedArtist(artist);
+  }
+
+  if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+    return (
+      <div className={`row`}>
+        <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+
+          <div className="mt-3">
+            <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // render

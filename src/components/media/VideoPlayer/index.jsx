@@ -98,7 +98,7 @@ const VideoPlayer = (props) => {
         player.on('waiting', () => {
           console.log("player is waiting");
           // dispatch(updateLoading(true));
-          setIsLoading(true);
+          // setIsLoading(true);
         });
 
         player.on('canplay', () => {

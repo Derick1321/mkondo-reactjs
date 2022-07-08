@@ -54,6 +54,7 @@ class Player {
         src: [data.url],
         loop: false,
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
+        preload: false,
         onplay: () => {
           if (this.callbacks.onPlay) {
             this.callbacks.onPlay(sound.duration(), this.playlist[index].mediaId);
