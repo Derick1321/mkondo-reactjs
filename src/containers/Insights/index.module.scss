@@ -2,17 +2,14 @@
 
 .container {
   position: relative;
-  background-color: $primary-light-gray;
   min-height: 100%;
-  margin-top: 1rem !important;
-  padding: 1rem 2rem 10rem 2rem;
+  padding: 1rem 2rem 1rem 2rem;
 }
 
 .wrapper {
 }
 
 .tabsWrapper {
-  margin-top: 9rem;
   margin-bottom: 2rem;
 }
 
@@ -30,7 +27,7 @@
 }
 
 .bubbleTitle {
-  color: $tertiary-black;
+  color: #FFF;
   font-size: 1.5rem;
 }
 
@@ -41,7 +38,7 @@
 }
 
 .title {
-  color: $tertiary-black;
+  color: #FFF;
   font-size: 4rem;
 }
 

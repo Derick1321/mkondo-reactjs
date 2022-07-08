@@ -234,6 +234,11 @@
 .title {
     font-size: 12px;
     margin-left: 2px;
+    cursor: pointer;
+
+    &::hover {
+        color: red;
+    }
 }
 
 .rowBg {
