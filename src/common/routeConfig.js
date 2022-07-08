@@ -52,6 +52,7 @@ import { MusicContainer } from '../containers/Media/Music/index';
 import { VideosContainer } from '../containers/Media/Videos/index';
 import { FacebookDataDeletionStatus } from '../containers/LegalPages/FacebookDataDeletionStatus';
 import ViewMediaCollection from '../containers/Media/ViewCollection/index';
+import ArtistList from '../containers/Artist/List/index';
 
 export const routePaths = {
   main: '/app',
@@ -81,6 +82,7 @@ export const routePaths = {
   viewMedia: '/app/media/:id',
   viewCollection: '/app/media/collection',
   artist: '/app/artist',
+  artistList: '/app/artist/list',
   newArtist: '/app/artist/new',
   statsArtist: '/app/artist/stats',
   viewArtist: '/app/artist/:id',
@@ -287,6 +289,12 @@ export const routes = [
         component: Artist,
         exact: false,
         routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.artistList,
+            component: ArtistList,
+            redirect: redirectFunctions.app,
+          },
           {
             ...defaultConfig,
             path: routePaths.newArtist,

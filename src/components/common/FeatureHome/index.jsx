@@ -21,6 +21,7 @@ import { routePaths } from '../../../common/routeConfig';
 import { showModal } from '$redux/features/modal';
 import Row from '../../media/PlaylistRow/index';
 import RowPro from '../../media/PlaylistRowPro';
+import ArtistAvatarComponent from '../artist/avatar';
 
 const defaultAvatar = require('$assets/images/profile-user.svg');
 const icon_like = require('$assets/images/icons/like.svg');
@@ -173,7 +174,7 @@ const FeatureHome = (props) => {
   }, [media]);
 
   // handlers
-  const handlePlay = async () => {
+  const handlePlay = async (open=false) => {
     if (!userToken) {
       dispatch(showModal('ALERT_MODAL', {
         media: media,
@@ -206,8 +207,10 @@ const FeatureHome = (props) => {
       notifyPlayed(key);
     }
 
-    
-    if (media.category !== 'audio') {
+    console.log(media);
+    let condition = media.category !== 'audio' || open
+    if (condition) {
+      console.log("passed", condition)
       handleView();
       return;
     }
@@ -256,7 +259,7 @@ const FeatureHome = (props) => {
           mediaId={media.media_id}
           mediaUrl={media.media_url}
 
-          onPlay={handlePlay}
+          onPlay={() => handlePlay()}
         />
       </div>
     );
@@ -291,7 +294,7 @@ const FeatureHome = (props) => {
               </div>
               <PlayButton
                 category={media.category}
-                onClick={handlePlay} >
+                onClick={() => handlePlay()} >
                 <PlayBtn
                   size={media.category == "audio" ? "30" : "40"}
                   isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
@@ -314,9 +317,9 @@ const FeatureHome = (props) => {
           
           <div className="d-flex mt-2">
             <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
-              <div style={{flex: 1}}>
-                <div className={styles.title}><b>{media.name}</b></div>
-                <div onClick={() => push(generatePath(routePaths.viewArtist, {id: artistId}))} className={styles.f_description}>by {media.owner_name}</div>
+              <div className={`flex-grow-1`}>
+                <div onClick={() => handlePlay(true)} className={styles.title}><b>{media.name}</b></div>
+                <div onClick={() => push(generatePath(routePaths.viewArtist, {id: media.owner_id}))} className={styles.f_description}>by {media.owner_name}</div>
               </div>
 
               {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
@@ -357,8 +360,8 @@ const FeatureHome = (props) => {
                 </div>
   
                 <div className='d-flex mx-2 mt-4'>
-                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>PREMIUM</div>}
-                  {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>THEATRE</div>}
+                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_premium} height="10px" width="10px" /> PREMIUM</div>}
+                  {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_theatre} height="10px" width="10px" /> THEATRE</div>}
                 </div>
 
                 <div className={`${styles.likeandcomment}`}>
@@ -367,7 +370,7 @@ const FeatureHome = (props) => {
                 </div>
                 <PlayButton
                   category={media.category}
-                  onClick={handlePlay} >
+                  onClick={() => handlePlay()} >
                   <PlayBtn
                     size={media.category == "audio" ? "30" : "40"}
                     isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
@@ -430,10 +433,10 @@ const FeatureHome = (props) => {
                     showPlaylist
                   />
                 </div>
-  
+
                 <div className='d-flex mx-2 mt-4'>
-                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}>PREMIUM</div>}
-                  {media.theatre && <div className={`px-2 ml-1 ${styles.f_featureHeaderWrapperTitle}`}>THEATRE</div>}
+                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_premium} height="10px" width="10px" /> PREMIUM</div>}
+                  {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_theatre} height="10px" width="10px" /> THEATRE</div>}
                 </div>
 
                 <div className={`${styles.likeandcomment}`}>
@@ -443,7 +446,7 @@ const FeatureHome = (props) => {
                 {!disablePlayBtn && (
                   <PlayButton
                     category={media.category}
-                    onClick={handlePlay} >
+                    onClick={() => handlePlay()} >
                     <PlayBtn
                       size={media.category == "audio" ? "30" : "40"}
                       isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
@@ -507,6 +510,11 @@ const FeatureHome = (props) => {
                     showPlaylist
                   />
                 </div>
+
+                <div className='d-flex mx-2 mt-4'>
+                  {media.premium && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_premium} height="10px" width="10px" /> PREMIUM</div>}
+                  {media.theatre && <div className={`px-2 ${styles.f_featureHeaderWrapperTitle}`}><img src={icon_theatre} height="10px" width="10px" /> THEATRE</div>}
+                </div>
   
                 <div className={`${styles.likeandcomment}`}>
                   <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor_icon}`} alt="" />
@@ -514,7 +522,7 @@ const FeatureHome = (props) => {
                 </div>
                 <PlayButton
                   category={media.category}
-                  onClick={handlePlay} >
+                  onClick={() => handlePlay()} >
                   <PlayBtn
                     size={media.category == "audio" ? "30" : "40"}
                     isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
