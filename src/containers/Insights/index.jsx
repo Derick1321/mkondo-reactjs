@@ -10,6 +10,13 @@ import { getInsight } from '$redux/features/artist';
 import { getSystemInsight, searchUsers } from '$redux/features/user';
 
 import styles from './index.module.scss';
+import { COLOR_PRIMARY } from '../../common/constants';
+import { COLOR_ACCENT } from '$common/constants';
+import { ManageArtistItem } from '../ManagerPanel/artists/item';
+import { ArtistListArtistWidget } from '../Artist/List/widgets/artist';
+import { getArtists } from '../../redux/features/artist';
+import user, { getAdminInsights } from '../../redux/features/user';
+import ArtistAvatarComponent from '../../components/common/artist/avatar/index';
 
 const options = [
   { name: 'insights', title: 'Insights' },
@@ -35,27 +42,37 @@ const Insights = () => {
   const data = useSelector((store) => store.artist.insights);
   const systemData = useSelector((store) => store.user.insights);
   const users = useSelector((store) => store.user.users.data);
+  const artists = useSelector((store) => store.artist.artists);
+  const adminInsights = useSelector(state => state.user.admin_insights);
 
   const isSuperAdmin = userType === 'super admin';
+  const isArtist = userType === 'creator'
+  const isAdmin = userType === 'admin'
 
   // effects
   useEffect(() => {
-    if (!userId) {
-      return;
-    }
-
-    dispatch(getInsight(userId));
-    dispatch(searchUsers());
-    // dispatch 
-  }, [userId]);
+    dispatch(getArtists());
+  }, []);
 
   useEffect(() => {
-    if (!isSuperAdmin) {
-      return;
-    }
+    if (!userId) return;
+    // if (!isArtist) return;
+
+    dispatch(getInsight(userId));
+    // dispatch 
+  }, [userId, isArtist]);
+
+  useEffect(() => {
+    if (!isSuperAdmin) return;
     dispatch(getSystemInsight());
+    dispatch(searchUsers());
     setSelected('system');
   }, [isSuperAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    dispatch(getAdminInsights());
+  }, [isAdmin]);
 
   // handlers
   const buildPane = (name, value) => (
@@ -95,6 +112,13 @@ const Insights = () => {
         <span className={styles.title}>{data.plays || 0} Plays</span>
         <div className={styles.titleBorder} />
       </div>
+      <div className={`my-5`}>
+        {artists.filter(artist => isSuperAdmin ? true : (isAdmin ? artist.admin_id === userId : artist.user_id === userId)).map(artist => (
+          <div>
+            <ArtistAvatarComponent artist={artist} size={150} />
+          </div>
+        ))}
+      </div>
       <div className="mt-4 pt-4">
         <LineChart />
       </div>
@@ -105,7 +129,7 @@ const Insights = () => {
       </div>
     </>
   );
-
+    
   // render
   return (
     <div className={styles.container}>
@@ -115,7 +139,7 @@ const Insights = () => {
           selected={selected}
           options={ isSuperAdmin ? systemOptions : options}
           name="insightsTab"
-          activeColor="#EA4C89"
+          activeColor={COLOR_ACCENT}
         />
       </div>
       <div className="row">
