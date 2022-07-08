@@ -6,7 +6,7 @@ const data = {
   datasets: [
     {
       label: '# of Votes',
-      data: [1, 5, 2, 1, 2, 0],
+      data: [3, 5, 2, 1, 2, 0, 2],
       fill: true,
       backgroundColor: '#FC0135', // rgb(255, 99, 132)
       borderColor: '#FC0135', // rgba(255, 99, 132, 0.2)
@@ -26,17 +26,19 @@ const options = {
   },
 };
 
-const LineChart = () => (
-  <>
-    <div className='header'>
-      <h1 className='title text-light'>Line Chart</h1>
-    </div>
-    <Line
-      data={data}
-      options={options}
-      height={80}
-    />
-  </>
-);
+const LineChart = (props) => {
+  return (
+    <>
+      <div className='header'>
+        <h1 className='title text-light'>Line Chart</h1>
+      </div>
+      <Line
+        data={data}
+        options={options}
+        height={80}
+      />
+    </>
+  );
+}
 
 export default LineChart;
