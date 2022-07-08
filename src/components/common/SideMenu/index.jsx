@@ -46,11 +46,11 @@ const SideMenu = (props) => {
       permission: 'admin',
     },
     {
-      icon: require('$assets/images/icons/bar_chart.svg'),
-      activeIcon: require('$assets/images/icons/bar_chart.svg'),
+      icon: require('$assets/images/icons/top-chart.svg'),
+      activeIcon: require('$assets/images/icons/top-chart.svg'),
       title: 'insights',
       path: routePaths.insights,
-      permission: 'media',
+      permission: 'admin',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),

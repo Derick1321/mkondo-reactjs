@@ -16,6 +16,7 @@ import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 import styles from './index.module.scss';
 import { saveMediaPro } from '../../../redux/features/media';
 import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
+import ArtistSelectorComponent from '../artistSelector';
 
 const MediaUpload = () => {
   //hooks
@@ -61,7 +62,7 @@ const MediaUpload = () => {
       link: `https//:mkondo.co/app/media/${newMediaId}`,
       country: item.recordLabel,
       name: item.title, 
-      avatar: await generatePreview(item.file),
+      avatar: item.file,
     });
 
     completedFiles.current = 0;
@@ -246,23 +247,8 @@ const MediaUpload = () => {
         <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
           <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
 
-          <div className={`card mt-3 ${styles.card}`}>
-            <div className="card-body">
-              <h3 className="card-title text-white">Select an Artist</h3>
-
-              <div className="row text-light">
-                <div className="mb-2 d-flex align-items-center bg-dark">
-                  <ArtistListArtistWidget artist={{ ...user, full_name: "Me" }} />
-                  <button className="btn btn-primary btn-xs ml-auto" onClick={() => handleSelectArtist(user)}>Select</button>
-                </div>
-                {artists.map(artist => (
-                  <div className='mb-2 d-flex align-items-center bg-dark'>
-                    <ArtistListArtistWidget artist={artist} />
-                    <button className="btn btn-primary btn-xs ml-auto" onClick={() => handleSelectArtist(artist)}>Select</button>
-                  </div>
-                ))}
-              </div>
-            </div>
+          <div className="mt-3">
+            <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
           </div>
         </div>
       </div>

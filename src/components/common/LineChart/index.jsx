@@ -29,7 +29,7 @@ const options = {
 const LineChart = () => (
   <>
     <div className='header'>
-      <h1 className='title'>Line Chart</h1>
+      <h1 className='title text-light'>Line Chart</h1>
     </div>
     <Line
       data={data}

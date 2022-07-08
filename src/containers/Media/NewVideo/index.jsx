@@ -18,6 +18,7 @@ import { routePaths } from '../../../common/routeConfig';
 import { crop } from '../../../redux/features/croptool';
 import DonutProgress from '../../../components/common/DonutProgress/index';
 import { saveMediaPro } from '../../../redux/features/media';
+import ArtistSelectorComponent from '../artistSelector';
 
 const getType = {
   movie: 'Upload Movie',
@@ -30,12 +31,14 @@ const NewVideo = () => {
   const coverRef = useRef(null);
 
   //state
+  const [selectedArtist, setSelectedArtist] = useState(null);
 
   // store
   const history = useHistory();
   const push = history.push;
   const dispatch = useDispatch();
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const user = useSelector((store) => store.authentication.user);
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const addMediaPending = useSelector((store) => store.media.addMediaPending);
   const addMediaUploadProgress = useSelector((store) => store.media.addMediaUploadProgress);
@@ -157,7 +160,7 @@ const NewVideo = () => {
     var payload = {
       name: values.title,
       description: values.description,
-      owner_id: userId,
+      owner_id: selectedArtist ? selectedArtist.user_id : userId,
       category: uploadType,
       duration: values.duration,
       owner_avatar_url: userAvatarUrl,
@@ -348,6 +351,23 @@ const NewVideo = () => {
         />
       </div>
     )
+  }
+
+  const handleSelectArtist = (artist) => {
+    setSelectedArtist(artist);
+  }
+
+  if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+    return (
+      <div className={`row ${styles.albumWrapper}`}>
+        <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+          <div className="mt-3">
+            <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // render

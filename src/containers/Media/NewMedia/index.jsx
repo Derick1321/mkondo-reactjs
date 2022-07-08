@@ -14,6 +14,7 @@ import { saveMedia, addMedia } from '$redux/features/media';
 import { menus, metamenus } from './menus';
 
 import styles from './index.module.scss';
+import ArtistSelectorComponent from '../artistSelector/index';
 
 const closeIcon = require('$assets/images/icons/cancel.svg');
 
@@ -32,12 +33,14 @@ const NewMedia = () => {
   // state
   const [file, setFile] = useState(null);
   const [values, setValues] = useState(initialState);
+  const [selectedArtist, setSelectedArtist] = useState(null);
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
   const addMediaComplete = useSelector((store) => store.media.addMediaComplete);
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const user = useSelector((store) => store.authentication.user);
   const userAvatarUrl = useSelector((store) => store.authentication.user.avatar_url);
   const newMediaId = useSelector((store) => store.media.newMediaId);
 
@@ -95,6 +98,23 @@ const NewMedia = () => {
       ...values,
       [name]: value,
     });
+  }
+
+  const handleSelectArtist = (artist) => {
+    setSelectedArtist(artist);
+  }
+
+  if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+    return (
+      <div className={`row ${styles.albumWrapper}`}>
+        <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+          <div className="mt-3">
+            <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // render
