@@ -1,0 +1,7 @@
+@import '$assets/scss/main.scss';
+
+.cardCustomized {
+    background-color: rgba($color: #000000, $alpha: 0.75) !important;
+    height: 600px;
+    overflow-y: auto;
+}

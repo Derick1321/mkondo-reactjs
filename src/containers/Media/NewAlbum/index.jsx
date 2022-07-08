@@ -12,6 +12,11 @@ import { saveMedia, addAlbum } from '$redux/features/media';
 import { menus, metamenus } from './menus';
 
 import styles from './index.module.scss';
+import artist, { getArtists } from '../../../redux/features/artist';
+
+import placeholder from '$assets/images/user-placeholder.jpeg'
+import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist';
+import ArtistSelectorComponent from '../artistSelector';
 
 const initialState = {
   artist: '',
@@ -34,20 +39,20 @@ const NewAlbum = () => {
   const [metaFields, setMetaFields] = useState(metamenus);
   const [values, setValues] = useState(initialState);
   const [coverImage, setCoverImage] = useState(null);
+  const [selectedArtist, setSelectedArtist] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
   // store
   const dispatch = useDispatch();
   const history = useHistory();
   const userId = useSelector((store) => store.authentication.user.user_id);
+  const user = useSelector((store) => store.authentication.user);
   const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
   const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
   const albumId = useSelector((store) => store.media.albumId);
 
   // refs
   const initiatedSave = useRef(false);
-
-  // effects
-  
   
   useEffect(() => {
     if (!addAlbumComplete || !initiatedSave.current) {
@@ -60,6 +65,7 @@ const NewAlbum = () => {
 
   // handlers
   const handleChange = (name, value) => {
+    console.log(name, value);
     setValues({
       ...values,
       [name]: value,
@@ -111,6 +117,7 @@ const NewAlbum = () => {
     }
 
     if (!values.file) {
+      console.log(values);
       alert('No album avatar file submitted!');
       return;
     }
@@ -128,7 +135,7 @@ const NewAlbum = () => {
       country: values.country,
       region: values.region,
       cover_image: values.file,
-      owner_id: userId, // OR artistId
+      owner_id: values.owner_id ?? userId, // OR artistId
     }));
   }
 
@@ -137,6 +144,23 @@ const NewAlbum = () => {
       return;
     }
     setValues(initialState);
+  }
+
+  const handleSelectArtist = (artist) => {
+    setSelectedArtist(artist);
+  }
+
+  if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+    return (
+      <div className={`row ${styles.albumWrapper}`}>
+        <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+          <div className="mt-3">
+            <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   // render

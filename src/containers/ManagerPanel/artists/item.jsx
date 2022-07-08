@@ -7,7 +7,7 @@ import draft from '$assets/images/icons/trash.svg';
 import { getMediaUrl } from '../../../common/utils';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUser } from '../../../redux/features/user';
-import { updateArtist } from '../../../redux/features/artist';
+import { deleteArtist, updateArtist } from '../../../redux/features/artist';
 
 export const ManageArtistItem = (props) => {
     //props
@@ -16,11 +16,13 @@ export const ManageArtistItem = (props) => {
     //state
     const [avatarUrl, setAvatarUrl] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     //store
     const dispatch = useDispatch();
     const { token } = useSelector(state => state.authentication);
     const { updateUserPending } = useSelector(state => state.user);
+    const deleting = useSelector(state => state.artist.deleteArtistPendingQueue);
 
     //effects
     useEffect(() => {
@@ -34,7 +36,15 @@ export const ManageArtistItem = (props) => {
             setAvatarUrl(res);
 
         });
-    }, [artist])
+    }, [artist]);
+
+    useEffect(() => {
+        if (deleting.some(id => id == artist.user_id)) {
+            setIsDeleting(true);
+        } else {
+            setIsDeleting(false);
+        }
+    }, [deleting])
 
      //handlers
      const handleOnLoad = (e) => {
@@ -54,6 +64,15 @@ export const ManageArtistItem = (props) => {
         dispatch(updateArtist(payload))
     }
 
+    const handleDelete = () => {
+        if (isDeleting) return;
+        
+        const payload = {
+            id: artist.user_id
+        }
+        dispatch(deleteArtist(payload));
+    }
+
     return (
         <div className={`text-light ${styles.artistItemContainer}`}>
             <div className={styles.avatarWrapper}>
@@ -70,8 +89,8 @@ export const ManageArtistItem = (props) => {
                         publish { updateUserPending && <span className='spinner-border'></span>}
                     </button>
                 ) }
-                <button  className="btn btn-danger text-light">
-                    <img src={trash} className="text-light" alt="" height="18px" width="18px" />
+                <button onClick={handleDelete}  className="btn btn-danger text-light">
+                    {isDeleting ? <span className='spinner-border text-light'></span> : <img src={trash} className="text-light" alt="" height="18px" width="18px" /> }
                 </button>
             </div>
         </div>
