@@ -57,7 +57,7 @@ export const SimilarMediaItem = (props) => {
                 <StyledImage src={coverUrl ? coverUrl : placeholder} alt="" />
             </div>
             <div className="col-7 col-md-7 col-lg-8">
-                <h5>{media.name}</h5>
+                <h5 className='text-light'>{media.name}</h5>
                 <StyledOwner onClick={() => push(generatePath(routePaths.viewArtist, { id: media.owner_id }))}>{media.owner_name}</StyledOwner>
             </div>
         </div>

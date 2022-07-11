@@ -1,0 +1,12 @@
+@import '$assets/scss/main.scss';
+
+.wrapper {
+    width: 150px;
+    
+    img {
+        width: 150px;
+        aspect-ratio: 27/40;
+        object-fit: cover;
+        object-position: center;
+    }
+}

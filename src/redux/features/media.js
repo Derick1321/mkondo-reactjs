@@ -37,6 +37,7 @@ const UPDATE_LIKE = 'media/UPDATE_LIKE';
 const GET_SIMILAR_MEDIA = 'media/GET_SIMILAR_MEDIA';
 const ADD_SERIES = 'media/ADD_SERIES';
 const GET_SERIES = 'media/GET_SERIES';
+const GET_NEW_SERIES = 'media/GET_NEW_SERIES';
 const UPDATE_SERIES = 'media/UPDATE_SERIES';
 const REMOVE_SERIES = 'media/REMOVE_SERIES';
 const FETCH_MOVIES = 'media/FETCH_MOVIES';
@@ -480,7 +481,16 @@ export const getSeries = createAsyncThunk(
         const { token } = store.getState().authentication;
         return await handleFetch('GET', 'series', params, token);
     }
-)
+);
+
+//get new series
+export const getNewSeries = createAsyncThunk(
+    GET_NEW_SERIES,
+    async (params, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('GET', 'series', null, token);
+    }
+);
 
 //update series
 export const udpateSeries = createAsyncThunk(
@@ -657,6 +667,9 @@ const initialState = {
     getNewAlbumsPending: false,
     getNewAlbumsSuccess: false,
     getNewAlbumsError: null,
+    getNewSeriesPending: false,
+    getNewSeriesSuccess: false,
+    getNewSeriesError: null,
     uploadQueue: [],
     currentMedia: {
         media_id: null,
@@ -731,6 +744,9 @@ const initialState = {
     collection: {
         type: 'audio',
         media: [],
+    },
+    newSeries: {
+        items: []
     },
 };
 
@@ -1441,7 +1457,22 @@ const mediaSlice = createSlice({
             state.checkSubscriptionStatusPending = false;
             state.checkSubscriptionStatusSuccess = null;
             state.checkSubscriptionStatusError = action.error;
-        }
+        },
+        [getNewSeries.pending]: (state, action) => {
+            state.getNewSeriesPending = true;
+            state.getNewSeriesSuccess = false;
+            state.getNewSeriesError = null;
+        },
+        [getNewSeries.fulfilled]: (state, action) => {
+            state.getNewSeriesPending = false;
+            state.getNewSeriesSuccess = true;
+            state.newSeries.items = action.payload.series;
+        },
+        [getNewSeries.rejected]: (state, action) => {
+            state.getNewSeriesPending = false;
+            state.getNewSeriesSuccess = false;
+            state.getNewSeriesError = JSON.parse(action.error.message);
+        },
     }
 });
 
