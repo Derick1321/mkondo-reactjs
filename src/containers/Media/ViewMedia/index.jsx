@@ -256,7 +256,7 @@ const ViewMedia = () => {
               </div>
              {isMobile && <Spacer height={(spacing * 0.6)} />}
               {(!isMobile || !showComments) && (
-                <div className={`mt-3 mb-2 mb-lg-5 ${styles.description}`}>
+                <div className={`mt-3 mb-2 mb-lg-5 text-light ${styles.description}`}>
                   <h2 className="text-light">{currentMedia.name}</h2>
                   <span>{currentMedia.plays} views • {formatDate(currentMedia.release_date)}</span>
                   <div className="d-flex justify-content-lg-end mb-1 mt-2 mt-lg-0">
