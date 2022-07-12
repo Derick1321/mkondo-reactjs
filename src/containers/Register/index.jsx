@@ -286,7 +286,7 @@ const RegisterPage = () => {
                   <InputField field={{ 
                         type: "text",
                         name: "email",
-                        placeholder: "Email/Phone",
+                        placeholder: "Email Address",
                         value: values.email,
                     }} error={errObj.email} onChange={handleChange} isGrey={false} />
 
