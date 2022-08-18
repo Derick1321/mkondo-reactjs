@@ -1,4 +1,4 @@
-const BASE_URL = document.location.hostname === 'localhost' ? 'http://127.0.0.1:5000' : 'https://api.mkondo.co';
+const BASE_URL = document.location.hostname === 'localhost' && false ? 'http://127.0.0.1:5000' : 'https://api.mkondo.co';
 
 // Ensure you are running a local instance
 const URL = BASE_URL;
@@ -114,23 +114,37 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
         
         props.referrerPolicy = 'no-referrer';
         props.mode = "cors";
-        const response = await fetch(url, {
-            ...props,
-            headers,
-            method,
-        });
+        
+        try {
+            const response = await fetch(url, {
+                ...props,
+                headers,
+                method,
+            });
+    
+            const status = response.status;
+            const result = await response.text();
+        
+            if (![200, 201, 204].includes(status)) {
+                throw result;
+            }
+        
+            if ([204].includes(status)) {
+                return true
+            }
+        
+            return JSON.parse(result);
+        } catch (e) {
+            // console.debug("FAILED TO FETCH", {
+            //     "url": url,
+            //     "headers": headers,
+            //     "response": res,
+            //     "token": token,
+            //     "props": props,
+            // });
+            // console.error(e);
 
-        const status = response.status;
-        const result = await response.text();
-    
-        if (![200, 201, 204].includes(status)) {
-            throw result;
+            return {};
         }
-    
-        if ([204].includes(status)) {
-            return true
-        }
-    
-        return JSON.parse(result);
     }
 }
