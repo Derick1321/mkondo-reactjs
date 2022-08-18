@@ -40,6 +40,7 @@ const Player = () => {
     console.log("player: onplay", dur);
     dispatch(updateDuration(dur));
     dispatch(updateLoading(false));
+    loop();
   }
 
   const onPause = () => {
@@ -88,7 +89,8 @@ const Player = () => {
     const newPlaylist = JSON.parse(JSON.stringify(currentPlaylist));
     // console.log(newPlaylist);
     audioRef.current = new AudioPlayer(newPlaylist, callbacks, true);
-    // console.log(audioRef.current);
+    return () => {
+    }
   }, []);
 
   useEffect(() => {
@@ -133,9 +135,9 @@ const Player = () => {
   }, [currentIndex])
 
   useEffect(() => {
-    console.log("Is playing has changed");
+    console.log("player: Is playing has changed");
     if (!isPlaying) {
-      console.log("Pausing");
+      console.log("player: Pausing");
       audioRef.current.pause();
       cancelAnimationFrame(timerRef.current);
       return;
@@ -143,14 +145,13 @@ const Player = () => {
     dispatch(toggleFooterPlayer(true));
     if (!audioRef.current.canPlay()) {
       // display cannot play message
-      console.log("Cannot play");
+      console.log("player: Cannot play");
       dispatch(pause());
       return;
     }
 
-    console.log("Playing", audioRef.current.index, audioRef.playlist);
+    console.log("player: Playing", audioRef.current.index, audioRef.playlist);
     audioRef.current.play(audioRef.current.index);
-    loop();
     return () => { // Return callback to run on unmount.
       if (timerRef.current) {
         cancelAnimationFrame(timerRef.current);

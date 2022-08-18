@@ -1,4 +1,4 @@
-import {Howl, Howler} from 'howler';
+import { Howl, Howler } from 'howler';
 
 import { shuffleArray } from './utils';
 
@@ -9,17 +9,23 @@ import { shuffleArray } from './utils';
  * @param {Array} playlist Array of objects with playlist song details ({ title, file, howl }).
  */
 
+let instance;
+
 class Player {
   constructor(playlist, callbacks, onAutoPlay) {
+    console.debug("PLAYER: instantiating", instance);
+    if (instance) {
+      throw new Error("Singleton classes can't be instantiated more than once.")
+    }
     this.playlist = [...playlist] || [];
-    this.originalPlaylist = [...playlist] || [];
+    this.originalPlaylist = [...playlist] || []; 
     this.callbacks = callbacks || {};
     this.onAutoPlay = onAutoPlay || false;
     this.isPlaying = false;
     this.isOnRepeat = false;
     this.isOnShuffle = false;
     this.index = 0;
-
+    instance = this;
     // console.log("Player Initialized", this);
   }
 
@@ -56,17 +62,20 @@ class Player {
         html5: true, // Force to HTML5 so that the audio can stream in (best for large files).
         preload: false,
         onplay: () => {
+          console.debug("PLAYER: ON PLAY EVENT TRIGGERED");
           if (this.callbacks.onPlay) {
             this.callbacks.onPlay(sound.duration(), this.playlist[index].mediaId);
           }
-          this.isPlaying = false;
+          this.isPlaying = true;
         },
         onload: () => {
+          console.debug("PLAYER: ON LOAD EVENT TRIGGERED");
           if (this.callbacks.onLoad) {
             this.callbacks.onLoad(this.playlist[index].mediaId);
           }
         },
         onend: () => {
+          console.debug("PLAYER: ON END EVENT TRIGGERED");
           if (this.callbacks.onEnd) {
             this.callbacks.onEnd();
           }
@@ -83,18 +92,21 @@ class Player {
           this.isPlaying = false;
         },
         onpause: () => {
+          console.debug("PLAYER: ON PAUSE EVENT TRIGGERED");
           if (this.callbacks.onPause) {
             this.callbacks.onPause();
           }
           this.isPlaying = false;
         },
         onstop: () => {
+          console.debug("PLAYER: ON STOP EVENT TRIGGERED");
           if (this.callbacks.onStop) {
             this.callbacks.onStop();
           }
           this.isPlaying = false;
         },
         onseek: (value) => {
+          console.debug("PLAYER: ON PLAY EVENT TRIGGERED");
           if (this.callbacks.onSeek) {
             this.callbacks.onSeek(value);
           }
