@@ -54,6 +54,13 @@ const Marketing = () => {
   }, []);
 
   useEffect(() => {
+    if (!topSongs.length) return;
+    if (selected == 'music') {
+      setValues(topSongs);
+    }
+  }, [topSongs]);
+
+  useEffect(() => {
     if (!visitorToken) return;
 
     if (!sliders.length && !isFetchingSliders) {

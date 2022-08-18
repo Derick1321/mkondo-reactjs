@@ -9,7 +9,7 @@ import { useLocation, useParams } from 'react-router-dom';
 
 
 // const stripePromise = loadStripe("pk_test_51KXBZaHrASyjhIVozZjo4RHNRiuKZTLg0AANL6ZyHuGLILPWvqy5jWrgHp6gEqzDd26DjBPFAvqnCmY1LtHELEkW00EFWOQuLd");
-const stripePromise = loadStripe("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");
+const stripePromise = loadStripe("pk_live_51KXBZaHrASyjhIVo6HymJfmmjaNxsWn5noBp7wcesMp2dmZYzojusyJ2MeacQhp5l71oUgUXB6LXtz89P92A4WAw00NETYZ6XZ");
 
 export const CreatePaymentMethodContainer = () => {
   //state

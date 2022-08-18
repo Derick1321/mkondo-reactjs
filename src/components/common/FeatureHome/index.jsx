@@ -80,7 +80,6 @@ const FeatureAvatar = styled.div`
 const FeatureHome = (props) => {
   // props
   const {
-    key,
     showHeader,
     notifyPlayed,
     media,
@@ -162,16 +161,29 @@ const FeatureHome = (props) => {
     setIsCheckingSubscription(true);
     checkSubscriptionStatusApiRequest(media.media_id, state)
       .then(res => {
-        console.log("Success Response", res);
+        // console.log("Success Response", res);
         setSubscriptionStatus(res);
         setIsCheckingSubscription(false);
       })
       .catch(error => {
-        console.log("Error Response", error);
+        // console.log("Error Response", error);
         setSubscriptionStatus(JSON.parse(error))
         setIsCheckingSubscription(false);
       });
   }, [media]);
+
+  // useEffect(() => {
+  //   // debuging
+  //   let flag = isLoading && currentMediaId === media.media_id || isCheckingSubscription;
+  //   console.log("IS LOADING", flag);
+  //   console.debug({
+  //     "isLoading": isLoading,
+  //     "currentMediaId": currentMediaId,
+  //     "media.media_id": media.media_id,
+  //     "isCheckingSubscription": isCheckingSubscription,
+  //     "condition": "isLoading && currentMediaId === media.media_id || isCheckingSubscription",
+  //   });
+  // }, [isLoading, currentMediaId, media, isCheckingSubscription]);
 
   // handlers
   const handlePlay = async (open=false) => {
@@ -186,7 +198,7 @@ const FeatureHome = (props) => {
       setIsCheckingSubscription(true);
       try {
         const res = await checkSubscriptionStatusApiRequest(media.media_id, state);
-        console.log("Checking Subscription", res);
+        // console.log("Checking Subscription", res);
         setSubscriptionStatus(res);
       } catch (e) {
         const jsonRes = JSON.parse(e);
@@ -264,6 +276,7 @@ const FeatureHome = (props) => {
       </div>
     );
   }
+
   if (media && media.category == "audio") {
     return (
     <>
@@ -296,7 +309,7 @@ const FeatureHome = (props) => {
                 category={media.category}
                 onClick={() => handlePlay()} >
                 <PlayBtn
-                  size={media.category == "audio" ? "30" : "40"}
+                  size={"40"}
                   isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
                   isPlaying={isPlaying && currentMediaId === media.media_id}
                 />
@@ -333,8 +346,6 @@ const FeatureHome = (props) => {
             {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
             {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
           </div>
-
- 
     </>
   )
   }
