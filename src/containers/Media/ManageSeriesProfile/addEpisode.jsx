@@ -50,10 +50,12 @@ export const AddSeriesEpisode = (props) => {
         })
 
         //starting uploading
-        dispatch(saveMediaPro({
-            'filename': episode.filename,
-            'file': episode.file,
-        }));
+        if (!payload.media_url) {
+            dispatch(saveMediaPro({
+                'filename': episode.filename,
+                'file': episode.file,
+            }));
+        }
         setPayload({..._payload});
     }, [episode])
 
@@ -89,7 +91,7 @@ export const AddSeriesEpisode = (props) => {
             setPayload({
                 ...payload, 
                 [name]: value
-            })
+            });
         }
     }
 
