@@ -48,25 +48,24 @@ const playerSlider = createSlice({
       }
     },
     pause(state) {
-      console.log("triggered pause");
       state.isPlaying = false;
     },
     seek(state, action) {
       state.newPosition = action.payload;
     },
     play(state, action) {
-      console.log("play reducer triggered", state.currentPlaylist.length);
+      // console.log("play reducer triggered", state.currentPlaylist.length);
       if (action.payload) {
-        console.log("payload exists..");
+        // console.log("payload exists..");
         state.currentMediaId = action.payload.mediaId; // TODO: media id fix
         if (state.currentPlaylist.some((media) => (media.mediaId ?? media.media_id) == action.payload.mediaId)) {
-          console.log("current playlist has the song");
+          // console.log("current playlist has the song");
           let _index = state.currentPlaylist.findIndex((media) => (media.mediaId ?? media.media_id) == action.payload.mediaId);
-          console.log(_index);
+          // console.log(_index);
           state.currentPlaylist[_index] = action.payload;
           state.index = _index;
         } else {
-          console.log("The song is not on the current playlist", action.payload, state.currentPlaylist.map(m => m.media_id));
+          // console.log("The song is not on the current playlist", action.payload, state.currentPlaylist.map(m => m.media_id));
           //we will know weather to pop or push
           if (state.currentPlaylist.length == 0) {
             state.currentPlaylist = [action.payload];
@@ -135,25 +134,32 @@ export const {
 export const loadMedia = createAsyncThunk(
   LOAD_MEDIA,
   async (data, param) => {
-    console.log("Loading Media...");
+    console.debug("LOAD_MEDIA: Loading Media...");
     const { currentMediaId, isPlaying, currentPlaylist  } = param.getState().player;
     if (currentMediaId === data.mediaId) {
+      console.debug("LOAD_MEDIA: current media id equals incoming media id");
       if (isPlaying) {
+        console.debug("LOAD_MEDIA: media was currently playing");
         param.dispatch(pause());
+        console.debug("LOAD_MEDIA: media paused");
         return;
       }
+      console.debug("LOAD_MEDIA: media was currently playing")
       param.dispatch(play());
+      console.debug("LOAD_MEDIA: media played");
       return;
     }
-
+    console.debug("LOAD_MEDIA: loading new media");
     if (currentPlaylist.some(m => m.mediaId == data.mediaId)) {
+      console.debug("LOAD_MEDIA: the media has been found in the current playlist");
       let _index = currentPlaylist.findIndex(m => m.mediaId == data.mediaId);
+      console.debug("LOAD_MEDIA: skipping to the playlist");
       param.dispatch(skipTo(_index));
       return;
     }
 
     //check for subscription
-    // param.dispatch(updateLoading(true));
+    param.dispatch(updateLoading(true));
     // var checkSubscription = await unwrapResult(param.dispatch(checkSubscriptionStatus(data.mediaId)))
     // console.log(checkSubscription);
     
@@ -164,7 +170,7 @@ export const loadMedia = createAsyncThunk(
     if(!token) {token = visitorToken;}
     const res = await handleFetch('GET', `media/presigned-get-url?file_name=${data.url}`, null, token);
     console.log("triggered update loading...");
-    param.dispatch(updateLoading(false));
+    // param.dispatch(updateLoading(false));
     console.log("dispatching play...");
     param.dispatch(play({
       ...data,
