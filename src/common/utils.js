@@ -121,13 +121,18 @@ export function kFormatter(num) {
 }
 
 export const mediaSorter = (values = []) => {
+  // console.debug('utils', values);
   const items = {
     audio: [],
     video: [],
     movie: [],
+    episode: [],
   };
 
+  if (!values) return items;
+
   values.forEach((value) => {
+    // console.debug('utils: value ', value);
     items[value.category].push(value);
   });
   return items;

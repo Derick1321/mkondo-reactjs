@@ -572,7 +572,7 @@ export const checkSubscriptionStatus = createAsyncThunk(
 );
 
 export const checkSubscriptionStatusApiRequest = async (media_id, state) => {
-    console.log("Checking subscription status of a media", media_id);
+    // console.log("Checking subscription status of a media", media_id);
     const { token, user } = state.authentication;
     const params = {user_id: user.user_id}
     return await handleFetch('GET',  `check-media-subscription-status/${media_id}?${queryString.stringify(params)}`, null, token);
