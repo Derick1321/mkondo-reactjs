@@ -113,7 +113,10 @@ const MediaUpload = () => {
     console.debug("FILTERING files, eqn: lastUploaded.media_url.includes(file.name)");
     let _files = files.filter(file => {
       console.debug(`${file.name} != ${lastUploaded.media_url}`)
-      return !lastUploaded.media_url.includes(file.name);
+      if (lastUploaded.media_url) {
+        return !lastUploaded.media_url.includes(file.name);
+      }
+      return true;
     });
     console.debug("Setting Files state");
     setFiles(_files);
