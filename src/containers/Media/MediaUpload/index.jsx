@@ -57,13 +57,13 @@ const MediaUpload = () => {
   // functions
   const handleNext = async () => {
     const item = values[files[files.length - 1].name];
-    history.push(routePaths.success, {
-      message: 'Congratulations you are all set!',
-      link: `https//:mkondo.co/app/media/${newMediaId}`,
-      country: item.recordLabel,
-      name: item.title, 
-      avatar: item.file,
-    });
+    // history.push(routePaths.success, {
+    //   message: 'Congratulations you are all set!',
+    //   link: `https//:mkondo.co/app/media/${newMediaId}`,
+    //   country: item.recordLabel,
+    //   name: item.title, 
+    //   avatar: item.file,
+    // });
 
     completedFiles.current = 0;
     dispatch(clearNewMediaId());
@@ -107,11 +107,18 @@ const MediaUpload = () => {
   }, [newMediaId]);
 
   useEffect(() => {
-    console.log("last uploaded changed", lastUploaded);
+    console.debug("lastUploaded changed", lastUploaded);
     if (!lastUploaded) return;
-    let _files = files.filter(file => file.name != lastUploaded.media_url);
+    console.debug("Last Uploaded has Values");
+    console.debug("FILTERING files, eqn: lastUploaded.media_url.includes(file.name)");
+    let _files = files.filter(file => {
+      console.debug(`${file.name} != ${lastUploaded.media_url}`)
+      return !lastUploaded.media_url.includes(file.name);
+    });
+    console.debug("Setting Files state");
     setFiles(_files);
     if (_files.length == 0 && dirty) {
+      console.debug("All Files Uploaded Successfully");
       setSuccessMessage("Tracks Uploaded Successfull");
       setTimeout(() => {
         setSuccessMessage(null);
@@ -124,6 +131,10 @@ const MediaUpload = () => {
       setSelectedArtist(addedAlbumPayload.owner_id);
     }
   }, [locationState])
+
+  useEffect(() => {
+    console.debug("VALUES CHANGED", values);
+  }, [values]);
   // handlers
   const handleFileChange = (result) => {
     console.log("File Changed");
@@ -191,9 +202,11 @@ const MediaUpload = () => {
 
   const handleChange = (name, value) => {
     console.log('handle change called ', name, value);
-    setValues({
-      ...values,
-      [name]: {...values[name], ...value},
+    setValues(prevState => {
+      return {
+        ...prevState,
+        [name]: {...prevState[name], ...value},
+      };
     });
     // console.debug(values);
   }
