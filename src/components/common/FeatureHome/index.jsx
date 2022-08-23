@@ -309,7 +309,7 @@ const FeatureHome = (props) => {
                 category={media.category}
                 onClick={() => handlePlay()} >
                 <PlayBtn
-                  size={"40"}
+                  size={"30"}
                   isLoading={(isLoading && currentMediaId === media.media_id) || isCheckingSubscription}
                   isPlaying={isPlaying && currentMediaId === media.media_id}
                 />

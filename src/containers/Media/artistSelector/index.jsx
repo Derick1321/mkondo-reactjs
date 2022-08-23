@@ -34,7 +34,7 @@ const ArtistSelectorComponent = (props) => {
                     </div>
                     {isFetchingArtist && <p>Fetching artists... <span className='spinner-border text-light'></span></p>}
                     {artists.filter(artist => user.user_type == 'super admin' ? true : artist.admin_id == user.user_id).map(artist => (
-                        <div className='mb-2 d-flex align-items-center bg-dark'>
+                        <div key={artist.user_id} className='mb-2 d-flex align-items-center bg-dark'>
                             <ArtistListArtistWidget artist={artist} />
                             <button className="btn btn-primary btn-xs ml-auto" onClick={() => onArtistSelected(artist)}>Select</button>
                         </div>
