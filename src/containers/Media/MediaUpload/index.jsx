@@ -181,7 +181,9 @@ const MediaUpload = () => {
       };
 
       //patching data from album
+      console.debug("CHECKING IF TRACKS BELONG TO AN ALBUM");
       if (state && state.albumId) {
+        console.debug("DETECTED TRACKS BELONG TO AN ALBUM");
         __data["genres"] = addedAlbumPayload.genres;
         __data["description"] = addedAlbumPayload.description;
         __data["cover_url"] = addedAlbumPayload.cover_image;
@@ -224,13 +226,14 @@ const MediaUpload = () => {
       // const avatarRes = await dispatch(saveMedia(item.file));
 
       if (item) {
+        console.debug("HANDLE CONTINUE: Selected Artist", selectedArtist);
         const data = {
           name: item.title,
           description: item.description,
           genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : (item.genre && item.genre.length ? item.genre.map((item) => item.value ?? item) : []),
           cover_url: item.cover_url ?? item.file,
           media_url: item.media_url,
-          owner_id: selectedArtist ? selectedArtist.user_id : userId,
+          owner_id: selectedArtist ? (selectedArtist.user_id ?? selectedArtist) : userId,
           category: 'audio',
           duration: values.duration || 0,
           composer: item.composer,
