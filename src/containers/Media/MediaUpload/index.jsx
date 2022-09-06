@@ -57,13 +57,13 @@ const MediaUpload = () => {
   // functions
   const handleNext = async () => {
     const item = values[files[files.length - 1].name];
-    history.push(routePaths.success, {
-      message: 'Congratulations you are all set!',
-      link: `https//:mkondo.co/app/media/${newMediaId}`,
-      country: item.recordLabel,
-      name: item.title, 
-      avatar: item.file,
-    });
+    // history.push(routePaths.success, {
+    //   message: 'Congratulations you are all set!',
+    //   link: `https//:mkondo.co/app/media/${newMediaId}`,
+    //   country: item.recordLabel,
+    //   name: item.title, 
+    //   avatar: item.file,
+    // });
 
     completedFiles.current = 0;
     dispatch(clearNewMediaId());
@@ -107,11 +107,21 @@ const MediaUpload = () => {
   }, [newMediaId]);
 
   useEffect(() => {
-    console.log("last uploaded changed", lastUploaded);
+    console.debug("lastUploaded changed", lastUploaded);
     if (!lastUploaded) return;
-    let _files = files.filter(file => file.name != lastUploaded.media_url);
+    console.debug("Last Uploaded has Values");
+    console.debug("FILTERING files, eqn: lastUploaded.media_url.includes(file.name)");
+    let _files = files.filter(file => {
+      console.debug(`${file.name} != ${lastUploaded.media_url}`)
+      if (lastUploaded.media_url) {
+        return !lastUploaded.media_url.includes(file.name);
+      }
+      return true;
+    });
+    console.debug("Setting Files state");
     setFiles(_files);
     if (_files.length == 0 && dirty) {
+      console.debug("All Files Uploaded Successfully");
       setSuccessMessage("Tracks Uploaded Successfull");
       setTimeout(() => {
         setSuccessMessage(null);
@@ -124,6 +134,10 @@ const MediaUpload = () => {
       setSelectedArtist(addedAlbumPayload.owner_id);
     }
   }, [locationState])
+
+  useEffect(() => {
+    console.debug("VALUES CHANGED", values);
+  }, [values]);
   // handlers
   const handleFileChange = (result) => {
     console.log("File Changed");
@@ -167,7 +181,9 @@ const MediaUpload = () => {
       };
 
       //patching data from album
+      console.debug("CHECKING IF TRACKS BELONG TO AN ALBUM");
       if (state && state.albumId) {
+        console.debug("DETECTED TRACKS BELONG TO AN ALBUM");
         __data["genres"] = addedAlbumPayload.genres;
         __data["description"] = addedAlbumPayload.description;
         __data["cover_url"] = addedAlbumPayload.cover_image;
@@ -191,9 +207,11 @@ const MediaUpload = () => {
 
   const handleChange = (name, value) => {
     console.log('handle change called ', name, value);
-    setValues({
-      ...values,
-      [name]: {...values[name], ...value},
+    setValues(prevState => {
+      return {
+        ...prevState,
+        [name]: {...prevState[name], ...value},
+      };
     });
     // console.debug(values);
   }
@@ -208,13 +226,14 @@ const MediaUpload = () => {
       // const avatarRes = await dispatch(saveMedia(item.file));
 
       if (item) {
+        console.debug("HANDLE CONTINUE: Selected Artist", selectedArtist);
         const data = {
           name: item.title,
           description: item.description,
           genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : (item.genre && item.genre.length ? item.genre.map((item) => item.value ?? item) : []),
           cover_url: item.cover_url ?? item.file,
           media_url: item.media_url,
-          owner_id: selectedArtist ? selectedArtist.user_id : userId,
+          owner_id: selectedArtist ? (selectedArtist.user_id ?? selectedArtist) : userId,
           category: 'audio',
           duration: values.duration || 0,
           composer: item.composer,
