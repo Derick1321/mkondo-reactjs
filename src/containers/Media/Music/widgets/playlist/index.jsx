@@ -78,18 +78,18 @@ export const MusicPlaylistComponent = (props) => {
     }
 
     return (
-        <div>
+        <div className={styles.wrapper}>
+            <div className={styles.left} onClick={handleNavLeft}>
+                <img src={arrowLeftIcon} alt="" />
+            </div>
+            <div className={styles.right} onClick={handleNavRight}>
+                <img src={arrowRightIcon} alt="" />
+            </div>
             <div className={`d-flex ${styles.header}`}>
                 {icon && <div className="mr-2"><img src={icon} height="30px" width="30px" alt="" /></div>}
                 <h3 className='text-light'>{title}</h3>
                 <div className="ml-auto d-flex">
-                    <div onClick={handleNavLeft}>
-                        <img src={arrowLeftIcon} alt="" />
-                    </div>
                     <div className="mr-2"></div>
-                    <div onClick={handleNavRight}>
-                        <img src={arrowRightIcon} alt="" />
-                    </div>
                 </div>
             </div>
 

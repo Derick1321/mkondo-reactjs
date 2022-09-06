@@ -39,6 +39,7 @@ const Player = () => {
 
   // store
   const currentPlaylist = useSelector((store) => store.player.currentPlaylist);
+  const currentMediaId = useSelector((store) => store.player.currentMediaId);
   const isPlaying = useSelector((store) => store.player.isPlaying);
   const isLoading = useSelector((store) => store.player.isLoading);
   const position = useSelector((store) => store.player.position);
@@ -64,7 +65,7 @@ const Player = () => {
 
   useEffect(() => {
     if (!currentPlaylist[currentPlaylistIndex]) return;
-    console.log("Current playlist changed");
+    console.log("Current playlist changed", currentPlaylist[currentPlaylistIndex]);
     setAvatar(currentPlaylist[currentPlaylistIndex].avatar);
     setAlbum(currentPlaylist[currentPlaylistIndex].artistName);
     setArtistName(currentPlaylist[currentPlaylistIndex].name);
@@ -93,6 +94,10 @@ const Player = () => {
 
   const handlePrev = () => {
     dispatch(goPrev());
+  }
+
+  const handleViewMedia = () => {
+    history.push(generatePath(routePaths.viewMedia, { id: currentMediaId }))
   }
 
   const toggleFooter = () => { dispatch(toggleFooterPlayer()); }
@@ -134,7 +139,7 @@ const Player = () => {
           className={`${styles.playerAvatar} mx-1`}
         />
         <div className="d-flex flex-column justify-content-center mx-2">
-          <span>{artistName}</span>
+          <span style={{ cursor: 'pointer' }} onClick={handleViewMedia}>{artistName}</span>
           {
             album && <span style={{ cursor: 'pointer', }} onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}>{album}</span>
           }

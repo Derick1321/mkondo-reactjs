@@ -82,7 +82,7 @@ const UploadCard = (props) => {
   }
 
   const handleChange = (itemName, value) => {
-    console.log("Upload Card ChNGED", itemName, value);
+    console.log("UPLOAD CARD: handleChange(itemName, value)", itemName, value);
     onChange(name, {
       ...initialState,
       ...values,

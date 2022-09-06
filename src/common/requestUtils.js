@@ -144,7 +144,7 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
             // });
             // console.error(e);
 
-            return {};
+            throw e;
         }
     }
 }
