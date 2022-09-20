@@ -107,7 +107,7 @@ const ForgotPasswordModal = () => {
 
   // handlers
   const handleLogin = () => {
-    dispatch(showModal('LOGIN_MODAL'));
+    history.push(routePaths.login);
   };
 
   const handleForgot = () => {
@@ -185,12 +185,14 @@ const ForgotPasswordModal = () => {
                   <TextInput
                     name="password"
                     placeholder="Your New Password"
+                    type="password"
                     value={password}
                     onChange={handleChange}
                   />
                   <TextInput
                     name="confirm_password"
                     placeholder="Confirm Your Password"
+                    type="password"
                     value={confirmPassword}
                     onChange={handleChange}
                   />
