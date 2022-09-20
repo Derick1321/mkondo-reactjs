@@ -6,6 +6,9 @@ import { useSelector } from 'react-redux';
 import placeholder from '$assets/images/placeholder.png';
 import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../../../common/routeConfig';
+import PlayBtn from '../../../../../components/media/PlayBtn';
+
+const playIconRed = require('$assets/images/player/play_red.svg');
 
 const SeriesItemComponent = (props) => {
     //props
@@ -37,8 +40,9 @@ const SeriesItemComponent = (props) => {
     }
     
     return (
-        <div className={styles.wrapper} onClick={handleSeriesClicked}>
-            <img src={coverUrl ?? placeholder} alt="" />
+        <div className={styles.wrapper}>
+            <img src={coverUrl ?? placeholder} alt="" className={styles.cover} />
+            <img src={playIconRed} alt="" className={styles.btn} onClick={handleSeriesClicked} />
         </div>
     );
 }
