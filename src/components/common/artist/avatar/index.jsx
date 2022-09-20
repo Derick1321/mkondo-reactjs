@@ -20,6 +20,7 @@ const ArtistAvatarComponent = (props) => {
     //effects
     useEffect(() => {
         if (!artist) return;
+        console.debug("ARTIST", artist.avatar_url);
         getMediaUrl(artist.avatar_url, token).then(res => setAvatar(res));
     }, [artist]);
 

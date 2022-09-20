@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './index.module.scss';
 
 const icons = {
+  play: require('$assets/images/icons/play.svg'),
   next: require('$assets/images/icons/arrow-next.svg'),
   arrowUp: require('$assets/images/icons/arrow-up.svg'),
   shuffle: require('$assets/images/player/shuffle-active.svg'),

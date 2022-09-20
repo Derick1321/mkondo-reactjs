@@ -18,19 +18,19 @@ const TheatrePlaylistItemComponent = (props) => {
   //store
   const dispatch = useDispatch();
 
-  const handleSelect = (media) => {
-    console.log("handle selected called");
-    dispatch(retrieveMedia(media.media_id));
-    dispatch(setTheatreCurrentMedia(media));
-    // dispatch(showModal('ALERT_MODAL'))
-  }
+  // const handleSelect = (media) => {
+  //   console.log("handle selected called");
+  //   dispatch(retrieveMedia(media.media_id));
+  //   dispatch(setTheatreCurrentMedia(media));
+  //   // dispatch(showModal('ALERT_MODAL'))
+  // }
 
   return (
     <div className={styles.wrapper} onClick={() => handleSelect(media)}>
       <FeatureHome
           key={`feature-home-theatre-${media.media_id}`}
           media={media}
-          disablePlayBtn={true}
+          // disablePlayBtn={true}
         />
       {/* <h4 className={styles.title}>{name}</h4> */}
     </div>

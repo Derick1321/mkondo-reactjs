@@ -18,6 +18,9 @@ import List from '../../components/marketing-site/List/index';
 import AppDownload from '../../components/marketing-site/AppDownload';
 import Tabs from '../../components/common/TabsArtist/index';
 import ScrollMedia from '../../components/media/ScrollMedia';
+import fireIcon from '$assets/images/icons/fire.svg';
+import newTag from '$assets/images/icons/new-tag.svg';
+import { MusicPlaylistComponent } from '../Media/Music/widgets/playlist';
 
 const today = new Date();
 
@@ -129,14 +132,15 @@ const Marketing = () => {
               ]} />
           </div>
           <div className="pb-5 mt-3">
-            <ScrollMedia
+            <MusicPlaylistComponent title={`New ${selected ? selected.charAt(0).toUpperCase() + selected.slice(1) : ""}`} icon={newTag} media={values} />
+            {/* <ScrollMedia
               title={''}
               values={values}
               isLoading={values.length < 1}
               name="marketing-new-release"
               viewMore={``}
               showHeader
-            />
+            /> */}
           </div>
         </div>
       </div>

@@ -29,7 +29,7 @@ export const ManageSeriesProfile = (props) => {
 
     //hooks
     const { series_id } = useParams();
-    const { push } = useHistory();
+    const { push, goBack } = useHistory();
 
     //refs
     const fileRef = useRef(null);
@@ -48,7 +48,7 @@ export const ManageSeriesProfile = (props) => {
 
     //effects
     useEffect(() => {
-        if (!mySeries.length) dispatch(getSeries())
+        dispatch(getSeries({owner_id: user.user_id}));
     }, []);
 
     useEffect(() => {
@@ -120,10 +120,15 @@ export const ManageSeriesProfile = (props) => {
         setEpisodes(episodes.filter(ep => ep.filename != filename));
     }
 
+    const handleRemoveEpisode = (filename) => {
+        setEpisodes(episodes.filter(ep => ep.filename != filename));
+    }
+
     return (
         <div className="container mt-5">
             <div className="row pt-5">
                 <div className="col-lg-9">
+                    <button className="btn btn-primary mb-3" onClick={() => goBack()}>Back</button>
                     <h1 className="text-light">{series ? series.title : 'My Series'}</h1>
                     {series ? <p>Has {series.episodes.length} episodes</p> : ''}
 
@@ -157,7 +162,7 @@ export const ManageSeriesProfile = (props) => {
                     <div className="mt-3">
                         {episodes.map(ep => (
                             <div className="mb-2">
-                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} />
+                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} onRemove={() => handleAddEpisodeComplete(ep.filename)} />
                             </div>
                         ))}
                     </div>

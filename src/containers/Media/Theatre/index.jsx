@@ -21,7 +21,7 @@ import { showModal } from '../../../redux/features/modal';
 import Tabs from '../../../components/common/Tabs/index';
 import SeriesItemComponent from './widgets/series/index';
 import { routePaths } from '../../../common/routeConfig';
-import { useHistory } from 'react-router-dom';
+import { generatePath, useHistory } from 'react-router-dom';
 
 
 const TheatreContainer = () => {
@@ -188,18 +188,6 @@ const TheatreContainer = () => {
             }, 2000);
         }
     }
-
-    const handleSeriesClicked = (series) => {
-        dispatch(updateCollectionPayload({
-            key: 'type',
-            value: 'series',
-        }));
-        dispatch(updateCollectionPayload({
-            key: 'media',
-            value: series.episodes,
-        }));
-        history.push(routePaths.viewCollection);
-    }
     
     return (
         <>
@@ -301,11 +289,11 @@ const TheatreContainer = () => {
                 ) : null}
 
                 {selectedTab == "series" ? (
-                    <div className='my-5'>
+                    <div className='my-5 d-flex'>
                         {(!newSeries.length && !newSeriesLoading) 
                             ? <p>No Series Found</p> 
                             : newSeries.map(series => (
-                                <div onClick={() => handleSeriesClicked(series)}>
+                                <div className='mr-2'>
                                     <SeriesItemComponent series={series} />
                                 </div>
                             ))}

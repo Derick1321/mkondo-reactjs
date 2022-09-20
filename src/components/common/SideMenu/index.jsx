@@ -137,12 +137,12 @@ const SideMenu = (props) => {
   ];
 
   const accountRoutes = [
-    {
-      icon: require('$assets/images/icons/shopping-cart.svg'),
-      activeIcon: require('$assets/images/icons/shopping-cart.svg'),
-      title: 'Subscriptions',
-      path: routePaths.subscriptions,
-    },
+    // {
+    //   icon: require('$assets/images/icons/shopping-cart.svg'),
+    //   activeIcon: require('$assets/images/icons/shopping-cart.svg'),
+    //   title: 'Subscriptions',
+    //   path: routePaths.subscriptions,
+    // },
     {
       icon: require('$assets/images/icons/credit-card.svg'),
       activeIcon: require('$assets/images/icons/credit-card.svg'),

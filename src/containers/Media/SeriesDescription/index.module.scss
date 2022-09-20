@@ -1,0 +1,148 @@
+@import '$assets/scss/main.scss';
+
+.wrapper {
+    width: 960px;
+    margin: 0 auto;
+
+    @media screen and (max-width: 768px) {
+        width: 100vw;
+    }
+
+    .trailer {
+        position: relative;
+        display: block;
+        background-color: $background-color;
+        width: 960px;
+        margin: 0 auto;
+        overflow: hidden;
+        height: 540px;
+        
+        @media screen and (max-width: 768px) {
+            width: 100vw;
+            height: auto;
+        }
+
+        video {
+            width: 100%;
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+
+            @media screen and (max-width: 768px) {
+                left: 20px;
+            }
+
+            img {
+                height: 50px;
+                width: 50px;
+
+                @media screen and (max-width: 768px) {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+        }
+
+        .shade {
+            position: absolute;
+            display: block;
+            z-index: 2;
+            height: 200px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            background-image: linear-gradient(to bottom, transparent 0%, $background-color 100%)
+        }
+
+        .description {
+            position: absolute;
+            z-index: 3;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+        }
+    }
+
+    .content {
+        display: flex;
+        margin: 20px;
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+        }
+        
+        p {
+            color: white;
+        }
+
+
+        .description {
+            flex-grow: 1;
+            margin-right: 20px;
+        }
+
+        .extra {
+            width: 40vw;
+
+            span {
+                color: gray;
+            }
+
+            @media screen and (max-width: 768px) {
+                width: auto;
+                margin-right: 20px;
+            }
+        }
+    }
+
+    .moreDetails {
+        margin-top: 20px;
+        color: white;
+
+        @media screen and (max-width: 768px) {
+            margin: 20px;
+        }
+
+        p {
+            color: white;
+        }
+
+        span {
+            color: gray;
+        }
+    }
+
+    .similar {
+        color: white;
+
+        @media screen and (max-width: 768px) {
+            h2, p {
+                margin: 0 20px;
+            }
+        }
+
+        .media {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+
+            @media screen and (max-width: 768px) {
+                margin-left: 10px;
+                gap: 1px;
+            }
+        }
+    }
+}
+
+.loader {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
