@@ -11,6 +11,7 @@ import { forgotPassword } from '$redux/features/authentication';
 import { verifyOTP, resetPassword } from '../../../redux/features/authentication';
 import { useHistory } from 'react-router';
 import { routePaths } from '../../../common/routeConfig';
+import { hideModal } from '../../../redux/features/modal';
 
 const ForgotPasswordModal = () => {
   // route
@@ -108,6 +109,7 @@ const ForgotPasswordModal = () => {
   // handlers
   const handleLogin = () => {
     history.push(routePaths.login);
+    dispatch(hideModal());
   };
 
   const handleForgot = () => {
