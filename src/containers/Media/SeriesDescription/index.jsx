@@ -21,6 +21,7 @@ export const SeriesDescriptionPage = (props) => {
 
     // state
     const [trailerUrl, setTrailerUrl] = useState();
+    const [series, setSeries] = useState(null);
     const [isFetchingTrailerUrl, setIsFetchingTrailerUrl] = useState(false);
 
     // redux
@@ -31,7 +32,7 @@ export const SeriesDescriptionPage = (props) => {
     const getMediaError = useSelector(state => state.media.getMediaError);
     const fetchMoviesPending = useSelector(state => state.media.fetchMoviesPending);
     const similarMovies = useSelector(state => state.media.movies.slice(0, 4));
-    const series = useSelector(state => state.media.newSeries.items.find(s => s.series_id == series_id));
+    const seriesbag = useSelector(state => state.media.mySeries);
 
     // effects
     // useEffect(() => {
@@ -42,7 +43,17 @@ export const SeriesDescriptionPage = (props) => {
 
     // effects
     useEffect(() => {
-        console.debug("DESC PAGE: currentMedia", currentMedia);
+        console.debug("DESC PAGE: series", series);
+        if (!seriesbag) return;
+        if (!series_id) return;
+
+        let _series = seriesbag.find(s => s.series_id == series_id);
+        if (series) {
+            setSeries(_series);
+        }
+    }, [seriesbag, series_id]);
+
+    useEffect(() => {
         if (!series) return;
         setIsFetchingTrailerUrl(true)
         getMediaUrl(series.trailer_url, token)
@@ -51,17 +62,18 @@ export const SeriesDescriptionPage = (props) => {
                 setIsFetchingTrailerUrl(false);
             })
             .catch(e => setIsFetchingTrailerUrl(false));
-    }, [series]);
+    }, [series])
 
     const handleWatch = () => {
         push(generatePath(routePaths.watchMovie, {id: series.episodes[0].media_id}));
     }
 
 
-    if (!isFetchingTrailerUrl) {
+    if (!series) {
         return (
             <div className={styles.loader}>
-                <span className="spinner-border"></span>
+                <span className="spinner-border mr-2"></span>
+                <span>Fetching Series</span>
             </div>
         )
     }

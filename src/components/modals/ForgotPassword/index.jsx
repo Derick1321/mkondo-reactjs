@@ -11,6 +11,7 @@ import { forgotPassword } from '$redux/features/authentication';
 import { verifyOTP, resetPassword } from '../../../redux/features/authentication';
 import { useHistory } from 'react-router';
 import { routePaths } from '../../../common/routeConfig';
+import { hideModal } from '../../../redux/features/modal';
 
 const ForgotPasswordModal = () => {
   // route
@@ -108,6 +109,7 @@ const ForgotPasswordModal = () => {
   // handlers
   const handleLogin = () => {
     history.push(routePaths.login);
+    dispatch(hideModal());
   };
 
   const handleForgot = () => {
@@ -207,7 +209,7 @@ const ForgotPasswordModal = () => {
                     </Button>
                   </div>
                   <div className="d-flex align-items-center justify-content-center my-4">
-                    <span>Back to </span>
+                    
                     <Button
                       onClick={handleLogin}
                       isTransparent
@@ -215,7 +217,7 @@ const ForgotPasswordModal = () => {
                       noBorder
                       noWidth
                     >
-                      Login
+                      Back to Login
                     </Button>
                   </div>
                 </div>
@@ -249,7 +251,6 @@ const ForgotPasswordModal = () => {
                   </Button>
                 </div>
                   <div className="d-flex align-items-center justify-content-center my-4">
-                    <span>Back to </span>
                     <Button
                       onClick={handleLogin}
                       isTransparent
@@ -257,7 +258,7 @@ const ForgotPasswordModal = () => {
                       noBorder
                       noWidth
                     >
-                      Login
+                      Back to Login
                     </Button>
                   </div>
                 </div>
@@ -283,7 +284,6 @@ const ForgotPasswordModal = () => {
               </Button>
             </div>
             <div className="d-flex align-items-center justify-content-center my-4">
-              <span>Back to </span>
               <Button
                 onClick={handleLogin}
                 isTransparent
@@ -291,7 +291,7 @@ const ForgotPasswordModal = () => {
                 noBorder
                 noWidth
               >
-                Login
+                Back to Login
               </Button>
             </div>
           </div>
