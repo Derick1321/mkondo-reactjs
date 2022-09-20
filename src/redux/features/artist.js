@@ -7,6 +7,7 @@ import queryString from 'query-string';
 const ADD_ARTIST = 'artist/ADD_ARTIST';
 const UPDATE_ARTIST = 'artist/UPDATE_ARTIST'
 const GET_ARTISTS = 'artist/GET_ARTISTS';
+const GET_ARTISTS_MORE = 'artist/GET_ARTISTS_MORE';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
 const GET_INSIGHT = 'artist/GET_INSIGHT';
 const GET_ARTIST_MEDIA = 'artist/GET_ARTIST_MEDIA';
@@ -35,7 +36,21 @@ export const getArtists = createAsyncThunk(
   GET_ARTISTS,
   async (params, param) => {
     const { token } = param.getState().authentication;
-    return await handleFetch('GET', `artists?${queryString.stringify(params)}`, null, token);
+    const _filters = {
+      ...params,
+      // size: 2,
+    }
+    return await handleFetch('GET', `artists?${queryString.stringify(_filters)}`, null, token);
+  }
+);
+
+export const getArtistsMore = createAsyncThunk(
+  GET_ARTISTS_MORE,
+  async (params, param) => {
+    const { token } = param.getState().authentication;
+    const { hasNext, next } = param.getState().artist.artistsPagination;
+    if (!hasNext) return;
+    return await handleFetch('GET', next, null, token);
   }
 );
 
@@ -102,6 +117,9 @@ const initialState = {
   getArtistsPending: false,
   getArtistsComplete: false,
   getArtistsError: null,
+  getArtistsMorePenidng: false,
+  getArtistsMoreComplete: false,
+  getArtistsMoreError: null,
   getArtistMediaPending: false,
   getArtistMediaComplete: false,
   getArtistMediaError: false,
@@ -118,6 +136,7 @@ const initialState = {
   createManageUserRequestErrors: [],
   newArtistId: '',
   artists: [],
+  artistsPagination: {},
   manageUserRequests: [],
   currentArtist: {},
   insights: {},
@@ -170,11 +189,29 @@ const artistSlice = createSlice({
       state.getArtistsComplete = true;
       state.getArtistsError = null;
       state.artists = action.payload.artists.data;
+      state.artistsPagination = action.payload.artists.pagination;
     },
     [getArtists.rejected]: (state, action) => {
       state.getArtistsPending = false;
       state.getArtistsComplete = false;
       state.getArtistsError = action.error;
+    },
+    [getArtistsMore.pending]: (state, action) => {
+      state.getArtistsMorePenidng = true;
+      state.getArtistsMoreComplete = false;
+      state.getArtistsMoreError = null;
+    },
+    [getArtistsMore.fulfilled]: (state, action) => {
+      state.getArtistsMorePenidng = false;
+      state.getArtistsMoreComplete = true;
+      state.getArtistsMoreError = null;
+      state.artists.push(...action.payload.artists.data);
+      state.artistsPagination = action.payload.artists.pagination;
+    },
+    [getArtistsMore.rejected]: (state, action) => {
+      state.getArtistsMorePenidng = false;
+      state.getArtistsMoreComplete = false;
+      state.getArtistsMoreError = action.error;
     },
     [getArtistMedia.pending]: (state, action) => {
       state.getArtistMediaPending = true;

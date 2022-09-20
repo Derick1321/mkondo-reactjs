@@ -4,10 +4,14 @@ import { handleFetch } from '$common/requestUtils';
 import { getUser, saveUser, clearUser } from '$common/userService';
 import { setDefaultPaymentMethod } from './subscriptions';
 import user from './user';
+import { async } from 'regenerator-runtime';
+import storage from 'redux-persist/lib/storage';
+import persistReducer from 'redux-persist/es/persistReducer';
 
 const AUTHENTICATE = 'authentication/AUTHENTICATE';
 const SIGN_UP = 'authentication/SIGN_UP';
 const FORGOT_PASSWORD = 'authentication/FORGOT_PASSWORD';
+const VERIFY_OTP = 'authentication/VERIFY_OTP';
 const RESET_PASSWORD = 'authentication/RESET_PASSWORD';
 const RELOAD_USER = 'authentication/RELOAD_USER';
 const VISITOR_COLD_START = 'authentication/VISITOR_COLD_START';
@@ -34,6 +38,13 @@ export const forgotPassword = createAsyncThunk(
         return await handleFetch('POST', 'users/forgotpassword', data);
     }
 );
+
+export const verifyOTP = createAsyncThunk(
+    VERIFY_OTP,
+    async (data) => {
+        return await handleFetch('POST', 'users/verify-otp', data);
+    }
+)
 
 export const resetPassword = createAsyncThunk(
     RESET_PASSWORD,
@@ -78,6 +89,7 @@ const handleAuthentication = (data) => {
 const initialState = {
     token: null,
     visitorToken: null,
+    resetToken: null,
     user: {
         full_name: null,
         user_id: null,
@@ -93,6 +105,9 @@ const initialState = {
     forgotPasswordPending: false,
     forgotPasswordComplete: false,
     forgotPasswordError: null,
+    verifyOtpPending: false,
+    verifyOtpComplete: false,
+    verifyOtpError: null,
     resetPasswordPending: false,
     resetPasswordComplete: false,
     resetPasswordError: null,
@@ -208,6 +223,21 @@ const authenticationSlice = createSlice({
             state.forgotPasswordError = action.error;
             state.forgotPasswordComplete = false;
         },
+        [verifyOTP.pending]: (state, action) => {
+            state.verifyOtpPending = true;
+            state.verifyOtpComplete = false;
+            state.verifyOtpError = null;
+        },
+        [verifyOTP.fulfilled]: (state, action) => {
+            state.verifyOtpPending = false;
+            state.verifyOtpComplete = true;
+            state.resetToken = action.payload.reset_token;
+        },
+        [verifyOTP.rejected]: (state, action) => {
+            state.verifyOtpPending = false;
+            state.verifyOtpComplete = false;
+            state.verifyOtpError = action.error;
+        },
         [resetPassword.pending]: (state, action) => {
             state.resetPasswordPending = true;
             state.resetPasswordError = null;
@@ -274,7 +304,13 @@ const authenticationSlice = createSlice({
     }
 });
 
+const authenticationPersistConfig = {
+    key: 'authentication',
+    storage: storage,
+    whitelist: ['token', 'visitorToken', 'resetToken', 'user'],
+  }
+
 // extra actions
 export const { logout, coldstart } = authenticationSlice.actions;
 // reducer
-export default authenticationSlice.reducer;
+export default persistReducer(authenticationPersistConfig, authenticationSlice.reducer);

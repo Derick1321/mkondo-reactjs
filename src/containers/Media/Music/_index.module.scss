@@ -1,0 +1,11 @@
+@import '$assets/scss/main.scss';
+
+.hero {
+    background-color: red;
+    z-index: 0;
+}
+
+.content {
+    margin-top: 20px;
+    z-index: 25;
+}

@@ -40,9 +40,14 @@ const GET_SERIES = 'media/GET_SERIES';
 const GET_NEW_SERIES = 'media/GET_NEW_SERIES';
 const UPDATE_SERIES = 'media/UPDATE_SERIES';
 const REMOVE_SERIES = 'media/REMOVE_SERIES';
+const FETCH_MEDIA = 'media/FETCH_MEDIA';
+const FETCH_MEDIA_MORE = 'media/FETCH_MEDIA_MORE';
 const FETCH_MOVIES = 'media/FETCH_MOVIES';
+const FETCH_MOVIES_MORE = 'media/FETCH_MOVIES_MORE';
 const FETCH_AUDIOS = 'media/FETCH_AUDIO';
+const FETCH_AUDIOS_MORE = 'media/FETCH_AUDIO_MORE';
 const FETCH_VIDEOS = 'media/FETCH_VIDEOS';
+const FETCH_VIDEOS_MORE = 'media/FETCH_VIDEOS_MORE';
 const CHECK_SUBSCRIPTION_STATUS = 'media/CHECK_SUBSCRIPTION_STATUS';
 
 
@@ -479,7 +484,7 @@ export const getSeries = createAsyncThunk(
     GET_SERIES,
     async (params, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('GET', 'series', params, token);
+        return await handleFetch('GET', `series?${queryString.stringify(params)}`, null, token);
     }
 );
 
@@ -510,6 +515,35 @@ export const removeSeries = createAsyncThunk(
     }
 )
 
+export const fetchMedia = createAsyncThunk(
+    FETCH_MEDIA,
+    async (filters, store) => {
+        const { token } = store.getState().authentication;
+        const mediaFilters = store.getState().media.mediaFilters;
+        const _filters = {
+            ...mediaFilters,
+            ...filters
+        };
+
+        if (!_filters.category) {
+            _filters["category"] = "audio";
+        }
+        
+        return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }
+);
+
+export const fetchMediaMore = createAsyncThunk(
+    FETCH_MEDIA_MORE,
+    async (filters, store) => {
+        console.log("fetching MEDIA more thunk triggered");
+        const { token } = store.getState().authentication;
+        const { hasNext, next } = store.getState().media.mediaPagination;
+        if (!hasNext) return;
+        return await handleFetch('GET', next, null, token);
+    }  
+);
+
 export const fetchMovies = createAsyncThunk(
     FETCH_MOVIES,
     async (filters, store) => {
@@ -522,6 +556,17 @@ export const fetchMovies = createAsyncThunk(
         console.log("the filters are ", _filters);
         
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }  
+);
+
+export const fetchMoviesMore = createAsyncThunk(
+    FETCH_MOVIES_MORE,
+    async (filters, store) => {
+        console.log("fetching movies more thunk triggered");
+        const { token } = store.getState().authentication;
+        const { hasNext, next } = store.getState().media.moviesPagination;
+        if (!hasNext) return;
+        return await handleFetch('GET', next, null, token);
     }  
 );
 
@@ -539,6 +584,17 @@ export const fetchAudios = createAsyncThunk(
     }  
 );
 
+export const fetchAudiosMore = createAsyncThunk(
+    FETCH_AUDIOS_MORE,
+    async (filters, store) => {
+        console.log("fetching audios more thunk triggered");
+        const { token } = store.getState().authentication;
+        const { hasNext, next } = store.getState().media.audiosPagination;
+        if (!hasNext) return;
+        return await handleFetch('GET', next, null, token);
+    }  
+);
+
 export const fetchVideos = createAsyncThunk(
     FETCH_VIDEOS,
     async (filters, store) => {
@@ -551,6 +607,17 @@ export const fetchVideos = createAsyncThunk(
         console.log("the filters are ", _filters);
         
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
+    }  
+);
+
+export const fetchVideosMore = createAsyncThunk(
+    FETCH_VIDEOS_MORE,
+    async (filters, store) => {
+        console.log("fetching videos more thunk triggered");
+        const { token } = store.getState().authentication;
+        const { hasNext, next } = store.getState().media.videosPagination;
+        if (!hasNext) return;
+        return await handleFetch('GET', next, null, token);
     }  
 );
 
@@ -720,14 +787,35 @@ const initialState = {
     },
     mySeries: [],
     lastUploaded: null,
+    fetchMediaPending: false,
+    media: [],
+    mediaFilters: {},
+    mediaFiltersTitle: "",
+    mediaCount: 0,
+    mediaPagination: {},
+    fetchMediaMorePending: true,
+    fetchMediaMoreError: null,
+    fetchMediaError: null,
     fetchMoviesPending: false,
     movies: [],
+    moviesCount: 0,
+    moviesPagination: {},
+    fetchMoviesMorePending: true,
+    fetchMoviesMoreError: null,
     fetchMoviesError: null,
     fetchAudioPending: false,
     audios: [],
+    audiosCount: 0,
+    audiosPagination: {},
+    fetchAudiosMorePending: true,
+    fetchAudiosMoreError: null,
     fetchAudioError: null,
     fetchVideoPending: false,
     videos: [],
+    videosCount: 0,
+    videosPagination: {},
+    fetchVideosMorePending: true,
+    fetchVideosMoreError: null,
     fetchVideoError: null,
     fetchAlbumsPending: false,
     deleteAlbumErrors: [],
@@ -818,6 +906,12 @@ const mediaSlice = createSlice({
         },
         updateCollectionPayload(state, action) {
             state.collection[action.payload.key] = action.payload.value;
+        },
+        setMediaFilters(state, action) {
+            state.mediaFilters = action.payload;
+        },
+        setMediaFiltersTitle(state, action) {
+            state.mediaFiltersTitle = action.payload;
         }
     },
     extraReducers: {
@@ -1153,7 +1247,7 @@ const mediaSlice = createSlice({
                     comment.comments.push(action.payload["comment"])
                     comment.no_of_replies++;
                 } else {
-                    comment.comments = [].push(action.payload["comment"])
+                    comment.comments = [action.payload["comment"]]
                     comment.no_of_replies = 1;
                 }
                 state.comments[commentIndex] = comment;
@@ -1366,6 +1460,35 @@ const mediaSlice = createSlice({
             //remove the series from my series
             state.mySeries = state.mySeries.filter(series => series.series_id != action.meta.arg);
         },
+        [fetchMedia.pending]: (state, action) => {
+            state.fetchMediaPending = true;
+            state.fetchMediaError = null;
+        },
+        [fetchMedia.fulfilled]: (state, action) => {
+            state.fetchMediaPending = false;
+            state.media = action.payload.media;
+            state.mediaCount = action.payload.pagination.totalElements
+            state.mediaPagination = action.payload.pagination
+            state.fetchMediaError = null;
+        },
+        [fetchMedia.rejected]: (state, action) => {
+            state.fetchMediaPending = false;
+            state.fetchMediaError = action.error;
+        },
+        [fetchMediaMore.pending]: (state, action) => {
+            state.fetchMediaMorePending = true;
+            state.fetchMediaMoreError = null;
+        },
+        [fetchMediaMore.fulfilled]: (state, action) => {
+            state.fetchMediaMorePending = false;
+            state.media.push(...action.payload.media);
+            state.mediaPagination = action.payload.pagination
+            
+        },
+        [fetchMediaMore.rejected]: (state, action) => {
+            state.fetchMediaMorePending = false;
+            state.fetchMediaMoreError = action.error;
+        },
         [fetchMovies.pending]: (state, action) => {
             state.fetchMoviesPending = true;
             state.removeSeriesPendingQueue = state.removeSeriesPendingQueue.filter(id => id != action.meta.arg);
@@ -1374,11 +1497,27 @@ const mediaSlice = createSlice({
         [fetchMovies.fulfilled]: (state, action) => {
             state.fetchMoviesPending = false;
             state.movies = action.payload.media;
+            state.moviesCount = action.payload.pagination.totalElements
+            state.moviesPagination = action.payload.pagination
             state.fetchMoviesError = null;
         },
         [fetchMovies.rejected]: (state, action) => {
             state.fetchMoviesPending = false;
             state.fetchMoviesError = action.error;
+        },
+        [fetchMoviesMore.pending]: (state, action) => {
+            state.fetchMoviesMorePending = true;
+            state.fetchMoviesMoreError = null;
+        },
+        [fetchMoviesMore.fulfilled]: (state, action) => {
+            state.fetchMoviesMorePending = false;
+            state.movies.push(...action.payload.media);
+            state.moviesPagination = action.payload.pagination
+            
+        },
+        [fetchMoviesMore.rejected]: (state, action) => {
+            state.fetchMoviesMorePending = false;
+            state.fetchMoviesMoreError = action.error;
         },
         [fetchAudios.pending]: (state, action) => {
             state.fetchAudioPending = true;
@@ -1387,11 +1526,27 @@ const mediaSlice = createSlice({
         [fetchAudios.fulfilled]: (state, action) => {
             state.fetchAudioPending = false;
             state.audios = action.payload.media;
+            state.audiosCount = action.payload.pagination.totalElements
+            state.audiosPagination = action.payload.pagination
             state.fetchAudioError = null;
         },
         [fetchAudios.rejected]: (state, action) => {
             state.fetchAudioPending = false;
             state.fetchAudioError = action.error;
+        },
+        [fetchAudiosMore.pending]: (state, action) => {
+            state.fetchAudiosMorePending = true;
+            state.fetchAudiosMoreError = null;
+        },
+        [fetchAudiosMore.fulfilled]: (state, action) => {
+            state.fetchAudiosMorePending = false;
+            state.audios.push(...action.payload.media);
+            state.audiosPagination = action.payload.pagination
+            
+        },
+        [fetchAudiosMore.rejected]: (state, action) => {
+            state.fetchAudiosMorePending = false;
+            state.fetchAudiosMoreError = action.error;
         },
         [fetchVideos.pending]: (state, action) => {
             state.fetchVideoPending = true;
@@ -1400,11 +1555,27 @@ const mediaSlice = createSlice({
         [fetchVideos.fulfilled]: (state, action) => {
             state.fetchVideoPending = false;
             state.videos = action.payload.media;
+            state.videosCount = action.payload.pagination.totalElements
+            state.videosPagination = action.payload.pagination
             state.fetchVideoError = null;
         },
         [fetchVideos.rejected]: (state, action) => {
             state.fetchVideoPending = false;
             state.fetchVideoError = action.error;
+        },
+        [fetchVideosMore.pending]: (state, action) => {
+            state.fetchVideosMorePending = true;
+            state.fetchVideosMoreError = null;
+        },
+        [fetchVideosMore.fulfilled]: (state, action) => {
+            state.fetchVideosMorePending = false;
+            state.videos.push(...action.payload.media);
+            state.videosPagination = action.payload.pagination
+            
+        },
+        [fetchVideosMore.rejected]: (state, action) => {
+            state.fetchVideosMorePending = false;
+            state.fetchVideosMoreError = action.error;
         },
         [fetchAlbums.pending]: (state, action) => {
             state.fetchAlbumsPending = true;
@@ -1476,5 +1647,5 @@ const mediaSlice = createSlice({
     }
 });
 
-export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, popUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState, updateCollectionPayload } = mediaSlice.actions;
+export const { clearNewMediaId, clearMedia, updateCurrentComment, updateMediaProgress, updateAddMediaUploadProgress, updateAddMediaUploadedSize, updateAddMediaTotalSize, pushUploadQueue, popUploadQueue, updateUploadQueueItemProgress, updateUploadQueueItemUploaded, updateUploadQueueItemTotal, updateUploadQueueItemState, updateCollectionPayload, setMediaFilters, setMediaFiltersTitle } = mediaSlice.actions;
 export default mediaSlice.reducer;

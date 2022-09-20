@@ -1,0 +1,39 @@
+@import '$assets/scss/main.scss';
+
+.header {
+    background-color: black;
+    padding: 15px 30px;
+
+    @media only screen and (max-width: 676px) {
+        padding: 15px;
+    }
+}
+
+.body {
+    position: relative;
+    display: block;
+    overflow-x: hidden;
+    // border: solid 1px red;
+}
+
+.wrapper {
+    position: relative;
+    display: block;
+    height: 350px;
+}
+
+.left {
+    position: absolute;
+    left: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.right {
+    position: absolute;
+    right: -45px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
