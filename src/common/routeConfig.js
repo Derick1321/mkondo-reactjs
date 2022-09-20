@@ -53,6 +53,10 @@ import { VideosContainer } from '../containers/Media/Videos/index';
 import { FacebookDataDeletionStatus } from '../containers/LegalPages/FacebookDataDeletionStatus';
 import ViewMediaCollection from '../containers/Media/ViewCollection/index';
 import ArtistList from '../containers/Artist/List/index';
+import { MediaDescriptionPage } from '../containers/Media/Description/index';
+import { WatchMovie } from '../containers/Media/Watch';
+import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
+import { MediaListPage } from '../containers/Media/MediaList';
 
 export const routePaths = {
   main: '/app',
@@ -79,6 +83,10 @@ export const routePaths = {
   newVideo: '/app/media/new-video',
   newMediaCategory: '/app/media/select-category',
   mediaUpload: '/app/media/upload',
+  describeMedia: '/app/media/:id/describe',
+  describeSeries: '/app/media/series/:series_id/describe',
+  watchMovie: '/app/media/:id/watch',
+  mediaList: '/app/media/list',
   viewMedia: '/app/media/:id',
   viewCollection: '/app/media/collection',
   artist: '/app/artist',
@@ -213,6 +221,12 @@ export const routes = [
   },
   {
     ...defaultConfig,
+    path: routePaths.watchMovie,
+    component: WatchMovie,
+    redirect: redirectFunctions.app,
+  },
+  {
+    ...defaultConfig,
     path: routePaths.main,
     component: Main,
     exact: false,
@@ -323,6 +337,12 @@ export const routes = [
         routes: [
           {
             ...defaultConfig,
+            path: routePaths.mediaList,
+            component: MediaListPage,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
             path: routePaths.viewCollection,
             component: ViewMediaCollection,
             redirect: redirectFunctions.app,
@@ -365,6 +385,12 @@ export const routes = [
           },
           {
             ...defaultConfig,
+            path: routePaths.describeSeries,
+            component: SeriesDescriptionPage,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
             path: routePaths.manageSeries,
             component: ManageSeriesProfile,
             redirect: redirectFunctions.app,
@@ -385,6 +411,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.mediaUpload,
             component: MediaUpload,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.describeMedia,
+            component: MediaDescriptionPage,
             redirect: redirectFunctions.app,
           },
           {

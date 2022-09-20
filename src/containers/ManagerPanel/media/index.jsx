@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { ManageMediaItem } from './item';
 import { useLocation, useParams, generatePath, useHistory } from 'react-router-dom';
-import { fetchAudios, fetchMovies, fetchVideos } from '../../../redux/features/media';
+import { fetchAudios, fetchAudiosMore, fetchMovies, fetchMoviesMore, fetchVideos, fetchVideosMore } from '../../../redux/features/media';
 import { routePaths } from '../../../common/routeConfig';
 
 
@@ -15,14 +15,18 @@ export const ManageMedia = () => {
 
     //state
     const [media, setMedia] = useState([]);
+    const [loadMoreDisabled, setLoadMoreDisabled] = useState(false);
 
     //store
     const dispatch = useDispatch();
     const movies = useSelector((state) => state.media.movies);
+    const moviesPagination = useSelector((state) => state.media.moviesPagination);
     const isFetchingMovies = useSelector((state) => state.media.fetchMoviesLoading);
     const audios = useSelector((state) => state.media.audios);
+    const audiosPagination = useSelector((state) => state.media.audiosPagination);
     const isFetchingAudios = useSelector((state) => state.media.fetchAudiosLoading);
     const videos = useSelector((state) => state.media.videos);
+    const videosPagination = useSelector((state) => state.media.videosPagination);
     const isFetchingVideos = useSelector((state) => state.media.fetchVideoesLoading);
     const albums = useSelector((state) => state.media.albums);
     const series = useSelector((state) => state.media.mySeries);
@@ -47,6 +51,7 @@ export const ManageMedia = () => {
     //effects
     useEffect(() => {
         if (!category) return;
+        handleSetLoadmoreDisabled();
         switch (category) {
             case "movie":
                 setMedia(movies);
@@ -77,7 +82,45 @@ export const ManageMedia = () => {
             if (!_series.episodes) return;
             setMedia(_series.episodes);
         }
-    }, [pathname, id, albums])
+    }, [pathname, id, albums]);
+
+    useEffect(() => {
+        handleSetLoadmoreDisabled();
+    }, [videosPagination, audiosPagination, moviesPagination]);
+
+    // handlers
+    const loadMore = () => {
+        switch (category) {
+            case "movie":
+                dispatch(fetchMoviesMore());
+                break;
+            case "audio":
+                dispatch(fetchAudiosMore());
+                break;
+            case "video":
+                dispatch(fetchVideosMore());
+                break;
+            default:
+                break;
+        }
+    }
+
+    const handleSetLoadmoreDisabled = () => {
+        switch (category) {
+            case "movie":
+                setLoadMoreDisabled(!moviesPagination.hasNext);
+                break;
+            case "audio":
+                setLoadMoreDisabled(!audiosPagination.hasNext);
+                break;
+            case "video":
+                setLoadMoreDisabled(!videosPagination.hasNext);
+                break;
+            default:
+                setLoadMoreDisabled(true);
+                break;
+        }
+    }
 
     return (
         <div className={`${styles.container} container`}>
@@ -89,6 +132,10 @@ export const ManageMedia = () => {
                         <ManageMediaItem key={_media.id} media={_media} />
                     </div>
                 ))}
+
+                <div className="mt-2 mb-5">
+                    <button className="btn btn-lg btn-primary" onClick={loadMore} disabled={loadMoreDisabled}>Load More</button>
+                </div>
             </div>
         </div>
     )

@@ -239,6 +239,13 @@ const FeatureHome = (props) => {
   }
 
   const handleView = () => {
+    console.log("handle view triggered", media)
+    if (media.category == 'movie' || media.category == 'episode') {
+      let url = generatePath(routePaths.describeMedia, { id: media.media_id });
+      console.log("path", url);
+      history.push(url);
+      return;
+    }
     history.push(generatePath(routePaths.viewMedia, { id: media.media_id }));
   }
 
@@ -406,7 +413,7 @@ const FeatureHome = (props) => {
               <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
                 <div style={{flex: 1}}>
                   
-                  <div className={styles.title}><b>{media.title}</b></div>
+                  <div className={styles.title}><b>{media.name}</b></div>
                   {/* <div className={styles.f_description}>{description}</div> */}
                 </div>
   
@@ -425,7 +432,7 @@ const FeatureHome = (props) => {
     )
   }
 
-  if (media && media.category == "movie") {
+  if (media && (media.category == "movie" || media.category == "episode")) {
     return (
       <>
         <div className={styles.f_featureWrapperMovie} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
