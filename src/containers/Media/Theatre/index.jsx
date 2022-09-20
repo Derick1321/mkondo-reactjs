@@ -188,6 +188,15 @@ const TheatreContainer = () => {
             }, 2000);
         }
     }
+
+    const handleSelectCurrentMedia = (media) => {
+        dispatch(setTheatreCurrentMedia(media));
+    }
+
+    const handleSelectCurrentSeries = (series) => {
+        if (!series.episodes) return;
+        dispatch(setTheatreCurrentMedia(series.episodes[0]));
+    }
     
     return (
         <>
@@ -262,6 +271,7 @@ const TheatreContainer = () => {
                                     title="New Movies in Mkondo"
                                     isLoading={newInTheatreLoading}
                                     movies={newInTheatre}
+                                    onMediaClicked={(media) => handleSelectCurrentMedia(media)}
                                 />
                             </div>
                         ) : null}
@@ -293,7 +303,7 @@ const TheatreContainer = () => {
                         {(!newSeries.length && !newSeriesLoading) 
                             ? <p>No Series Found</p> 
                             : newSeries.map(series => (
-                                <div className='mr-2'>
+                                <div className='mr-2' onClick={() => handleSelectCurrentSeries(series)}>
                                     <SeriesItemComponent series={series} />
                                 </div>
                             ))}

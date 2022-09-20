@@ -18,12 +18,12 @@ const TheatrePlaylistItemComponent = (props) => {
   //store
   const dispatch = useDispatch();
 
-  // const handleSelect = (media) => {
-  //   console.log("handle selected called");
-  //   dispatch(retrieveMedia(media.media_id));
-  //   dispatch(setTheatreCurrentMedia(media));
-  //   // dispatch(showModal('ALERT_MODAL'))
-  // }
+  const handleSelect = (media) => {
+    // console.log("handle selected called");
+    // dispatch(retrieveMedia(media.media_id));
+    // dispatch(setTheatreCurrentMedia(media));
+    // dispatch(showModal('ALERT_MODAL'))
+  }
 
   return (
     <div className={styles.wrapper} onClick={() => handleSelect(media)}>

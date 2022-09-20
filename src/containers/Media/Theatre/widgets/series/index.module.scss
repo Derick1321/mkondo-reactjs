@@ -1,13 +1,23 @@
 @import '$assets/scss/main.scss';
 
 .wrapper {
+    position: relative;
     width: 150px;
     cursor: pointer;
     
-    img {
+    .cover {
         width: 150px;
         aspect-ratio: 27/40;
         object-fit: cover;
         object-position: center;
+    }
+
+    .btn {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 45px;
+        width: 45px;
     }
 }
