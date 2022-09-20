@@ -304,7 +304,7 @@ const Profile = () => {
                   </div>
                   <FeatureHome
                     key={`feature-top-songs-${index}`}
-                    mediaId={item}
+                    media={item}
                   />
                </div>
               )

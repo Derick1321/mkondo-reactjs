@@ -8,9 +8,9 @@ import TabMenu from './Menu';
 import styles from './index.module.scss';
 
 const initialOptions = [
-  { name: 'audio', title: 'audios' },
-  { name: 'video', title: 'videos' },
-  { name: 'movie', title: 'movies' },
+  { name: 'audio', title: 'Songs' },
+  { name: 'video', title: 'Videos' },
+  { name: 'movie', title: 'Movies' },
 ];
 
 const Tabs = (props) => {

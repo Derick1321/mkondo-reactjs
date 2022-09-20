@@ -14,7 +14,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage: storage,
-  whitelist: ['authentication'], //blacklisting a store attribute name, will not persist that store attribute.
+  whitelist: [], //blacklisting a store attribute name, will not persist that store attribute.
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

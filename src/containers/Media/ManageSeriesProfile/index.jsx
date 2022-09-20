@@ -48,7 +48,7 @@ export const ManageSeriesProfile = (props) => {
 
     //effects
     useEffect(() => {
-        if (!mySeries.length) dispatch(getSeries())
+        dispatch(getSeries({owner_id: user.user_id}));
     }, []);
 
     useEffect(() => {
@@ -120,6 +120,10 @@ export const ManageSeriesProfile = (props) => {
         setEpisodes(episodes.filter(ep => ep.filename != filename));
     }
 
+    const handleRemoveEpisode = (filename) => {
+        setEpisodes(episodes.filter(ep => ep.filename != filename));
+    }
+
     return (
         <div className="container mt-5">
             <div className="row pt-5">
@@ -157,7 +161,7 @@ export const ManageSeriesProfile = (props) => {
                     <div className="mt-3">
                         {episodes.map(ep => (
                             <div className="mb-2">
-                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} />
+                                <AddSeriesEpisode key={ep.filename} episode={ep} onComplete={() => handleAddEpisodeComplete(ep.filename)} onRemove={() => handleAddEpisodeComplete(ep.filename)} />
                             </div>
                         ))}
                     </div>

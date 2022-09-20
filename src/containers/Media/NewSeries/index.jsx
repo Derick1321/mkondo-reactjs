@@ -11,6 +11,7 @@ import { addSeries, saveMediaPro } from '../../../redux/features/media';
 import DonutProgress from '../../../components/common/DonutProgress/index';
 import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
+import ArtistSelectorComponent from '../artistSelector';
 
 const initialPayload = {
     'owner_id': '',
@@ -52,12 +53,14 @@ export const NewSeries = () => {
     const [coverFileProgress, setCoverFileProgress] = useState(0);
     const [trailerFileProgress, setTrailerFileProgress] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [fieldErrors, setFieldErrors] = useState(initialErrors)
+    const [fieldErrors, setFieldErrors] = useState(initialErrors);
+    const [selectedArtist, setSelectedArtist] = useState(null);
 
 
     //store
     const dispatch = useDispatch();
     const token = useSelector(state => state.authentication.token);
+    const user = useSelector(state => state.authentication.user);
     const userId = useSelector(state => state.authentication.user.user_id);
     const addSeriesPending = useSelector(state => state.media.addSeriesPending);
     const addSeriesSuccess = useSelector(state => state.media.addSeriesSuccess);
@@ -69,6 +72,11 @@ export const NewSeries = () => {
         if (!userId) return;
         setPayload({...payload, owner_id: userId});
     }, [userId]);
+
+    useEffect(() => {
+        if (!selectedArtist) return;
+        setPayload({...payload, owner_id: selectedArtist.user_id});
+    }, [selectedArtist]);
 
     // useEffect(() => {
     //     //navigate to manage series page
@@ -191,6 +199,23 @@ export const NewSeries = () => {
         }
         // console.log(res)
     }
+
+    const handleSelectArtist = (artist) => {
+        setSelectedArtist(artist);
+      }
+
+    if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+        return (
+          <div className={`row ${styles.albumWrapper}`}>
+            <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+              <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+              <div className="mt-3">
+                <ArtistSelectorComponent onArtistSelected={handleSelectArtist} />
+              </div>
+            </div>
+          </div>
+        );
+      }
 
     return (
         <div className="container pt-5">

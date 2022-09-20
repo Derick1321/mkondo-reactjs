@@ -32,6 +32,8 @@ const NewVideo = () => {
 
   //state
   const [selectedArtist, setSelectedArtist] = useState(null);
+  const [coverFileName, setCoverFileName] = useState(null);
+  const [coverUploadProgress, setCoverUploadProgress] = useState(0)
 
   // store
   const history = useHistory();
@@ -69,11 +71,13 @@ const NewVideo = () => {
   const [coverFile, setCoverFile] = useState(null);
 
   useEffect(async () => {
+    if (!croppedImage) return;
     const file = await fetch(croppedImage).then(res => res.blob());
     const url = await generatePreview(file)
-
     setLocalCoverUrl(url);
-    setCoverFile(file);
+
+    // setCoverFile(file);
+    dispatch(saveMediaPro({filename: coverFileName, file: file})).then(action => handleChange("cover_url", action.payload));
   }, [croppedImage]);
 
   useEffect(() => {
@@ -100,6 +104,17 @@ const NewVideo = () => {
         }
     })
   }, [uploadQueue, videoFileName]);
+
+  useEffect(() => {
+    if (!uploadQueue) return;
+    if (!coverFileName) return;
+
+    uploadQueue.map((uploading) => {
+      if (coverFileName === uploading.filename) {
+        setCoverUploadProgress(uploading.progress);
+      }
+    });
+  }, [uploadQueue, coverFileName]);
 
   useEffect(() => {
     if (!addMediaError) return;
@@ -169,18 +184,18 @@ const NewVideo = () => {
       staring: values.starring,
       release_date: values.startingDate,
       media_url: values.media_url,
-      cover_url: "cover"
+      cover_url: values.cover_url,
     }
     
     if (values.genre) {
       payload["genres"] = values.genre.map((item) => item.value);
     }
 
-    if (coverFile) {
-      console.log("cover url uploading")
-      const mediaRes = await dispatch(saveMedia(coverFile));
-      // payload['cover_url'] =  mediaRes.payload
-    }
+    // if (coverFile) {
+    //   console.log("cover url uploading")
+    //   const mediaRes = await dispatch(saveMedia(coverFile));
+    //   // payload['cover_url'] =  mediaRes.payload
+    // }
 
 
     //saving the video file
@@ -199,6 +214,8 @@ const NewVideo = () => {
   const handleCoverChange = async (files) => {
     console.log("Cover photo changed");
     const url = await generatePreview(files[0]);
+    setCoverFileName(files[0].name);
+
     dispatch(crop({
       src: url,
       aspectRatio: uploadType == 'movie' ? 27/40 : 16/9,
