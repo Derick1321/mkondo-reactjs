@@ -4,7 +4,8 @@ import { getMediaUrl } from '../../../../../common/utils';
 import styles from './index.module.scss';
 import { useSelector } from 'react-redux';
 import placeholder from '$assets/images/placeholder.png';
-import { useHistory } from 'react-router-dom';
+import { generatePath, useHistory } from 'react-router-dom';
+import { routePaths } from '../../../../../common/routeConfig';
 
 const SeriesItemComponent = (props) => {
     //props
@@ -29,8 +30,10 @@ const SeriesItemComponent = (props) => {
         });
     }, [series]);
 
-    const handleSeriesClicked = (series) => {
-        history.push(generatePath(routePaths.describeSeries, {series_id: series.series_id}));
+    const handleSeriesClicked = () => {
+        console.debug(series);
+        if (!series.series_id) return;
+        history.push(generatePath(routePaths.describeSeries, {"series_id": series.series_id}));
     }
     
     return (

@@ -21,6 +21,7 @@ export const SeriesDescriptionPage = (props) => {
 
     // state
     const [trailerUrl, setTrailerUrl] = useState();
+    const [isFetchingTrailerUrl, setIsFetchingTrailerUrl] = useState(false);
 
     // redux
     const dispatch = useDispatch();
@@ -43,7 +44,13 @@ export const SeriesDescriptionPage = (props) => {
     useEffect(() => {
         console.debug("DESC PAGE: currentMedia", currentMedia);
         if (!series) return;
-        getMediaUrl(series.trailer_url, token).then(url => setTrailerUrl(url));
+        setIsFetchingTrailerUrl(true)
+        getMediaUrl(series.trailer_url, token)
+            .then(url => {
+                setTrailerUrl(url)
+                setIsFetchingTrailerUrl(false);
+            })
+            .catch(e => setIsFetchingTrailerUrl(false));
     }, [series]);
 
     const handleWatch = () => {
@@ -51,7 +58,7 @@ export const SeriesDescriptionPage = (props) => {
     }
 
 
-    if (!trailerUrl) {
+    if (!isFetchingTrailerUrl) {
         return (
             <div className={styles.loader}>
                 <span className="spinner-border"></span>

@@ -107,7 +107,7 @@ const ForgotPasswordModal = () => {
 
   // handlers
   const handleLogin = () => {
-    dispatch(showModal('LOGIN_MODAL'));
+    history.push(routePaths.login);
   };
 
   const handleForgot = () => {
