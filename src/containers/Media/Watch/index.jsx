@@ -7,6 +7,7 @@ import arrowLeft from '$assets/images/icons/arrow-left.svg';
 
 import styles from './index.module.scss';
 import { useHistory } from 'react-router-dom';
+import { pause } from '$redux/features/player';
 
 export const WatchMovie = (props) => {
     // ref
@@ -24,11 +25,16 @@ export const WatchMovie = (props) => {
 
     // effects
     useEffect(() => {
+        dispatch(pause());
+        
+    }, [])
+    useEffect(() => {
         if (!currentMedia) return;
         getMediaUrl(currentMedia.media_url, token).then(url => setMovieUrl(url));
     }, [currentMedia]);
 
     const handleBack = () => {
+        console.debug("handle back clicked");
         history.goBack();
     }
 
