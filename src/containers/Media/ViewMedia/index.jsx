@@ -25,7 +25,7 @@ import { formatDate, getMediaUrl } from '../../../common/utils';
 import { SimilarMediaItem } from './similarMediaItem';
 import { showModal } from '$redux/features/modal';
 import styled from 'styled-components';
-import { setCurrentMediaId } from '../../../redux/features/player';
+import { loadMedia, setCurrentMediaId } from '../../../redux/features/player';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -104,9 +104,31 @@ const ViewMedia = () => {
   }, [addCommentComplete, deleteCommentComplete, mediaId]);
 
   useEffect(() => {
+    if (!addCommentComplete) return;
+    setValue("");
+  }, [addCommentComplete])
+
+  useEffect(() => {
     if (!mediaId) return;
     dispatch(getComment(mediaId));
   }, [addCommentLikeComplete, removeCommentLikeComplete])
+
+  useEffect(() => {
+    if (!currentMedia) return;
+    if (currentMedia.category != 'audio') return;
+
+    getMediaUrl(currentMedia.cover_url, token).then(avatarUrl => {
+      dispatch(loadMedia({
+        mediaId: currentMedia.media_id,
+        url: currentMedia.media_url,
+        howl: null,
+        avatar: avatarUrl,
+        name: currentMedia.name,
+        artistName: currentMedia.owner_name,
+        artistId: currentMedia.owner_id
+      }));
+    })
+  }, [currentMedia])
 
   useEffect(() => {
     if (!currentMedia.likes) return;
