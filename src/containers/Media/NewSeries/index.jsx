@@ -37,7 +37,7 @@ const BackgroundImage = styled.div`
 
 export const NewSeries = () => {
     //hooks
-    const { push } = useHistory()
+    const { push, goBack } = useHistory()
 
     // refs
     const coverRef = useRef(null);
@@ -222,6 +222,7 @@ export const NewSeries = () => {
             <div className="row mt-5">
                 <div className="col">
                     {/* <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button> */}
+                    <button className="btn btn-primary mb-3" onClick={() => goBack()}>Back</button>
                     <h1 className="text-light">Add New Series</h1>
                 </div>
             </div>

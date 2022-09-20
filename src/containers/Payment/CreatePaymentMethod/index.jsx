@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addSetupIntent } from '../../../redux/features/subscriptions';
 import { Elements } from '@stripe/react-stripe-js';
 import { AddPaymentMethodFormComponent } from './form';
-import { useLocation, useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 
 // const stripePromise = loadStripe("pk_test_51KXBZaHrASyjhIVozZjo4RHNRiuKZTLg0AANL6ZyHuGLILPWvqy5jWrgHp6gEqzDd26DjBPFAvqnCmY1LtHELEkW00EFWOQuLd");
@@ -17,6 +17,7 @@ export const CreatePaymentMethodContainer = () => {
 
   //hooks
   const location = useLocation();
+  const history = useHistory();
 
   //store
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ export const CreatePaymentMethodContainer = () => {
 
   return (
     <div className={styles.container}>
+      <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
       <h1 className={styles.title}>Add Payment Methods</h1>
 
       <div className={styles.stripeFormWrapper}>

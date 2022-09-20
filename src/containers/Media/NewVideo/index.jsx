@@ -392,6 +392,7 @@ const NewVideo = () => {
     <div className={styles.panelContainer}>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-10 col-lg-8">
+          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
           {getContent()}
         </div>
       </div>
