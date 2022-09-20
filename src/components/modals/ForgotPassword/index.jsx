@@ -185,12 +185,14 @@ const ForgotPasswordModal = () => {
                   <TextInput
                     name="password"
                     placeholder="Your New Password"
+                    type="password"
                     value={password}
                     onChange={handleChange}
                   />
                   <TextInput
                     name="confirm_password"
                     placeholder="Confirm Your Password"
+                    type="password"
                     value={confirmPassword}
                     onChange={handleChange}
                   />
