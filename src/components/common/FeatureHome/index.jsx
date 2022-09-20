@@ -156,21 +156,21 @@ const FeatureHome = (props) => {
     }
   }, [media]);
 
-  useEffect(() => {
-    if (!media) return;
-    setIsCheckingSubscription(true);
-    checkSubscriptionStatusApiRequest(media.media_id, state)
-      .then(res => {
-        // console.log("Success Response", res);
-        setSubscriptionStatus(res);
-        setIsCheckingSubscription(false);
-      })
-      .catch(error => {
-        // console.log("Error Response", error);
-        setSubscriptionStatus(JSON.parse(error))
-        setIsCheckingSubscription(false);
-      });
-  }, [media]);
+  // useEffect(() => {
+  //   if (!media) return;
+  //   setIsCheckingSubscription(true);
+  //   checkSubscriptionStatusApiRequest(media.media_id, state)
+  //     .then(res => {
+  //       // console.log("Success Response", res);
+  //       setSubscriptionStatus(res);
+  //       setIsCheckingSubscription(false);
+  //     })
+  //     .catch(error => {
+  //       // console.log("Error Response", error);
+  //       setSubscriptionStatus(JSON.parse(error))
+  //       setIsCheckingSubscription(false);
+  //     });
+  // }, [media]);
 
   // useEffect(() => {
   //   // debuging
@@ -194,26 +194,26 @@ const FeatureHome = (props) => {
       return;
     }
     
-    if (!subscriptionStatus) {
-      setIsCheckingSubscription(true);
-      try {
-        const res = await checkSubscriptionStatusApiRequest(media.media_id, state);
-        // console.log("Checking Subscription", res);
-        setSubscriptionStatus(res);
-      } catch (e) {
-        const jsonRes = JSON.parse(e);
-        setSubscriptionStatus(jsonRes);
-      }
-      setIsCheckingSubscription(false);
-    }
+    // if (!subscriptionStatus) {
+    //   setIsCheckingSubscription(true);
+    //   try {
+    //     const res = await checkSubscriptionStatusApiRequest(media.media_id, state);
+    //     // console.log("Checking Subscription", res);
+    //     setSubscriptionStatus(res);
+    //   } catch (e) {
+    //     const jsonRes = JSON.parse(e);
+    //     setSubscriptionStatus(jsonRes);
+    //   }
+    //   setIsCheckingSubscription(false);
+    // }
 
-    if (!subscriptionStatus.subscribed) {
-      dispatch(showModal('ALERT_MODAL', {
-        media: media,
-        message: subscriptionStatus.message
-      }));
-      return;
-    }
+    // if (!subscriptionStatus.subscribed) {
+    //   dispatch(showModal('ALERT_MODAL', {
+    //     media: media,
+    //     message: subscriptionStatus.message
+    //   }));
+    //   return;
+    // }
 
     if (notifyPlayed != null) {
       notifyPlayed(key);
@@ -266,6 +266,7 @@ const FeatureHome = (props) => {
     }
     setIsLiked(!isLiked);
   }
+
 
   // render
   if (type == "row") {
