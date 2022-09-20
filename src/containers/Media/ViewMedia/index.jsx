@@ -26,6 +26,7 @@ import { SimilarMediaItem } from './similarMediaItem';
 import { showModal } from '$redux/features/modal';
 import styled from 'styled-components';
 import { loadMedia, setCurrentMediaId } from '../../../redux/features/player';
+import { useHistory } from 'react-router-dom';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -61,6 +62,9 @@ const ViewMedia = () => {
   const [likesCount, setLikesCount] = useState(0);
   const [spacing, setSpacing] = useState(0);
   const [showComments, setShowComments] = useState(false);
+
+  // router
+  const history = useHistory();
 
   // store
   const dispatch = useDispatch();
@@ -258,6 +262,7 @@ const ViewMedia = () => {
   // render
   return (
     <div className={styles.container}>
+      <button className="btn btn-primary mb-3" onClick={() => history.goBack()}>Back</button>
       {
         currentMedia.category === 'audio' ? (
           <Player
