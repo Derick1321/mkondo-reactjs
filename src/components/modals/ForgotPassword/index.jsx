@@ -209,7 +209,7 @@ const ForgotPasswordModal = () => {
                     </Button>
                   </div>
                   <div className="d-flex align-items-center justify-content-center my-4">
-                    <span>Back to </span>
+                    
                     <Button
                       onClick={handleLogin}
                       isTransparent
@@ -217,7 +217,7 @@ const ForgotPasswordModal = () => {
                       noBorder
                       noWidth
                     >
-                      Login
+                      Back to Login
                     </Button>
                   </div>
                 </div>
@@ -251,7 +251,6 @@ const ForgotPasswordModal = () => {
                   </Button>
                 </div>
                   <div className="d-flex align-items-center justify-content-center my-4">
-                    <span>Back to </span>
                     <Button
                       onClick={handleLogin}
                       isTransparent
@@ -259,7 +258,7 @@ const ForgotPasswordModal = () => {
                       noBorder
                       noWidth
                     >
-                      Login
+                      Back to Login
                     </Button>
                   </div>
                 </div>
@@ -285,7 +284,6 @@ const ForgotPasswordModal = () => {
               </Button>
             </div>
             <div className="d-flex align-items-center justify-content-center my-4">
-              <span>Back to </span>
               <Button
                 onClick={handleLogin}
                 isTransparent
@@ -293,7 +291,7 @@ const ForgotPasswordModal = () => {
                 noBorder
                 noWidth
               >
-                Login
+                Back to Login
               </Button>
             </div>
           </div>
