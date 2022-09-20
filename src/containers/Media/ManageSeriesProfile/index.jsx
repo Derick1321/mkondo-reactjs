@@ -29,7 +29,7 @@ export const ManageSeriesProfile = (props) => {
 
     //hooks
     const { series_id } = useParams();
-    const { push } = useHistory();
+    const { push, goBack } = useHistory();
 
     //refs
     const fileRef = useRef(null);
@@ -128,6 +128,7 @@ export const ManageSeriesProfile = (props) => {
         <div className="container mt-5">
             <div className="row pt-5">
                 <div className="col-lg-9">
+                    <button className="btn btn-primary mb-3" onClick={() => goBack()}>Back</button>
                     <h1 className="text-light">{series ? series.title : 'My Series'}</h1>
                     {series ? <p>Has {series.episodes.length} episodes</p> : ''}
 
