@@ -17,7 +17,7 @@ const initialPayload = {
 
 export const AddSeriesEpisode = (props) => {
     //props
-    const { episode, onComplete } = props;
+    const { episode, onComplete, onRemove } = props;
 
     //state
     const [coverUrl, setCoverUrl] = useState(null);
@@ -117,6 +117,11 @@ export const AddSeriesEpisode = (props) => {
         console.log(res);
     }
 
+    const handleRemove = () => {
+        if (!onRemove) return;
+        onRemove();
+    }
+
     return (
         <div className={`${styles.tileCard} ${uploadComplete && styles.uploadComplete}`}>
             <div className={styles.header}>
@@ -185,6 +190,7 @@ export const AddSeriesEpisode = (props) => {
                         </div>
                         <div className="row">
                             <div className="col-auto ml-auto">
+                                <button onClick={handleRemove} className="btn btn-lg btn-danger mr-2">Cancel</button>
                                 <button onClick={handleSave} className="btn btn-lg btn-primary">Save</button>
                             </div>
                         </div>

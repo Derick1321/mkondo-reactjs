@@ -1,70 +1,129 @@
-import React, { useEffect } from 'react'
-import styles from './index.module.scss';
-import { getPlaylist } from '../../../redux/features/playlist';
-import { MusicPlaylistComponent } from './widgets/playlist';
-import { useDispatch, useSelector } from 'react-redux';
-import { getNewReleases, getTopMedias, getTrendMedias, getNewAlbums } from '../../../redux/features/media';
-import CarouselFromConfiguration from '../../../components/common/Carousel/carousel_from_configuration';
-import { CONFIG_KEY_SLIDER_DASHBOARD } from '../../Configuration/Sliders';
-import fireIcon from '$assets/images/icons/fire.svg';
-import newTag from '$assets/images/icons/new-tag.svg';
-import Scroller from '../../../components/common/Scroller/index';
-import { FeatureAlbum } from '../../../components/common/FeatureAlbum';
+import React from 'react'
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchAlbums, fetchAudios, fetchAudiosMore } from '../../../redux/features/media';
+import artist, { getArtists, getArtistsMore } from '../../../redux/features/artist';
+import Tabs from '../../../components/common/Tabs';
+import { COLOR_ACCENT } from '$common/constants';
+import FeatureHome from '../../../components/common/FeatureHome/index';
+import { FeatureAlbum } from '../../../components/common/FeatureAlbum/index';
+import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
+import FeatureArtist from '../../../components/common/FeatureArtist';
+
+const tabOptions = [
+    {name: 'songs', title: 'Songs'},
+    {name: 'albums', title: 'Albums'},
+    {name: 'artists', title: 'Artists'},
+];
 
 export const MusicContainer = () => {
-    //store
-    const dispatch = useDispatch();
-    const topSongs = useSelector(state => state.media.topMedias.audio);
-    const newSongs = useSelector(state => state.media.newReleases.audio);
-    const newAlbums = useSelector(state => state.media.newReleases.albums);
-    const trendingSongs = useSelector(state => state.media.trendMedias.audio);
-    const favouriteSongs = useSelector(state => state.authentication.user.favourites.filter(item => item.category == 'audio'));
 
-    //effects
+    // state
+    const [selectedTab, setSelectedTab] = useState('songs');
+
+    // redux
+    const dispatch = useDispatch();
+
+    const songs = useSelector(state => state.media.audios);
+    const fetchAudioPending = useSelector(state => state.media.fetchAudioPending);
+    const audiosPagination = useSelector(state => state.media.audiosPagination);
+
+    const albums = useSelector(state => state.media.albums);
+    const fetchAlbumsPending = useSelector(state => state.media.fetchAlbumsPending);
+    
+    const artists = useSelector(state => state.artist.artists);
+    const getArtistsPending = useSelector(state => state.artist.getArtistsPending);
+    const artistsPagination = useSelector(state => state.artist.artistsPagination);
+
+    // effects
     useEffect(() => {
-        const params = {category: 'audio'};
-        if (!topSongs.length) {
-            dispatch(getTopMedias(params));
+        dispatch(fetchAudios());
+        dispatch(fetchAlbums());
+        dispatch(getArtists());
+    }, []);
+
+    // handlers
+    const handleSelectedTab = (selected) => {
+        setSelectedTab(selected)
+    }
+
+    // handle load more
+    const loadMoreSongs = () => {
+        dispatch(fetchAudiosMore());
+    }
+
+    const loadMoreArtists = () => {
+        dispatch(getArtistsMore());
+    }
+
+    // views
+    const renderTabBody = () => {
+        switch (selectedTab) {
+            case "songs":
+                return (
+                    <div className="row">
+                        <div className="col d-flex flex-wrap">
+                            {songs.map(_song => {
+                                return (
+                                    <div className="mr-2 mb-2">
+                                         <FeatureHome media={_song} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+
+                        <div className="mt-3 mb-5">
+                            <button className="btn btn-lg btn-primary" onClick={loadMoreSongs} disabled={!audiosPagination.hasNext}>Load More</button>
+                        </div>
+                    </div>
+                );
+            case "albums":
+                return (
+                    <div className="row">
+                        <div className="col d-flex flex-wrap">
+                            {albums.map(album => {
+                                return (
+                                    <div className="mr-2 mb-2">
+                                        <FeatureAlbum album={album} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                );
+            case "artists":
+                return (
+                    <div className="row">
+                        <div className="col d-flex flex-wrap">
+                            {artists.map(_artist => {
+                                return (
+                                    <div className="mr-2 mb-2">
+                                        <FeatureArtist artist={_artist} />
+                                    </div>
+                                )
+                            })}
+                        </div>
+
+                        <div className="mt-3 mb-5">
+                            <button className="btn btn-lg btn-primary" onClick={loadMoreArtists} disabled={!artistsPagination.hasNext}>Load More</button>
+                        </div>
+                    </div>
+                );
+            default:
+                break;
         }
-        if (!newSongs.lenght) {
-            dispatch(getNewReleases(params));
-        }
-        if (!trendingSongs.lenght) {
-            dispatch(getTrendMedias(params));
-        }
-        if (!newAlbums.lenght) {
-            dispatch(getNewAlbums());
-        }
-    }, [])
+    }
 
     return (
-        <div>
-            <div className={styles.hero}>
-                <CarouselFromConfiguration sliderConfigurationKey={CONFIG_KEY_SLIDER_DASHBOARD} />
+        <div className='container'>
+            <div className="row">
+                <div className="col">
+                    <Tabs options={tabOptions} selected={selectedTab} activeColor={COLOR_ACCENT} onSelect={handleSelectedTab} />
+                </div>
             </div>
-
-            <div className={`container ${styles.content}`}>
-                {trendingSongs.lenght > -1 ? <MusicPlaylistComponent title="Now Trending" icon={fireIcon} media={trendingSongs} /> : null}
-                <MusicPlaylistComponent title="Top Songs" icon={fireIcon} media={topSongs} />
-                <div className="mt-5"></div>
-                <MusicPlaylistComponent title="New Songs" icon={newTag} media={newSongs} />
-                <div className="mt-5"></div>
-                {favouriteSongs.length > -1 ? <MusicPlaylistComponent title="Favourites" icon={fireIcon} media={favouriteSongs} /> : null}
-
-                <Scroller
-                    isLoading={false}
-                    title="New Albums"
-                    showHeader={true}
-                    total={newAlbums.length}
-                    // name={name}
-                    // viewMore={viewMore}
-                    >
-                    {
-                        newAlbums.map((album, i) => <FeatureAlbum key={`new-album-${i}`} album={album} />)
-                    }
-                </Scroller>
-            </div>
-
+            <div className="my-4"></div>
+            {renderTabBody()}
         </div>
-    )
+    );
 }

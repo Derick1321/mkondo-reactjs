@@ -20,10 +20,13 @@ export const ManagerPanel = (props) => {
     //store
     const dispatch = useDispatch();
     const movies = useSelector((state) => state.media.movies);
+    const moviesCount = useSelector((state) => state.media.moviesCount);
     const isFetchingMovies = useSelector((state) => state.media.fetchMoviesLoading);
     const audios = useSelector((state) => state.media.audios);
+    const audiosCount = useSelector((state) => state.media.audiosCount);
     const isFetchingAudios = useSelector((state) => state.media.fetchAudiosLoading);
     const videos = useSelector((state) => state.media.videos);
+    const videosCount = useSelector((state) => state.media.videosCount);
     const isFetchingVideos = useSelector((state) => state.media.fetchVideoesLoading);
     const artists = useSelector((state) => state.artist.artists);
     const isFetchingArtists = useSelector((state) => state.artist.getArtistPending);
@@ -86,19 +89,19 @@ export const ManagerPanel = (props) => {
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'audio'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Songs</h3>
-                            <span>{audios.length??0}</span>
+                            <span>{audiosCount}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'video'}))}>
                         <div className={`${styles.tile??0}`}>
                             <h3>Videos</h3>
-                            <span>{videos.length??0}</span>
+                            <span>{videosCount}</span>
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
                         <div className={`${styles.tile}`}>
                             <h3>Movies</h3>
-                            {isFetchingMovies ? <span className='spinner-border'></span> : <span>{movies.length}</span>}
+                            {isFetchingMovies ? <span className='spinner-border'></span> : <span>{moviesCount}</span>}
                         </div>
                     </div>
                     <div className={`col-md-4`} onClick={() => push(routePaths.manageAlbums)}>

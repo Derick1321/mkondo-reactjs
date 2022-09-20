@@ -137,7 +137,7 @@ const subscriptionSlice = createSlice({
         },
         [fetchPaymentMethods.fulfilled]: (state, action) => {
             state.fetchPaymentMethodsLoading = false;
-            state.paymentMethods = action.payload.payment_methods;
+            state.paymentMethods = action.payload.payment_methods ? action.payload.payment_methods : [];
             state.fetchPaymentMethodsError = null;
         },
         [fetchPaymentMethods.rejected]: (state, action) => {
