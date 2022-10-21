@@ -10,6 +10,8 @@ import FeatureHome from '../../../components/common/FeatureHome/index';
 import { FeatureAlbum } from '../../../components/common/FeatureAlbum/index';
 import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
 import FeatureArtist from '../../../components/common/FeatureArtist';
+import { genres } from '../../../common/utils';
+import styles from './index.module.scss';
 
 const tabOptions = [
     {name: 'songs', title: 'Songs'},
@@ -21,6 +23,9 @@ export const MusicContainer = () => {
 
     // state
     const [selectedTab, setSelectedTab] = useState('songs');
+    const [activeGenre, setActiveGenre] = useState('all');
+    const [selectedGenres, setSelectedGenres] = useState([]);
+    const [filters, setFilters] = useState({});
 
     // redux
     const dispatch = useDispatch();
@@ -38,10 +43,26 @@ export const MusicContainer = () => {
 
     // effects
     useEffect(() => {
-        dispatch(fetchAudios());
         dispatch(fetchAlbums());
         dispatch(getArtists());
     }, []);
+
+    useEffect(() => {
+        dispatch(fetchAudios(filters));
+    }, [filters]);
+
+    useEffect(() => {
+        if (selectedGenres.length > 0) {
+            let _genres = selectedGenres.join(',');
+            setFilters({...filters, genres: _genres});
+        } else {
+            if (filters.genres) {
+                let __filters = {...filters};
+                delete __filters['genres'];
+                setFilters(__filters);
+            }
+        }
+    }, [selectedGenres]);
 
     // handlers
     const handleSelectedTab = (selected) => {
@@ -57,6 +78,21 @@ export const MusicContainer = () => {
         dispatch(getArtistsMore());
     }
 
+    const handleSelectGenre = (genre) => {
+        setActiveGenre(genre);
+        if (genre == 'all') {
+            setSelectedGenres([]);
+            return;
+        }
+        if (selectedGenres.some(g => g == genre)) {
+            setSelectedGenres(selectedGenres.filter(g => g != genre));
+        } else {
+            let _selected = [...selectedGenres];
+            _selected.push(genre);
+            setSelectedGenres(_selected)
+        }
+    }
+
     // views
     const renderTabBody = () => {
         switch (selectedTab) {
@@ -64,6 +100,7 @@ export const MusicContainer = () => {
                 return (
                     <div className="row">
                         <div className="col d-flex flex-wrap">
+
                             {songs.map(_song => {
                                 return (
                                     <div className="mr-2 mb-2">
@@ -120,6 +157,20 @@ export const MusicContainer = () => {
             <div className="row">
                 <div className="col">
                     <Tabs options={tabOptions} selected={selectedTab} activeColor={COLOR_ACCENT} onSelect={handleSelectedTab} />
+                </div>
+            </div>
+
+            <div className="row my-3 d-flex">
+                <div className="col-lg-11 flex-grow-1">
+                    <div className={styles.pills}>
+                    <span className={`${styles.pill} ${selectedGenres.length == 0 ? styles.active : null} mr-2`} onClick={() => handleSelectGenre('all')}>All</span>
+                        {genres.map((genre, i) => {
+                            return  <span className={`${styles.pill}  ${selectedGenres.includes(genre.value) ? styles.active : null} mr-2`} onClick={() => handleSelectGenre(genre.value)}>{genre.label}</span>;
+                        })}
+                    </div>
+                </div>
+                <div className="col-lg-1">
+                    {fetchAlbumsPending ? <span className="spinner-border"></span> : null}
                 </div>
             </div>
             <div className="my-4"></div>
