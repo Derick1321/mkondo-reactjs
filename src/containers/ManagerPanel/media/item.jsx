@@ -4,7 +4,7 @@ import placeholder from '$assets/images/placeholder.png';
 import { getMediaUrl } from '../../../common/utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { SuccessPage } from '$containers/Success';
-import { deleteMedia, updateMedia } from '../../../redux/features/media';
+import { deleteMedia, updateMedia, optimizeMedia as optimize } from '../../../redux/features/media';
 import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
 import DropDown from '../../../components/common/DropDown';
@@ -23,11 +23,15 @@ export const ManageMediaItem = ( props ) => {
     const { media, key } = props;
 
     //state
+    const [mount, setMount] = useState(false);
     const [isLoadingCoverImage, setIsLoadingCoverImage] = useState(true);
     const [coverUrl, setCoverUrl] = useState(null);
     const [isUpdating, setIsUpdating] = useState(false);
     const [coverStyle, setCoverStyle] = useState(styles.audio);
     const [cardWidth, setCardWidth] = useState(0);
+    const [isOptimizing, setIsOptimizing] = useState(false);
+    const [optimizeRequested, setOptimizeRequested] = useState(false);
+    const [optimizeRequestedErrorReported, setOptimizeRequestedErrorReported] = useState(false);
     // const [coverHeight, setCoverHeight] = useState(100);
 
 
@@ -38,8 +42,13 @@ export const ManageMediaItem = ( props ) => {
     const token = useSelector((state) => state.authentication.token);
     const dispatch = useDispatch();
     const pendingQueue = useSelector((state) => state.media.updateMediaPendingQueue);
+    const optimizeMedia = useSelector((state) => state.media.optimizeMedia)
     
     //effects
+    useEffect(() => {
+        setMount(true);
+    }, []);
+
     useEffect(() => {
         if (!media || !token) return;
         getMediaUrl(media.cover_url, token).then(url => setCoverUrl(url));
@@ -75,6 +84,35 @@ export const ManageMediaItem = ( props ) => {
         if (!cardRef.current) return;
         setCardWidth(cardRef.current.clientWidth);
     }, [cardRef])
+
+    useEffect(() => {
+        if (!mount) return;
+        if (!optimizeMedia.isLoading) return;
+
+        if (optimizeMedia.isLoading.includes(media.media_id)) {
+            setIsOptimizing(true);
+        } else {
+            setIsOptimizing(false);
+        }
+    }, [optimizeMedia.isLoading])
+
+    useEffect(() => {
+        if (!mount) return;
+        if (optimizeRequested) return;
+        if (!optimizeMedia.isSuccessfull) return
+        if (!optimizeMedia.isSuccessfull.includes(media.media_id)) return;
+        setOptimizeRequested(true);
+        alert(`Optmized Media ${media.name}`);
+    }, [optimizeMedia.isSuccessfull])
+
+    useEffect(() => {
+        if (!mount) return;
+        if (optimizeRequestedErrorReported) return;
+        if (!optimizeMedia.errors) return;
+        if (!optimizeMedia.errors.includes(media.media_id)) return;
+        setOptimizeRequestedErrorReported(true);
+        alert(`Failed to optimize the media ${media.name}`);
+    }, [optimizeMedia.error])
     //handlers
     const handleOnLoad = (e) => {
         if (e.timestamp < 1000) return;
@@ -102,6 +140,12 @@ export const ManageMediaItem = ( props ) => {
 
     const handleArchive = () => {
         dispatch(deleteMedia(media.media_id));
+    }
+
+    const handleOptimize = () => {
+        if (optimizeRequested) return;
+        setOptimizeRequestedErrorReported(false);
+        dispatch(optimize(media.media_id));
     }
 
     return (
@@ -149,6 +193,9 @@ export const ManageMediaItem = ( props ) => {
                                 </div>
                             )}
                         </div>
+
+                        {(media.category != 'audio' && media.video_qualities) ? <p>{Object.keys(media.video_qualities).map(key => `${key}p, `)}</p> : <p>Media has no other qualities</p>}
+                        {(media.category != 'audio' && media.video_qualities)  ? null : <button onClick={handleOptimize} disabled={optimizeRequested} className='btn btn-primary btn-sm'>Optimize {isOptimizing ? <span className='spinner-border spinner-border-sm'></span> : null}</button>}
                     </div>
                 </div>
             </div>

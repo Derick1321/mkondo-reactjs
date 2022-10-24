@@ -113,9 +113,6 @@ export const WatchMovie = (props) => {
                         </div>
                     </div>
                </div>
-
-                
-
             </div>
         </div>
     );
