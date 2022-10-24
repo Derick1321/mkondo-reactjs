@@ -49,6 +49,7 @@ const FETCH_AUDIOS_MORE = 'media/FETCH_AUDIO_MORE';
 const FETCH_VIDEOS = 'media/FETCH_VIDEOS';
 const FETCH_VIDEOS_MORE = 'media/FETCH_VIDEOS_MORE';
 const CHECK_SUBSCRIPTION_STATUS = 'media/CHECK_SUBSCRIPTION_STATUS';
+const OPTIMIZE_MEDIA = 'media/OPTIMIZE';
 
 
 // actions
@@ -645,6 +646,14 @@ export const checkSubscriptionStatusApiRequest = async (media_id, state) => {
     return await handleFetch('GET',  `check-media-subscription-status/${media_id}?${queryString.stringify(params)}`, null, token);
 }
 
+export const optimizeMedia = createAsyncThunk(
+    OPTIMIZE_MEDIA,
+    async (media_id, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('POST', `/media/${media_id}/optimize`, null, token);
+    }
+)
+
 
 const initialState = {
     addMediaPending: false,
@@ -836,6 +845,12 @@ const initialState = {
     newSeries: {
         items: []
     },
+    optimizeMedia: {
+        isLoading: [],
+        isSuccessfull: [],
+        errors: {},
+        results: {},
+    }
 };
 
 const mediaSlice = createSlice({
@@ -1644,6 +1659,24 @@ const mediaSlice = createSlice({
             state.getNewSeriesSuccess = false;
             state.getNewSeriesError = JSON.parse(action.error.message);
         },
+        [optimizeMedia.pending]: (state, action) => {
+            state.optimizeMedia.isLoading.push(action.meta.arg);
+            state.optimizeMedia.isSuccessfull = state.optimizeMedia.isSuccessfull.filter(media_id => media_id != action.meta.arg);
+            state.optimizeMedia.errors[action.meta.arg] = null;
+            state.optimizeMedia.results[action.meta.arg] = {};
+        },
+        [optimizeMedia.fulfilled]: (state, action) => {
+            state.optimizeMedia.isLoading = state.optimizeMedia.isLoading.filter(media_id => media_id != action.meta.arg);
+            state.optimizeMedia.isSuccessfull.push(action.meta.arg);
+            // state.optimizeMedia.error[media_id] = null;
+            state.optimizeMedia.results[action.meta.arg] = action.payload.data;
+        },
+        [optimizeMedia.rejected]: (state, action) => {
+            state.optimizeMedia.isLoading = state.optimizeMedia.isLoading.filter(media_id => media_id != action.meta.arg);
+            // state.optimizeMedia.isSuccessfull = state.optimizeMedia.isSuccessfull.push(action.payload);
+            state.optimizeMedia.errors[action.meta.arg] = action.error;
+            // state.optimizeMedia.data[media_id] = action.payload.data;
+        }
     }
 });
 
