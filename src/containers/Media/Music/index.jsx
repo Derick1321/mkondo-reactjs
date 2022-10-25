@@ -12,6 +12,7 @@ import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
 import FeatureArtist from '../../../components/common/FeatureArtist';
 import { genres } from '../../../common/utils';
 import styles from './index.module.scss';
+import { IconSort } from '../../../components/icons/sort';
 
 const tabOptions = [
     {name: 'songs', title: 'Songs'},
@@ -25,7 +26,8 @@ export const MusicContainer = () => {
     const [selectedTab, setSelectedTab] = useState('songs');
     const [activeGenre, setActiveGenre] = useState('all');
     const [selectedGenres, setSelectedGenres] = useState([]);
-    const [filters, setFilters] = useState({});
+    const [filters, setFilters] = useState({order_by_alpha: 'asc'});
+    const [sort, setSort] = useState('alpha')
 
     // redux
     const dispatch = useDispatch();
@@ -64,6 +66,26 @@ export const MusicContainer = () => {
         }
     }, [selectedGenres]);
 
+    useEffect(() => {
+        let __filters = {...filters};
+
+        if (sort == 'oldest') {
+            delete __filters['order_by_alpha'];
+            setFilters({...__filters, order_by_date: 'oldest'});
+        }
+
+        if (sort == 'latest') {
+            // setSort('alpha')
+            setFilters({...__filters, order_by_date: 'latest'});
+        }
+
+        if (sort == 'alpha') {
+            // setSort('oldest');
+             delete __filters['order_by_date'];
+            setFilters({...__filters, order_by_alpha: 'asc'});
+        }
+    }, [sort])
+
     // handlers
     const handleSelectedTab = (selected) => {
         setSelectedTab(selected)
@@ -90,6 +112,20 @@ export const MusicContainer = () => {
             let _selected = [...selectedGenres];
             _selected.push(genre);
             setSelectedGenres(_selected)
+        }
+    }
+
+    const handleToggleSort = () => {
+        if (sort == 'oldest') {
+            setSort('latest')
+        }
+
+        if (sort == 'latest') {
+            setSort('alpha')
+        }
+
+        if (sort == 'alpha') {
+            setSort('oldest');
         }
     }
 
@@ -161,16 +197,21 @@ export const MusicContainer = () => {
             </div>
 
             <div className="row my-3 d-flex">
-                <div className="col-lg-11 flex-grow-1">
+                <div className="col-lg-11 col-10 flex-grow-1">
                     <div className={styles.pills}>
-                    <span className={`${styles.pill} ${selectedGenres.length == 0 ? styles.active : null} mr-2`} onClick={() => handleSelectGenre('all')}>All</span>
+                        <span className={`${styles.pill} ${selectedGenres.length == 0 ? styles.active : null} mr-2`} onClick={() => handleSelectGenre('all')}>All</span>
                         {genres.map((genre, i) => {
                             return  <span className={`${styles.pill}  ${selectedGenres.includes(genre.value) ? styles.active : null} mr-2`} onClick={() => handleSelectGenre(genre.value)}>{genre.label}</span>;
                         })}
                     </div>
                 </div>
-                <div className="col-lg-1">
-                    {fetchAlbumsPending ? <span className="spinner-border"></span> : null}
+                <div className="col-lg-1 col-2">
+                    {fetchAlbumsPending || fetchAudioPending ? <span className="spinner-border"></span> : (
+                        <button className="btn btn-outline-secondary d-flex align-items-center justify-content-end" onClick={handleToggleSort}>
+                            <IconSort height="22px" width="22px" />
+                            <span>{sort.charAt(0).toUpperCase() + sort.slice(1)}</span>
+                        </button>
+                    )}
                 </div>
             </div>
             <div className="my-4"></div>
