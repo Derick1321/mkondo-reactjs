@@ -39,6 +39,9 @@
     padding: 0  20px;
     color: white;
 
+    background: rgb(255,255,255);
+    background: linear-gradient(180deg, rgba(255,255,255,0) 6%, rgba(0,0,0,1) 100%);
+
     .range {
         display: flex;
         align-items: center;
@@ -71,6 +74,8 @@
                 
                 height: 3px;
                 background-color: rgba($color: #fff, $alpha: 0.6);
+
+                transition: all 0.2s ease-in-out;
             }
 
             .progress {
@@ -101,7 +106,7 @@
                 height: 3px;
                 outline: none;
                 // opacity: 0.7;
-                transition: all 0.2s ease-in;
+                transition: all 0.3s ease-in;
     
                 &::-webkit-slider-thumb {
                     appearance: none;
@@ -128,7 +133,9 @@
         align-items: center;
 
         .main {
+            display: flex;
             flex: 1;
+            align-items: center;
         }
 
         .quality {
@@ -151,9 +158,91 @@
                     cursor: pointer;
 
                     &:hover {
-                        background-color: rgba($color: #fff, $alpha: 0.3);
+                        background-color: rgba($color: #fff, $alpha: 0.3) !important;
+                    }
+
+                    &.active {
+                        background-color: rgba($color: #fff, $alpha: 0.6);
                     }
                 }
+            }
+        }
+    }
+
+    .volume {
+        display: flex;
+        margin-left: 10px;
+        align-items: center;
+
+        .sliderWrapper {
+            position: relative;
+
+            display: none;
+            margin-left: 10px;
+
+            flex: 1;
+            height: 18px;
+            width: 100px;
+
+            .bottom {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translate(0, -50%);
+                width: 100%;
+                z-index: 1;
+
+                height: 3px;
+                background-color: rgba($color: #fff, $alpha: 0.45);
+            }
+
+            .progress {
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translate(0, -50%);
+
+                // width: 45%;
+                z-index: 3;
+
+                height: 3px;
+                background-color: $primary-color;
+            }
+
+            .slider {
+                appearance: none;
+
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                transform: translate(0, -50%);
+                width: 100%;
+                z-index: 4;
+
+                background-color: transparent;
+                
+                height: 3px;
+                outline: none;
+                // opacity: 0.7;
+                transition: all 0.3s ease-in;
+    
+                &::-webkit-slider-thumb {
+                    appearance: none;
+                    
+                    width: 18px;
+                    height: 18px;
+                    background-color: $primary-color;
+    
+                    cursor: pointer;
+                    border-radius: 25px;
+                }
+            }
+        }
+
+        &:hover {
+            .sliderWrapper {
+                display: block;
             }
         }
     }
