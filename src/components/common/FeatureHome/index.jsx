@@ -138,7 +138,7 @@ const FeatureHome = (props) => {
       return;
     }
 
-    handleFetch('GET', `media/presigned-get-url?file_name=${media.cover_url}`, null, token)
+    handleFetch('GET', `media/presigned-get-url?file_name=${media.cover_url_compressed ?? media.cover_url}`, null, token)
       .then((res) => {
         // if (!isMounted.current) {
         //   return;
@@ -226,10 +226,10 @@ const FeatureHome = (props) => {
       handleView();
       return;
     }
-
+    
     dispatch(loadMedia({
       mediaId: media.media_id,
-      url: media.media_url,
+      url: media.media_url_compressed ?? media.media_url,
       howl: null,
       avatar: avatarUrl,
       name: media.name,

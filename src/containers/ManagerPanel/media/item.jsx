@@ -51,7 +51,7 @@ export const ManageMediaItem = ( props ) => {
 
     useEffect(() => {
         if (!media || !token) return;
-        getMediaUrl(media.cover_url, token).then(url => setCoverUrl(url));
+        getMediaUrl(media.cover_url_compressed ?? media.cover_url, token).then(url => setCoverUrl(url));
         switch (media.category) {
             case 'movie':
                 setCoverStyle(styles.movie);
@@ -102,7 +102,7 @@ export const ManageMediaItem = ( props ) => {
         if (!optimizeMedia.isSuccessfull) return
         if (!optimizeMedia.isSuccessfull.includes(media.media_id)) return;
         setOptimizeRequested(true);
-        alert(`Optmized Media ${media.name}`);
+        // alert(`Optmized Media ${media.name}`);
     }, [optimizeMedia.isSuccessfull])
 
     useEffect(() => {
@@ -111,7 +111,7 @@ export const ManageMediaItem = ( props ) => {
         if (!optimizeMedia.errors) return;
         if (!optimizeMedia.errors.includes(media.media_id)) return;
         setOptimizeRequestedErrorReported(true);
-        alert(`Failed to optimize the media ${media.name}`);
+        // alert(`Failed to optimize the media ${media.name}`);
     }, [optimizeMedia.error])
     //handlers
     const handleOnLoad = (e) => {
@@ -193,9 +193,9 @@ export const ManageMediaItem = ( props ) => {
                                 </div>
                             )}
                         </div>
-
+                        {media.cover_url_compressed ? <p>Cover Image Compressed</p> : <p>Cover Image Not Compressed</p>}
                         {(media.category != 'audio' && media.video_qualities) ? <p>{Object.keys(media.video_qualities).map(key => `${key}p, `)}</p> : <p>Media has no other qualities</p>}
-                        {(media.category != 'audio' && media.video_qualities)  ? null : <button onClick={handleOptimize} disabled={optimizeRequested} className='btn btn-primary btn-sm'>Optimize {isOptimizing ? <span className='spinner-border spinner-border-sm'></span> : null}</button>}
+                        <button onClick={handleOptimize} disabled={optimizeRequested} className='btn btn-primary btn-sm'>Optimize {isOptimizing ? <span className='spinner-border spinner-border-sm'></span> : null}</button>
                     </div>
                 </div>
             </div>
