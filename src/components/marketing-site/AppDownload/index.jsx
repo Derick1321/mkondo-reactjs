@@ -18,7 +18,7 @@ const AppDownload = () => {
       </div>
       <div className="col-12 col-md-9">
         <div className={styles.innerWrapper}>
-          <p className={`${styles.appDownloadHeader}`}>Never stop listening</p>
+          <p className={`${styles.appDownloadHeader}`}>Watch and Listen Anywhere at All Times</p>
           <p>Discover, stream, and share a constantly expanding mix of music from emerging and major artists around the world.</p>
           <div className="d-flex">
             <a href="" target="_blank" rel="noopener noreferrer">

@@ -118,7 +118,7 @@ const Marketing = () => {
       <div className='bg-dark'>
         <div className="container py-5">
           <div className="text-center text-light py-3">
-            <h1>Home of Entertainment</h1>
+            <h1>The HeartBeat of African Entertainment</h1>
             <p>Watch Everywear, Anywear and Any time. Mkondo gives you access to premium content.</p>
           </div>
           <div className="">

@@ -76,33 +76,57 @@ const Insights = () => {
   }, [isAdmin]);
   
   const calculatePlays = () => {
-    if (!adminInsights.artist_insights) return 0;
-    const total_plays = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.plays, 0);
-    return total_plays;
+    if (adminInsights.artist_insights) {
+      const total_plays = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.plays, 0);
+      return total_plays;
+    }
+    
+    if (data) {
+      return data.plays;
+    }
+
+  }
+
+  const calculateContent = () => {
+    return 18
   }
 
   const calculateFollowers = () => {
-    if (!adminInsights.artist_insights) return 0;
-    const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.followers, 0);
-    return total;
+    if (adminInsights.artist_insights) {
+      const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.followers, 0);
+      return total;
+    };
+    
   }
 
   const calculateShares = () => {
-    if (!adminInsights.artist_insights) return 0;
-    const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.shares, 0);
-    return total;
+    if (adminInsights.artist_insights) {
+      const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.shares, 0);
+      return total;
+    }
+    
+    if (data) {
+      return data.shares;
+    }
   }
 
   const calculateLikes = () => {
-    if (!adminInsights.artist_insights) return 0;
-    const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.likes, 0);
-    return total;
+    if (adminInsights.artist_insights) {
+      const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.likes, 0);
+      return total;
+    }
+
+    if (data) {
+      return data.likes;
+    }
+    
   }
 
   const calculateComments = () => {
-    if (!adminInsights.artist_insights) return 0;
-    const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.comments, 0);
-    return total;
+    if (adminInsights.artist_insights) {
+      const total = adminInsights.artist_insights.filter(a => selectedArtist ? selectedArtist == a.user.user_id : true).reduce((p, c, i) => p + c.comments, 0);
+      return total;
+    }
   }
   // handlers
   const buildPane = (name, value) => (
@@ -156,11 +180,18 @@ const Insights = () => {
         <LineChart />
       </div>
       <div className={`d-flex flex-wrap ${styles.dataWrapper}`}>
+        {buildPane('Content', kFormatter(calculateContent() || 0))}
+        {/* {buildPane('Songs', kFormatter(calculateContent() || 0))}
+        {buildPane('Videos', kFormatter(calculateContent() || 0))}
+        {buildPane('Movies', kFormatter(calculateContent() || 0))} */}
         {buildPane('Plays', kFormatter(calculatePlays() || 0))}
-        {buildPane('Followers', kFormatter(calculateFollowers() || 0))}
-        {/* {buildPane('Shares', kFormatter(calculateShares() || 0))} */}
         {buildPane('Likes', kFormatter(calculateLikes() || 0))}
         {buildPane('Comments', kFormatter(calculateComments() || 0))}
+        {buildPane('Shares', kFormatter(calculateShares() || 0))}
+        {buildPane('Followers', kFormatter(calculateFollowers() || 0))}
+        {/* {buildPane('Shares', kFormatter(calculateShares() || 0))} */}
+        
+        
       </div>
     </>
   );
@@ -180,7 +211,7 @@ const Insights = () => {
       <div className="row">
         <div className="col-12 col-md-10 offset-md-1">
           {
-            isSuperAdmin ?
+            !isSuperAdmin ?
               systemPanel :
               insightsPanel
           }
