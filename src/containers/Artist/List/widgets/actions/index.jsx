@@ -23,8 +23,8 @@ export const ArtistListActions = (props) => {
         if (!manageUserRequests.length) return;
         const index = manageUserRequests.findIndex(req => req.requested_user_id == artist.user_id);
         if (index > -1) {
-            req = manageUserRequests[index];
-            setManageRequest(req);
+            let request = manageUserRequests[index];
+            setManageRequest(request);
         }
     }, [manageUserRequests]);
 
