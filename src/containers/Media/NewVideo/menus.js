@@ -1,4 +1,4 @@
-import { genres } from '$common/utils';
+import { videoGenres } from '$common/utils';
 
 export const menus = [{
         name: 'title',
@@ -23,7 +23,7 @@ export const menus = [{
         type: 'select',
         placeholder: 'enter_genre',
         title: 'genre',
-        options: genres,
+        options: videoGenres,
         isMulti: true,
     },
     {

@@ -361,7 +361,7 @@ const NewVideo = () => {
 
     return (
       <div>
-        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
+        {/* <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button> */}
         <DragDrop
           onChange={handleVideoChange}
           acceptedFiles="video/mp4,video/x-m4v,video/*"
@@ -392,7 +392,7 @@ const NewVideo = () => {
     <div className={styles.panelContainer}>
       <div className="row justify-content-center">
         <div className="col-10 col-sm-10 col-lg-8">
-          <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
+          {/* <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button> */}
           {getContent()}
         </div>
       </div>

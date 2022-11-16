@@ -1,48 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import styled from 'styled-components';
-import styles from './index.module.scss';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import styles from "./index.module.scss";
 
-import Alert from '$components/authentication/Alert';
-import Button from '$components/common/Button';
-import TextInput from '$components/common/TextInput';
-import InfoPane from '$components/authentication/Info';
-import InputField from '$components/forms/InputField';
-import FacebookSignUpButton from '$components/modals/SignUp/FacebookSignUpButton/index'
-import GoogleLoginComponent from '$components/modals/GoogleLoginComponent';
-import FacebookLoginComponent from '$components/modals/FacebookLoginComponent';
-import { showModal, hideModal } from '$redux/features/modal';
-import { signup } from '$redux/features/authentication';
+import Alert from "$components/authentication/Alert";
+import Button from "$components/common/Button";
+import TextInput from "$components/common/TextInput";
+import InfoPane from "$components/authentication/Info";
+import InputField from "$components/forms/InputField";
+import FacebookSignUpButton from "$components/modals/SignUp/FacebookSignUpButton/index";
+import GoogleLoginComponent from "$components/modals/GoogleLoginComponent";
+import FacebookLoginComponent from "$components/modals/FacebookLoginComponent";
+import { showModal, hideModal } from "$redux/features/modal";
+import { signup } from "$redux/features/authentication";
 
-import { routePaths } from '$common/routeConfig';
+import { routePaths } from "$common/routeConfig";
 
-import './index.module.scss';
-import { COLOR_ACCENT, COLOR_PRIMARY } from '../../common/constants';
-import MkondoLogo from '../../components/common/logo';
+import "./index.module.scss";
+import { COLOR_ACCENT, COLOR_PRIMARY } from "../../common/constants";
+import MkondoLogo from "../../components/common/logo";
+import one from '$assets/images/graphics/one.jpg';
 
-const background = require('$assets/images/login_bg.png');
-const login_mobile_top = require('$assets/images/login_mobile_top.png');
-const login_mobile_bottom = require('$assets/images/login_mobile_bottom.png');
-const logo = require('$assets/images/logo.png');
+const background = require("$assets/images/login_bg.png");
+const login_mobile_top = require("$assets/images/login_mobile_top.png");
+const login_mobile_bottom = require("$assets/images/login_mobile_bottom.png");
+const logo = require("$assets/images/logo.png");
 
-const user_icon = require('$assets/images/icons/register_user.svg');
-const music_icon = require('$assets/images/icons/register_music.svg');
-const manager_icon = require('$assets/images/icons/register_manager.svg');
-const user_icon_white = require('$assets/images/icons/register_user_active.svg');
-const music_icon_white = require('$assets/images/icons/register_music_active.svg');
-const manager_icon_white = require('$assets/images/icons/register_manager_active.svg');
-const arrow_left = require('$assets/images/icons/arrow-left-home.svg');
-
+const user_icon = require("$assets/images/icons/register_user.svg");
+const music_icon = require("$assets/images/icons/register_music.svg");
+const manager_icon = require("$assets/images/icons/register_manager.svg");
+const user_icon_white = require("$assets/images/icons/register_user_active.svg");
+const music_icon_white = require("$assets/images/icons/register_music_active.svg");
+const manager_icon_white = require("$assets/images/icons/register_manager_active.svg");
+const arrow_left = require("$assets/images/icons/arrow-left-home.svg");
 
 const RegisterTopShape = styled.div`
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 70%;
-    height: 20%;
-    border-radius: 0 0 90% 0;
-    background: linear-gradient(${COLOR_PRIMARY}, ${COLOR_ACCENT});
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 70%;
+  height: 20%;
+  border-radius: 0 0 90% 0;
+  background: linear-gradient(${COLOR_PRIMARY}, ${COLOR_ACCENT});
 `;
 
 const GradientBackground = styled.div`
@@ -62,10 +62,8 @@ const LoginBackBottom = styled.div`
     bottom: 0;
     left: 0;
     background-image: url(${login_mobile_bottom});
-    
   }
 `;
-
 
 const RegisterBack = styled.div`
   width: 100%;
@@ -79,7 +77,7 @@ const RegisterBack = styled.div`
   z-index: 1;
   @media screen and (max-width: 576px) {
     background-image: url(${login_mobile_top});
-    padding-top: 39%
+    padding-top: 39%;
   }
   @media screen and (min-width: 576px) {
     background-image: url(${background});
@@ -94,11 +92,11 @@ const RegisterBack = styled.div`
 // ];
 
 const initialValues = {
-  fullName: '',
-  phoneNumber: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  fullName: "",
+  phoneNumber: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
   // userType: null,
 };
 
@@ -107,8 +105,7 @@ const initalErrors = {
   phone_number: null,
   email: null,
   password: null,
-}
-
+};
 
 const RegisterPage = () => {
   // state
@@ -121,8 +118,12 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const signupError = useSelector((store) => store.authentication.signupError);
-  const signUpComplete = useSelector((store) => store.authentication.signUpComplete);
-  const signupPending = useSelector((store) => store.authentication.signupPending);
+  const signUpComplete = useSelector(
+    (store) => store.authentication.signUpComplete
+  );
+  const signupPending = useSelector(
+    (store) => store.authentication.signupPending
+  );
 
   useEffect(() => {
     // routePaths.onBoarding
@@ -141,48 +142,48 @@ const RegisterPage = () => {
     console.log("sign up error triggered");
     console.log(signupError);
     setErrorObj(initalErrors);
-    
+
     //display errors
     //error structure to purse addSeriesError is Null or {message: jsonString}
     //get the message and parse the jsonString and look for fields of interest
     const message = signupError.message;
     try {
-        console.log("Signup Error: ", signupError);
-        const json = JSON.parse(message)
-        let _errors;
-        if (json.message) {
-            _errors = json.message;
-        } else {
-            _errors = json;
-        }
-        console.log("Errors converted to json: currentType:", _errors);
-        if (typeof _errors == 'object') {
-          console.log("Errors is object");
-          const fields = ['full_name', 'email', 'phone_number', 'password'];
-          const isInvalid = fields.some(key => {
-            if (Object.keys(_errors).includes(key)) {
-              setErrorObj({...errObj, [key]: _errors[key]});
-              return true;
-            }
-          });
-          console.log("Is invalid", isInvalid, _errors);
-          if (!isInvalid) {
-            setError(null)
-            setErrorObj(initalErrors)
-          } else {
-            setError("Sorry! Signup Failed.")
+      console.log("Signup Error: ", signupError);
+      const json = JSON.parse(message);
+      let _errors;
+      if (json.message) {
+        _errors = json.message;
+      } else {
+        _errors = json;
+      }
+      console.log("Errors converted to json: currentType:", _errors);
+      if (typeof _errors == "object") {
+        console.log("Errors is object");
+        const fields = ["full_name", "email", "phone_number", "password"];
+        const isInvalid = fields.some((key) => {
+          if (Object.keys(_errors).includes(key)) {
+            setErrorObj({ ...errObj, [key]: _errors[key] });
+            return true;
           }
-        }
-
-        if (typeof _errors == 'string') {
-          console.log("Errors is string");
-          setError(_errors);
+        });
+        console.log("Is invalid", isInvalid, _errors);
+        if (!isInvalid) {
+          setError(null);
           setErrorObj(initalErrors);
+        } else {
+          setError("Sorry! Signup Failed.");
         }
-        //if there is no validation error go to the next page
+      }
+
+      if (typeof _errors == "string") {
+        console.log("Errors is string");
+        setError(_errors);
+        setErrorObj(initalErrors);
+      }
+      //if there is no validation error go to the next page
     } catch (e) {
-        console.log("json decoding error");
-        console.error(e)
+      console.log("json decoding error");
+      console.error(e);
     }
   }, [signupError]);
 
@@ -202,28 +203,36 @@ const RegisterPage = () => {
   const handleSignUp = () => {
     console.log("Handle signup called");
 
-    dispatch(signup({
-      full_name: values.fullName,
-      phone_number: values.phoneNumber,
-      email: values.email,
-      password: values.password,
-      user_type: values.userType, // user, creator, admin
-      country: 'TZ',
-    }));
+    dispatch(
+      signup({
+        full_name: values.fullName,
+        phone_number: values.phoneNumber,
+        email: values.email,
+        password: values.password,
+        user_type: values.userType, // user, creator, admin
+        country: "TZ",
+      })
+    );
   };
 
   const handlePage = (index) => {
-    console.log('handle page called');
+    console.log("handle page called");
     setError(null);
-    setErrorObj(initalErrors)
+    setErrorObj(initalErrors);
 
-    if (index == 3 && (values.fullName == '' || values.email == '' || values.phoneNumber == '')) {
-      setError(setErrorObj({
-        ...error,
-        full_name: values.fullName == '' ? 'Fullname cannot be empty' : null,
-        email: values.email == '' ? 'Email cannot be empty' : null,
-        phone_number: values.phoneNumber == '' ? 'Phone cannot be empty' : null, 
-      }));
+    if (
+      index == 3 &&
+      (values.fullName == "" || values.email == "" || values.phoneNumber == "")
+    ) {
+      setError(
+        setErrorObj({
+          ...error,
+          full_name: values.fullName == "" ? "Fullname cannot be empty" : null,
+          email: values.email == "" ? "Email cannot be empty" : null,
+          phone_number:
+            values.phoneNumber == "" ? "Phone cannot be empty" : null,
+        })
+      );
       return;
     }
 
@@ -231,19 +240,21 @@ const RegisterPage = () => {
       let isInvalid = false;
       if (!values.password) {
         isInvalid = true;
-        setErrorObj({...errObj, password: 'Password cannot be empty'})
+        setErrorObj({ ...errObj, password: "Password cannot be empty" });
       }
       if (!values.confirmPassword) {
         isInvalid = true;
-        setErrorObj({...errObj, password_confirm: 'Password confirm connot be empty'})
+        setErrorObj({
+          ...errObj,
+          password_confirm: "Password confirm connot be empty",
+        });
       }
       if (values.password != values.confirmPassword) {
         isInvalid = true;
-        setErrorObj({...errObj, password_confirm: 'Passwords do not match'})
+        setErrorObj({ ...errObj, password_confirm: "Passwords do not match" });
       }
       if (!isInvalid) {
-        
-        handleSignUp()
+        handleSignUp();
       }
       return;
     }
@@ -254,68 +265,98 @@ const RegisterPage = () => {
       return;
     }
 
-    
     setFirstPage(index);
-  }
+  };
 
   // render
   return (
     <div className={`${styles.background}`}>
-      <div className="py-4 mx-3"><MkondoLogo /></div>
-      <div className="px-4">
-          <div className="">
-              <span className="font-bold text-light display-2">Sign Up</span>
-              {
-                (error)
-                && (
-                  <Alert
-                    content={error || "Failed to sign up. Try again"}
-                    type="error"
-                  />
-                )
-              }
+      {/* <div className="py-4 mx-3">
+        <MkondoLogo />
+      </div> */}
+      <div className="row px-4">
+        <div className="col-lg-6">
+            <img src={one} alt="" width="100%" />
+        </div>
+        <div className="col-lg-6">
+          <span className="font-bold text-light display-2">Sign Up</span>
+          {error && (
+            <Alert
+              content={error || "Failed to sign up. Try again"}
+              type="error"
+            />
+          )}
 
-                <>
-                  <InputField field={{ 
-                        type: "text",
-                        name: "fullName",
-                        placeholder: "Fullname",
-                        value: values.fullName,
-                    }} error={errObj.full_name} onChange={handleChange} isGrey={false} />
+          <>
+            <InputField
+              field={{
+                type: "text",
+                name: "fullName",
+                placeholder: "Fullname",
+                value: values.fullName,
+              }}
+              error={errObj.full_name}
+              onChange={handleChange}
+              isGrey={false}
+            />
 
-                  <InputField field={{ 
-                        type: "text",
-                        name: "email",
-                        placeholder: "Email Address",
-                        value: values.email,
-                    }} error={errObj.email} onChange={handleChange} isGrey={false} />
+            <InputField
+              field={{
+                type: "text",
+                name: "email",
+                placeholder: "Email Address",
+                value: values.email,
+              }}
+              error={errObj.email}
+              onChange={handleChange}
+              isGrey={false}
+            />
 
-                  <InputField field={{ 
-                        type: "text",
-                        name: "phoneNumber",
-                        placeholder: "eg. +255654303333",
-                        value: values.phoneNumber,
-                    }} error={errObj.phone_number} onChange={handleChange} isGrey={false} />
+            <InputField
+              field={{
+                type: "text",
+                name: "phoneNumber",
+                placeholder: "eg. +255654303333",
+                value: values.phoneNumber,
+              }}
+              error={errObj.phone_number}
+              onChange={handleChange}
+              isGrey={false}
+            />
 
-                  <InputField field={{ 
-                        type: "password",
-                        name: "password",
-                        placeholder: "Password",
-                        value: values.password,
-                    }} error={errObj.password} onChange={handleChange} isGrey={false} />
+            <InputField
+              field={{
+                type: "password",
+                name: "password",
+                placeholder: "Password",
+                value: values.password,
+              }}
+              error={errObj.password}
+              onChange={handleChange}
+              isGrey={false}
+            />
 
-                  
-                  <div className="d-flex mt-2 mb-2 align-items-center">
-                    <button className="btn btn-primary mr-2"  onClick={() => handlePage(3)}>Register {signupPending ? <small>validating...</small> : null }</button>
-                    <button className="btn btn-link text-light" onClick={() => handleLogin()}>Already have an account? Login Now!</button>
-                  </div>
-                  <GoogleLoginComponent />
-                  <div className="my-2"></div>
-                  <FacebookSignUpButton />
-                </>
+            <div className="d-flex mt-2 mb-2 align-items-center">
+              <button
+                className="btn btn-primary mr-2"
+                onClick={() => handlePage(3)}
+              >
+                Register {signupPending ? <small>validating...</small> : null}
+              </button>
+              <button
+                className="btn btn-link text-light"
+                onClick={() => handleLogin()}
+              >
+                Already have an account? Login Now!
+              </button>
             </div>
-            </div>
+            <GoogleLoginComponent />
+            <div className="my-2"></div>
+            <FacebookSignUpButton />
+          </>
+        </div>
       </div>
+    </div>
   );
 };
 
