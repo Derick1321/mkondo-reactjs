@@ -209,9 +209,6 @@ const VideoPlayer = (props) => {
 
     return (
         <div className={styles.theatre}>
-            <div className={styles.back} onClick={handleBack}>
-                <IconArrowLeft height="30px" width="30px" color="white" />
-            </div>
             <center>
                 <video ref={playerRef} src={videoUrl} autoPlay={true} controls={false} controlsList="nodownload">
                 </video>

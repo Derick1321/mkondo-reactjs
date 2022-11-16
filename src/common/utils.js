@@ -151,6 +151,15 @@ export const genres = [
   { value: 'pop', label: 'Pop' },
 ];
 
+export const videoGenres = [
+  { value: 'animation', label: 'Animation' },
+  { value: 'educational', label: 'Educational' },
+  { value: 'music', label: 'Music' },
+  { value: 'documentary', label: 'Documentary' },
+  { value: 'sports', label: 'Sports' },
+  { value: 'comedy', label: 'Comedy' },
+];
+
 export const movieGenres = [
   { value: 'action', label: 'Action' },
   { value: 'comedy', label: 'Comedy' },
