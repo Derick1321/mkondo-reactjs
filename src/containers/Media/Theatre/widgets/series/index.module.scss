@@ -4,6 +4,7 @@
     position: relative;
     width: 150px;
     cursor: pointer;
+    transition: all 0.3s ease-out;
     
     .cover {
         width: 150px;
@@ -20,4 +21,12 @@
         height: 45px;
         width: 45px;
     }
+}
+
+.wrapper:hover {
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+    transform: scale(1.2);
+    z-index: 5;
+    border-radius: 5px;
 }
