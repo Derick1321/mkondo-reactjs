@@ -211,7 +211,7 @@ const Profile = () => {
               onChange={handleAvatarChange}
             />
           </div>
-          <div className="d-flex flex-column">
+          <div className="d-none d-md-flex flex-column">
             <p>Mkondo {user.user_type}</p>
             <p className={styles.title}>{user.full_name}</p>
           </div>

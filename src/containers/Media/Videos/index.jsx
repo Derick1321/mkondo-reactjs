@@ -5,7 +5,7 @@ import { fetchVideos, getTopMedias } from '../../../redux/features/media';
 import { IconSort } from '../../../components/icons/sort';
 import styles from './index.module.scss';
 import { useState } from 'react';
-import { movieGenres as genres } from '$common/utils';
+import { videoGenres as genres } from '$common/utils';
 
 export const VideosContainer = () => {
 
