@@ -7,7 +7,6 @@ import InputField from '$components/forms/InputField';
 import Row from '$components/media/CommentRow';
 import Tabs from '$components/common/Tabs';
 import Player from '$components/media/IndividualPlayer';
-import VideoPlayer from '$components/media/VideoPlayer';
 
 import {
   addComment,
@@ -27,6 +26,7 @@ import { showModal } from '$redux/features/modal';
 import styled from 'styled-components';
 import { loadMedia, setCurrentMediaId } from '../../../redux/features/player';
 import { useHistory } from 'react-router-dom';
+import VideoPlayer from '../Watch/player';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -278,7 +278,7 @@ const ViewMedia = () => {
             <div className="col-lg-9">
               <div ref={videoPlayerRef} className={`${styles.stickyPlayer}`}>
                 <VideoPlayer
-                    url={currentMedia.media_url}
+                    // url={currentMedia.media_url}
                   />
               </div>
              {isMobile && <Spacer height={(spacing * 0.6)} />}
