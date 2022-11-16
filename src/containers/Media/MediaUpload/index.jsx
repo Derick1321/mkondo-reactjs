@@ -284,10 +284,13 @@ const MediaUpload = () => {
           onChange={handleFileChange}
           isMulti
         />
+        <small className='text-light'>NOTE: Once the files are selected, A Tracklist will be shown where by. When you press the settings of a single track. A panel will expand to enable you to enter the track details. Once you have finished filling the details for each track you are uploading. Press the contiunue button that can be found at the bottom of the track list.</small>
         {
           files.length > 0 && (
             <>
+              
               <p className={styles.title}>{t('track_list')} </p>
+              
               <DraggableList
                 list={files}
                 listElement={UploadCard}
