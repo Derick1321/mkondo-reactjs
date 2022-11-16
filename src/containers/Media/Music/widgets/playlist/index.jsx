@@ -11,7 +11,7 @@ const arrowRightIcon = require('$assets/images/icons/arrow-right.svg');
 
 export const MusicPlaylistComponent = (props) => {
     //props
-    const { title, icon, media } = props;
+    const { title, icon, media, more, onMoreClicked } = props;
 
     const name = nanoid(5);
     const containerId = `${name}-container`;
@@ -90,6 +90,7 @@ export const MusicPlaylistComponent = (props) => {
                 <h3 className='text-light'>{title}</h3>
                 <div className="ml-auto d-flex">
                     <div className="mr-2"></div>
+                    {onMoreClicked && <button className="btn btn-primary" onClick={onMoreClicked}>View More</button>}
                 </div>
             </div>
 
