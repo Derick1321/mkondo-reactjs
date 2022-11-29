@@ -57,6 +57,7 @@ import { MediaDescriptionPage } from '../containers/Media/Description/index';
 import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
+import SocialMediaMessagesPage from '../containers/socialmedia/messages';
 
 export const routePaths = {
   main: '/app',
@@ -126,6 +127,7 @@ export const routePaths = {
 
   socialmedia: '/social',
   feed: '/social/feed',
+  socialMessages: '/social/messages',
   timeline: '/social/timeline',
   page: '/social/page',
   chat: '/social/chat',
@@ -556,6 +558,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.feed,
         component: SocialMediaFeed,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.socialMessages,
+        component: SocialMediaMessagesPage,
         redirect: redirectFunctions.app
       },
     ],
