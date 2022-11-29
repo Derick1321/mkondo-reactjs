@@ -48,9 +48,16 @@ const SideMenu = (props) => {
     {
       icon: require('$assets/images/icons/top-chart.svg'),
       activeIcon: require('$assets/images/icons/top-chart.svg'),
-      title: 'insights',
+      title: 'Insights (admin)',
       path: routePaths.insights,
       permission: 'admin',
+    },
+    {
+      icon: require('$assets/images/icons/top-chart.svg'),
+      activeIcon: require('$assets/images/icons/top-chart.svg'),
+      title: 'Insights',
+      path: routePaths.statsArtist,
+      permission: 'artist',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { getMediaUrl } from '../../../../common/utils';
 import arrowLeft from '$assets/images/icons/arrow-left.svg';
 
 import styles from './index.module.scss';
