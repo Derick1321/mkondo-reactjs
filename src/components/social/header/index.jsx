@@ -74,6 +74,7 @@ export const SocialMediaHeader = () => {
                         <span>Videos</span>
                         <span>Groups</span>
                         <span>Blog</span>
+                        <span onClick={() => history.push(routePaths.socialMessages)}>Messages</span>
                     </div>
 
                     <div className="ml-auto">
