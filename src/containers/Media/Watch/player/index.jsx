@@ -75,12 +75,12 @@ const VideoPlayer = (props) => {
         getMediaUrl(currentMedia.media_url, token).then(url => setVideoUrl(url));
 
         if (currentMedia.video_qualities) {
-            _qualities = Object.keys(currentMedia.video_qualities).map(key => {
+            const _qualities = Object.keys(currentMedia.video_qualities).map(key => {
                 if (['1080', '720', '480', '360', '240', '144'].includes(key)) {
                     return key;
                 } else {
                     if (key > 720) {
-                        return key;
+                        return 1080;
                     }
                 }
             }).filter(f => f);
