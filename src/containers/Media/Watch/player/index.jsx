@@ -18,6 +18,7 @@ import { IconNext } from '../../../../components/icons/next';
 import player from '../../../../redux/features/player';
 import { IconVolume } from '../../../../components/icons/volume';
 import { IconMute } from '../../../../components/icons/mute';
+import { getMediaUrl } from '../../../../common/utils';
 
 const VideoPlayer = (props) => {
     // ref
