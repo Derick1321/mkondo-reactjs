@@ -143,19 +143,23 @@ const TheatreContainer = () => {
     //handlers
     const handlePlay = async () => {
         // const res = await handleFetch('GET', `media/presigned-get-url?file_name=${currentMedia.media_url}`, null, token);
-        if (!subscriptionStatus) {
-            await checkSubscription();
-        }
+        // if (!subscriptionStatus) {
+        //     await checkSubscription();
+        // }
 
-        if (!subscriptionStatus.success) {
-            dispatch(showModal('ALERT_MODAL', {
-                media: currentMedia,
-            }));
-        }
+        // if (!subscriptionStatus.success) {
+        //     dispatch(showModal('ALERT_MODAL', {
+        //         media: currentMedia,
+        //     }));
+        // }
 
-        if (subscriptionStatus.subscribed) {
-            setMediaUrl(currentMedia.media_url);
-        }
+        // if (subscriptionStatus.subscribed) {
+        //     setMediaUrl(currentMedia.media_url);
+        // }
+        let url = generatePath(routePaths.describeMedia, { id: currentMedia.media_id });
+        // console.log("path", url);
+        history.push(url);
+        return;
     }
 
     const checkSubscription = async () => {
