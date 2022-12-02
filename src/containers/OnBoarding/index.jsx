@@ -75,6 +75,9 @@ const OnBoarding = () => {
       setPhone(value);
     }
     
+    if (key == "full_name") {
+      setFullname(value);
+    }
   }
 
   const handleNext = async () => {
