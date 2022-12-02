@@ -4,6 +4,9 @@ import ArtistHero from '../ViewArtist/Hero';
 import { useSelector } from 'react-redux';
 
 const StatsArtist = () => {
+  // router
+
+  // redux
   const user = useSelector(state => state.authentication.user);
 
   return (
