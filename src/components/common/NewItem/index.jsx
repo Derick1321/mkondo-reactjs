@@ -27,6 +27,7 @@ const NewItem = (props) => {
     metamenus,
     onChange,
     values,
+    onClose,
   } = props;
 
   // console.log(menus);
@@ -90,13 +91,19 @@ const NewItem = (props) => {
     }));
   }
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    }
+  }
+
   // render
   return (
-    <div className="">
+    <div>
       <div className="d-flex flex-column mt-4">
-        <Progress
+        {/* <Progress
           values={values}
-        />
+        /> */}
       </div>
       <div  className={styles.newContent}>
         {/* <div className="d-flex flex-column mt-4">
@@ -189,8 +196,11 @@ const NewItem = (props) => {
           }
         </div>
         <div className="d-flex justify-content-end">
+          
+          {selected == "basic" && <button className="btn btn-outline-primary mr-2" onClick={handleClose}>Close</button>}
           {selected == "basic" && <button className="btn btn-primary" onClick={() => handleSelect(options[1].name)}>Next</button>}
-          {selected == "metadata" && <button className="btn btn-warning" onClick={() => handleSelect(options[0].name)}>Previous</button>}
+          {selected == "metadata" && <button className="btn btn-outline-primary" onClick={() => handleSelect(options[0].name)}>Previous</button>}
+          {selected == "metadata" && <button className="btn btn-primary ml-2" onClick={handleClose}>Save</button>}
         </div>
       </div>
     </div>
