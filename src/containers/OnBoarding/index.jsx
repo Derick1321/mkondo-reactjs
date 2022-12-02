@@ -20,6 +20,7 @@ const OnBoarding = () => {
   // state
   const [selected, setSelected] = useState([]);
   const [phone, setPhone] = useState("");
+  const [fullname, setFullname] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // store
@@ -37,7 +38,7 @@ const OnBoarding = () => {
   }, [updateUserComplete]);
 
   useEffect(() => {
-    if (user.user_type && user.email && user.phone_number) {
+    if (user.full_name && user.user_type && user.email && user.phone_number) {
       history.push(routePaths.home);
     }
   }, [user]);
@@ -114,6 +115,18 @@ const OnBoarding = () => {
     }));
   }
 
+  const handleUpdateFullname = async () => {
+    const payload = {
+      ...user,
+      full_name: fullname,
+    };
+
+    await dispatch(updateUser({
+      id: user.user_id,
+      payload,
+    }));
+  }
+
   if (!user.user_type || user.user_type == 'visitor') {
     return (
       <div className={styles.onboardingWrapper}>
@@ -124,6 +137,32 @@ const OnBoarding = () => {
           selected={selected}
           subtitle="Select account type"
         />
+      </div>
+    )
+  }
+
+  if (!user.full_name) {
+    return (
+      <div className={styles.onboardingWrapper}>
+          <div className="d-flex justify-content-end"> 
+            <AppHeader
+              showSearch={false}
+            />
+          </div>
+          
+          
+          <div className='mt-2 mx-4'>
+            {errorMessage && <div className={`alert alert-danger ${styles.error}`}>{errorMessage}</div>}
+            <h4 className='text-light'>Hey! Buddy, How should we call you :)</h4>
+            <InputField 
+              field={{ 
+                  type: "text",
+                  name: "full_name",
+                  placeholder: "Fullname e.g First Last",
+                  value: fullname,
+              }} onChange={handleChange} isGrey={false} />
+              <Button onClick={handleUpdateFullname}>Save</Button>
+          </div>
       </div>
     )
   }
