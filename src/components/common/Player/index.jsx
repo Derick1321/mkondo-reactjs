@@ -24,6 +24,8 @@ const prevIcon = require('$assets/images/player/prev.svg');
 const nextIcon = require('$assets/images/player/next.svg');
 const pinLock = require('$assets/images/player/pin-lock.svg');
 const pinUnlock = require('$assets/images/player/pin-unlock.svg');
+const chevronUp = require('$assets/images/player/chevron-up.svg');
+const chevronDown = require('$assets/images/player/chevron-down.svg');
 
 const Player = () => {
   // hooks
@@ -164,7 +166,7 @@ const Player = () => {
       </div>
       <div>
         <button className={styles.playerBtn} onClick={toggleFooter}>
-          <img className={styles.size17} src={`${showFooterPlayer ? pinLock : pinUnlock}`} />
+          <img className={styles.size17} src={`${showFooterPlayer ? chevronDown : chevronUp}`} />
         </button>
       </div>
 
