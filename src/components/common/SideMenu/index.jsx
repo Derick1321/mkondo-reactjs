@@ -22,6 +22,7 @@ const SideMenu = (props) => {
   const dispatch = useDispatch();
   const isSideMenuOpen = useSelector((store) => store.nav.isSideMenuOpen);
   const userRole = useSelector((store) => store.authentication.user.user_type);
+  const user = useSelector((store) => store.authentication.user);
   const isPublished = useSelector((store) => store.authentication.user.publish);
   const playlists = useSelector((store) => store.playlist.playlists);
   
@@ -48,9 +49,16 @@ const SideMenu = (props) => {
     {
       icon: require('$assets/images/icons/top-chart.svg'),
       activeIcon: require('$assets/images/icons/top-chart.svg'),
-      title: 'insights',
+      title: 'Insights (admin)',
       path: routePaths.insights,
       permission: 'admin',
+    },
+    {
+      icon: require('$assets/images/icons/top-chart.svg'),
+      activeIcon: require('$assets/images/icons/top-chart.svg'),
+      title: 'Insights',
+      path: routePaths.statsArtist.replace(":id", user.user_id),
+      permission: 'artist',
     },
     {
       icon: require('$assets/images/icons/upload.svg'),

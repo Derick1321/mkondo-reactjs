@@ -93,7 +93,7 @@ export const routePaths = {
   artist: '/app/artist',
   artistList: '/app/artist/list',
   newArtist: '/app/artist/new',
-  statsArtist: '/app/artist/stats',
+  statsArtist: '/app/artist/:id/stats',
   viewArtist: '/app/artist/:id',
   success: '/app/success',
   history: '/app/history',

@@ -14,9 +14,10 @@ import { bytesToSize, generatePreview, getDuration } from '$common/utils';
 import { saveMedia, addMedia, clearNewMediaId } from '$redux/features/media';
 
 import styles from './index.module.scss';
-import { saveMediaPro } from '../../../redux/features/media';
+import { saveMediaPro, updateUploadQueueItemProgress } from '../../../redux/features/media';
 import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
 import ArtistSelectorComponent from '../artistSelector';
+import { v4 as uuidv4 } from 'uuid';
 
 const MediaUpload = () => {
   //hooks
@@ -228,6 +229,7 @@ const MediaUpload = () => {
       if (item) {
         console.debug("HANDLE CONTINUE: Selected Artist", selectedArtist);
         const data = {
+          reqID: item.reqID ? item.reqID : uuidv4(),
           name: item.title,
           description: item.description,
           genres: item.genres && item.genres.length ? item.genres.map((item) => item.value ?? item) : (item.genre && item.genre.length ? item.genre.map((item) => item.value ?? item) : []),
@@ -277,21 +279,44 @@ const MediaUpload = () => {
   // render
   return (
     <div className={`row ${styles.wrapper}`}>
-      <div className="col-md-8 offset-md-2 col-10">
+      <div className="col-md-8 offset-md-2 col-12">
         <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
         {successMessage && <div className='alert alert-success'>{successMessage}</div>}
         <DragDrop
           onChange={handleFileChange}
           isMulti
         />
-        <small className='text-light'>NOTE: Once the files are selected, A Tracklist will be shown where by. When you press the settings of a single track. A panel will expand to enable you to enter the track details. Once you have finished filling the details for each track you are uploading. Press the contiunue button that can be found at the bottom of the track list.</small>
+        <small className='text-light'></small>
         {
           files.length > 0 && (
             <>
               
               <p className={styles.title}>{t('track_list')} </p>
+
+              {/* name,
+              index,
+              size,
+              onRemove,
+              onChange,
+              values: allFields,
+              status, */}
+
+              {files.map((file, i) => {
+                return (
+                  <div className='mb-2'>
+                    <UploadCard
+                      index={i}
+                      {...file}
+                      onRemove={handleRemove}
+                      onChange={handleChange}
+                      status={saveStatus}
+                      values={values}
+                    />
+                  </div>
+                )
+              })}
               
-              <DraggableList
+              {/* <DraggableList
                 list={files}
                 listElement={UploadCard}
                 params={{
@@ -301,15 +326,15 @@ const MediaUpload = () => {
                   status: saveStatus,
                   values,
                 }}
-              />
-              <div className={styles.footerWrapper}>
+              /> */}
+              {/* <div className={styles.footerWrapper}> */}
                 <Button
                   onClick={handleContinue}
                   isLoading={isLoading}
                 >
-                  {t('continue')}
+                  {t('Confirm & Submit')}
                 </Button>
-              </div>
+              {/* </div> */}
             </>
           )
         }

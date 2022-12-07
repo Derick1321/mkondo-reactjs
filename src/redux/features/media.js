@@ -850,6 +850,11 @@ const initialState = {
         isSuccessfull: [],
         errors: {},
         results: {},
+    },
+    addMediaStreams: {
+        isLoading: [],
+        isSuccessfull: [],
+        failed: []
     }
 };
 
