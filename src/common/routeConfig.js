@@ -57,6 +57,7 @@ import { MediaDescriptionPage } from '../containers/Media/Description/index';
 import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
+import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
 
 export const routePaths = {
   main: '/app',
@@ -118,6 +119,7 @@ export const routePaths = {
   manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
+  managerPanelMediaOptimizationLogs: '/app/manager-panel/media/optimization/:media_id/logs',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -540,6 +542,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.managerPanelManageSeriesEpisods,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelMediaOptimizationLogs,
+            component: MediaOptimizationLogs,
             redirect: redirectFunctions.app
           }
         ],
