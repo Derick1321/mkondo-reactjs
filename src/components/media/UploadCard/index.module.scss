@@ -1,5 +1,10 @@
 @import '$assets/scss/main.scss';
 
+
+.wrapper {
+  @include card;
+}
+
 .dragIcon {
   height: 15px;
   width: 15px;

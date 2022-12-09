@@ -1,3 +1,5 @@
+@import '$assets/scss/main.scss';
+
 .avatar {
     height: 200px;
     margin-right: 0.5rem;
@@ -12,13 +14,12 @@
     bottom: 10px;
     left: 10px;
 }
-
 // .itemWrapper {
 //     background-color: #333333;
 // }
 .newContent {
-    background-color: #191919;
-    padding: 20px;
+    // @include card;
+    // padding: 20px;
     color: #FEFEFE;
     border-radius: 8px 8px 0 0;
 }

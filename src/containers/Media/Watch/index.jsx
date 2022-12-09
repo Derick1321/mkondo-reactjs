@@ -76,7 +76,7 @@ export const WatchMovie = (props) => {
         getMediaUrl(currentMedia.media_url, token).then(url => setMovieUrl(url));
 
         if (currentMedia.video_qualities) {
-            _qualities = Object.keys(currentMedia.video_qualities).map(key => {
+            const _qualities = Object.keys(currentMedia.video_qualities).map(key => {
                 if (['1080', '720', '480', '360', '240', '144'].includes(key)) {
                     return key;
                 } else {

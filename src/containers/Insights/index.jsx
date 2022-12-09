@@ -24,6 +24,7 @@ const options = [
 
 const systemOptions = [
   { name: 'system', title: 'System Insights' },
+  { name: 'insights', title: 'Manager Insights' },
 ];
 
 const getSum = (data) => {
@@ -211,8 +212,6 @@ const Insights = () => {
       <div className="row">
         <div className="col-12 col-md-10 offset-md-1">
           {
-            !isSuperAdmin ?
-              systemPanel :
               insightsPanel
           }
         </div>
