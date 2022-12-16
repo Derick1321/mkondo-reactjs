@@ -54,6 +54,7 @@
         "screenfull": "^5.1.0",
         "storage": "^0.2.0",
         "styled-components": "^5.2.1",
+        "uuid": "^9.0.0",
         "videojs-playlist": "^5.0.0"
     },
     "devDependencies": {
