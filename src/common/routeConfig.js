@@ -58,7 +58,11 @@ import { MediaDescriptionPage } from '../containers/Media/Description/index';
 import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
+<<<<<<< HEAD
 import SocialMediaMessagesPage from '../containers/socialmedia/messages';
+=======
+import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
+>>>>>>> feature_media-processing-progress-logs
 
 export const routePaths = {
   main: '/app',
@@ -95,7 +99,7 @@ export const routePaths = {
   artist: '/app/artist',
   artistList: '/app/artist/list',
   newArtist: '/app/artist/new',
-  statsArtist: '/app/artist/stats',
+  statsArtist: '/app/artist/:id/stats',
   viewArtist: '/app/artist/:id',
   success: '/app/success',
   history: '/app/history',
@@ -121,6 +125,7 @@ export const routePaths = {
   manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
+  managerPanelMediaOptimizationLogs: '/app/manager-panel/media/optimization/:media_id/logs',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -552,6 +557,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.managerPanelManageSeriesEpisods,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelMediaOptimizationLogs,
+            component: MediaOptimizationLogs,
             redirect: redirectFunctions.app
           }
         ],

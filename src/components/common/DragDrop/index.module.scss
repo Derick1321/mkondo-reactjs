@@ -31,6 +31,23 @@
   height: 40px;
   border-radius: 42px;
   color: $white;
+
+  display: flex;
+  align-items: center;
+
+  .mobile {
+    display: none;
+  }
+  
+  @media (max-width: 576px) {
+    span {
+      display: none;
+    }
+
+    .mobile {
+      display: block;
+    }
+  }
 }
 
 .fileBtnWrapper {

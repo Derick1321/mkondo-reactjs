@@ -14,6 +14,7 @@ import { getArtistById, getArtistMedia } from '$redux/features/artist';
 import { addFollowers, removeFollowers } from '$redux/features/user';
 
 import styles from './index.module.scss';
+import { useEffect } from 'react';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
@@ -59,6 +60,8 @@ const ViewArtist = () => {
   // state
   const [coverUrl, setCoverUrl] = useState('');
   const [avatarUrl, setAvatarUrl] = useState('');
+
+  // redux
 
   // effects
   useEffect(() => {
