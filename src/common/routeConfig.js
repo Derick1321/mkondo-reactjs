@@ -57,15 +57,14 @@ import { MediaDescriptionPage } from '../containers/Media/Description/index';
 import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
-<<<<<<< HEAD
 import SocialMediaMessagesPage from '../containers/socialmedia/messages';
-=======
 import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
->>>>>>> feature_media-processing-progress-logs
+import { AboutPage } from '../containers/About';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
+
   guestViewMedia: '/guest/media/:id',
   login: "/login",
   register: "/register",
@@ -141,6 +140,10 @@ export const routePaths = {
   privacy: '/privacy',
   tos: '/TOS',
   facebook_data_deletion_status: '/facebook-data-deletion-status/:confirmation_code?',
+
+  about: '/about',
+  contact: '/contact',
+
 };
 
 const roles = {
@@ -179,6 +182,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.marketing,
     component: Marketing,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.about,
+    component: AboutPage,
   },
   {
     ...defaultConfig,
