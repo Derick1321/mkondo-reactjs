@@ -2,6 +2,31 @@
 
 .header {
     background: black;
+    display: flex;
+
+    .menu {
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // border: solid 1px green;
+
+        a {
+            all: unset;
+            padding: 0 16px;
+            white-space: nowrap;
+            cursor: pointer;
+
+            &:hover {
+                color: white;
+            }
+
+            @media screen and (max-width: 768px) {
+                display: none;
+            }
+        }
+    }
 }
 
 .section {
