@@ -4,10 +4,10 @@ import { MarketingPageHeaderComponent } from '../Marketing/widgets/header'
 
 export const DisclaimerPage = () => {
   return (
-    <div className='text-light'>
+    <div>
         <MarketingPageHeaderComponent />
 
-        <div className="container my-5 py-5">
+        <div className="container my-5 py-5 text-light">
             <div className="row">
                 <div className="col-lg-8 mx-auto">
                 <h1>Disclaimer for Peach Technology Corporation</h1>
