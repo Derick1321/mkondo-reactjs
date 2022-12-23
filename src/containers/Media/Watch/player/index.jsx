@@ -18,11 +18,8 @@ import { IconNext } from '../../../../components/icons/next';
 import player from '../../../../redux/features/player';
 import { IconVolume } from '../../../../components/icons/volume';
 import { IconMute } from '../../../../components/icons/mute';
-<<<<<<< HEAD
 import { Full } from '../../../../components/icons/full';
-=======
 import { getMediaUrl } from '../../../../common/utils';
->>>>>>> feature_media-processing-progress-logs
 
 const VideoPlayer = (props) => {
     // ref
