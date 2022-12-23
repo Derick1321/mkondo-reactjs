@@ -60,6 +60,7 @@ import { MediaListPage } from '../containers/Media/MediaList';
 import SocialMediaMessagesPage from '../containers/socialmedia/messages';
 import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
 import { AboutPage } from '../containers/About';
+import { ContactPage } from '../containers/Contact';
 
 export const routePaths = {
   main: '/app',
@@ -143,7 +144,6 @@ export const routePaths = {
 
   about: '/about',
   contact: '/contact',
-
 };
 
 const roles = {
@@ -187,6 +187,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.about,
     component: AboutPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.contact,
+    component: ContactPage,
   },
   {
     ...defaultConfig,
