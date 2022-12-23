@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
 import { getMediaUrl } from '../../../common/utils';
 import { toggleSocialMediaSideMenu } from '../../../redux/features/nav';
+import SearchModel from '../searchModel';
 import styles from './index.module.scss';
 
 export const SocialMediaHeader = () => {
@@ -39,6 +40,7 @@ export const SocialMediaHeader = () => {
                         <div className={styles.input}>
                             <img src={require('$assets/images/icons/search.svg')} alt="" height="20px" />
                             <input type="text" className="ml-3" placeholder="Search" />
+                            <SearchModel />
                         </div>
                     </div>
                     
@@ -74,6 +76,7 @@ export const SocialMediaHeader = () => {
                         <span>Videos</span>
                         <span>Groups</span>
                         <span>Blog</span>
+                        <span onClick={() => history.push(routePaths.socialMessages)}>Messages</span>
                     </div>
 
                     <div className="ml-auto">

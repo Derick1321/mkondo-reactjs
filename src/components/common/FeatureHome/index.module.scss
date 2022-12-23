@@ -1,4 +1,25 @@
 @import '$assets/scss/main.scss';
+.f_featureWrapper2 {
+    width: 200px;
+    background-color: #191919;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .title {
+        width: 200px;
+    }
+
+
+
+    @media screen and (max-width: 576px) {
+        width: 145px;
+
+        .title {
+            width: 145px;
+        }
+    }
+}
+
 .f_featureWrapper {
     // min-height: 185px;
     // min-width: 300px;
@@ -237,8 +258,12 @@
 
 .title {
     font-size: 12px;
-    margin-left: 2px;
+    padding: 0 2px;
     cursor: pointer;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-weight: bold;
 
     &::hover {
         color: red;

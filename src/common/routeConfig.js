@@ -57,10 +57,14 @@ import { MediaDescriptionPage } from '../containers/Media/Description/index';
 import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
+import SocialMediaMessagesPage from '../containers/socialmedia/messages';
+import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
+import { AboutPage } from '../containers/About';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
+
   guestViewMedia: '/guest/media/:id',
   login: "/login",
   register: "/register",
@@ -92,7 +96,7 @@ export const routePaths = {
   artist: '/app/artist',
   artistList: '/app/artist/list',
   newArtist: '/app/artist/new',
-  statsArtist: '/app/artist/stats',
+  statsArtist: '/app/artist/:id/stats',
   viewArtist: '/app/artist/:id',
   success: '/app/success',
   history: '/app/history',
@@ -118,6 +122,7 @@ export const routePaths = {
   manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
+  managerPanelMediaOptimizationLogs: '/app/manager-panel/media/optimization/:media_id/logs',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -126,6 +131,7 @@ export const routePaths = {
 
   socialmedia: '/social',
   feed: '/social/feed',
+  socialMessages: '/social/messages',
   timeline: '/social/timeline',
   page: '/social/page',
   chat: '/social/chat',
@@ -134,6 +140,10 @@ export const routePaths = {
   privacy: '/privacy',
   tos: '/TOS',
   facebook_data_deletion_status: '/facebook-data-deletion-status/:confirmation_code?',
+
+  about: '/about',
+  contact: '/contact',
+
 };
 
 const roles = {
@@ -172,6 +182,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.marketing,
     component: Marketing,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.about,
+    component: AboutPage,
   },
   {
     ...defaultConfig,
@@ -541,6 +556,12 @@ export const routes = [
             path: routePaths.managerPanelManageSeriesEpisods,
             component: ManageMedia,
             redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelMediaOptimizationLogs,
+            component: MediaOptimizationLogs,
+            redirect: redirectFunctions.app
           }
         ],
       },
@@ -556,6 +577,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.feed,
         component: SocialMediaFeed,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.socialMessages,
+        component: SocialMediaMessagesPage,
         redirect: redirectFunctions.app
       },
     ],
