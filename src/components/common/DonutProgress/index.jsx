@@ -12,7 +12,7 @@ const DonutProgress = (props) => {
 
     //const
     return (
-        <div style={{ height: height, width: width }}>
+        <div style={{ height: height, width: width, color:white }}>
             <CircularProgressbar 
                 value={progress} 
                 text={`${round(progress, 0)}%`}

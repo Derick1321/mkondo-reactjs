@@ -3,11 +3,11 @@
     flex-wrap: nowrap;
     overflow-x: scroll;
     scrollbar-width: none;
-    
+
     &::-webkit-scrollbar {
         display: none;
     }
-    
+
     .pill {
         background-color: rgba($color: #000000, $alpha: 0.5);
         border-radius: 999px;
@@ -25,7 +25,7 @@
         }
 
         &.active {
-            background-color: black;
+            background-color: rgb(170, 106, 106);
         }
     }
 }

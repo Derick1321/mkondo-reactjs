@@ -850,6 +850,11 @@ const initialState = {
         isSuccessfull: [],
         errors: {},
         results: {},
+    },
+    addMediaStreams: {
+        isLoading: [],
+        isSuccessfull: [],
+        failed: []
     }
 };
 
@@ -1618,7 +1623,6 @@ const mediaSlice = createSlice({
         },
         [retrieveMedia.pending]: (state, action) => {
             state.retrieveMedia.loading = true;
-            state.retrieveMedia.data = null;
             state.retrieveMedia.error = null;
         },
         [retrieveMedia.fulfilled]: (state, action) => {

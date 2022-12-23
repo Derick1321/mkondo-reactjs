@@ -9,6 +9,7 @@ import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
 import DropDown from '../../../components/common/DropDown';
 import deleteIcon from '$assets/images/icons/delete.svg';
+import { useHistory } from 'react-router-dom';
 
 const mediaActions = [
     { name: 'view', title: 'View', },
@@ -21,6 +22,9 @@ export const ManageMediaItem = ( props ) => {
     
     //props
     const { media, key } = props;
+
+    // router
+    const history = useHistory()
 
     //state
     const [mount, setMount] = useState(false);
@@ -148,6 +152,10 @@ export const ManageMediaItem = ( props ) => {
         dispatch(optimize(media.media_id));
     }
 
+    const handleViewLogs = () => {
+        history.push(generatePath(routePaths.managerPanelMediaOptimizationLogs, {media_id: media.media_id}));
+    }
+
     return (
         <div key={key} className="card h-100" ref={cardRef}>
             {isUpdating && (
@@ -196,6 +204,7 @@ export const ManageMediaItem = ( props ) => {
                         {media.cover_url_compressed ? <p>Cover Image Compressed</p> : <p>Cover Image Not Compressed</p>}
                         {(media.category != 'audio' && media.video_qualities) ? <p>{Object.keys(media.video_qualities).map(key => `${key}p, `)}</p> : <p>Media has no other qualities</p>}
                         <button onClick={handleOptimize} disabled={optimizeRequested} className='btn btn-primary btn-sm'>Optimize {isOptimizing ? <span className='spinner-border spinner-border-sm'></span> : null}</button>
+                        <button onClick={handleViewLogs} className="btn btn-outline-primary btn-sm ml-2">Logs</button>
                     </div>
                 </div>
             </div>

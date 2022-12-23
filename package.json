@@ -11,6 +11,7 @@
     },
     "proxy": "http://127.0.0.1:5000",
     "dependencies": {
+        "@faker-js/faker": "^7.6.0",
         "@parcel/transformer-sass": "^2.3.2",
         "@react-oauth/google": "^0.2.6",
         "@reactchartjs/react-chart.js": "^1.0.0-rc.3",
@@ -53,6 +54,7 @@
         "screenfull": "^5.1.0",
         "storage": "^0.2.0",
         "styled-components": "^5.2.1",
+        "uuid": "^9.0.0",
         "videojs-playlist": "^5.0.0"
     },
     "devDependencies": {
