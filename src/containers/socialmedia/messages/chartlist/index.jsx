@@ -9,7 +9,7 @@ const SocialMediaMessages = () => {
           <img src="https://bootdey.com/img/Content/avatar/avatar5.png" className="rounded-circle mr-1" alt="Vanessa Tucker" width="40" height="40" />
           <div className="flex-grow-1 ml-3">
             Derick Munisi
-            <div className="small"><span className={`fas fa-circle ${styles.chatOnline}`}></span> Online</div>
+            <div className="small"><span className={`fas fa-circle`}></span> Online</div>
           </div>
         </div>
       </a>
@@ -19,7 +19,7 @@ const SocialMediaMessages = () => {
           <img src="https://bootdey.com/img/Content/avatar/avatar2.png" className="rounded-circle mr-1" alt="William Harris" width="40" height="40" />
           <div className="flex-grow-1 ml-3">
             Mark Mayalla
-            <div className="small"><span className={`fas fa-circle ${styles.chatOffline}`}></span> Offline</div>
+            <div className="small"><span className={`fas fa-circle`}></span> Offline</div>
           </div>
         </div>
       </a>
