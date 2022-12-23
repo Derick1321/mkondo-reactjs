@@ -62,6 +62,7 @@ import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
 import { AboutPage } from '../containers/About';
 import { ContactPage } from '../containers/Contact';
 import { DisclaimerPage } from '../containers/Disclaimer';
+import { DMCAPage } from '../containers/DMCA';
 
 export const routePaths = {
   main: '/app',
@@ -202,6 +203,11 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.disclaimer,
     component: DisclaimerPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.dmca,
+    component: DMCAPage,
   },
   {
     ...defaultConfig,
