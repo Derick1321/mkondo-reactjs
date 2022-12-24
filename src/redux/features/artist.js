@@ -9,7 +9,7 @@ const UPDATE_ARTIST = 'artist/UPDATE_ARTIST'
 const GET_ARTISTS = 'artist/GET_ARTISTS';
 const GET_ARTISTS_MORE = 'artist/GET_ARTISTS_MORE';
 const GET_ARTIST_BY_ID = 'artist/GET_ARTIST_BY_ID';
-const GET_INSIGHT = 'artist/GET_INSIGHT';
+const GET_ARTIST_INSIGHTS = 'artist/GET_ARTIST_INSIGHTS';
 const GET_ARTIST_MEDIA = 'artist/GET_ARTIST_MEDIA';
 const DELETE_ARTIST = 'artist/DELETE_ARTIST';
 const GET_MANAGE_USER_REQUESTS = 'user/GET_MANAGE_USER_REQUESTS';
@@ -62,8 +62,8 @@ export const getArtistById = createAsyncThunk(
   }
 );
 
-export const getInsight = createAsyncThunk(
-  GET_INSIGHT,
+export const getArtistInsights = createAsyncThunk(
+  GET_ARTIST_INSIGHTS,
   async (id, param) => {
     const { token } = param.getState().authentication;
     return await handleFetch('GET', `artists/${id}/insights`, null, token);
@@ -123,9 +123,6 @@ const initialState = {
   getArtistMediaPending: false,
   getArtistMediaComplete: false,
   getArtistMediaError: false,
-  getInsightPending: false,
-  getInsightComplete: false,
-  getInsightError: null,
   getArtistByIdPending: false,
   getArtistByIdComplete: false,
   getArtistByIdError: null,
@@ -141,6 +138,11 @@ const initialState = {
   currentArtist: {},
   insights: {},
   artistsMedia: [],
+  getArtistInsights: {
+    loading: false,
+    error: null,
+    data: {},
+  }
 };
 
 // slice
@@ -245,21 +247,21 @@ const artistSlice = createSlice({
       state.getArtistByIdComplete = false;
       state.getArtistByIdError = action.error;
     },
-    [getInsight.pending]: (state, action) => {
-      state.getInsightPending = true;
-      state.getInsightComplete = false;
-      state.getInsightError = null;
+    [getArtistInsights.pending]: (state, action) => {
+      state.getArtistInsights.loading = true;
+      state.getArtistInsights.error = null;
+      state.getArtistInsights.data = {};
     },
-    [getInsight.fulfilled]: (state, action) => {
-      state.getInsightPending = false;
-      state.getInsightComplete = true;
-      state.getInsightError = null;
+    [getArtistInsights.fulfilled]: (state, action) => {
+      state.getArtistInsights.loading = false;
+      state.getArtistInsights.error = null;
+      state.getArtistInsights.data = action.payload;
       state.insights = action.payload
     },
-    [getInsight.rejected]: (state, action) => {
-      state.getInsightPending = false;
-      state.getInsightComplete = false;
-      state.getInsightError = action.error;
+    [getArtistInsights.rejected]: (state, action) => {
+      state.getArtistInsights.loading = false;
+      state.getArtistInsights.error = action.error;
+      state.getArtistInsights.data = {};
     },
     [updateUser.fulfilled]: (state, action) => {
       const index = state.artists.findIndex(artist => artist.user_id == action.meta.arg.id);
