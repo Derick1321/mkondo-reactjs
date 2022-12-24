@@ -6,7 +6,7 @@ import { fetchSliders, selectAllSliders } from '../../redux/features/slider';
 import { visitorColdStart } from '../../redux/features/authentication';
 import { Carousel } from '../../components/common/Carousel';
 import { getMediaUrl } from '../../common/utils';
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 import { routePaths } from '$common/routeConfig';
 import overviewVideo from '../../assets/animations/overview.mov'
 import FAQItem from './widgets/FAQ/faq_item';
@@ -21,6 +21,8 @@ import ScrollMedia from '../../components/media/ScrollMedia';
 import fireIcon from '$assets/images/icons/fire.svg';
 import newTag from '$assets/images/icons/new-tag.svg';
 import { MusicPlaylistComponent } from '../Media/Music/widgets/playlist';
+import { MarketingPageHeaderComponent } from './widgets/header';
+import { MarketingPageFooterComponent } from './widgets/footer';
 
 const today = new Date();
 
@@ -105,11 +107,7 @@ const Marketing = () => {
   return (
     <div>
       {/* header */}
-      <div className={`${styles.header} px-4 py-3 d-flex`}>
-        <MkondoLogo />
-        <button onClick={() => push(routePaths.login)} className="btn btn-primary ml-auto">Login</button>
-        <button onClick={() => push(routePaths.register)} className="btn btn-primary ml-2">Register</button>
-      </div>
+      <MarketingPageHeaderComponent />
 
       <div>
         {slider ? <Carousel items={items ?? []} aspect_ratio_x={slider.aspect_ratio_x} aspect_ratio_y={slider.aspect_ratio_y} /> : "No Slider" }
@@ -186,20 +184,7 @@ const Marketing = () => {
           </div>
         </div>
       </div> */}
-      <div className="bg-dark mt-5">
-        <div className="container py-0 my-0">
-        <div className="row py-0 my-0 text-light">
-            <div className="text-center py-0 my-0">
-              <a href="/privacy">Privacy</a> | <a href="/login">Login</a> | <a href="/register">Register</a>
-            </div>
-          </div>
-          <div className="row py-0 my-0 text-light">
-            <div className="text-center py-0 my-0">
-              <p className='py-0 my-0'>Copyright &copy; Mkondo {Date.now().getFullYear}, All Rights Reserved.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MarketingPageFooterComponent />
 
     </div>
   )
