@@ -227,7 +227,7 @@ const RegisterPage = () => {
       setError(
         setErrorObj({
           ...error,
-          full_name: values.fullName == "" ? "Fullname cannot be empty" : null,
+          full_name: values.fullName == "" ? "Username cannot be empty" : null,
           email: values.email == "" ? "Email cannot be empty" : null,
           phone_number:
             values.phoneNumber == "" ? "Phone cannot be empty" : null,
@@ -276,7 +276,7 @@ const RegisterPage = () => {
       </div> */}
       <div className="row px-4">
         <div className="col-lg-6">
-            <img src={one} alt="" width="100%" />
+          <img src={one} alt="" width="100%" />
         </div>
         <div className="col-lg-6">
           <span className="font-bold text-light display-2">Sign Up</span>
@@ -292,7 +292,7 @@ const RegisterPage = () => {
               field={{
                 type: "text",
                 name: "fullName",
-                placeholder: "Fullname",
+                placeholder: "Username",
                 value: values.fullName,
               }}
               error={errObj.full_name}

@@ -18,6 +18,8 @@ import { IconNext } from '../../../../components/icons/next';
 import player from '../../../../redux/features/player';
 import { IconVolume } from '../../../../components/icons/volume';
 import { IconMute } from '../../../../components/icons/mute';
+import { Full } from '../../../../components/icons/full';
+import { getMediaUrl } from '../../../../common/utils';
 
 const VideoPlayer = (props) => {
     // ref
@@ -253,7 +255,12 @@ const VideoPlayer = (props) => {
                         </div>
                     </div>
                     
-                    <div className={styles.quality} onClick={() => toggleQuality(!showQuality)}>
+
+                    <div className='d-flex'>
+                            <div className="mx-3" onClick={handleRewind}>
+                                <Full height="24px" width="24px" />
+                            </div>
+                            <div className={styles.quality} onClick={() => toggleQuality(!showQuality)}>
                         <IconSettings height="22px" width="22px" />
                         <div className={styles.menu} style={{ display: showQuality ? 'block' : 'none' }}>
                             {qualities.map(q => <div className={currentQuality == q ? styles.active : null} onClick={() => handleSetQuality(q)}>{q > 720 ? 1080 : q}p</div>)}
@@ -265,6 +272,7 @@ const VideoPlayer = (props) => {
                             <div>240p</div>
                             <div>144p</div> */}
                         </div>
+                    </div>
                     </div>
                </div>
             </div>

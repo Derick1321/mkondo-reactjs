@@ -60,6 +60,21 @@ export const formatDate = (value) => {
   return relativeFormatter.format(Math.trunc(diff.as(unit)), unit);
 }
 
+export const getFormattedDateTime = (value) => {
+  if (!value) return;
+
+  const dateTime = DateTime.fromISO(value, { zone: "utc" }).toLocal();
+  return `${leadingZeros(dateTime.day, 2)}-${leadingZeros(dateTime.month, 2)}-${dateTime.year} ${leadingZeros(dateTime.hour, 2)}:${leadingZeros(dateTime.minute, 2)}`;
+}
+
+export const getFormattedDateTimeWithRelativity = (value) => {
+  return `${getFormattedDateTime(value)} (${formatDate(value)})`;
+}
+
+export const leadingZeros = (value, length) => {
+  return value.toString().padStart(length, '0');
+}
+
 export const getCurrentYear = () => {
   const d = new Date();
   return d.getFullYear();
