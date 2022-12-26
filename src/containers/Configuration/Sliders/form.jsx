@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchConfigurations, selectConfigurationByKey, selectConfigurations, storeConfiguration, updateConfiguration } from '../../../redux/features/configuration'
 import slider, { fetchSliders, selectAllSliders } from '../../../redux/features/slider'
-import styles from './index.module.scss';
+import * as styles from './index.module.scss';
 
 export const Form = (props) => {
     //props
