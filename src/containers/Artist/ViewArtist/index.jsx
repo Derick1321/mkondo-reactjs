@@ -16,6 +16,7 @@ import { addFollowers, removeFollowers } from '$redux/features/user';
 import styles from './index.module.scss';
 import { useEffect } from 'react';
 import Tabs from '../../../components/common/TabsMark';
+import FeatureHome from '../../../components/common/FeatureHome';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
@@ -61,9 +62,9 @@ const ViewArtist = () => {
 
   //handel tabs
   const tabs = [
-    { name: 'audio', title: 'audios' },
-    { name: 'video', title: 'videos' },
-
+    { name: 'audio', title: 'Songs' },
+    { name: 'video', title: 'Videos' },
+    { name: 'movie', title: 'Movies' },
   ];
   const [selected, setSelected] = useState('audio');
   //close handel tabs
@@ -127,6 +128,11 @@ const ViewArtist = () => {
     }
   }
 
+  const handleSelect = (value) => {
+    console.log(value);
+    setSelected(value);
+  }
+
 
   // render
   return (
@@ -177,20 +183,22 @@ const ViewArtist = () => {
       <div className="row justify-content-center">
         <div className="col-12 col-sm-10 col-md-8">
           <div className={styles.homeTabsWrapper}>
-            <Tabs options={tabs} selected={selected}
+            <Tabs 
+              options={tabs} 
+              selected={selected}
+              onSelect={handleSelect}
               activeColor="white" />
-
-
-
           </div>
 
-          <ScrollMedia
-            title="Media"
-            values={artistsMedia}
-            isLoading={getArtistMediaPending}
-            name="view-artist"
-            showHeader
-          />
+          <div className="row">
+            {artistsMedia.filter(media => media.category === selected).map((media) => {
+              return (
+                <div className='col-md-4'>
+                  <FeatureHome media={media} />
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
