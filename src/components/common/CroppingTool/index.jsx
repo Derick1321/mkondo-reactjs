@@ -79,7 +79,7 @@ export const CroppingTool = ({ src, aspectRatio, width, locked, onChange }) => {
                 crop={crop}
                 onChange={(c) => setCrop(c)}
                 onComplete={(c) => setCompletedCrop(c)}
-                locked={locked}
+                locked={false}
             />
             {/* <button onClick={() => generateDownload(previewCanvasRef.current, completedCrop)}>download</button> */}
             <div>
