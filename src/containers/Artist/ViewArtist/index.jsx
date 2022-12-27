@@ -15,9 +15,11 @@ import { addFollowers, removeFollowers } from '$redux/features/user';
 
 import styles from './index.module.scss';
 import { useEffect } from 'react';
+import Tabs from '../../../components/common/TabsMark';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
+
 
 const Cover = styled.div`
   background-image: url(${props => props.source});
@@ -56,6 +58,15 @@ const ViewArtist = () => {
     instagram: currentArtist.instagram_link,
     twitter: currentArtist.instagram_link,
   };
+
+  //handel tabs
+  const tabs = [
+    { name: 'audio', title: 'audios' },
+    { name: 'video', title: 'videos' },
+
+  ];
+  const [selected, setSelected] = useState('audio');
+  //close handel tabs
 
   // state
   const [coverUrl, setCoverUrl] = useState('');
@@ -116,6 +127,7 @@ const ViewArtist = () => {
     }
   }
 
+
   // render
   return (
     <div className={styles.artistViewContainer}>
@@ -164,6 +176,14 @@ const ViewArtist = () => {
       </div>
       <div className="row justify-content-center">
         <div className="col-12 col-sm-10 col-md-8">
+          <div className={styles.homeTabsWrapper}>
+            <Tabs options={tabs} selected={selected}
+              activeColor="white" />
+
+
+
+          </div>
+
           <ScrollMedia
             title="Media"
             values={artistsMedia}
