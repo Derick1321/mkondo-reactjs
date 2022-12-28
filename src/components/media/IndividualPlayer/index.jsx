@@ -43,7 +43,7 @@ const Cover = styled.div`
 `;
 
 const AvatarImage = styled.div`
-  border-radius: 50%;
+  border-radius: 999px;
   height: 80px;
   width: 80px;
   border: 0.5rem solid ${props => props.bg};
@@ -182,45 +182,51 @@ const IndividualPlayer = (props) => {
             />
           </Button>
         </div>
-        <div className={`d-flex align-items-center ${styles.contentWrapper}`}>
-          <div className={`d-flex align-items-center ${styles.controlWrapper}`}>
-            <Button
-              onClick={handlePrev}
-              isCustom
-              hideDefault
-            >
-              <img
-                className={styles.icon}
-                src={prevIcon}
-                alt=""
-              />
-            </Button>
-            <Button
-              onClick={handlePlay}
-              isCustom
-              hideDefault
-            >
-              <PlayBtn
-                isLoading={isLoading}
-                isPlaying={isPlaying}
-              />
-            </Button>
-            <Button
-              onClick={handleNext}
-              isCustom
-              hideDefault
-            >
-              <img
-                className={styles.icon}
-                src={nextIcon}
-                alt=""
-              />
-            </Button>
+        <div className={`row align-items-center ${styles.contentWrapper}`}>
+          <div className="col-lg-3">
+            <div className={`d-flex align-items-center ${styles.controlWrapper}`}>
+              <Button
+                onClick={handlePrev}
+                isCustom
+                hideDefault
+              >
+                <img
+                  className={styles.icon}
+                  src={prevIcon}
+                  alt=""
+                />
+              </Button>
+              <Button
+                onClick={handlePlay}
+                isCustom
+                hideDefault
+              >
+                <PlayBtn
+                  isLoading={isLoading}
+                  isPlaying={isPlaying}
+                />
+              </Button>
+              <Button
+                onClick={handleNext}
+                isCustom
+                hideDefault
+              >
+                <img
+                  className={styles.icon}
+                  src={nextIcon}
+                  alt=""
+                />
+              </Button>
+            </div>
           </div>
-          <AvatarImage onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))} url={avatarSrc} bg={COLOR_PRIMARY} />
-          <div className="d-flex flex-column justify-content-center">
-            <p className={styles.artistName}  onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}>{artistName}</p>
-            <p className={styles.title}>{title}</p>
+          <div className="col-lg-6">
+            <div className="d-flex align-items-center px-3">
+              <div style={{ height: '80px', width: "80px", marginRight: "15px" }}><AvatarImage onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))} url={avatarSrc} bg={COLOR_PRIMARY} /></div>
+              <div className="d-flex flex-column justify-content-center">
+                <p className={styles.artistName}  onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))}>{artistName}</p>
+                <p className={styles.title}>{title}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
