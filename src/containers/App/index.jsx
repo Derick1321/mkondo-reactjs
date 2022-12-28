@@ -95,7 +95,7 @@ const App = () => {
           location="bottom"
           buttonText="Allow Cookies"
           cookieName="myAwesomeCookieName2"
-          style={{ background: "orange" }}
+          style={{ background: "orange", zIndex: 99999 }}
           buttonStyle={{ color: "#4e503b", fontSize: "13px"}}
           expires={150}
         >
