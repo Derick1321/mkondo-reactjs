@@ -16,6 +16,7 @@ const GET_SYSTEM_INSIGHT = 'user/GET_SYSTEM_INSIGHT';
 const SEARCH_USERS = 'user/SEARCH_USERS';
 const UPDATE_SYSTEM_USER = 'user/UPDATE_SYSTEM_USER';
 const GET_ADMIN_INSIGHTS = 'user/GET_ADMIN_INSIGHTS';
+const GET_USER = 'user/GET_USER';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -134,6 +135,17 @@ export const getAdminInsights = createAsyncThunk(
     }
 );
 
+export const getUser = createAsyncThunk(
+    GET_USER,
+    async (data, store) => {
+        const token = store.getState().authentication.token;
+        const userId = store.getState().authentication.user.user_id;
+        return handleFetch('GET', `users/${userId}`, null, token);
+    }
+)
+
+
+
 const initialState = {
     updateUserPending: false,
     updateUserError: null,
@@ -184,6 +196,12 @@ const initialState = {
     adminInsights: {},
     users: {
         data: [],
+    },
+    getUser: {
+        isLoading: false,
+        isSuccessful: false,
+        error: null,
+        data: {},
     },
     language: 'en',
 };
@@ -421,6 +439,10 @@ const userSlice = createSlice({
             state.getAdminInsightsPending = false;
             state.getAdminInsightsComplete = false;
             state.getAdminInsightsError = action.error;
+        },
+        [getUser.pending]: (state, action) => {
+            state.getUser.isLoading = true;
+            
         }
     }
 });

@@ -273,7 +273,7 @@ const FeatureHome = (props) => {
     return (
       <div className={styles.rowBg}>
         <RowPro
-          name={media.title}
+          name={media.name}
           avatarUrl={media.cover_url}
           artistName={media.owner_name}
           mediaId={media.media_id}
@@ -287,7 +287,7 @@ const FeatureHome = (props) => {
 
   if (media && media.category == "audio") {
     return (
-    <>
+    <div className={styles.f_featureWrapper2}>
       <div className={styles.f_featureWrapper} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
         <FeatureBkg source={avatarUrl}>
         {
@@ -327,34 +327,17 @@ const FeatureHome = (props) => {
         }
         </FeatureBkg>
       </div>
-
-      {/* <div className={`d-flex w-100 px-3`}>
-          <div className={styles.f_hoverCursor} onClick={handleArtistView}>
-            {owner_name}
-          </div>
-        </div> */}
-
-      
-          
-          <div className="d-flex mt-2">
+      <div className="d-flex mt-2 p-2">
             <div className={`d-flex flex-column ${styles.f_featureSummary}`}>
               <div className={`flex-grow-1`}>
-                <div onClick={() => handlePlay(true)} className={styles.title}><b>{media.name}</b></div>
+                <div onClick={() => handlePlay(true)} className={styles.title}>{media.name}</div>
                 <div onClick={() => push(generatePath(routePaths.viewArtist, {id: media.owner_id}))} className={styles.f_description}>by {media.owner_name}</div>
               </div>
 
               {/* <div onClick={handleView} className={`${styles.viewallcomments}`}>View all {comment_num} {t('comments')} </div> */}
             </div>
-
-          </div>
-          <div className="d-flex flex-row">
-            <span className="ml-auto">
-              {/* <div className={`text-white-50 ${styles.f_fontSize10}`}> {plays} {t('plays')} </div> */}
-            </span>
-            {/* <img onClick={handleLikes} src={isLiked ? icon_like_full : icon_like} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
-            {/* <img onClick={handleView} src={icon_comment} className={`${styles.f_bottom_icon} ${styles.f_hoverCursor}`} alt="" /> */}
-          </div>
-    </>
+        </div>
+    </div>
   )
   }
 

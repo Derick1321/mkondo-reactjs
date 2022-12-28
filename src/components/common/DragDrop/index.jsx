@@ -93,13 +93,14 @@ const DragDrop = (props) => {
                 isCustom
                 hideDefault
               >
-                <div className={`d-flex align-items-center ${styles.btnWrapper}`}>
+                <div className={`${styles.btnWrapper}`}>
                   <img
                     className={styles.fileBtnWrapper}
                     src={upIcon}
                     alt=""
                   />
                   <span>{t('choose_or_drop_files_to_upload')}</span>
+                  <span className={styles.mobile}>{t('upload')}</span>
                 </div>
               </Button>
             )
