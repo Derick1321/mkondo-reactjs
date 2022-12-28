@@ -159,9 +159,9 @@ export const updateAlbum = createAsyncThunk(
 
 export const fetchAlbums = createAsyncThunk(
     GET_ALBUMS,
-    async (data, store) => {
+    async (params, store) => {
         const { token } = store.getState().authentication;
-        return await handleFetch('GET', 'albums', data, token);
+        return await handleFetch('GET', `albums?${queryString.stringify(params)}`, null, token);
     }
 );
 
