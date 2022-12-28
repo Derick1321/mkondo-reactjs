@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { handleFetch } from '$common/requestUtils';
+import { async } from 'regenerator-runtime';
 
 const UPDATE_USER = 'user/UPDATE_USER';
 const ADD_FAVORITE = 'user/ADD_FAVORITE';
@@ -17,11 +18,13 @@ const SEARCH_USERS = 'user/SEARCH_USERS';
 const UPDATE_SYSTEM_USER = 'user/UPDATE_SYSTEM_USER';
 const GET_ADMIN_INSIGHTS = 'user/GET_ADMIN_INSIGHTS';
 const GET_USER = 'user/GET_USER';
+const GET_USERS = 'user/GET_USERS';
+const GET_USERMORE = 'user/GET_USERMORE';
 
 // actions
 export const updateUser = createAsyncThunk(
     UPDATE_USER,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('PUT', `users/${data.id}`, data.payload, token);
     }
@@ -29,7 +32,7 @@ export const updateUser = createAsyncThunk(
 
 export const addFavorite = createAsyncThunk(
     ADD_FAVORITE,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('POST', `users/${user.user_id}/favourites`, data, token);
     }
@@ -37,7 +40,7 @@ export const addFavorite = createAsyncThunk(
 
 export const removeFavorite = createAsyncThunk(
     REMOVE_FAVORITE,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('DELETE', `users/${user.user_id}/favourites`, data, token);
     }
@@ -45,7 +48,7 @@ export const removeFavorite = createAsyncThunk(
 
 export const addLikes = createAsyncThunk(
     ADD_LIKE,
-    async(data, param) => {
+    async (data, param) => {
         // payload {media_id: value}
         const { token, user } = param.getState().authentication;
         return await handleFetch('POST', `users/${user.user_id}/likes`, data, token);
@@ -54,7 +57,7 @@ export const addLikes = createAsyncThunk(
 
 export const removeLikes = createAsyncThunk(
     REMOVE_LIKE,
-    async(data, param) => {
+    async (data, param) => {
         // payload {media_id: value}
         const { token, user } = param.getState().authentication;
         return await handleFetch('DELETE', `users/${user.user_id}/likes`, data, token);
@@ -63,7 +66,7 @@ export const removeLikes = createAsyncThunk(
 
 export const addFollowers = createAsyncThunk(
     ADD_FOLLOWERS,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('POST', `users/${user.user_id}/followers`, data, token);
     }
@@ -71,7 +74,7 @@ export const addFollowers = createAsyncThunk(
 
 export const removeFollowers = createAsyncThunk(
     REMOVE_FOLLOWERS,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('DELETE', `users/${user.user_id}/followers`, data, token);
     }
@@ -79,7 +82,7 @@ export const removeFollowers = createAsyncThunk(
 
 export const addHistory = createAsyncThunk(
     ADD_HISTORY,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('POST', `users/${user.user_id}/history`, data, token);
     }
@@ -87,7 +90,7 @@ export const addHistory = createAsyncThunk(
 
 export const getUserMedia = createAsyncThunk(
     GET_MEDIA,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('GET', `users/${user.user_id}/media`, null, token);
     }
@@ -95,7 +98,7 @@ export const getUserMedia = createAsyncThunk(
 
 export const getHistory = createAsyncThunk(
     GET_HISTORY,
-    async(data, param) => {
+    async (data, param) => {
         const { token, user } = param.getState().authentication;
         return await handleFetch('GET', `users/${user.user_id}/history`, null, token);
     }
@@ -104,7 +107,7 @@ export const getHistory = createAsyncThunk(
 
 export const getSystemInsight = createAsyncThunk(
     GET_SYSTEM_INSIGHT,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', 'insights/audio/users', null, token);
     }
@@ -112,7 +115,7 @@ export const getSystemInsight = createAsyncThunk(
 
 export const searchUsers = createAsyncThunk(
     SEARCH_USERS,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', 'users', null, token);
     }
@@ -120,7 +123,7 @@ export const searchUsers = createAsyncThunk(
 
 export const updateSystemUser = createAsyncThunk(
     UPDATE_SYSTEM_USER,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('PUT', 'users', data, token);
     }
@@ -143,6 +146,18 @@ export const getUser = createAsyncThunk(
         return handleFetch('GET', `users/${userId}`, null, token);
     }
 )
+
+export const getUsers = createAsyncThunk(GET_USERS, async (data, store) => {
+    const token = store.getState().authentication.token;
+    return handleFetch('GET', `users`, null, token);
+})
+export const getUserMore = createAsyncThunk(GET_USERMORE, async (data, store) => {
+    const token = store.getState().authentication.token;
+    const { hasNext, next } = store.getState().user.getUsers.pagination;
+    if (!hasNext) return;
+    return await handleFetch('GET', next, null, token);
+
+});
 
 
 
@@ -190,11 +205,18 @@ const initialState = {
     getAdminInsightsPending: false,
     getAdminInsightsComplete: false,
     getAdminInsightsError: null,
+    //none
+
+    getUserMorePending: true,
+    getUserMoreError: null,
+    //none
     userMedia: [],
     currentPagination: {},
     insights: {},
     adminInsights: {},
     users: {
+        total: 0,
+        isDatamore: false,
         data: [],
     },
     getUser: {
@@ -202,6 +224,15 @@ const initialState = {
         isSuccessful: false,
         error: null,
         data: {},
+    },
+    getUsers: {
+        isLoading: false,
+        isSuccessful: false,
+        error: null,
+        data: {},
+        isDataMore: false,
+        pagination: {}
+
     },
     language: 'en',
 };
@@ -442,7 +473,42 @@ const userSlice = createSlice({
         },
         [getUser.pending]: (state, action) => {
             state.getUser.isLoading = true;
-            
+
+        },
+        [getUsers.pending]: (state, action) => {
+            state.getUsers.isLoading = true;
+            state.getUsers.isSuccessful = false;
+            state.getUsers.error = null;
+        },
+        [getUsers.rejected]: (state, action) => {
+            state.getUsers.isLoading = false;
+            state.getUsers.isSuccessful = false;
+            state.getUsers.error = action.error;
+        },
+        [getUsers.fulfilled]: (state, action) => {
+            state.getUsers.isLoading = false;
+            state.getUsers.isSuccessful = true;
+            state.getUsers.error = null;
+            state.getUsers.data = action.payload;
+            state.users.data = action.payload.users.data
+            state.users.total = action.payload.users.pagination.totalElements;
+            state.getUsers.isDataMore = action.payload.users.pagination.hasNext;
+            state.getUsers.pagination = action.payload.users.pagination
+        },
+        [getUserMore.pending]: (state) => {
+            state.getUserMorePending = true;
+            state.getUserMoreError = null;
+        },
+        [getUserMore.rejected]: (state, action) => {
+            state.getUserMorePending = false;
+            state.getUserMoreError = action.error;
+        },
+        [getUserMore.fulfilled]: (state, action) => {
+            state.getUserMorePending = false;
+            state.getUserMoreError = null;
+            //console.log(action);
+            state.users.data.push(...action.payload.users.data);
+            /// state.getUsers.isDataMore = action.payload.users.pagination.hasNext;
         }
     }
 });
@@ -450,3 +516,12 @@ const userSlice = createSlice({
 export const { setLanguage } = userSlice.actions;
 
 export default userSlice.reducer;
+
+// selectors
+// export const usersPaginationSelector = (state) => {
+//     if (state.getUsers.data.users.pagination.hasNext) {
+//         return state.getUsers.data.users.pagination.hasNext;
+//     } else {
+//         return {};
+//     }
+// }
