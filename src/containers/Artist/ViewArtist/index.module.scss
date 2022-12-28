@@ -28,11 +28,13 @@
 
 .artistHeaderInfopane {
   flex: 2;
-  padding: 0 2rem;
+  // padding: 0 2rem;
 }
 
 .artistHeaderActionpane {
   flex: 1;
+  padding-top: 12px;
+  margin-left: 9px;
 }
 
 .artistTitle {
@@ -54,5 +56,6 @@
 }
 
 .artistActionIcon {
-  width: 20px;
+  width: 20px
+  color: red;
 }

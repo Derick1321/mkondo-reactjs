@@ -113,13 +113,18 @@ const AppHeader = (props) => {
     setSearch('');
   }
 
+    const handleLogin = () => {
+    // dispatch(showModal('LOGIN_MODAL'));
+    history.push(routePaths.login);
+  };
+
   // render
   return (
  
       <div className={`d-flex align-items-center ${styles.appHeaderWrapper} ${modalActive ? styles.searchInactive : ''} ${isMobile ? styles.mobile : ''}`}>
         {/* <div className={`d-flex align-items-center d-sm-none mr-auto ${styles.menuWrapper}`}> */}
           <HamburgerMenu />
-          {(!isSideMenuOpen  ) && <span className={`${styles.mobile_logo}`}>Mkondo</span>}
+          {(!isSideMenuOpen  ) && <span className={`${styles.mobile_logo}`} onClick={() => handleLogin()}>Mkondo</span>}
         {/* </div> */}
         {
           showSearch && (
