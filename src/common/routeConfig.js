@@ -60,6 +60,9 @@ import { MediaListPage } from '../containers/Media/MediaList';
 import SocialMediaMessagesPage from '../containers/socialmedia/messages';
 import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
 import { AboutPage } from '../containers/About';
+import { ContactPage } from '../containers/Contact';
+import { DisclaimerPage } from '../containers/Disclaimer';
+import { DMCAPage } from '../containers/DMCA';
 
 export const routePaths = {
   main: '/app',
@@ -143,7 +146,10 @@ export const routePaths = {
 
   about: '/about',
   contact: '/contact',
-
+  disclaimer: '/disclaimer',
+  cookies: '/cookies',
+  dmca: '/dmca',
+  refund: '/refund',
 };
 
 const roles = {
@@ -187,6 +193,21 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.about,
     component: AboutPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.contact,
+    component: ContactPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.disclaimer,
+    component: DisclaimerPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.dmca,
+    component: DMCAPage,
   },
   {
     ...defaultConfig,

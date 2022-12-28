@@ -143,7 +143,7 @@ const AppHeader = (props) => {
         { !showSearch && (<span className={`${styles.mobile_logo_plus} mr-auto`}>Mkondo</span>)}
         
         <DropDown
-          options={headerMenus}
+          options={headerMenus.filter(menu => showSearch ? true : menu.name == 'logout')}
           handleSelect={handleSelect}
           handleToggle={handleToggle}
         >
