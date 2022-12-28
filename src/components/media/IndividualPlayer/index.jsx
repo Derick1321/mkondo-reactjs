@@ -182,6 +182,7 @@ const IndividualPlayer = (props) => {
             />
           </Button>
         </div>
+
         <div className={`d-flex align-items-center ${styles.contentWrapper}`}>
           <div className="">
             <div className={`d-flex align-items-center ${styles.controlWrapper}`}>

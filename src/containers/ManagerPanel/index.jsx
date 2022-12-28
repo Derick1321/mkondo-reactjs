@@ -6,9 +6,9 @@ import { fetchMovies, fetchAudios, fetchVideos, fetchAlbums, getSeries } from '.
 import styles from './index.module.scss';
 import { routePaths } from '../../common/routeConfig';
 import { getArtists } from '../../redux/features/artist';
-
+import { getUsers } from '../../redux/features/user';
 export const ManagerPanel = (props) => {
-     // props
+    // props
     const {
         routes,
         location,
@@ -34,7 +34,8 @@ export const ManagerPanel = (props) => {
     const isFetchingAlbums = useSelector((state) => state.media.fetchAlbumsPending);
     const series = useSelector((state) => state.media.mySeries);
     const isFetchingSeries = useSelector((state) => state.media.getSeriesPending);
-
+    const users = useSelector((state) => state.user.users.total);
+    console.log(users);
 
     //effects
     useEffect(() => {
@@ -63,6 +64,10 @@ export const ManagerPanel = (props) => {
             console.log("dispatching fetching series action");
             dispatch(getSeries({ "ignore_release_date": true }));
         }
+        if (!users) {
+            console.log("dispatching fetching users action");
+            dispatch(getUsers());
+        }
     }, []);
 
 
@@ -71,8 +76,8 @@ export const ManagerPanel = (props) => {
             {
                 routes.map((route, i) => (
                     <RouteWithSubRoutes
-                    key={i}
-                    {...route}
+                        key={i}
+                        {...route}
                     />
                 ))
             }
@@ -81,24 +86,31 @@ export const ManagerPanel = (props) => {
                 <h1 className="text-light">Manager Panel</h1>
                 <div className="row">
                     <div className={`col-md-4`}>
-                        <div className={`${styles.tile}`} onClick={() => push(routePaths.manageArtist)}>
-                            <h3>Artists</h3>
-                            <span>{artists.length??0}</span>
+                        <div className={`${styles.tile}`} onClick={() => push(routePaths.managerUsers)}  >
+                            <h3>Users</h3>
+                            <span>{users ?? 0}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'audio'}))}>
+
+                    <div className={`col-md-4`}>
+                        <div className={`${styles.tile}`} onClick={() => push(routePaths.manageArtist)}>
+                            <h3>Artists</h3>
+                            <span>{artists.length ?? 0}</span>
+                        </div>
+                    </div>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, { 'category': 'audio' }))}>
                         <div className={`${styles.tile}`}>
                             <h3>Songs</h3>
                             <span>{audiosCount}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'video'}))}>
-                        <div className={`${styles.tile??0}`}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, { 'category': 'video' }))}>
+                        <div className={`${styles.tile ?? 0}`}>
                             <h3>Videos</h3>
                             <span>{videosCount}</span>
                         </div>
                     </div>
-                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, {'category': 'movie'}))}>
+                    <div className={`col-md-4`} onClick={() => push(generatePath(routePaths.manageMedia, { 'category': 'movie' }))}>
                         <div className={`${styles.tile}`}>
                             <h3>Movies</h3>
                             {isFetchingMovies ? <span className='spinner-border'></span> : <span>{moviesCount}</span>}
@@ -118,6 +130,6 @@ export const ManagerPanel = (props) => {
                     </div>
                 </div>
             </div>
-      </Switch>
+        </Switch>
     )
 }
