@@ -182,8 +182,8 @@ const IndividualPlayer = (props) => {
             />
           </Button>
         </div>
-        <div className={`row align-items-center ${styles.contentWrapper}`}>
-          <div className="col-lg-3">
+        <div className={`d-flex align-items-center ${styles.contentWrapper}`}>
+          <div className="">
             <div className={`d-flex align-items-center ${styles.controlWrapper}`}>
               <Button
                 onClick={handlePrev}
@@ -219,7 +219,7 @@ const IndividualPlayer = (props) => {
               </Button>
             </div>
           </div>
-          <div className="col-lg-6">
+          <div className="flex-grow-1">
             <div className="d-flex align-items-center px-3">
               <div style={{ height: '80px', width: "80px", marginRight: "15px" }}><AvatarImage onClick={() => history.push(generatePath(routePaths.viewArtist, { id: artistId }))} url={avatarSrc} bg={COLOR_PRIMARY} /></div>
               <div className="d-flex flex-column justify-content-center">

@@ -11,7 +11,7 @@ import {
   updateRange,
   updateDuration,
 } from '$redux/features/player';
-import { play, setCurrentIndex } from '../../../redux/features/player';
+import { play, setCurrentIndex, setCurrentMediaId } from '../../../redux/features/player';
 import { toggleFooterPlayer } from '$redux/features/nav';
 
 // hook for handing Audio related commands
@@ -33,7 +33,6 @@ const Player = () => {
 
   // state
   const [playCounted, setPlayCounted] = useState(false);
-  const [currentMediaId, setCurrentMediaId] = useState(null);
 
   // refs
   const audioRef = useRef(null);
@@ -60,7 +59,6 @@ const Player = () => {
 
   const onLoad = (mediaId) => {
     setPlayCounted(false);
-    setCurrentMediaId(mediaId);
     // dispatch(addHistory({
     //   media_id: mediaId,
     // }));
@@ -127,6 +125,7 @@ const Player = () => {
     }
 
     audioRef.current.play(audioRef.current.index);
+    dispatch(setCurrentMediaId(newPlaylist[audioRef.current.index].media_id || newPlaylist[audioRef.current.index].mediaId));
     // dispatch(updateLoading(true));
   }, [currentPlaylist]);
 
