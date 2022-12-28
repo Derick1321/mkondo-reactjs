@@ -1,10 +1,9 @@
-
 $pie-main: hsl(168, 76%, 42%);
 $pie-text: #7F8C8D;
 $pie-shadow: #BDC3C7;
 
 .donut {
-    font-size: 12em;
+    font-size: 16em;
 }
 
 .wrapper {
@@ -36,9 +35,7 @@ $pie-shadow: #BDC3C7;
             transform: rotate(0deg);
         }
 
-        .left {
-
-        }
+        .left {}
 
         .label {
             position: absolute;
@@ -50,11 +47,12 @@ $pie-shadow: #BDC3C7;
             background: none;
             border-radius: 50%;
             color: $pie-text;
-            font-size: 0.25em;  
+            font-size: 0.25em;
             line-height: 2.6em;
             text-align: center;
             cursor: default;
             z-index: 2;
+
             .unit {
                 padding-bottom: 12px;
                 color: $pie-shadow;

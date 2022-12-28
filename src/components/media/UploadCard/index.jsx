@@ -14,6 +14,7 @@ import { IconDelete } from '../../icons/delete';
 
 const dragIcon = require('$assets/images/icons/drag-icon.svg');
 const settingsIcon = require('$assets/images/icons/settings.svg');
+const editIcon = require('$assets/images/icons/edit.svg');
 
 const initialState = {
   title: '',
@@ -67,11 +68,11 @@ const UploadCard = (props) => {
     if (!uploadQueue) return;
     // console.log(uploadQueue);
     uploadQueue.map((uploading) => {
-          // console.log(uploading.fileName, coverFileName, trailerFileName);
-          if (name === uploading.fileName) {
-              setMediaUploadProgress(uploading.progress)
-          }
-      })
+      // console.log(uploading.fileName, coverFileName, trailerFileName);
+      if (name === uploading.fileName) {
+        setMediaUploadProgress(uploading.progress)
+      }
+    })
   }, [uploadQueue]);
 
   // handlers
@@ -107,7 +108,7 @@ const UploadCard = (props) => {
           /> */}
         </div>
         <div className='d-flex'>
-          <div style={{ height: 20, width: 20 }}>
+          <div style={{ height: 25, width: 25 }}>
             <DonutProgress progress={mediaUploadProgress} />
           </div>
           <Button
@@ -117,7 +118,7 @@ const UploadCard = (props) => {
           >
             <img
               className={styles.settingsIcon}
-              src={settingsIcon}
+              src={editIcon}
               alt=""
             />
           </Button>
