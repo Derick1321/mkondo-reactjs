@@ -31,6 +31,10 @@ const Player = () => {
   const prev = useSelector((store) => store.player.prev);
   const skipTo = useSelector((store) => store.player.skipTo);
 
+  // state
+  const [playCounted, setPlayCounted] = useState(false);
+  const [currentMediaId, setCurrentMediaId] = useState(null);
+
   // refs
   const audioRef = useRef(null);
   const timerRef = useRef(null);
@@ -55,9 +59,11 @@ const Player = () => {
   }
 
   const onLoad = (mediaId) => {
-    dispatch(addHistory({
-      media_id: mediaId,
-    }));
+    setPlayCounted(false);
+    setCurrentMediaId(mediaId);
+    // dispatch(addHistory({
+    //   media_id: mediaId,
+    // }));
   }
 
   const getSeekPosition = useCallback(() => {
@@ -68,6 +74,10 @@ const Player = () => {
     }
     // console.log('getSeekPosition ', sound.seek());
     dispatch(updateRange(sound.seek()));
+    if (!playCounted && sound.seek() >= 30) {
+      // console.debug(audioRef.current.playlist[audioRef.current.index].mediaId);
+      setPlayCounted(true);
+    }
   }, [isLoading, audioRef.current]);
 
   const loop = () => {
@@ -194,7 +204,13 @@ const Player = () => {
     dispatch(setCurrentIndex(audioRef.current.index));
   }, [skipTo]);
 
-
+  useEffect(() => {
+    if (!playCounted) return;
+    console.log("player: play counted");
+    dispatch(addHistory({
+      media_id: audioRef.current.playlist[audioRef.current.index].mediaId,
+    }));
+  }, [playCounted])
   // render
   return null;
 }
