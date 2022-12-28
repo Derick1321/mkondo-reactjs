@@ -473,7 +473,6 @@ const userSlice = createSlice({
         },
         [getUser.pending]: (state, action) => {
             state.getUser.isLoading = true;
-
         },
         [getUsers.pending]: (state, action) => {
             state.getUsers.isLoading = true;

@@ -42,15 +42,15 @@ export const ManagerPanel = (props) => {
         console.log("Effect triggered", movies, !movies.length);
         if (!movies.length) {
             console.log("dispatching fetching movies action");
-            dispatch(fetchMovies());
+            dispatch(fetchMovies({ "ignore_release_date": true }));
         }
         if (!audios.length) {
             console.log("dispatching fetching audios action");
-            dispatch(fetchAudios());
+            dispatch(fetchAudios({ "ignore_release_date": true }));
         }
         if (!videos.length) {
             console.log("dispatching fetching videos action");
-            dispatch(fetchVideos());
+            dispatch(fetchVideos({ "ignore_release_date": true }));
         }
         if (!artists.length) {
             console.log("dispatching fetching artists action");
@@ -58,11 +58,11 @@ export const ManagerPanel = (props) => {
         }
         if (!albums.length) {
             console.log("dispatching fetching albums action");
-            dispatch(fetchAlbums());
+            dispatch(fetchAlbums({ "ignore_release_date": true }));
         }
         if (!series.length) {
             console.log("dispatching fetching series action");
-            dispatch(getSeries());
+            dispatch(getSeries({ "ignore_release_date": true }));
         }
         if (!users) {
             console.log("dispatching fetching users action");
