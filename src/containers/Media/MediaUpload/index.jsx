@@ -163,15 +163,6 @@ const MediaUpload = () => {
         console.debug("CALLING HANLDE CHANGE FROM UPDATE MEDIA URL", result[index].name, _payload);
         handleChange(result[index].name, _payload);
       });
-      
-      getDuration(result[index], 'audio', (duration) => {
-        var _payload = {
-          ...values[result[index].name],
-          duration,
-        };
-        console.debug("CALLING HANLDE CHANGE FROM UPDATE DURATION", result[index].name, _payload);
-        handleChange(result[index].name, _payload);
-      });
 
       const { state } = history.location;
 
@@ -185,16 +176,34 @@ const MediaUpload = () => {
       console.debug("CHECKING IF TRACKS BELONG TO AN ALBUM");
       if (state && state.albumId) {
         console.debug("DETECTED TRACKS BELONG TO AN ALBUM");
-        __data["genres"] = addedAlbumPayload.genres;
-        __data["description"] = addedAlbumPayload.description;
-        __data["cover_url"] = addedAlbumPayload.cover_image;
+        __data = {
+            ...__data, 
+            ...addedAlbumPayload,  
+            title: result[index].name.split(".")[0],
+            recordLabel: addedAlbumPayload.record_label,
+            releaseDate: addedAlbumPayload.release_date,
+          }
       }
 
       //adding data to list of files needs to be updated
       __values[result[index].name] = __data;
+
+      getDuration(result[index], 'audio', (duration) => {
+        var _payload = {
+          ...__values[result[index].name],
+          duration,
+        };
+        console.debug("CALLING HANLDE CHANGE FROM UPDATE DURATION", result[index].name, _payload);
+        handleChange(result[index].name, _payload);
+      });
     }
     console.debug("CALLING SET VALUES WITH PAYLOAD", __values);
-    setValues(__values);
+    setValues(prevState => {
+      return {
+        ...prevState,
+        ...values
+      }
+    });
     setFiles(fileList);
   }
 
@@ -237,11 +246,12 @@ const MediaUpload = () => {
           media_url: item.media_url,
           owner_id: selectedArtist ? (selectedArtist.user_id ?? selectedArtist) : userId,
           category: 'audio',
-          duration: values.duration || 0,
+          duration: item.duration || 0,
           composer: item.composer,
           record_label: item.recordLabel,
           song_writer: item.songWriter,
           owner_avatar_url: userAvatarUrl,
+          release_date: item.releaseDate,
         };
         
         const { state } = history.location;
