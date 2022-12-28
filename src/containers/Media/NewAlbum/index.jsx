@@ -132,10 +132,14 @@ const NewAlbum = () => {
       name: values.album,
       description: values.description,
       genres: values.genre.map((item) => item.value),
-      country: values.country,
+      country: values.country.value,
       region: values.region,
       cover_image: values.file,
       owner_id: values.owner_id ?? userId, // OR artistId
+      publisher: values.publisher,
+      release_date: values.releaseDate,
+      record_label: values.recordLabel,
+      song_writter: values.songWritter,
     }));
   }
 
