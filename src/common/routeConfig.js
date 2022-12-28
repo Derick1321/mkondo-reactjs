@@ -22,6 +22,7 @@ import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
 import Profile from '$containers/Profile';
 import NotFound from '../containers/NotFound';
+
 import { Slider } from '../containers/Slider';
 import { AddSliderForm } from '../containers/Slider/AddSliderForm';
 import { EditSliderForm } from '../containers/Slider/EditSliderForm';
@@ -63,6 +64,7 @@ import { AboutPage } from '../containers/About';
 import { ContactPage } from '../containers/Contact';
 import { DisclaimerPage } from '../containers/Disclaimer';
 import { DMCAPage } from '../containers/DMCA';
+import { ManageUsers } from '../containers/ManagerPanel/users';
 
 export const routePaths = {
   main: '/app',
@@ -117,7 +119,7 @@ export const routePaths = {
   sliderShow: '/app/slider/:slider_id',
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
-  
+
   managerPanel: '/app/manager-panel',
   manageMedia: '/app/manager-panel/media/:category',
   manageArtist: '/app/manager-panel/artists',
@@ -126,6 +128,7 @@ export const routePaths = {
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
   managerPanelMediaOptimizationLogs: '/app/manager-panel/media/optimization/:media_id/logs',
+  managerUsers: '/app/manager-panel/users',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -491,7 +494,8 @@ export const routes = [
           },
         ],
       },
-      { ...defaultConfig,
+      {
+        ...defaultConfig,
         path: routePaths.slider,
         component: Slider,
         exact: false,
@@ -514,9 +518,10 @@ export const routes = [
             component: ViewSlider,
             redirect: redirectFunctions.app,
           },
-        ] 
+        ]
       },
-      { ...defaultConfig,
+      {
+        ...defaultConfig,
         path: routePaths.configurations,
         component: Configuration,
         exact: false,
@@ -553,7 +558,7 @@ export const routes = [
             component: ManageArtists,
             redirect: redirectFunctions.app
           },
-          
+
           {
             ...defaultConfig,
             path: routePaths.manageAlbums,
@@ -564,6 +569,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.manageAlbumSongs,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerUsers,
+            component: ManageUsers,
             redirect: redirectFunctions.app
           },
           {
