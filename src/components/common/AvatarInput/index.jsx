@@ -74,12 +74,14 @@ const AvatarInput = (props) => {
     console.log("resetting the file value");
     fileRef.current.value = null;
     fileRef.current.click();
+    setSelectedImage(false);
   }
 
   const handleChange = () => {
     onChange(fileRef.current.files);
   }
-
+  ///
+  const [selectImage, setSelectedImage] = useState(true);
   // render
   return (
     <>
@@ -109,17 +111,23 @@ const AvatarInput = (props) => {
           ))
         }
         <div className={styles.buttonWrapper}>
-          <img
+          {selectImage ? <div> <img
             src={camera}
             className={styles.avatarBtnIcon}
             alt=""
           />
-          <button
-            className={`align-items-center ${styles.avatarBtn}`}
+            <button
+              className={`align-items-center ${styles.avatarBtn}`}
+              onClick={handleSelectFile}
+            >
+              <span>{t('select_image')} </span>
+            </button></div> : <img
             onClick={handleSelectFile}
-          >
-            <span>{t('select_image')} </span>
-          </button>
+            src={camera}
+            className={styles.avatarBtnIcon}
+            alt=""
+          />}
+
         </div>
 
       </div>

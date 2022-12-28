@@ -3,6 +3,7 @@
 .artistViewContainer {
   margin-top: $margin-top;
   padding-bottom: 8em;
+
   p {
     color: $white !important;
   }
@@ -11,6 +12,11 @@
 .artistCoverWrapper {
   height: 350px;
   width: 100%;
+}
+
+.homeTabsWrapper {
+  margin-top: 0rem;
+  margin-bottom: 2rem;
 }
 
 .artistHeaderWrapper {
