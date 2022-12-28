@@ -6,7 +6,6 @@ import LineChart from '$components/common/LineChart';
 import Table from '$components/common/Table';
 
 import { kFormatter } from '$common/utils';
-import { getInsight } from '$redux/features/artist';
 import { getSystemInsight, searchUsers } from '$redux/features/user';
 
 import styles from './index.module.scss';
@@ -14,7 +13,7 @@ import { COLOR_PRIMARY } from '../../common/constants';
 import { COLOR_ACCENT } from '$common/constants';
 import { ManageArtistItem } from '../ManagerPanel/artists/item';
 import { ArtistListArtistWidget } from '../Artist/List/widgets/artist';
-import { getArtists } from '../../redux/features/artist';
+import { getArtistInsights, getArtists } from '../../redux/features/artist';
 import user, { getAdminInsights } from '../../redux/features/user';
 import ArtistAvatarComponent from '../../components/common/artist/avatar/index';
 
@@ -24,6 +23,7 @@ const options = [
 
 const systemOptions = [
   { name: 'system', title: 'System Insights' },
+  { name: 'insights', title: 'Manager Insights' },
 ];
 
 const getSum = (data) => {
@@ -59,7 +59,7 @@ const Insights = () => {
     if (!userId) return;
     // if (!isArtist) return;
 
-    dispatch(getInsight(userId));
+    dispatch(getArtistInsights(userId));
     // dispatch 
   }, [userId, isArtist]);
 
@@ -211,8 +211,6 @@ const Insights = () => {
       <div className="row">
         <div className="col-12 col-md-10 offset-md-1">
           {
-            !isSuperAdmin ?
-              systemPanel :
               insightsPanel
           }
         </div>

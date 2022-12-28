@@ -90,9 +90,11 @@ const NewVideo = () => {
             setVideoFileProgress(uploading.progress);
 
             if (uploading.isUploaded) {
-              setValues({
-                ...values,
-                media_url: uploading.mediaUrl,
+              setValues(prevState => {
+                return {
+                  ...prevState,
+                  media_url: uploading.mediaUrl,
+                }
               })
               setMediaUploadComplete(true);
               setSuccessMessage("File Uploaded")
@@ -162,9 +164,11 @@ const NewVideo = () => {
   }
 
   const handleChange = (name, value) => {
-    setValues({
-      ...values,
-      [name]: value,
+    setValues(prevState => {
+      return {
+        ...prevState,
+        [name]: value,
+      }
     });
   }
 

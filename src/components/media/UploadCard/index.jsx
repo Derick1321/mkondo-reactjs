@@ -9,9 +9,12 @@ import NewItem from '$components/common/NewItem';
 import { menus, metamenus } from './menus';
 import styles from './index.module.scss';
 import DonutProgress from '../../common/DonutProgress';
+import { deleteIcon } from '$assets/images/icons/delete.svg';
+import { IconDelete } from '../../icons/delete';
 
 const dragIcon = require('$assets/images/icons/drag-icon.svg');
 const settingsIcon = require('$assets/images/icons/settings.svg');
+const editIcon = require('$assets/images/icons/edit.svg');
 
 const initialState = {
   title: '',
@@ -65,11 +68,11 @@ const UploadCard = (props) => {
     if (!uploadQueue) return;
     // console.log(uploadQueue);
     uploadQueue.map((uploading) => {
-          // console.log(uploading.fileName, coverFileName, trailerFileName);
-          if (name === uploading.fileName) {
-              setMediaUploadProgress(uploading.progress)
-          }
-      })
+      // console.log(uploading.fileName, coverFileName, trailerFileName);
+      if (name === uploading.fileName) {
+        setMediaUploadProgress(uploading.progress)
+      }
+    })
   }, [uploadQueue]);
 
   // handlers
@@ -92,24 +95,20 @@ const UploadCard = (props) => {
 
   // render
   return (
-    <>
+    <div className={styles.wrapper}>
       <div className="d-flex">
         <div>
-          <img
-            className={styles.dragIcon}
-            src={dragIcon}
-            alt=""
-          />
+          <button onClick={() => onRemove(index)} className="btn btn-sm btn-outline-danger"><IconDelete height="12px" width="12px" /></button>
         </div>
         <div className={`d-flex flex-column ${styles.contentWrapper}`}>
           <div>{name} | {size}</div>
-          <Progress
+          {/* <Progress
             values={status[name] || initialStatus}
             placeholder={t('uploading')}
-          />
+          /> */}
         </div>
         <div className='d-flex'>
-          <div style={{ height: 20, width: 20 }}>
+          <div style={{ height: 25, width: 25 }}>
             <DonutProgress progress={mediaUploadProgress} />
           </div>
           <Button
@@ -119,7 +118,7 @@ const UploadCard = (props) => {
           >
             <img
               className={styles.settingsIcon}
-              src={settingsIcon}
+              src={editIcon}
               alt=""
             />
           </Button>
@@ -133,29 +132,30 @@ const UploadCard = (props) => {
               menus={menus}
               metamenus={metamenus}
               onChange={handleChange}
+              onClose={handleClose}
               values={values || initialState}
             />
             <div className="d-flex">
-              <Button
+              {/* <Button
                 style={styles.deleteBtn}
                 onClick={() => onRemove(index)}
               >
                 {t('remove')}
-              </Button>
-              <Button
+              </Button> */}
+              {/* <Button
                 onClick={handleClose}
                 style={styles.closeBtn}
                 isCustom
                 hideDefault
               >
                 {t('close')}
-              </Button>
+              </Button> */}
             </div>
           </div>
         )
       }
 
-    </>
+    </div>
   );
 }
 
