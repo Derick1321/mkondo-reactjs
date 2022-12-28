@@ -10,6 +10,7 @@ import { routePaths } from '../../../common/routeConfig';
 import DropDown from '../../../components/common/DropDown';
 import deleteIcon from '$assets/images/icons/delete.svg';
 import { useHistory } from 'react-router-dom';
+import { formatDate } from '$common/utils';
 
 const mediaActions = [
     { name: 'view', title: 'View', },
@@ -187,6 +188,7 @@ export const ManageMediaItem = ( props ) => {
                         <h6 class="card-subtitle mb-2 text-muted my-0 py-0">{media.category}</h6>
                         <h5 class="card-title my-0 py-0">{media.name}</h5>
                         <p className='text-primary' style={{ fontSize: 11 }}>By {media.owner_name}</p>
+                        <p className='text-secondary' style={{ fontSize: 11 }}>{media.release_date}</p>
                         {/* <p className='text-secondary'>{media.genres.join(', ')}</p> */}
 
                         <div className='d-flex'>
@@ -209,7 +211,7 @@ export const ManageMediaItem = ( props ) => {
                 </div>
             </div>
             <div className="card-footer d-flex">
-                <p class="card-text"><small class="text-muted">Uploaded 3 mins ago</small></p>
+                <p class="card-text"><small class="text-muted text-xs">Uploaded {formatDate(media.added)}</small></p>
                 <div className='ml-auto d-flex'>
                 {!media.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
                 <button className='btn btn-danger ml-2' onClick={handleArchive}><img src={deleteIcon} height={18} width={18} /> </button>
