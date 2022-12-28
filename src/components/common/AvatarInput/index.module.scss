@@ -1,4 +1,5 @@
 @import '$assets/scss/main.scss';
+
 .avatarInputWrapper {
     height: 100%;
     width: 100%;
@@ -26,6 +27,7 @@
     height: 26px;
     padding: 0 10px;
     color: white;
+
     &:focus {
         outline: none;
     }
@@ -34,6 +36,7 @@
 .avatarBtnIcon {
     height: 30px;
     padding: 0 5px;
+
 }
 
 .dragTitle {

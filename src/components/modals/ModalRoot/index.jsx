@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { hideModal } from '$redux/features/modal';
 
-import styles from './index.module.scss';
+import * as styles from './index.module.scss';
 
 import AlertModal from '$components/modals/Alert';
 import LoginModal from '$components/modals/Login';

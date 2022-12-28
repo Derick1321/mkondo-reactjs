@@ -3,6 +3,7 @@
 .artistViewContainer {
   margin-top: $margin-top;
   padding-bottom: 8em;
+
   p {
     color: $white !important;
   }
@@ -13,10 +14,16 @@
   width: 100%;
 }
 
+.homeTabsWrapper {
+  margin-top: 0rem;
+  margin-bottom: 2rem;
+}
+
 .artistHeaderWrapper {
   position: relative;
-  top: -60px;
-  padding: 0 4rem;
+  top: -70px;
+  padding: 1rem 4rem;
+  background-image: linear-gradient(to top, #323232, transparent);
 }
 
 .artistHeaderInfopane {
@@ -49,6 +56,6 @@
 }
 
 .artistActionIcon {
-  width: 20px;
+  width: 20px
   color: red;
 }

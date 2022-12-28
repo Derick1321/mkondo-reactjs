@@ -15,9 +15,12 @@ import { addFollowers, removeFollowers } from '$redux/features/user';
 
 import styles from './index.module.scss';
 import { useEffect } from 'react';
+import Tabs from '../../../components/common/TabsMark';
+import FeatureHome from '../../../components/common/FeatureHome';
 
 const shareIcon = require('$assets/images/icons/share.svg');
 const defaultAvatar = require('$assets/images/profile-user.svg');
+
 
 const Cover = styled.div`
   background-image: url(${props => props.source});
@@ -56,6 +59,15 @@ const ViewArtist = () => {
     instagram: currentArtist.instagram_link,
     twitter: currentArtist.instagram_link,
   };
+
+  //handel tabs
+  const tabs = [
+    { name: 'audio', title: 'Songs' },
+    { name: 'video', title: 'Videos' },
+    { name: 'movie', title: 'Movies' },
+  ];
+  const [selected, setSelected] = useState('audio');
+  //close handel tabs
 
   // state
   const [coverUrl, setCoverUrl] = useState('');
@@ -116,6 +128,12 @@ const ViewArtist = () => {
     }
   }
 
+  const handleSelect = (value) => {
+    console.log(value);
+    setSelected(value);
+  }
+
+
   // render
   return (
     <div className={styles.artistViewContainer}>
@@ -164,13 +182,23 @@ const ViewArtist = () => {
       </div>
       <div className="row justify-content-center">
         <div className="col-12 col-sm-10 col-md-8">
-          <ScrollMedia
-            title="Media"
-            values={artistsMedia}
-            isLoading={getArtistMediaPending}
-            name="view-artist"
-            showHeader
-          />
+          <div className={styles.homeTabsWrapper}>
+            <Tabs 
+              options={tabs} 
+              selected={selected}
+              onSelect={handleSelect}
+              activeColor="white" />
+          </div>
+
+          <div className="row">
+            {artistsMedia.filter(media => media.category === selected).map((media) => {
+              return (
+                <div className='col-md-4'>
+                  <FeatureHome media={media} />
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     </div>
