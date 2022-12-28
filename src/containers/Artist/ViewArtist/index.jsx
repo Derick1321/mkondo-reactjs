@@ -172,7 +172,7 @@ const ViewArtist = () => {
       </div>
       <div className="row justify-content-center">
         <div className="col-12 col-sm-10 col-md-8">
-          <div className="px-2">
+          <div className="px-3">
             <p>{currentArtist.description}</p>
           </div>
           <Social
