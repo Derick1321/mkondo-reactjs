@@ -159,9 +159,9 @@ const SideMenu = (props) => {
     },
     {
       icon: require('$assets/images/icons/withdraw.svg'),
-      activeIcon: require('$assets/images/icons/withdraw.svg'),
+      activeIcon: require('$assets/images/icons/withdraw-active.svg'),
       title: 'Withdraw',
-      path: routePaths.paymentsWithdraw,
+      path: routePaths.withdrawals,
     }
 
   ];
