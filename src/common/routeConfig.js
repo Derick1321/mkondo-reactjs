@@ -65,6 +65,7 @@ import { ContactPage } from '../containers/Contact';
 import { DisclaimerPage } from '../containers/Disclaimer';
 import { DMCAPage } from '../containers/DMCA';
 import { ManageUsers } from '../containers/ManagerPanel/users';
+import { CreateWithDrawMethod } from '../containers/Payment/CreateWithdrawMethod';
 
 export const routePaths = {
   main: '/app',
@@ -111,6 +112,7 @@ export const routePaths = {
   profile: '/app/profile',
   payments: '/app/payments',
   paymentsCreate: '/app/payments/create',
+  paymentsWithdraw: '/app/withdrawal/create',
   subscriptions: '/app/subscriptions',
   subscriptionShow: '/app/subscriptions/:id',
   slider: '/app/slider',
@@ -478,6 +480,13 @@ export const routes = [
             component: CreatePaymentMethodContainer,
             redirect: redirectFunctions.app,
           },
+          {
+            ...defaultConfig,
+            path: routePaths.paymentsWithdraw,
+            component: CreateWithDrawMethod,
+            redirect: redirectFunctions.app,
+          },
+
         ],
       },
       {
