@@ -9,7 +9,7 @@ export const WithdrawalsList = () => {
     return (
         <div className={` container ${styles.container}`}>
             <button className="btn btn-primary" onClick={() => push(routePaths.createWithdrawal)}>Create</button>
-            <h2 className='text-light'>Withdrawals List</h2>
+            <h2>Withdrawals List</h2>
             <div className='row'>
             </div>
         </div>

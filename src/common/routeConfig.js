@@ -65,7 +65,7 @@ import { ContactPage } from '../containers/Contact';
 import { DisclaimerPage } from '../containers/Disclaimer';
 import { DMCAPage } from '../containers/DMCA';
 import { ManageUsers } from '../containers/ManagerPanel/users';
-import { CreateWithDrawMethod } from '../containers/Payment/CreateWithdrawMethod';
+
 import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
 import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
 import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
