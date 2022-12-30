@@ -6,6 +6,7 @@ import { saveMedia, updateMedia } from '../../../../redux/features/media';
 import AvatarInput from '../../../common/AvatarInput';
 import InputField from '../../../forms/InputField';
 import styles from '../index.module.scss'
+import { retrieveMedia,saveMedia } from '../../../../redux/features/media';
 
 const initialState = {
     name: '',
@@ -23,34 +24,53 @@ export const MovieForm = (props) => {
     const [bannerUrl, setBannerUrl] = useState('')
     const [bannerImage, setBannerImage] = useState(null)
     const [values, setValues] = useState(initialState)
-
+    const [movie,setMovie] = useState({});
     //props
     const { payload, closeModal } = props;
     const { mediaId } = payload;
 
     //store
     const dispatch = useDispatch();
+    const retrieveMediaState = useSelector(state => state.media.retrieveMedia);
 
-    const video = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
+
+   // const video = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
     const token = useSelector((state) => state.authentication.token)
     const submitting = useSelector((state) => state.media.updateMediaPending)
+    const updated = useSelector(state => state.media.updateMediaComplete);
+
+    useEffect(() => {
+        if (!mediaId) return;
+        dispatch(retrieveMedia(mediaId, token));
+    }, [mediaId])
+
 
     useEffect(async () => {
-        if (!video) return;
-        console.log("Performing instantiation", video)
+        if (!movie) return;
+        console.log("Performing instantiation", movie)
         let payload = initialState;
         for (const field in initialState) {
             console.log(field)
-            if (field in video) {
-                console.log(`${field} has been detected with value: `, video[field])
-                payload[field] = video[field]
+            if (field in movie) {
+                console.log(`${field} has been detected with value: `, movie[field])
+                payload[field] = movie[field]
             }
         }
         setValues(payload);
 
-        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${video.cover_url}`, null, token);
+        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${movie.cover_url}`, null, token);
         setBannerUrl(res.response);
-    }, [video])
+    }, [movie])
+    
+    useEffect(() => {
+        if (!retrieveMediaState.data) return;
+        setMovie(retrieveMediaState.data.media);
+    }, [retrieveMediaState.data]);
+
+    useEffect(() => {
+        if (!updated) return;
+        dispatch(hideModal());
+    }, [updated]);
 
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
@@ -72,7 +92,7 @@ export const MovieForm = (props) => {
         }
         
         dispatch(updateMedia({
-            id: video.media_id,
+            id: movie.media_id,
             payload: payload,
         }));
     }
@@ -85,7 +105,9 @@ export const MovieForm = (props) => {
 
     return (
         <div className={styles.card}>
-            <h2>Update {video['category']}</h2>
+            <h2>Update {movie['category']}</h2>
+            {retrieveMediaState.loading && <div className="text-light">Loading...</div>}
+                {retrieveMediaState.error && <div className="alert alert-danger">Error: {retrieveMediaState.error}</div>}
             <div className="row">
                 <div className={styles.bannerWrapper}>
                     <AvatarInput url={bannerUrl} onChange={handleFileChange} />
