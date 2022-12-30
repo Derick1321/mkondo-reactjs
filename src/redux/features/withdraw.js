@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleFetch } from '$common/requestUtils';
-import { isError } from 'lodash';
+import queryString from 'query-string';
 
 const CREATE_WITHDRAW_REQUEST = 'withdraw/CREATE_WITHDRAW_REQUEST';
 const FETCH_WITHDRAW_REQUESTS = 'withdraw/FETCH_WITHDRAW_REQUESTS';
@@ -16,9 +16,9 @@ export const createWithdrawRequest = createAsyncThunk(
 
 export const fetchWithdrawRequests = createAsyncThunk(
     FETCH_WITHDRAW_REQUESTS,
-    async (params, param) => {
-        const { token } = param.getState().authentication;
-        return await handleFetch('GET', `withdraw`, null, token);
+    async (params = {}, store) => {
+        const { token } = store.getState().authentication;
+        return await handleFetch('GET', `withdrawal-request?${queryString.stringify(params)}`, null, token);
     }
 );
 
@@ -69,7 +69,7 @@ const withdrawSlice = createSlice({
             state.fetchWithdrawals.isPending = true;
             state.fetchWithdrawals.isComplete = false;
             state.fetchWithdrawals.error = null;
-            state.fetchWithdrawals.data = null;
+            state.fetchWithdrawals.data = [];
         },
         [fetchWithdrawRequests.rejected]: (state, action) => {
             state.fetchWithdrawals.isPending = false;
@@ -82,7 +82,7 @@ const withdrawSlice = createSlice({
             state.fetchWithdrawals.error = null;
             state.fetchWithdrawals.data = action.payload;
             // update the withdrawals
-            // state.withdrawals = action.payload.withdrawals;
+            state.withdrawals = action.payload.withdrawal_requests;
             console.log(action.payload);
         }
     }
