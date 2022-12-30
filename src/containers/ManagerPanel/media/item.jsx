@@ -177,6 +177,16 @@ export const ManageMediaItem = ( props ) => {
             );
             break;
           case "video":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "video-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
             break;
           default:
             break;
