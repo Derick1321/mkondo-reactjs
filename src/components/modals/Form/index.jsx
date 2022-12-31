@@ -3,6 +3,7 @@ import { AudioForm } from './AudioForm'
 import styles from './index.module.scss'
 import { MovieForm } from './MovieForm';
 import { VideoForm } from './VideoForm/index';
+import SeriesForm from './SeriesForm/index';
 
 export const FormModal = (props) => {
     const { form } = props
@@ -10,6 +11,7 @@ export const FormModal = (props) => {
         'audio-form': AudioForm,
         'video-form': VideoForm,
         'movie-form': MovieForm,
+        'series-form': SeriesForm,
     }
 
     const Form = forms[form];

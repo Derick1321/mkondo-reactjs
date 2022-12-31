@@ -353,7 +353,7 @@ export const saveMedia = createAsyncThunk(
 // save to digital ocean spaces
 export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
-    async(file, param) => {
+    async (file, param) => {
         // console.log("save media pro triggered", file);
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
