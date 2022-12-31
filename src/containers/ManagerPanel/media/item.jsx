@@ -163,6 +163,16 @@ export const ManageMediaItem = ( props ) => {
         console.log("Edit Media", media.media_id);
         switch (media.category) {
           case "movie":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "movie-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
             break;
           case "audio":
             dispatch(
