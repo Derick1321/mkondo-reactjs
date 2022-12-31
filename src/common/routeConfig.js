@@ -67,9 +67,9 @@ import { DMCAPage } from '../containers/DMCA';
 import { ManageUsers } from '../containers/ManagerPanel/users';
 import ManagerPanelEditAlbum from '../containers/ManagerPanel/albums/edit';
 import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
-import ManagerPanelEditMovies from '../containers/ManagerPanel/media/movie';
-import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
-import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
+// import ManagerPanelEditMovies from '../containers/ManagerPanel/media/movie';
+// import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
+// import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
 
 export const routePaths = {
   main: '/app',
@@ -127,9 +127,9 @@ export const routePaths = {
 
   managerPanel: '/app/manager-panel',
   manageMedia: '/app/manager-panel/media/:category',
-  manageMediaMovieEdit: '/app/manager-panel/movie/edit',
-  manageMediaSongEdit: '/app/manager-panel/song/edit',
-  manageMediaVideoEdit: '/app/manager-panel/video/edit',
+  // manageMediaMovieEdit: '/app/manager-panel/movie/edit',
+  // manageMediaSongEdit: '/app/manager-panel/song/edit',
+  // manageMediaVideoEdit: '/app/manager-panel/video/edit',
   manageArtist: '/app/manager-panel/artists',
   manageArtistEdit: '/app/manager-panel/artists/edit',
   manageAlbums: '/app/manager-panel/albums',
@@ -556,24 +556,7 @@ export const routes = [
         component: ManagerPanel,
         exact: false,
         routes: [
-          {
-            ...defaultConfig,
-            path: routePaths.manageMediaVideoEdit,
-            component: ManagerPanelEditVideo,
-            redirect: redirectFunctions.app
-          },
-          {
-            ...defaultConfig,
-            path: routePaths.manageMediaMovieEdit,
-            component: ManagerPanelEditMovies,
-            redirect: redirectFunctions.app
-          },
-          {
-            ...defaultConfig,
-            path: routePaths.manageMediaSongEdit,
-            component: ManagerPanelEditSong,
-            redirect: redirectFunctions.app
-          },
+
           {
             ...defaultConfig,
             path: routePaths.manageMedia,
