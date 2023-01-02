@@ -142,6 +142,7 @@ export const getAdminInsights = createAsyncThunk(
 export const getUser = createAsyncThunk(
     GET_USER,
     async (payload, store) => {
+        console.log(payload);
         const token = store.getState().authentication.token;
         // const userId = store.getState().authentication.user.user_id;
         return handleFetch('GET', `users/${payload.id}`, null, token);
@@ -476,19 +477,19 @@ const userSlice = createSlice({
         [getUser.pending]: (state, action) => {
             state.getUser.isLoading = true;
             state.getUser.isSuccessful = false;
-            state.getUSer.error = null;
+            state.getUser.error = null;
         },
         [getUser.rejected]: (state, action) => {
             state.getUser.isLoading = false;
             state.getUser.isSuccessful = false;
-            state.getUSer.error = action.message;
+            state.getUser.error = action.message;
             state.getUser.data = null;
 
         },
         [getUser.fulfilled]: (state, action) => {
             state.getUser.isLoading = false;
             state.getUser.isSuccessful = true;
-            state.getUSer.error = null;
+            state.getUser.error = null;
             state.getUser.data = action.data;
 
         },

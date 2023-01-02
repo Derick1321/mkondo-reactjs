@@ -23,24 +23,23 @@ const initialState = {
 
 
 export const UserForm = (props) => {
+    const { payload, closeModel } = props;
+    const { id } = payload;
+
     const [coverUrl, setCoverUrl] = useState('');
     const [coverImage, setCoverImage] = useState();
     const [values, setValues] = useState(initialState);
     const [user, setUser] = useState({});
-    const { payload, closeModel } = props;
-    const { userId } = payload;
 
     const dispatch = useDispatch();
     const getUserByIdState = useSelector(state => state.user.getUser);
     const token = useSelector(state => state.authentication.token);
 
     useEffect(() => {
-        console.log("state   Triggered");
-        if (userId) return;
-        dispatch(getUser(userId, token));
-        console.log("state   Triggered");
-
-    }, [userId])
+        console.log("state   Triggered", id);
+        if (!id) return;
+        dispatch(getUser({id: id}));
+    }, [id])
 
 
     useEffect(() => {
