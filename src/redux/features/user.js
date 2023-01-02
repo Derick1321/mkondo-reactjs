@@ -482,7 +482,7 @@ const userSlice = createSlice({
         [getUser.rejected]: (state, action) => {
             state.getUser.isLoading = false;
             state.getUser.isSuccessful = false;
-            state.getUser.error = action.message;
+            state.getUser.error = action.error;
             state.getUser.data = null;
 
         },
@@ -490,7 +490,8 @@ const userSlice = createSlice({
             state.getUser.isLoading = false;
             state.getUser.isSuccessful = true;
             state.getUser.error = null;
-            state.getUser.data = action.data;
+            state.getUser.data = action.payload;
+            console.log(action.payload);
 
         },
 

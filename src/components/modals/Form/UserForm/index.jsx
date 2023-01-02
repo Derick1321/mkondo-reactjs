@@ -21,10 +21,10 @@ const initialState = {
     phone_number: '',
     gerne: '',
     description: '',
-    fb: '',
-    yt: '',
-    twitter: '',
-    instagram: '',
+    facebook_link: '',
+    youtube_link: '',
+    twitter_link: '',
+    instagram_link: '',
 
 
 }
@@ -76,11 +76,11 @@ export const UserForm = (props) => {
 
 
     useEffect(() => {
-        if (!getUserByIdState.user) return;
-        setUser(getUserByIdState.user);
-        console.log("Iam setting user data:" + getUserByIdState.user);
+        if (!getUserByIdState.data) return;
+        setUser(getUserByIdState.data.user);
+        console.log("Iam setting user data:" + getUserByIdState.data.user);
 
-    }, [getUserByIdState.user])
+    }, [getUserByIdState.data])
 
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
@@ -106,6 +106,7 @@ export const UserForm = (props) => {
             id: user.user_id,
             payload: payload,
         }));
+        console.log(payload);
     }
 
     const handleFileChange = async (files) => {
@@ -198,6 +199,9 @@ export const UserForm = (props) => {
 }
 
 export const usermeta = [
-    { name: 'fb', type: 'text', placeholder: 'facebook link', title: 'Face book link' },
+    { name: 'facebook_link', type: 'text', placeholder: 'facebook link', title: 'Facebook' },
+    { name: 'youtube_link', type: 'text', placeholder: 'youtube link', title: 'Youtube' },
+    { name: 'instagram_link', type: 'text', placeholder: 'instagram link', title: 'Instagram' },
+    { name: 'twitter_link', type: 'text', placeholder: 'twitter link', title: 'Twitter' },
 
 ];
