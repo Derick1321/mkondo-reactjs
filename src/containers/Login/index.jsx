@@ -86,9 +86,9 @@ const LoginPage = () => {
   const user = useSelector((store) => store.authentication.user);
 
   // effects
-  useEffect(() => {
-    dispatch(visitorColdStart());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(visitorColdStart());
+  // }, []);
 
   useEffect(() => {
     if (token) {

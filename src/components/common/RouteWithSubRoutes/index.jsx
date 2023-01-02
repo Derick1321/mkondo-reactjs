@@ -13,13 +13,14 @@ const RouteWithSubRoutes = (route) => {
 
   // store
   const token = useSelector((store) => store.authentication.token);
+  const visitorToken = useSelector((store) => store.authentication.visitorToken);
 
   // render
   return (
     <Route
       path={path}
       render={props => {
-        const redirectPath = redirect(token);
+        const redirectPath = redirect(token || visitorToken);
         // need to implement redirect functionality since we have artists, managers
         if (redirectPath) {
           return <Redirect to={redirectPath} />;
