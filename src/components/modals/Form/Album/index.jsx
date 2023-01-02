@@ -48,8 +48,8 @@ const AlbumForm = (props) => {
   // const history = useHistory();
   // const userId = useSelector((store) => store.authentication.user.user_id);
   // const user = useSelector((store) => store.authentication.user);
-  // const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
-  // const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
+  const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
+  const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
   // const albumId = useSelector((store) => store.media.albumId);
   const retrieveMediaState = useSelector(state => state.media.retrieveMedia);
 
