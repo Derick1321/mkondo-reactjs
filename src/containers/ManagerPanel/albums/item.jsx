@@ -8,6 +8,7 @@ import trash from '$assets/images/icons/trash.svg';
 import cogs from '$assets/images/icons/settings.svg';
 import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
+import { showModal } from '../../../redux/features/modal';
 
 export const ManageAlbumsItem = (props) => {
     //props
@@ -65,13 +66,11 @@ export const ManageAlbumsItem = (props) => {
         console.log("On Load Called", e);
         setIsLoading(false);
     }
-
     const handleOnError = (e) => {
         console.log("On Error Called", e);
         setIsLoading(false);
         setCoverUrl(null);
     }
-
     const handleUpdate = (key, value) => {
         const payload = {
             ...album, 
@@ -82,15 +81,24 @@ export const ManageAlbumsItem = (props) => {
             payload: payload,}
         dispatch(updateAlbum(data));
     }
-
     const handleDelete = () => {
         dispatch(deleteAlbum({
             id: album.album_id
         }));
     }
-
+    const handleEditMedia = () => {
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  
+                  preventOutsideClick: true,
+                  form: "album-form",        
+                })
+              );    
+    }
     return (
         <div className={styles.wrapper}>
+            <button className='btn btn-sm btn-outline-info ml-2' onClick={handleEditMedia}>Edit</button>
             <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
             <div className="text-light">{album.name}</div>
             <span className='text-light' style={{ fontSize: 10, }}>{album.songs.length} songs</span>

@@ -1,4 +1,5 @@
 import React from 'react'
+import AlbumForm from './Album';
 import { AudioForm } from './AudioForm'
 import styles from './index.module.scss'
 import { MovieForm } from './MovieForm';
@@ -10,6 +11,8 @@ export const FormModal = (props) => {
         'audio-form': AudioForm,
         'video-form': VideoForm,
         'movie-form': MovieForm,
+        'album-form': AlbumForm,
+        
     }
 
     const Form = forms[form];
