@@ -2,7 +2,9 @@ import React from 'react'
 import { AudioForm } from './AudioForm'
 import styles from './index.module.scss'
 import { MovieForm } from './MovieForm';
+import { UserForm } from './UserForm';
 import { VideoForm } from './VideoForm/index';
+
 
 export const FormModal = (props) => {
     const { form } = props
@@ -10,6 +12,7 @@ export const FormModal = (props) => {
         'audio-form': AudioForm,
         'video-form': VideoForm,
         'movie-form': MovieForm,
+        'user-form': UserForm,
     }
 
     const Form = forms[form];
