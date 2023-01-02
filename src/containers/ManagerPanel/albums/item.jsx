@@ -22,7 +22,7 @@ export const ManageAlbumsItem = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isUpdating, setIsUpdating] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
-    
+
     //store
     const dispatch = useDispatch();
     const { token } = useSelector(state => state.authentication);
@@ -73,12 +73,13 @@ export const ManageAlbumsItem = (props) => {
     }
     const handleUpdate = (key, value) => {
         const payload = {
-            ...album, 
+            ...album,
             [key]: value,
         };
         const data = {
-            id: album.album_id, 
-            payload: payload,}
+            id: album.album_id,
+            payload: payload,
+        }
         dispatch(updateAlbum(data));
     }
     const handleDelete = () => {
@@ -86,15 +87,19 @@ export const ManageAlbumsItem = (props) => {
             id: album.album_id
         }));
     }
+    console.log('id the value is:' + album.album_id);
     const handleEditMedia = () => {
-            dispatch(
-                showModal("FORM_MODAL", {
-                  noWrapper: true,
-                  
-                  preventOutsideClick: true,
-                  form: "album-form",        
-                })
-              );    
+        dispatch(
+            showModal("FORM_MODAL", {
+                noWrapper: true,
+
+                preventOutsideClick: true,
+                form: "album-form",
+                payload: {
+                    albumId: album.album_id
+                }
+            })
+        );
     }
     return (
         <div className={styles.wrapper}>
@@ -106,17 +111,17 @@ export const ManageAlbumsItem = (props) => {
                 <div className="d-flex">
                     {album.published ? (
                         <button className="btn btn-warning text-light mr-2 text-dark" onClick={() => handleUpdate("published", false)} disabled={isUpdating}>
-                            draft { isUpdating && <span className='spinner-border'></span>}
+                            draft {isUpdating && <span className='spinner-border'></span>}
                         </button>
                     ) : (
-                        <button className="btn btn-success text-light mr-2"  onClick={() => handleUpdate("published", true)} disabled={isUpdating}>
-                            publish { isUpdating && <span className='spinner-border'></span>}
+                        <button className="btn btn-success text-light mr-2" onClick={() => handleUpdate("published", true)} disabled={isUpdating}>
+                            publish {isUpdating && <span className='spinner-border'></span>}
                         </button>
-                    ) }
-                    <button className='btn btn-info text-light mr-1' onClick={() => push(generatePath(routePaths.manageAlbumSongs, {id: album.album_id}))}>
+                    )}
+                    <button className='btn btn-info text-light mr-1' onClick={() => push(generatePath(routePaths.manageAlbumSongs, { id: album.album_id }))}>
                         <img src={cogs} className="text-light" alt="" height="18px" width="18px" />
                     </button>
-                    <button  className="btn btn-danger text-light" onClick={handleDelete} disabled={isDeleting}>
+                    <button className="btn btn-danger text-light" onClick={handleDelete} disabled={isDeleting}>
                         {isDeleting ? <span className='spinner-border text-white'></span> : <img src={trash} className="text-light" alt="" height="18px" width="18px" />}
                     </button>
                 </div>
