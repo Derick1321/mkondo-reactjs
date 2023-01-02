@@ -68,9 +68,14 @@ import { ManageUsers } from '../containers/ManagerPanel/users';
 
 export const routePaths = {
   main: '/app',
+  
   marketing: '/',
 
+  guest: '/guest',
+  guestMedia: 'guest/media',
   guestViewMedia: '/guest/media/:id',
+  guestViewMediaCollection: '/guest/media/collection/:id',
+
   login: "/login",
   register: "/register",
   onBoarding: '/on-boarding',
@@ -156,6 +161,8 @@ export const routePaths = {
 };
 
 const roles = {
+  'visitor': ['Visitor', 'User', 'Artist', 'Admin', 'Super Admin'],
+  'user': ['User', 'Artist', 'Admin', 'Super Admin'],
   'artist': ['Artist', 'Super Admin', 'Admin'],
   'admin': ['Admin', 'Super Admin'],
 }
@@ -164,6 +171,12 @@ const redirectFunctions = {
   app: (token, role) => {
     if (!token) {
       return routePaths.marketing;
+    }
+    return false;
+  },
+  guest: (token, role) => {
+    if (token) {
+      return routePaths.home;
     }
     return false;
   },
@@ -263,6 +276,29 @@ export const routes = [
     path: routePaths.watchMovie,
     component: WatchMovie,
     redirect: redirectFunctions.app,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.guest,
+    component: Main,
+    exact: false,
+    redirect: redirectFunctions.guest,
+    routePaths: [
+      {
+        ...defaultConfig,
+        path: routePaths.guestMedia,
+        component: Media,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.guestViewMedia,
+            component: ViewMedia,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+    ],
   },
   {
     ...defaultConfig,
