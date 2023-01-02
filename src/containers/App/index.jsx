@@ -21,12 +21,14 @@ import { routes, routePaths } from '$common/routeConfig';
 import styles from './index.module.scss';
 import LangBar from '../../components/common/LangBar';
 import { CookieConsent } from 'react-cookie-consent';
+import { visitorColdStart } from '../../redux/features/authentication';
 
 const App = () => {
   // store
   const initialRoute = useSelector((store) => store.nav.initialRoute);
   const listen = useSelector((store) => store.nav.isMobile);
   const dispatch = useDispatch();
+  const { token, visitorToken } = useSelector((store) => store.authentication || ({}));
 
   // I18n initial setting
   const { t, i18n } = useTranslation('common');
@@ -67,6 +69,11 @@ const App = () => {
     window.addEventListener('resize', handleResize);
 
     handleResize();
+
+    // coldstart
+    if (!token && !visitorToken) {
+      dispatch(visitorColdStart());
+    }
 
     return () => {
       window.removeEventListener('dragover', preventDefault);

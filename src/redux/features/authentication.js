@@ -283,6 +283,7 @@ const authenticationSlice = createSlice({
             state.visitorColdStartError = null;
             state.visitorColdStartComplete = true;
             state.visitorToken = action.payload.token;
+            state.token = action.payload.token;
         },
         [visitorColdStart.rejected]: (state, action) => {
             state.visitorColdStartPending = false;

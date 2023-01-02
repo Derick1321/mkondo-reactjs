@@ -235,11 +235,11 @@ export const routes = [
     path: routePaths.register,
     component: RegisterPage,
   },
-  {
-    ...defaultConfig,
-    path: routePaths.guestViewMedia,
-    component: GuestViewMedia,
-  },
+  // {
+  //   ...defaultConfig,
+  //   path: routePaths.guestViewMedia,
+  //   component: GuestViewMedia,
+  // },
   {
     ...defaultConfig,
     path: routePaths.onBoarding,
@@ -282,8 +282,8 @@ export const routes = [
     path: routePaths.guest,
     component: Main,
     exact: false,
-    redirect: redirectFunctions.guest,
-    routePaths: [
+    // redirect: redirectFunctions.guest,
+    routes: [
       {
         ...defaultConfig,
         path: routePaths.guestMedia,
@@ -294,7 +294,7 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.guestViewMedia,
             component: ViewMedia,
-            redirect: redirectFunctions.app,
+            redirect: redirectFunctions.guest,
           },
         ],
       },

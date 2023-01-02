@@ -54,9 +54,9 @@ const Marketing = () => {
 
   
 
-  useEffect(() => {
-    dispatch(visitorColdStart());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(visitorColdStart());
+  // }, []);
 
   useEffect(() => {
     if (!topSongs.length) return;
