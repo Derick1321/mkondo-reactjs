@@ -139,7 +139,7 @@ const AlertModal = (props) => {
             {theatreProduct && <p>At only {theatreProduct.prices[0].unit_amount/100} {theatreProduct.prices[0].currency}</p>}
           </div>
         )}
-        {!token && (
+        {(!token || !user.user_id) && (
           <>
           <div>
             <Button onClick={handleLogin}>Login</Button>
