@@ -12,22 +12,22 @@ import styles from './../index.module.scss';
 
 
 const initialState = {
-    artist: '',
-    album: '',
-    genre: '',
-    description: '',
-    cover_image: '',
-    policy: false,
-    recordLabel: '',
-    releaseDate: '',
-    publisher: '',
-    location: '',
-    country: '',
-    file: null,
-  }
+  artist: '',
+  album: '',
+  genre: '',
+  description: '',
+  cover_image: '',
+  policy: false,
+  recordLabel: '',
+  releaseDate: '',
+  publisher: '',
+  location: '',
+  country: '',
+  file: null,
+}
 
 const AlbumForm = (props) => {
-      // state
+  // state
   const [fields, setFields] = useState(menus);
   const [metaFields, setMetaFields] = useState(metamenus);
   const [values, setValues] = useState(initialState);
@@ -36,9 +36,11 @@ const AlbumForm = (props) => {
   const [avatar, setAvatar] = useState(null);
   const [album, setAlbum] = useState({})
 
-      //props
-      const { payload, closeModal } = props;
-      const { albumId } = payload;
+  //props
+  const { payload, closeModal } = props;
+  const { albumId } = payload;
+
+  console.log("user album Id:" + albumId);
 
 
   // store
@@ -58,7 +60,7 @@ const AlbumForm = (props) => {
 
   // refs
   const initiatedSave = useRef(false);
-  
+
   useEffect(() => {
     if (!addAlbumComplete || !initiatedSave.current) {
       return;
@@ -67,34 +69,34 @@ const AlbumForm = (props) => {
     useEffect(() => {
       if (!albumId) return;
       dispatch(retrieveMedia(albumId, token));
-  }, [albumId])
+    }, [albumId])
 
-  useEffect(async () => {
-    if (!album) return;
-    console.log("Performing instantiation", album)
-    let payload = initialState;
-    for (const field in initialState) {
+    useEffect(async () => {
+      if (!album) return;
+      console.log("Performing instantiation", album)
+      let payload = initialState;
+      for (const field in initialState) {
         console.log(field)
         if (field in album) {
-            console.log(`${field} has been detected with value: `, album[field])
-            payload[field] = album[field]
+          console.log(`${field} has been detected with value: `, album[field])
+          payload[field] = album[field]
         }
-    }
-    setValues(payload);
+      }
+      setValues(payload);
 
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${album.cover_url}`, null, token);
-    setBannerUrl(res.response);
-}, [album])
+      const res = await handleFetch('GET', `media/presigned-get-url?file_name=${album.cover_url}`, null, token);
+      setBannerUrl(res.response);
+    }, [album])
 
-useEffect(() => {
-  if (!retrieveMediaState.data) return;
-  setAlbum(retrieveMediaState.data.media);
-}, [retrieveMediaState.data]);
+    useEffect(() => {
+      if (!retrieveMediaState.data) return;
+      setAlbum(retrieveMediaState.data.media);
+    }, [retrieveMediaState.data]);
 
-useEffect(() => {
-  if (!updated) return;
-  dispatch(hideModal());
-}, [updated]);
+    useEffect(() => {
+      if (!updated) return;
+      dispatch(hideModal());
+    }, [updated]);
 
     initiatedSave.current = false;
     history.push(routePaths.mediaUpload, { albumId });
@@ -113,15 +115,15 @@ useEffect(() => {
     //handle upload
     let payload = values;
     if (bannerImage) {
-        let response = await dispatch(saveMedia(bannerImage))
-        payload['cover_url'] = response.payload
+      let response = await dispatch(saveMedia(bannerImage))
+      payload['cover_url'] = response.payload
     }
-    
+
     dispatch(updateMedia({
-        id: album.album_id,
-        payload: payload,
+      id: album.album_id,
+      payload: payload,
     }));
-}
+  }
 
   const handleValidation = () => {
     let hasErrors = false;
@@ -129,18 +131,18 @@ useEffect(() => {
     if (!values.album) {
       _fields = _fields.map(field => {
         if (field.name == "album") {
-          return {...field, error: "Required"}
+          return { ...field, error: "Required" }
         }
         return field;
       });
-      
+
       hasErrors = true;
     }
 
     if (!values.artist) {
       _fields = _fields.map(field => {
         if (field.name == "artist") {
-          return {...field, error: "Required"}
+          return { ...field, error: "Required" }
         }
         return field;
       });
@@ -150,7 +152,7 @@ useEffect(() => {
     if (!values.genre) {
       _fields = _fields.map(field => {
         if (field.name == "genre") {
-          return {...field, error: "Required"}
+          return { ...field, error: "Required" }
         }
         return field;
       });
@@ -195,7 +197,7 @@ useEffect(() => {
   }
 
   const handleCancel = () => {
-    if(addAlbumPending) {
+    if (addAlbumPending) {
       return;
     }
     setValues(initialState);
@@ -205,18 +207,18 @@ useEffect(() => {
     setSelectedArtist(artist);
   }
 
-//   if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
-//     return (
-//       <div className={`row ${styles.albumWrapper}`}>
-//         <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
-//           <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
-         
-//         </div>
-//       </div>
-//     );
-//   }
+  //   if (!selectedArtist && ['super admin', 'admin'].includes(user.user_type)) {
+  //     return (
+  //       <div className={`row ${styles.albumWrapper}`}>
+  //         <div className="col-md-6 offset-md-3 col-sm-10 offset-sm-1 col-12">
+  //           <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
 
-return (
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+
+  return (
     <div className={`row ${styles}`}>
       <div className="col-md-12 offset-md-3 col-sm-12 offset-sm-1 col-12">
         <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
@@ -235,7 +237,7 @@ return (
             noBorder
           >
             Cancel
-            </Button>
+          </Button>
           <Button
             onClick={handleUpdate}
             isLoading={addAlbumPending}
