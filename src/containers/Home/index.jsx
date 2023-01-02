@@ -50,7 +50,7 @@ const Home = () => {
   const getRandomMediasPending = useSelector((store) => store.media.getRandomMediasPending);
   const trendMedias = useSelector((store) => store.media.trendMedias);
   const getTrendMediasPending = useSelector((store) => store.media.getTrendMediasPending);
-  const favorites = useSelector((store) => store.authentication.user.favourites);
+  const favorites = useSelector((store) => store.authentication.user.favourites ?? []);
   const series = useSelector((state) => state.media.mySeries);
 
   const configurations = useSelector((state) => selectConfigurations(state));

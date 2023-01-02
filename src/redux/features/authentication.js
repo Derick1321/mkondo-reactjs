@@ -95,6 +95,7 @@ const initialState = {
         user_id: null,
         publish: false,
         user_type: null,
+        favourites: [],
     },
     loginPending: false,
     loginComplete: false,

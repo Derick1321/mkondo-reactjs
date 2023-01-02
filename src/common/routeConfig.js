@@ -67,9 +67,10 @@ import { DMCAPage } from '../containers/DMCA';
 import { ManageUsers } from '../containers/ManagerPanel/users';
 
 export const routePaths = {
+  index: '/',
   main: '/app',
   
-  marketing: '/',
+  marketing: '/marketing',
 
   guest: '/guest',
   guestMedia: 'guest/media',
@@ -200,6 +201,19 @@ const defaultConfig = {
 }
 
 export const routes = [
+  {
+    ...defaultConfig,
+    path: routePaths.index,
+    component: Main,
+    exact: false,
+    routes: [
+      {
+        ...defaultConfig,
+        path: routePaths.index,
+        component: Home,
+      },
+    ]
+  },
   {
     ...defaultConfig,
     path: routePaths.marketing,

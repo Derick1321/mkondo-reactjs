@@ -14,7 +14,7 @@ export const querySearch = createAsyncThunk(
 );
 
 const initialState = {
-  initialRoute: null,
+  initialRoute: '/app/home',
   isSideMenuOpen: false,
   isSocialMediaSideMenuOpen: false,
   isMobile: false,
