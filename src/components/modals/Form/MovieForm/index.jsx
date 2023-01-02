@@ -72,6 +72,8 @@ export const MovieForm = (props) => {
         dispatch(hideModal());
     }, [updated]);
 
+    //handlers
+
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
         if (name in values) {

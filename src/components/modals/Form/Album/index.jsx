@@ -26,7 +26,7 @@ const initialState = {
     file: null,
   }
 
-const AlbumForm = () => {
+const AlbumForm = (props) => {
       // state
   const [fields, setFields] = useState(menus);
   const [metaFields, setMetaFields] = useState(metamenus);
@@ -34,15 +34,27 @@ const AlbumForm = () => {
   const [coverImage, setCoverImage] = useState(null);
   //const [selectedArtist, setSelectedArtist] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [album, setAlbum] = useState({})
+
+      //props
+      const { payload, closeModal } = props;
+      const { albumId } = payload;
+
 
   // store
   const dispatch = useDispatch();
-  const history = useHistory();
-  const userId = useSelector((store) => store.authentication.user.user_id);
-  const user = useSelector((store) => store.authentication.user);
-  const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
-  const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
-  const albumId = useSelector((store) => store.media.albumId);
+  // const history = useHistory();
+  // const userId = useSelector((store) => store.authentication.user.user_id);
+  // const user = useSelector((store) => store.authentication.user);
+  // const addAlbumPending = useSelector((store) => store.media.addAlbumPending);
+  // const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
+  // const albumId = useSelector((store) => store.media.albumId);
+  const retrieveMediaState = useSelector(state => state.media.retrieveMedia);
+
+  const token = useSelector((state) => state.authentication.token)
+  const submitting = useSelector((state) => state.media.updateMediaPending)
+  const updated = useSelector(state => state.media.updateMediaComplete);
+
 
   // refs
   const initiatedSave = useRef(false);
@@ -51,6 +63,38 @@ const AlbumForm = () => {
     if (!addAlbumComplete || !initiatedSave.current) {
       return;
     }
+
+    useEffect(() => {
+      if (!albumId) return;
+      dispatch(retrieveMedia(albumId, token));
+  }, [albumId])
+
+  useEffect(async () => {
+    if (!album) return;
+    console.log("Performing instantiation", album)
+    let payload = initialState;
+    for (const field in initialState) {
+        console.log(field)
+        if (field in album) {
+            console.log(`${field} has been detected with value: `, album[field])
+            payload[field] = album[field]
+        }
+    }
+    setValues(payload);
+
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${album.cover_url}`, null, token);
+    setBannerUrl(res.response);
+}, [album])
+
+useEffect(() => {
+  if (!retrieveMediaState.data) return;
+  setAlbum(retrieveMediaState.data.media);
+}, [retrieveMediaState.data]);
+
+useEffect(() => {
+  if (!updated) return;
+  dispatch(hideModal());
+}, [updated]);
 
     initiatedSave.current = false;
     history.push(routePaths.mediaUpload, { albumId });
@@ -64,6 +108,20 @@ const AlbumForm = () => {
       [name]: value,
     });
   }
+
+  const handleUpdate = async () => {
+    //handle upload
+    let payload = values;
+    if (bannerImage) {
+        let response = await dispatch(saveMedia(bannerImage))
+        payload['cover_url'] = response.payload
+    }
+    
+    dispatch(updateMedia({
+        id: album.album_id,
+        payload: payload,
+    }));
+}
 
   const handleValidation = () => {
     let hasErrors = false;
@@ -179,7 +237,7 @@ return (
             Cancel
             </Button>
           <Button
-            onClick={handleSave}
+            onClick={handleUpdate}
             isLoading={addAlbumPending}
           >
             Save
