@@ -66,6 +66,11 @@ import { ContactPage } from '../containers/Contact';
 import { DisclaimerPage } from '../containers/Disclaimer';
 import { DMCAPage } from '../containers/DMCA';
 import { ManageUsers } from '../containers/ManagerPanel/users';
+import ManagerPanelEditAlbum from '../containers/ManagerPanel/albums/edit';
+import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
+// import ManagerPanelEditMovies from '../containers/ManagerPanel/media/movie';
+// import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
+// import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
 
 import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
 import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
@@ -130,8 +135,13 @@ export const routePaths = {
 
   managerPanel: '/app/manager-panel',
   manageMedia: '/app/manager-panel/media/:category',
+  // manageMediaMovieEdit: '/app/manager-panel/movie/edit',
+  // manageMediaSongEdit: '/app/manager-panel/song/edit',
+  // manageMediaVideoEdit: '/app/manager-panel/video/edit',
   manageArtist: '/app/manager-panel/artists',
+  manageArtistEdit: '/app/manager-panel/artists/edit',
   manageAlbums: '/app/manager-panel/albums',
+  manageAlbumsEdit: '/app/manager-panel/albums/edit',
   manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
@@ -583,18 +593,27 @@ export const routes = [
         component: ManagerPanel,
         exact: false,
         routes: [
+
           {
             ...defaultConfig,
             path: routePaths.manageMedia,
             component: ManageMedia,
             redirect: redirectFunctions.app
           },
+
           {
             ...defaultConfig,
             path: routePaths.manageArtist,
             component: ManageArtists,
             redirect: redirectFunctions.app
           },
+          {
+            ...defaultConfig,
+            path: routePaths.manageArtistEdit,
+            component: ManagerPanelEditArtist,
+            redirect: redirectFunctions.app
+          },
+          
 
           {
             ...defaultConfig,
@@ -602,6 +621,14 @@ export const routes = [
             component: ManageAlbum,
             redirect: redirectFunctions.app,
           },
+          {
+            ...defaultConfig,
+            path: routePaths.manageAlbumsEdit,
+            component: ManagerPanelEditAlbum,
+            redirect: redirectFunctions.app,
+          },
+          
+          
           {
             ...defaultConfig,
             path: routePaths.manageAlbumSongs,

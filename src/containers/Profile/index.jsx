@@ -295,7 +295,6 @@ const Profile = () => {
                         'payload': {
                           'mediaId':item.media_id,
                         },
-                        
                       }))
                     }}>Edit</button>
                     <button className="btn btn-sm btn-danger"  onClick={() => {
