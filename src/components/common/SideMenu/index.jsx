@@ -107,12 +107,6 @@ const SideMenu = (props) => {
       path: routePaths.home,
       permission: 'visitor',
     },
-    {
-      icon: require('$assets/images/icons/home_side.svg'),
-      activeIcon: require('$assets/images/icons/home_side.svg'),
-      title: 'about',
-      path: routePaths.about,
-    },
     // {
     //   icon: require('$assets/images/icons/radio_signal.svg'),
     //   activeIcon: require('$assets/images/icons/radio_signal.svg'),

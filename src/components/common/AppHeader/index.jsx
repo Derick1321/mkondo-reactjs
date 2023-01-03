@@ -143,7 +143,26 @@ const AppHeader = (props) => {
         { !showSearch && (<span className={`${styles.mobile_logo_plus} mr-auto`}>Mkondo</span>)}
         
         <DropDown
-          options={headerMenus.filter(menu => showSearch ? true : menu.name == 'logout')}
+          options={userName ? headerMenus.map(menu => {
+            if (showSearch) {
+              if (menu.name == 'logout') {
+                if (userName) {
+                  return menu;
+                } else {
+                  return { name: 'login', title: 'Log In', style: styles.optSecondary };
+                }
+              }
+              return menu;
+            } else {
+              if (menu.name == 'logout') {
+                if (userName) {
+                  return menu;
+                } else {
+                  return { name: 'login', title: 'Log In', style: styles.optSecondary };
+                }
+              }
+            }
+          }): [{ name: 'login', title: 'Log In', style: styles.optSecondary }]}
           handleSelect={handleSelect}
           handleToggle={handleToggle}
         >
@@ -153,7 +172,7 @@ const AppHeader = (props) => {
               className={styles.appHeaderAvatar}
               alt=""
             />
-            <span className="d-none d-sm-block text-center">{userName || 'Name'}</span>
+            <span className="d-none d-sm-block text-center">{userName || 'Visitor'}</span>
             <img src={dropdown} alt="" style={{width: '10px', marginRight: '5px'}} />
           </div>
         </DropDown>

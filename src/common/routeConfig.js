@@ -74,6 +74,7 @@ import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
 import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
 import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
 import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
+import { SplashPage } from '../containers/Splash/index';
 
 export const routePaths = {
   index: '/',
@@ -221,15 +222,8 @@ export const routes = [
   {
     ...defaultConfig,
     path: routePaths.index,
-    component: Main,
-    exact: false,
-    routes: [
-      {
-        ...defaultConfig,
-        path: routePaths.index,
-        component: Home,
-      },
-    ]
+    component: SplashPage,
+    exact: true,
   },
   {
     ...defaultConfig,
@@ -343,12 +337,6 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.home,
         component: Home,
-        redirect: redirectFunctions.app
-      },
-      {
-        ...defaultConfig,
-        path: routePaths.About,
-        component: About,
         redirect: redirectFunctions.app
       },
       {
