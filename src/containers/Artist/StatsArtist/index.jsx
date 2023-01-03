@@ -2,15 +2,20 @@ import React from 'react';
 import InsightComponent from '../../Insights/insight';
 import ArtistHero from '../ViewArtist/Hero';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getArtistInsights } from '../../../redux/features/artist';
 import { kFormatter } from '$common/utils';
 import * as styles from './index.module.scss';
+import { routePaths } from '../../../common/routeConfig';
+
 
 const StatsArtist = () => {
   // router
   const { id: artistId } = useParams();
+
+  // router
+  const { push } = useHistory();
 
   // redux
   const dispatch = useDispatch();
@@ -32,7 +37,7 @@ const StatsArtist = () => {
 
         <div className={styles.withdraw}>
           Earnings: {kFormatter(insights.plays * 0.002)} TZS<br />
-          <button className="btn btn-success mt-3" title='You can withdraw your funds when you have more than 200 Followers, 1000 Plays and more than 100,000 TZS as your wallet balance.'>Withdraw</button>
+          <button className="btn btn-success mt-3" onClick={() => push(routePaths.createWithdrawal)} title='You can withdraw your funds when you have more than 200 Followers, 1000 Plays and more than 100,000 TZS as your wallet balance.'>Withdraw</button>
         </div>
       <div className="row">
         <div className="col">
