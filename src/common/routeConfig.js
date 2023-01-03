@@ -1,6 +1,5 @@
 import Marketing from '$containers/Marketing';
 import Home from '$containers/Home';
-import About from '$containers/About';
 import Recommendation from '$containers/Recommendation';
 import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
