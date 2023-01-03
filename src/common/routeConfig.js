@@ -613,7 +613,7 @@ export const routes = [
             component: ManagerPanelEditArtist,
             redirect: redirectFunctions.app
           },
-          
+
 
           {
             ...defaultConfig,
@@ -627,8 +627,8 @@ export const routes = [
             component: ManagerPanelEditAlbum,
             redirect: redirectFunctions.app,
           },
-          
-          
+
+
           {
             ...defaultConfig,
             path: routePaths.manageAlbumSongs,

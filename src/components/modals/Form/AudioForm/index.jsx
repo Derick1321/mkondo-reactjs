@@ -23,7 +23,7 @@ const initialState = {
     file: '',
     publisher: '',
     release_date: '',
-  }
+}
 
 export const AudioForm = (props) => {
     //state
@@ -81,10 +81,10 @@ export const AudioForm = (props) => {
         console.log('Handle change called: ', name, value)
         if (name in values) {
             if (name === 'genres') {
-                setValues({...values, 'genres': value.map((val) => val.value)})
+                setValues({ ...values, 'genres': value.map((val) => val.value) })
                 return;
             }
-            setValues({...values, [name]: value});
+            setValues({ ...values, [name]: value });
         }
     }
 
@@ -95,7 +95,7 @@ export const AudioForm = (props) => {
             let response = await dispatch(saveMedia(coverImage))
             payload['cover_url'] = response.payload
         }
-        
+
         dispatch(updateMedia({
             id: audio.media_id,
             payload: payload,
@@ -122,35 +122,35 @@ export const AudioForm = (props) => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <InputField field={{ 
-                            name:'name',
-                            type:'text',
+                        <InputField field={{
+                            name: 'name',
+                            type: 'text',
                             placeholder: 'Audio Name',
                             title: 'Name',
                             value: values.name,
-                         }} onChange={handleChange} />
-                        <InputField field={{ 
-                            name:'genres',
-                            type:'select',
-                            placeholder:'Select Genre',
-                            title:'Genre',
+                        }} onChange={handleChange} />
+                        <InputField field={{
+                            name: 'genres',
+                            type: 'select',
+                            placeholder: 'Select Genre',
+                            title: 'Genre',
                             options: genres,
-                            isMulti:true,
+                            isMulti: true,
                             value: genres.filter((genre) => values.genres.includes(genre.value))
-                         }} onChange={handleChange} />
+                        }} onChange={handleChange} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <InputField
-                            field={{ 
-                                name:'description',
-                                type:'area',
-                                placeholder:'Describe the audio',
-                                title:'Description',
+                            field={{
+                                name: 'description',
+                                type: 'area',
+                                placeholder: 'Describe the audio',
+                                title: 'Description',
                                 value: values.description
-                             }}
-                             onChange={handleChange}
+                            }}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -163,8 +163,8 @@ export const AudioForm = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-md-auto ml-auto">
-                            <button className="btn btn-lg btn-primary mr-2" onClick={handleUpdate} disabled={submitting}>Update {submitting && <span className="spinner-border"></span>}</button>
-                            <button className="btn btn-lg btn-outline-primary" onClick={closeModal}>Close</button>
+                        <button className="btn btn-lg btn-primary mr-2" onClick={handleUpdate} disabled={submitting}>Update {submitting && <span className="spinner-border"></span>}</button>
+                        <button className="btn btn-lg btn-outline-primary" onClick={closeModal}>Close</button>
                     </div>
                 </div>
             </div>
