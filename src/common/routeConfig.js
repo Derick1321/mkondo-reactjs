@@ -71,6 +71,10 @@ import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
 // import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
 // import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
 
+import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
+import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
+import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
+
 export const routePaths = {
   main: '/app',
   marketing: '/',
@@ -116,6 +120,8 @@ export const routePaths = {
   profile: '/app/profile',
   payments: '/app/payments',
   paymentsCreate: '/app/payments/create',
+  withdrawals: '/app/withdrawals',
+  createWithdrawal: '/app/withdrawals/create',
   subscriptions: '/app/subscriptions',
   subscriptionShow: '/app/subscriptions/:id',
   slider: '/app/slider',
@@ -486,6 +492,27 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.paymentsCreate,
             component: CreatePaymentMethodContainer,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.withdrawals,
+        component: WithdrawalsRoutes,
+        redirect: redirectFunctions.app,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.withdrawals,
+            component: WithdrawalsList,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.createWithdrawal,
+            component: WithdrawalsCreate,
             redirect: redirectFunctions.app,
           },
         ],
