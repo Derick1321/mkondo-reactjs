@@ -236,7 +236,7 @@ const AlbumForm = (props) => {
 
   return (
     <div className={styles.card}>
-      <div className="col-md-12 offset-md-3 col-sm-12 offset-sm-1 col-12">
+      <div className="col-md-12 col-sm-12 col-12">
         {getAlbumState.isLoading && <div className="text-light">Loading...</div>}
         {getAlbumState.error && <div className="alert alert-danger">Error:{getAlbumState.error.message}</div>}
         <button className="btn btn-primary" onClick={() => history.goBack()}>Back</button>
