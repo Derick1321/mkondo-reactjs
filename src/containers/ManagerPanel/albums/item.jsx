@@ -87,7 +87,7 @@ export const ManageAlbumsItem = (props) => {
             id: album.album_id
         }));
     }
-    console.log('id the value is:' + album.album_id);
+    //console.log('id the value is:' + album.album_id);
     const handleEditMedia = () => {
         dispatch(
             showModal("FORM_MODAL", {
@@ -96,7 +96,7 @@ export const ManageAlbumsItem = (props) => {
                 preventOutsideClick: true,
                 form: "album-form",
                 payload: {
-                    albumId: album.album_id
+                    id: album.album_id
                 }
             })
         );
