@@ -1,19 +1,26 @@
 import { genres } from '$common/utils';
 
-export const menus = [{
-        name: 'artist',
-        type: 'text',
-        placeholder: 'Enter Artist Name',
-        title: 'Artist *',
-    },
+export const menus = [
+    // {
+    //     name: 'artist',
+    //     type: 'text',
+    //     placeholder: 'Enter Artist Name',
+    //     title: 'Artist *',
+    // },
     {
-        name: 'album',
+        name: 'name',
         type: 'text',
         placeholder: 'Enter Album Title',
         title: 'Album *',
     },
     {
-        name: 'genre',
+        name: 'publisher',
+        type: 'text',
+        placeholder: 'Publisher Name',
+        title: 'Publisher'
+    },
+    {
+        name: 'genres',
         type: 'select',
         placeholder: 'Enter Genre',
         title: 'Genre *',
@@ -26,19 +33,14 @@ export const menus = [{
         placeholder: 'Describe your Album',
         title: 'Description',
     },
-    
+
 ];
 
 export const metamenus = [
-    { name: 'publisher', type: 'text', placeholder: 'Publisher Name', title: 'Publisher' },
-    { name: 'releaseDate', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
-    { name: 'recordLabel', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
-    { name: 'location', type: 'text', placeholder: 'Enter Region', title: 'Region' },
+
+    { name: 'release_date', type: 'date', placeholder: 'Release Date', title: 'Release Date' },
+    { name: 'record_label', type: 'text', placeholder: 'Enter Record Label', title: 'Record Label' },
+    { name: 'region', type: 'text', placeholder: 'Enter Region', title: 'Region' },
     { name: 'country', type: 'country', placeholder: 'Enter Country', title: 'Country' },
-    {
-        name: 'policy',
-        type: 'checkbox',
-        title: 'policy_text',
-        link: '/privacy',
-    }
+
 ];

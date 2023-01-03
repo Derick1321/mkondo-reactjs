@@ -15,16 +15,16 @@ import { getAlbum, updateAlbum } from '../../../../redux/features/media';
 
 
 const initialState = {
-  artist: '',
-  album: '',
-  genre: '',
+
+  name: '',
+  genres: '',
   description: '',
   cover_image: '',
   policy: false,
-  recordLabel: '',
-  releaseDate: '',
+  record_label: '',
+  release_date: '',
   publisher: '',
-  location: '',
+  region: '',
   country: '',
   file: null,
 }
@@ -52,7 +52,7 @@ const AlbumForm = (props) => {
   const history = useHistory();
   // const userId = useSelector((store) => store.authentication.user.user_id);
   // const user = useSelector((store) => store.authentication.user);
-  const getAlbumState = useSelector((store) => store.media.getAlbum);
+  const getAlbumState = useSelector((store) => store.media.getAlbumState);
 
   //const addAlbumComplete = useSelector((store) => store.media.addAlbumComplete);
   // const albumId = useSelector((store) => store.media.albumId);
@@ -71,15 +71,15 @@ const AlbumForm = (props) => {
   //     return;
   //   }
 
-  useEffect(() => {
-    console.log("get album by id");
-    dispatch(getAlbum({ id: id }));
-  });
+  // useEffect(() => {
+  //   console.log("get album by id");
+  //   dispatch(getAlbum({ id: id }));
+  // });
 
   useEffect(() => {
     if (!id) return;
     //console.log("from current state:" + id)
-    console.log("state   Triggered", id);
+    console.log("state   Triggered value:", +id);
     dispatch(getAlbum({ id: id }));
   }, [id])
 
@@ -96,7 +96,7 @@ const AlbumForm = (props) => {
     }
     setValues(payload);
 
-    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${album.cover_url}`, null, token);
+    const res = await handleFetch('GET', `media/presigned-get-url?file_name=${album.cover_image}`, null, token);
     setBannerUrl(res.response);
   }, [album])
 
@@ -106,6 +106,7 @@ const AlbumForm = (props) => {
   useEffect(() => {
     if (!getAlbumState.data) return;
     setAlbum(getAlbumState.data.album);
+    console.log("Album values:", getAlbumState.data.album);
   }, [getAlbumState.data]);
 
   useEffect(() => {
@@ -131,7 +132,7 @@ const AlbumForm = (props) => {
     let payload = values;
     if (bannerImage) {
       let response = await dispatch(saveMedia(bannerImage))
-      payload['cover_url'] = response.payload
+      payload['cover_image'] = response.payload
     }
 
     dispatch(updateAlbum({
@@ -145,7 +146,7 @@ const AlbumForm = (props) => {
     var _fields = fields
     if (!values.album) {
       _fields = _fields.map(field => {
-        if (field.name == "album") {
+        if (field.name == "name") {
           return { ...field, error: "Required" }
         }
         return field;
@@ -154,19 +155,19 @@ const AlbumForm = (props) => {
       hasErrors = true;
     }
 
-    if (!values.artist) {
-      _fields = _fields.map(field => {
-        if (field.name == "artist") {
-          return { ...field, error: "Required" }
-        }
-        return field;
-      });
-      hasErrors = true;
-    }
+    // if (!values.artist) {
+    //   _fields = _fields.map(field => {
+    //     if (field.name == "artist") {
+    //       return { ...field, error: "Required" }
+    //     }
+    //     return field;
+    //   });
+    //   hasErrors = true;
+    // }
 
-    if (!values.genre) {
+    if (!values.genres) {
       _fields = _fields.map(field => {
-        if (field.name == "genre") {
+        if (field.name == "genres") {
           return { ...field, error: "Required" }
         }
         return field;
@@ -247,21 +248,12 @@ const AlbumForm = (props) => {
           values={values}
         />
         <div className="d-flex justify-content-end new-item-footer mt-2">
-          <Button
-            onClick={closeModal}
-            style="btn-cancel"
-            isTransparent
-            noBorder
-          >
-            Cancel
-          </Button>
-          <Button
-            onClick={handleUpdate}
-            isLoading={submitting}
-          >
-            Update
-            {submitting && <span className="spinner-border"></span>}
-          </Button>
+          <div className="row">
+            <div className="col-md-auto ml-auto">
+              <button className="btn btn-lg btn-primary mr-2" onClick={handleUpdate} disabled={submitting}>Update {submitting && <span className="spinner-border"></span>}</button>
+              <button className="btn btn-lg btn-outline-primary" onClick={closeModal}>Close</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
