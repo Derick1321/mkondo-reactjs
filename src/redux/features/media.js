@@ -120,9 +120,10 @@ export const getNewAlbums = createAsyncThunk(
 
 export const getAlbum = createAsyncThunk(
     GET_ALBUM_BYID,
-    async (id, store) => {
-        const { token } = store.getState().authentication;
-        return await handleFetch('GET', `media/albums/${id}`, null, token);
+    async (payload, store) => {
+        console.log("current album: value " + payload.id)
+        const { token, visitorToken } = store.getState().authentication;
+        return await handleFetch('GET', `albums/${payload.id}`, null, token || visitorToken);
 
     }
 );
