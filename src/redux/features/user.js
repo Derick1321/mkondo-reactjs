@@ -21,6 +21,7 @@ const GET_USER = 'user/GET_USER';
 const GET_USERS = 'user/GET_USERS';
 const GET_USERMORE = 'user/GET_USERMORE';
 
+
 // actions
 export const updateUser = createAsyncThunk(
     UPDATE_USER,
@@ -140,10 +141,11 @@ export const getAdminInsights = createAsyncThunk(
 
 export const getUser = createAsyncThunk(
     GET_USER,
-    async (data, store) => {
+    async (payload, store) => {
+        console.log(payload);
         const token = store.getState().authentication.token;
-        const userId = store.getState().authentication.user.user_id;
-        return handleFetch('GET', `users/${userId}`, null, token);
+        // const userId = store.getState().authentication.user.user_id;
+        return handleFetch('GET', `users/${payload.id}`, null, token);
     }
 )
 
@@ -158,6 +160,7 @@ export const getUserMore = createAsyncThunk(GET_USERMORE, async (data, store) =>
     return await handleFetch('GET', next, null, token);
 
 });
+
 
 
 
@@ -473,7 +476,25 @@ const userSlice = createSlice({
         },
         [getUser.pending]: (state, action) => {
             state.getUser.isLoading = true;
+            state.getUser.isSuccessful = false;
+            state.getUser.error = null;
         },
+        [getUser.rejected]: (state, action) => {
+            state.getUser.isLoading = false;
+            state.getUser.isSuccessful = false;
+            state.getUser.error = action.error;
+            state.getUser.data = null;
+
+        },
+        [getUser.fulfilled]: (state, action) => {
+            state.getUser.isLoading = false;
+            state.getUser.isSuccessful = true;
+            state.getUser.error = null;
+            state.getUser.data = action.payload;
+            console.log(action.payload);
+
+        },
+
         [getUsers.pending]: (state, action) => {
             state.getUsers.isLoading = true;
             state.getUsers.isSuccessful = false;
