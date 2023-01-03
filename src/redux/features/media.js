@@ -20,6 +20,7 @@ const UPDATE_SHARE_COUNT = 'media/UPDATE_SHARE_COUNT';
 const ADD_ALBUM = 'media/ADD_ALBUM';
 const UPDATE_ALBUM = 'media/UPDATE_ALBUM';
 const GET_ALBUMS = 'media/GET_ALBUMS';
+const GET_ALBUM_BYID = 'media/GET_ALBUM_BYID';
 const GET_NEW_ALBUMS = 'media/GET_NEW_ALBUMS';
 const DELETE_ALBUM = 'media/DELETE_ALBUM';
 const ADD_COMMENT = 'media/ADD_COMMENT';
@@ -55,7 +56,7 @@ const OPTIMIZE_MEDIA = 'media/OPTIMIZE';
 // actions
 export const addMedia = createAsyncThunk(
     ADD_MEDIA,
-    async(data, param) => {
+    async (data, param) => {
         console.log("debugging add media", data);
         const { token } = param.getState().authentication;
         if (data.file) {
@@ -65,13 +66,13 @@ export const addMedia = createAsyncThunk(
                 param.dispatch(updateAddMediaTotalSize(total));
             });
         }
-       return await handleFetch('POST', 'media', data, token, '');
+        return await handleFetch('POST', 'media', data, token, '');
     }
 );
 
 export const deleteMedia = createAsyncThunk(
     DELETE_MEDIA,
-    async(data, store) => {
+    async (data, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('DELETE', `media/${data}`, null, token);
     }
@@ -79,7 +80,7 @@ export const deleteMedia = createAsyncThunk(
 
 export const getAllMedia = createAsyncThunk(
     GET_ALL_MEDIA,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', 'media', null, token);
     }
@@ -87,7 +88,7 @@ export const getAllMedia = createAsyncThunk(
 
 export const updateShareCount = createAsyncThunk(
     UPDATE_SHARE_COUNT,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('POST', `media/${id}/shares`, null, token);
     }
@@ -95,15 +96,15 @@ export const updateShareCount = createAsyncThunk(
 
 export const getMedia = createAsyncThunk(
     GET_MEDIA,
-    async(id, param) => {
+    async (id, param) => {
         const { token, visitorToken } = param.getState().authentication;
-        return await handleFetch('GET', `media/${id}`, null, token ?? visitorToken );
+        return await handleFetch('GET', `media/${id}`, null, token ?? visitorToken);
     }
 );
 
 export const getNewReleases = createAsyncThunk(
     GET_NEW_RELEASES,
-    async(data, param) => {
+    async (data, param) => {
         const { token, visitorToken } = param.getState().authentication;
         return await handleFetch('GET', `media/new-release?${queryString.stringify(data)}`, null, token || visitorToken);
     }
@@ -117,9 +118,19 @@ export const getNewAlbums = createAsyncThunk(
     }
 );
 
+export const getAlbum = createAsyncThunk(
+    GET_ALBUM_BYID,
+    async (payload, store) => {
+        console.log("current album: value " + payload.id)
+        const { token, visitorToken } = store.getState().authentication;
+        return await handleFetch('GET', `albums/${payload.id}`, null, token || visitorToken);
+
+    }
+);
+
 export const getTopMedias = createAsyncThunk(
     GET_TOP_MEDIAS,
-    async(data, param) => {
+    async (data, param) => {
         const { token, visitorToken } = param.getState().authentication;
         return await handleFetch('GET', `media/top-medias?${queryString.stringify(data)}`, null, token || visitorToken);
     }
@@ -127,7 +138,7 @@ export const getTopMedias = createAsyncThunk(
 
 export const getRandomMedias = createAsyncThunk(
     GET_RANDOM_MEDIAS,
-    async(data, param) => {
+    async (data, param) => {
         const { token, visitorToken } = param.getState().authentication;
         return await handleFetch('GET', `media/random-medias?${queryString.stringify(data)}`, null, token || visitorToken);
     }
@@ -135,7 +146,7 @@ export const getRandomMedias = createAsyncThunk(
 
 export const getTrendMedias = createAsyncThunk(
     GET_TREND_MEDIAS,
-    async(data, param) => {
+    async (data, param) => {
         const { token, visitorToken } = param.getState().authentication;
         return await handleFetch('GET', `media/trend-medias?${queryString.stringify(data)}`, null, token || visitorToken);
     }
@@ -143,7 +154,7 @@ export const getTrendMedias = createAsyncThunk(
 
 export const addAlbum = createAsyncThunk(
     ADD_ALBUM,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('POST', 'albums', data, token);
     }
@@ -151,7 +162,7 @@ export const addAlbum = createAsyncThunk(
 
 export const updateAlbum = createAsyncThunk(
     UPDATE_ALBUM,
-    async(data, store) => {
+    async (data, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('PUT', `albums/${data.id}`, data.payload, token);
     }
@@ -175,7 +186,7 @@ export const deleteAlbum = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
     ADD_COMMENT,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('POST', 'comments', data, token);
     }
@@ -183,7 +194,7 @@ export const addComment = createAsyncThunk(
 
 export const addMediaComment = createAsyncThunk(
     ADD_MEDIA_COMMENT,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('POST', `media/${data['media_id']}/comments`, data, token);
     }
@@ -211,7 +222,7 @@ export const removeCommentLike = createAsyncThunk(
 
 export const addCommentComment = createAsyncThunk(
     ADD_COMMENT_COMMENT,
-    async(data, store) => {
+    async (data, store) => {
         const { token } = store.getState().authentication;
         return await handleFetch('POST', `comments/${data['comment_id']}/comments`, data, token);
     }
@@ -219,7 +230,7 @@ export const addCommentComment = createAsyncThunk(
 
 export const getComment = createAsyncThunk(
     GET_COMMENT,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', `media/${id}/comments`, null, token);
     }
@@ -227,7 +238,7 @@ export const getComment = createAsyncThunk(
 
 export const getCommentReplies = createAsyncThunk(
     GET_COMMENT_REPLIES,
-    async(id, store) => {
+    async (id, store) => {
         const { token } = store.getState().authentication;
         updateCurrentComment(id);
         return await handleFetch('GET', `comments/${id}/comments`, null, token);
@@ -236,7 +247,7 @@ export const getCommentReplies = createAsyncThunk(
 
 export const deleteComment = createAsyncThunk(
     DELETE_COMMENT,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('DELETE', `comments/${id}`, null, token);
     }
@@ -244,7 +255,7 @@ export const deleteComment = createAsyncThunk(
 
 export const getRecommended = createAsyncThunk(
     GET_RECOMENDED,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', `media/recommended/${id}/similar`, null, token);
     }
@@ -252,7 +263,7 @@ export const getRecommended = createAsyncThunk(
 
 export const getPopularRecommended = createAsyncThunk(
     GET_POPULAR_RECOMENDED,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', `media/recommended/${id}/popular`, null, token);
     }
@@ -260,7 +271,7 @@ export const getPopularRecommended = createAsyncThunk(
 
 export const getSimilarRecommended = createAsyncThunk(
     GET_SIMILAR_RECOMENDED,
-    async(id, param) => {
+    async (id, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('GET', `media/recommended/${id}/popular`, null, token);
     }
@@ -268,7 +279,7 @@ export const getSimilarRecommended = createAsyncThunk(
 
 export const updateMedia = createAsyncThunk(
     UPDATE_MEDIA,
-    async(data, param) => {
+    async (data, param) => {
         const { token } = param.getState().authentication;
         return await handleFetch('PUT', `media/${data.id}`, data.payload, token);
     }
@@ -276,16 +287,16 @@ export const updateMedia = createAsyncThunk(
 
 export const updateLike = createAsyncThunk(
     UPDATE_LIKE,
-    async(mediaId, param) => {
+    async (mediaId, param) => {
         const { token, user } = param.getState().authentication;
-        return await handleFetch('POST', `media/${mediaId}/like`, {user_id: user.user_id}, token);
+        return await handleFetch('POST', `media/${mediaId}/like`, { user_id: user.user_id }, token);
     }
 );
 
 // save to digital ocean spaces
 export const saveMedia = createAsyncThunk(
     SAVE_MEDIA,
-    async(file, param) => {
+    async (file, param) => {
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.name}`;
         const result = await handleFetch('GET', `media/presigned-post-url?file_name=${fileName}`, null, token);
@@ -300,17 +311,17 @@ export const saveMedia = createAsyncThunk(
             const res = await new Promise((resolve, reject) => {
                 let request = new XMLHttpRequest();
                 request.open('POST', url);
-                
+
                 //upload progress event
                 request.upload.addEventListener('progress', (e) => {
                     //upload progress as percentage
-                    let progress = (e.loaded/e.total)*100;
+                    let progress = (e.loaded / e.total) * 100;
                     param.dispatch(updateMediaProgress(progress));
                     param.dispatch(updateAddMediaUploadedSize(e.loaded));
                     param.dispatch(updateAddMediaTotalSize(e.total));
                     // console.log(`Progress: ${progress}%`);
                 });
-    
+
                 //request finished event
                 request.addEventListener('load', (e) => {
                     //http status message
@@ -318,26 +329,26 @@ export const saveMedia = createAsyncThunk(
                     param.dispatch(updateMediaProgress(0));
                     const status = request.status;
                     const result = request.response;
-                
+
                     if (![200, 201, 204].includes(status)) {
                         reject(result);
                         return;
                     }
-                
+
                     if ([204].includes(status)) {
                         resolve(true);
                         return;
                     }
-                
+
                     resolve(JSON.parse(result));
                     return;
                 });
-    
+
                 //setting the request headers
                 for (const key in headers) {
                     request.setRequestHeader(key, headers[key]);
                 }
-                
+
                 request.send(formData);
             })
 
@@ -353,7 +364,7 @@ export const saveMedia = createAsyncThunk(
 // save to digital ocean spaces
 export const saveMediaPro = createAsyncThunk(
     SAVE_MEDIA_PRO,
-    async(file, param) => {
+    async (file, param) => {
         // console.log("save media pro triggered", file);
         const { token } = param.getState().authentication;
         const fileName = `${Math.random().toString(36).substring(5)}${file.filename}`;
@@ -390,11 +401,11 @@ export const saveMediaPro = createAsyncThunk(
             const res = await new Promise((resolve, reject) => {
                 let request = new XMLHttpRequest();
                 request.open('POST', url);
-                
+
                 //upload progress event
                 request.upload.addEventListener('progress', (e) => {
                     //upload progress as percentage
-                    let progress = (e.loaded/e.total)*100;
+                    let progress = (e.loaded / e.total) * 100;
                     param.dispatch(updateUploadQueueItemProgress({
                         key: uploading.fileName,
                         value: progress,
@@ -409,7 +420,7 @@ export const saveMediaPro = createAsyncThunk(
                     }));
                     // console.log(`Progress: ${progress}%`);
                 });
-    
+
                 //request finished event
                 request.addEventListener('load', (e) => {
                     //http status message
@@ -427,31 +438,31 @@ export const saveMediaPro = createAsyncThunk(
 
                     const status = request.status;
                     const result = request.response;
-                
+
                     if (![200, 201, 204].includes(status)) {
                         // console.log("Save Media Pro Failed");
                         reject(result);
                         return;
                     }
-                    
+
                     if ([204].includes(status)) {
                         // console.log("Save Media Pro Finished");
                         param.dispatch(popUploadQueue(uploading.id));
                         resolve(true);
                         return;
                     }
-                    
+
                     // console.log("Save Media Pro Finished");
                     param.dispatch(popUploadQueue(uploading.id));
                     resolve(JSON.parse(result));
                     return;
                 });
-    
+
                 //setting the request headers
                 for (const key in headers) {
                     request.setRequestHeader(key, headers[key]);
                 }
-                
+
                 request.send(formData);
             })
 
@@ -465,11 +476,11 @@ export const saveMediaPro = createAsyncThunk(
 
 // get similar media
 export const getSimilar = createAsyncThunk(
-    GET_SIMILAR_MEDIA, 
-    async(id, store) => {
+    GET_SIMILAR_MEDIA,
+    async (id, store) => {
         const { token } = store.getState().authentication
         return await handleFetch('GET', `media/${id}/similar`, null, token);
-})
+    })
 
 //add series
 export const addSeries = createAsyncThunk(
@@ -529,7 +540,7 @@ export const fetchMedia = createAsyncThunk(
         if (!_filters.category) {
             _filters["category"] = "audio";
         }
-        
+
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
     }
 );
@@ -542,7 +553,7 @@ export const fetchMediaMore = createAsyncThunk(
         const { hasNext, next } = store.getState().media.mediaPagination;
         if (!hasNext) return;
         return await handleFetch('GET', next, null, token);
-    }  
+    }
 );
 
 export const fetchMovies = createAsyncThunk(
@@ -555,9 +566,9 @@ export const fetchMovies = createAsyncThunk(
             ...filters
         };
         console.log("the filters are ", _filters);
-        
+
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
-    }  
+    }
 );
 
 export const fetchMoviesMore = createAsyncThunk(
@@ -568,7 +579,7 @@ export const fetchMoviesMore = createAsyncThunk(
         const { hasNext, next } = store.getState().media.moviesPagination;
         if (!hasNext) return;
         return await handleFetch('GET', next, null, token);
-    }  
+    }
 );
 
 export const fetchAudios = createAsyncThunk(
@@ -582,7 +593,7 @@ export const fetchAudios = createAsyncThunk(
         };
         console.log("the filters are ", _filters);
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
-    }  
+    }
 );
 
 export const fetchAudiosMore = createAsyncThunk(
@@ -593,7 +604,7 @@ export const fetchAudiosMore = createAsyncThunk(
         const { hasNext, next } = store.getState().media.audiosPagination;
         if (!hasNext) return;
         return await handleFetch('GET', next, null, token);
-    }  
+    }
 );
 
 export const fetchVideos = createAsyncThunk(
@@ -606,9 +617,9 @@ export const fetchVideos = createAsyncThunk(
             ...filters
         };
         console.log("the filters are ", _filters);
-        
+
         return await handleFetch('GET', `media?${queryString.stringify(_filters)}`, null, token);
-    }  
+    }
 );
 
 export const fetchVideosMore = createAsyncThunk(
@@ -619,7 +630,7 @@ export const fetchVideosMore = createAsyncThunk(
         const { hasNext, next } = store.getState().media.videosPagination;
         if (!hasNext) return;
         return await handleFetch('GET', next, null, token);
-    }  
+    }
 );
 
 export const retrieveMedia = createAsyncThunk(
@@ -627,7 +638,7 @@ export const retrieveMedia = createAsyncThunk(
     async (media_id, store) => {
         console.log("Retrieving a media thunk triggered", media_id);
         const { token, user } = store.getState().authentication;
-        const filters = {user_id: user.user_id};
+        const filters = { user_id: user.user_id };
         return await handleFetch('GET', `media/${media_id}?${queryString.stringify(filters)}`, null, token);
     }
 )
@@ -642,8 +653,8 @@ export const checkSubscriptionStatus = createAsyncThunk(
 export const checkSubscriptionStatusApiRequest = async (media_id, state) => {
     // console.log("Checking subscription status of a media", media_id);
     const { token, user } = state.authentication;
-    const params = {user_id: user.user_id}
-    return await handleFetch('GET',  `check-media-subscription-status/${media_id}?${queryString.stringify(params)}`, null, token);
+    const params = { user_id: user.user_id }
+    return await handleFetch('GET', `check-media-subscription-status/${media_id}?${queryString.stringify(params)}`, null, token);
 }
 
 export const optimizeMedia = createAsyncThunk(
@@ -835,7 +846,7 @@ const initialState = {
     retrieveMedia: {
         loading: false,
         data: null,
-        error: null, 
+        error: null,
     },
     addedAlbumPayload: {},
     collection: {
@@ -855,7 +866,15 @@ const initialState = {
         isLoading: [],
         isSuccessfull: [],
         failed: []
+    },
+    getAlbumState: {
+        isLoading: false,
+        isSuccessfull: false,
+        errors: null,
+        data: {},
+
     }
+
 };
 
 const mediaSlice = createSlice({
@@ -973,16 +992,16 @@ const mediaSlice = createSlice({
 
             state.albums = state.albums.map((album) => {
                 return {
-                    ...album, 
+                    ...album,
                     songs: album.songs.filter(song => song.media_id != action.meta.arg),
                 };
             });
             state.mySeries = state.mySeries.map((series) => {
                 return {
-                    ...series, 
+                    ...series,
                     episodes: series.episodes.map(episode => episode.media_id != action.meta.arg),
                 };
-            });   
+            });
         },
         [deleteMedia.rejected]: (state, action) => {
             state.deleteMediaPending = false;
@@ -1049,7 +1068,7 @@ const mediaSlice = createSlice({
             state.updateAlbumPendingQueue = state.updateAlbumPendingQueue.filter((id) => action.meta.arg.id != id);
             state.updateAlbumComplete = true;
             state.updateAlbumError = null;
-            
+
             //updating the album
             index = state.albums.findIndex(album => album.album_id == action.meta.arg.id);
             console.log("debbungin index: ", index);
@@ -1169,6 +1188,27 @@ const mediaSlice = createSlice({
             state.getNewAlbumsSuccess = true;
             state.getNewAlbumsError = action.error;
         },
+        [getAlbum.pending]: (state, action) => {
+            state.getAlbumState.isLoading = true;
+            state.getAlbumState.isSuccessfull = false;
+            state.getAlbumState.errors = null;
+
+
+        },
+        [getAlbum.fulfilled]: (state, action) => {
+            state.getAlbumState.isLoading = false;
+            state.getAlbumState.isSuccessfull = true;
+            state.getAlbumState.errors = null;
+            state.getAlbumState.data = action.payload;
+
+
+        },
+        [getAlbum.rejected]: (state, action) => {
+            state.getAlbumState.isLoading = false;
+            state.getAlbumState.isSuccessfull = false;
+            state.getAlbumState.errors = action.error;
+
+        },
         [getTopMedias.pending]: (state, action) => {
             state.getTopMediasPending = true;
             state.getTopMediasComplete = false;
@@ -1251,7 +1291,7 @@ const mediaSlice = createSlice({
             state.replyCommentPending = true;
             state.replyCommentError = null;
             state.replyCommentComplete = false;
-        }, 
+        },
         [addCommentComment.fulfilled]: (state, action) => {
             state.replyCommentPending = false;
             state.replyCommentComplete = true;
@@ -1272,7 +1312,7 @@ const mediaSlice = createSlice({
                 }
                 state.comments[commentIndex] = comment;
             }
-            
+
         },
         [addCommentComment.rejected]: (state, action) => {
             state.replyCommentPending = false;
@@ -1348,14 +1388,14 @@ const mediaSlice = createSlice({
             state.audios = state.audios.map((audio) => audio.media_id == action.meta.arg.id ? action.payload.media : audio);
             state.albums = state.albums.map((album) => {
                 return {
-                    ...album, 
-                    songs: album.songs.map(song => song.media_id == action.meta.arg.id ? action.payload.media: song),
+                    ...album,
+                    songs: album.songs.map(song => song.media_id == action.meta.arg.id ? action.payload.media : song),
                 };
             });
             state.mySeries = state.mySeries.map((series) => {
                 return {
-                    ...series, 
-                    episodes: series.episodes.map(episode => episode.media_id == action.meta.arg.id ? action.payload.media: episode),
+                    ...series,
+                    episodes: series.episodes.map(episode => episode.media_id == action.meta.arg.id ? action.payload.media : episode),
                 };
             });
         },
@@ -1416,13 +1456,13 @@ const mediaSlice = createSlice({
             state.addSeriesPending = true;
             state.addSeriesSuccess = false;
             state.addSeriesError = null;
-        }, 
+        },
         [addSeries.fulfilled]: (state, action) => {
             state.addSeriesPending = false;
             state.addSeriesSuccess = true;
             state.addSeriesError = null;
             state.mySeries.unshift(action.payload.series);
-        }, 
+        },
         [addSeries.rejected]: (state, action) => {
             state.addSeriesPending = false;
             state.addSeriesSuccess = false;
@@ -1438,7 +1478,7 @@ const mediaSlice = createSlice({
             state.getSeriesSuccess = true;
             state.getSeriesError = null;
             state.mySeries = action.payload.series;
-        }, 
+        },
         [getSeries.rejected]: (state, action) => {
             state.getSeriesPending = false;
             state.getSeriesSuccess = false;
@@ -1503,7 +1543,7 @@ const mediaSlice = createSlice({
             state.fetchMediaMorePending = false;
             state.media.push(...action.payload.media);
             state.mediaPagination = action.payload.pagination
-            
+
         },
         [fetchMediaMore.rejected]: (state, action) => {
             state.fetchMediaMorePending = false;
@@ -1533,7 +1573,7 @@ const mediaSlice = createSlice({
             state.fetchMoviesMorePending = false;
             state.movies.push(...action.payload.media);
             state.moviesPagination = action.payload.pagination
-            
+
         },
         [fetchMoviesMore.rejected]: (state, action) => {
             state.fetchMoviesMorePending = false;
@@ -1562,7 +1602,7 @@ const mediaSlice = createSlice({
             state.fetchAudiosMorePending = false;
             state.audios.push(...action.payload.media);
             state.audiosPagination = action.payload.pagination
-            
+
         },
         [fetchAudiosMore.rejected]: (state, action) => {
             state.fetchAudiosMorePending = false;
@@ -1591,7 +1631,7 @@ const mediaSlice = createSlice({
             state.fetchVideosMorePending = false;
             state.videos.push(...action.payload.media);
             state.videosPagination = action.payload.pagination
-            
+
         },
         [fetchVideosMore.rejected]: (state, action) => {
             state.fetchVideosMorePending = false;
@@ -1618,7 +1658,7 @@ const mediaSlice = createSlice({
             state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [deleteAlbum.rejected]: (state, action) => {
-            state.deleteAlbumErrors.push({album_id: action.meta.arg.id, error: action.error.message,});
+            state.deleteAlbumErrors.push({ album_id: action.meta.arg.id, error: action.error.message, });
             state.deleteAlbumPendingQueue = state.deleteAlbumPendingQueue.filter(id => id != action.meta.arg.id);
         },
         [retrieveMedia.pending]: (state, action) => {

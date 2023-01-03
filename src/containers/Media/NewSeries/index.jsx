@@ -3,7 +3,7 @@ import AvatarInput from '../../../components/common/AvatarInput';
 import InputField from '../../../components/forms/InputField';
 import styles from './index.module.scss';
 import { movieGenres } from '$common/utils';
-import { generatePreview } from '../../../common/utils';
+import { generateFileName, generatePreview } from '../../../common/utils';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { async } from 'regenerator-runtime';
@@ -229,16 +229,16 @@ export const NewSeries = () => {
             <div className="row mt-3">
                 <div className="col-4 col-lg-2 p-0 pl-3 pr-1">
                     <BackgroundImage image={coverPreview} onClick={() => coverRef.current.click()} className={`${styles.uploadCover} d-flex flex-column justify-content-center h-100 align-items-center`}>
-                            <img src={require("$assets/images/icons/upload.svg")} alt=""  />
-                            <p className="lead text-light">Upload Cover</p>
-                            {coverFileProgress > 0 && <p><DonutProgress progress={coverFileProgress} height={30} width={30} /></p>}
-                            <input
-                                className="d-none"
-                                type="file"
-                                ref={coverRef}
-                                accept="image/*"
-                                onChange={handleCoverChange}
-                            />
+                        <img src={require("$assets/images/icons/upload.svg")} alt=""  />
+                        <p className="lead text-light">Upload Cover</p>
+                        {coverFileProgress > 0 && <p><DonutProgress progress={coverFileProgress} height={30} width={30} /></p>}
+                        <input
+                            className="d-none"
+                            type="file"
+                            ref={coverRef}
+                            accept="image/*"
+                            onChange={handleCoverChange}
+                        />
                     </BackgroundImage>
                     
                 </div>
@@ -294,6 +294,158 @@ export const NewSeries = () => {
                     <button onClick={handleSaveSeries} className="btn btn-lg btn-primary w-100" disabled={isLoading}>Save and Next {isLoading && <span className="spinner-border text-light"></span>}</button>
                 </div>
             </div>
+        </div>
+    )
+}
+
+
+
+export const CoverInputComponent = (props) => {
+    //props
+    const { name, onChange } = props;
+
+    // refs
+    const coverRef = useRef(null);
+
+    //states
+    const [coverPreview, setCoverPreview] = useState(null)
+    const [coverFileName, setCoverFileName] = useState(null);
+    const [coverFileProgress, setCoverFileProgress] = useState(0);
+
+    //redux
+    const dispatch = useDispatch();
+    const uploadQueue = useSelector(state => state.media.uploadQueue);
+
+    //effects
+    useEffect(() => {
+        // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+        if (!uploadQueue) return;
+        // console.log(uploadQueue);
+        uploadQueue.map((uploading) => {
+            // console.log(uploading.fileName, coverFileName, trailerFileName);
+            if (coverFileName && coverFileName === uploading.fileName) {
+                setCoverFileProgress(uploading.progress)
+            }
+        })
+    }, [uploadQueue, coverFileName]);
+
+    //handles
+    const handleCoverChange = async (e) => {
+        console.log('cover changed triggered');
+        console.log('handle file changed triggered');
+        const url = await generatePreview(coverRef.current.files[0]);
+        setCoverPreview(url);
+        console.log('filename', coverRef.current.files[0].name);
+        if (coverRef.current.files[0].name) {
+            // generate unique file name
+            const fileName = generateFileName(coverRef.current.files[0]);
+            setCoverFileName(fileName);
+            // setIsLoading(true);
+            const res = await dispatch(saveMediaPro({
+                'filename': fileName,
+                'file': coverRef.current.files[0],
+            }));
+            // alert stringified res
+
+            // setIsLoading(false);
+            if (onChange && res.payload) {
+                // alert(res.payload);
+                onChange(name, res.payload);
+            }
+        }
+    }
+    
+    
+    return (
+        <BackgroundImage image={coverPreview} onClick={() => coverRef.current.click()} className={`${styles.uploadCover} d-flex flex-column justify-content-center h-100 align-items-center`}>
+                <img src={require("$assets/images/icons/upload.svg")} alt=""  />
+                <p className="lead text-light">Upload Cover</p>
+                {coverFileProgress ? <p><DonutProgress progress={coverFileProgress} height={30} width={30} /></p> : null}
+                <input
+                    className="d-none"
+                    type="file"
+                    ref={coverRef}
+                    accept="image/*"
+                    onChange={handleCoverChange}
+                />
+        </BackgroundImage>
+    )
+}
+
+export const VideoInputComponent = (props) => {
+    //props
+    const { name, onChange } = props;
+    
+    // refs
+    const trailerRef = useRef(null);
+
+    // state
+    const [trailerFile, setTrailerFile] = useState(null)
+    const [trailerFileName, setTrailerFileName] = useState(null);
+    const [trailerFileProgress, setTrailerFileProgress] = useState(0);
+
+    // redux
+    const dispatch = useDispatch();
+    const uploadQueue = useSelector(state => state.media.uploadQueue);
+
+    // effects
+    useEffect(() => {
+        // console.log("Effect", uploadQueue, coverFileName, trailerFileName);
+        if (!uploadQueue) return;
+        // console.log(uploadQueue);
+        uploadQueue.map((uploading) => {
+            // console.log(uploading.fileName, coverFileName, trailerFileName);
+            if (trailerFileName && trailerFileName === uploading.fileName) {
+                setTrailerFileProgress(uploading.progress);
+            }
+        })
+    }, [uploadQueue, trailerFileName]);
+
+    // handlers
+    const handleTrailerChange = async (e) => {
+        setTrailerFile(null)
+        const url = await generatePreview(trailerRef.current.files[0]);
+        setTrailerFile(url);
+
+        //Cancel any previous ongoing fileuploads of the previoous file
+        //start new upload
+        if (trailerRef.current.files[0].name) {
+            // generate unique filename
+            const fileName = generateFileName(trailerRef.current.files[0]);
+            setTrailerFileName(fileName);
+            // setIsLoading(true);
+            const res = await dispatch(saveMediaPro({
+                'filename': fileName,
+                'file': trailerRef.current.files[0],
+            }));
+            // setIsLoading(false);
+            // handleInputChange('trailer_url', res.payload);
+            // setIsLoading(false);
+            if (onChange && res.payload) {
+                // alert(res.payload);
+                onChange(name, res.payload);
+            }
+        }
+    }
+
+    return (
+        <div onClick={() => trailerRef.current.click()} className={`${styles.uploadTrailer} ${trailerFile && styles.active} d-flex flex-column justify-content-center h-100 align-items-center`}>
+            {trailerFile && (
+                <video width="100%" height="100%" autoPlay muted>
+                    <source src={trailerFile} />
+                    Your browser does not support the video tag.
+                </video>
+            )}
+            <img src={require("$assets/images/icons/upload.svg")} alt=""  />
+            <p className="lead text-light">Upload Trailer</p>
+            {trailerFileProgress > 0 && <p><DonutProgress progress={trailerFileProgress} height={30} width={30} /></p>}
+            <input
+                className="d-none"
+                type="file"
+                ref={trailerRef}
+                accept="video/*"
+                onChange={handleTrailerChange}
+            />
         </div>
     )
 }

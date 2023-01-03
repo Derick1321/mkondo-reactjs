@@ -7,6 +7,7 @@ import styles from './index.module.scss';
 import { routePaths } from '../../common/routeConfig';
 import { getArtists } from '../../redux/features/artist';
 import { getUsers } from '../../redux/features/user';
+
 export const ManagerPanel = (props) => {
     // props
     const {
@@ -64,10 +65,10 @@ export const ManagerPanel = (props) => {
             console.log("dispatching fetching series action");
             dispatch(getSeries({ "ignore_release_date": true }));
         }
-        if (!users) {
-            console.log("dispatching fetching users action");
-            dispatch(getUsers());
-        }
+        // if (!users) {
+        //     console.log("dispatching fetching users action");
+        //     dispatch(getUsers());
+        // }
     }, []);
 
 

@@ -11,6 +11,7 @@ import DropDown from '../../../components/common/DropDown';
 import deleteIcon from '$assets/images/icons/delete.svg';
 import { useHistory } from 'react-router-dom';
 import { formatDate } from '$common/utils';
+import { showModal } from '../../../redux/features/modal';
 
 const mediaActions = [
     { name: 'view', title: 'View', },
@@ -157,6 +158,51 @@ export const ManageMediaItem = ( props ) => {
         history.push(generatePath(routePaths.managerPanelMediaOptimizationLogs, {media_id: media.media_id}));
     }
 
+    const handleEditMedia = () => {
+        // trigger different edit media implementation based on media.category
+        console.log("Edit Media", media.media_id);
+        switch (media.category) {
+          case "movie":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "movie-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          case "audio":
+            dispatch(
+              showModal("FORM_MODAL", {
+                noWrapper: true,
+                preventOutsideClick: true,
+                form: "audio-form",
+                payload: {
+                  mediaId: media.media_id,
+                },
+              })
+            );
+            break;
+          case "video":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "video-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          default:
+            break;
+        }
+    }
+
     return (
         <div key={key} className="card h-100" ref={cardRef}>
             {isUpdating && (
@@ -169,6 +215,7 @@ export const ManageMediaItem = ( props ) => {
                 <div className="d-flex">
                     <div className="ml-auto">
                         <button className='btn btn-sm btn-outline-primary' onClick={() => push(generatePath(routePaths.viewMedia, { "id": media.media_id }))}>Play</button>
+                        <button className='btn btn-sm btn-outline-info ml-2' onClick={handleEditMedia}>Edit</button>
                     </div>
                 </div>
                 <div className="d-flex">
