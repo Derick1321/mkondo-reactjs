@@ -18,10 +18,10 @@ const mediaActions = [
     { name: 'logout', title: 'Log Out', style: styles.optSecondary },
 ];
 
-export const ManageMediaItem = ( props ) => {
+export const ManageMediaItem = (props) => {
     //hooks
     const { push } = useHistory();
-    
+
     //props
     const { media, key } = props;
 
@@ -49,7 +49,7 @@ export const ManageMediaItem = ( props ) => {
     const dispatch = useDispatch();
     const pendingQueue = useSelector((state) => state.media.updateMediaPendingQueue);
     const optimizeMedia = useSelector((state) => state.media.optimizeMedia)
-    
+
     //effects
     useEffect(() => {
         setMount(true);
@@ -136,7 +136,7 @@ export const ManageMediaItem = ( props ) => {
     const handleUpdateMedia = (key, value) => {
         if (!key) return;
         let payload = {
-            id: media.media_id, 
+            id: media.media_id,
             payload: {
                 [key]: value,
             }
@@ -155,7 +155,7 @@ export const ManageMediaItem = ( props ) => {
     }
 
     const handleViewLogs = () => {
-        history.push(generatePath(routePaths.managerPanelMediaOptimizationLogs, {media_id: media.media_id}));
+        history.push(generatePath(routePaths.managerPanelMediaOptimizationLogs, { media_id: media.media_id }));
     }
 
     const handleEditMedia = () => {
@@ -206,11 +206,11 @@ export const ManageMediaItem = ( props ) => {
     return (
         <div key={key} className="card h-100" ref={cardRef}>
             {isUpdating && (
-                 <div className={styles.loader}>
-                     <span className='text-light spinner spinner-border'></span>
-                 </div>
-             )}
-            {media.category == 'video' && <img src={coverUrl ?? placeholder} class="card-img-top"  alt="" onLoad={handleOnLoad} onError={handleOnError} height={cardWidth * 9/16} style={{ objectFit: 'cover'  }}  />    }
+                <div className={styles.loader}>
+                    <span className='text-light spinner spinner-border'></span>
+                </div>
+            )}
+            {media.category == 'video' && <img src={coverUrl ?? placeholder} class="card-img-top" alt="" onLoad={handleOnLoad} onError={handleOnError} height={cardWidth * 9 / 16} style={{ objectFit: 'cover' }} />}
             <div className="card-body">
                 <div className="d-flex">
                     <div className="ml-auto">
@@ -221,14 +221,14 @@ export const ManageMediaItem = ( props ) => {
                 <div className="d-flex">
                     {media.category == 'movie' && (
                         <div className={`${styles.cover} ${coverStyle}`} style={{ height: "150px" }}>
-                            { isLoadingCoverImage && <span className='spinner-border'></span> }
-                            <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError}  />
+                            {isLoadingCoverImage && <span className='spinner-border'></span>}
+                            <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
                         </div>
                     )}
                     {media.category == 'audio' && (
                         <div className={`${styles.cover} ${coverStyle}`} style={{ height: "100px", width: "100px" }}>
-                            { isLoadingCoverImage && <span className='spinner-border'></span> }
-                            <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError}  />
+                            {isLoadingCoverImage && <span className='spinner-border'></span>}
+                            <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
                         </div>
                     )}
                     <div className='ml-2 flex-fill'>
@@ -245,7 +245,7 @@ export const ManageMediaItem = ( props ) => {
                             </div>
                             {media.category == 'movie' && (
                                 <div className="form-check form-check-inline">
-                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1"  checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
+                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox1" checked={media.theatre ? true : false} onChange={() => handleUpdateMedia("theatre", !media.theatre)} />
                                     <label className="form-check-label" for="inlineCheckbox1">Theatre</label>
                                 </div>
                             )}
@@ -260,8 +260,8 @@ export const ManageMediaItem = ( props ) => {
             <div className="card-footer d-flex">
                 <p class="card-text"><small class="text-muted text-xs">Uploaded {formatDate(media.added)}</small></p>
                 <div className='ml-auto d-flex'>
-                {!media.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
-                <button className='btn btn-danger ml-2' onClick={handleArchive}><img src={deleteIcon} height={18} width={18} /> </button>
+                    {!media.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button>}
+                    <button className='btn btn-danger ml-2' onClick={handleArchive}><img src={deleteIcon} height={18} width={18} /> </button>
                 </div>
             </div>
         </div>
@@ -313,11 +313,11 @@ export const ManageMediaItem = ( props ) => {
     //                             <label className="form-check-label" for="inlineCheckbox1">Theatre</label>
     //                         </div>
     //                     )}
-                        
+
     //                 </div>
     //             </div>
     //         </div>
-            
+
     //         <div className='p-2'>
     //                 <div className="col-3 mb-2">
     //                     <button className='btn btn-primary' onClick={() => push(generatePath(routePaths.viewMedia, { "id": media.media_id }))}>View</button>
