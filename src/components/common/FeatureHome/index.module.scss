@@ -42,6 +42,17 @@
     }
 }
 
+.f_featureWrapperVideo3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 275px;
+
+    @media only screen and (max-width: 768px) {
+        width: 346px;
+        
+    }
+}
+
 .f_featureWrapperVideo {
     // min-height: 185px;
     // min-width: 300px;
@@ -51,7 +62,7 @@
     // margin-bottom: 1rem;
     background-color: #191919;
     // box-shadow: 3px 3px 3px #111;
-    aspect-ratio: 16/9;
+    // aspect-ratio: 16/9;
     position: relative;
     // border-radius: 10px;
     display: flex;
@@ -61,6 +72,7 @@
 
     @media only screen and (max-width: 768px) {
         height: 150px;
+        
     }
 }
 

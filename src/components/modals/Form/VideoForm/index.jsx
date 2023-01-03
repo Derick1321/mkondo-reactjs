@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { handleFetch } from '../../../../common/requestUtils';
 import { generatePreview, genres, movieGenres } from '../../../../common/utils';
-import { saveMedia, updateMedia } from '../../../../redux/features/media';
+import media, { retrieveMedia, saveMedia, updateMedia } from '../../../../redux/features/media';
+import { hideModal } from '../../../../redux/features/modal';
 import AvatarInput from '../../../common/AvatarInput';
 import InputField from '../../../forms/InputField';
 import styles from '../index.module.scss'
@@ -23,6 +24,7 @@ export const VideoForm = (props) => {
     const [bannerUrl, setBannerUrl] = useState('')
     const [bannerImage, setBannerImage] = useState(null)
     const [values, setValues] = useState(initialState)
+    const [video, setVideo] = useState({});
 
     //props
     const { payload, closeModal } = props;
@@ -30,12 +32,19 @@ export const VideoForm = (props) => {
 
     //store
     const dispatch = useDispatch();
+    const retrivieMediaState = useSelector(state => state.media.retrieveMedia);
+    const updated = useSelector(state => state.media.updateMediaComplete);
 
-    const video = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
+    // const video = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
     const token = useSelector((state) => state.authentication.token)
     const submitting = useSelector((state) => state.media.updateMediaPending)
 
-    useEffect(async () => {
+    useEffect(() => {
+        if (!mediaId) return;
+        dispatch(retrieveMedia(mediaId));
+    }, [mediaId]);
+
+    useEffect(() => {
         if (!video) return;
         console.log("Performing instantiation", video)
         let payload = initialState;
@@ -48,9 +57,23 @@ export const VideoForm = (props) => {
         }
         setValues(payload);
 
-        const res = await handleFetch('GET', `media/presigned-get-url?file_name=${video.cover_url}`, null, token);
-        setBannerUrl(res.response);
+        handleFetch('GET', `media/presigned-get-url?file_name=${video.cover_url}`, null, token).then(res => setBannerUrl(res.response)).catch(e => console.log(e));
     }, [video])
+
+    useEffect(() => {
+        if (!retrivieMediaState) return;
+        if (retrivieMediaState.loading) return;
+        if (retrivieMediaState.error) return;
+        if (!retrivieMediaState.data) return;
+
+
+        setVideo(retrivieMediaState.data.media);
+    }, [retrivieMediaState])
+
+    useEffect(() => {
+        if (!updated) return;
+        dispatch(hideModal());
+    }, [updated]);
 
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
@@ -86,6 +109,9 @@ export const VideoForm = (props) => {
     return (
         <div className={styles.card}>
             <h2>Update {video['category']}</h2>
+            {retrivieMediaState.loading && <span className="spinner-border"></span>}
+            {/* handle error */}
+            {retrivieMediaState.error && <div className="alert alert-danger">{retrivieMediaState.error}</div>}
             <div className="row">
                 <div className={styles.bannerWrapper}>
                     <AvatarInput url={bannerUrl} onChange={handleFileChange} />

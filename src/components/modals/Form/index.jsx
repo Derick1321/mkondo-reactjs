@@ -1,9 +1,13 @@
 import React from 'react'
+import ArtistForm from './ArtistForm';
+import AlbumForm from './Album';
 import { AudioForm } from './AudioForm'
 import styles from './index.module.scss'
 import { MovieForm } from './MovieForm';
 import { UserForm } from './UserForm';
 import { VideoForm } from './VideoForm/index';
+import SeriesForm from './SeriesForm/index';
+
 
 
 export const FormModal = (props) => {
@@ -13,6 +17,9 @@ export const FormModal = (props) => {
         'video-form': VideoForm,
         'movie-form': MovieForm,
         'user-form': UserForm,
+        'artist-form': ArtistForm,
+        'album-form': AlbumForm,
+        'series-form': SeriesForm,
     }
 
     const Form = forms[form];
