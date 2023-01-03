@@ -78,7 +78,7 @@ const IndividualPlayer = (props) => {
   const duration = useSelector((store) => store.player.duration);
   const artistId = useSelector((store) => store.player.currentPlaylist.length ? store.player.currentPlaylist[0].artistId : '');
 
-  const isFavorite = favourites.find((media) => media.media_id === mediaId);
+  const isFavorite = favourites && favourites.find((media) => media.media_id === mediaId);
 
   // state
   const [avatarSrc, setAvatarSrc] = useState('');
@@ -86,20 +86,24 @@ const IndividualPlayer = (props) => {
 
   // effects
   useEffect(() => {
-    if (!mediaUrl) {
-      return;
-    }
+    if (!coverUrl) return;
+    handleFetch('GET', `media/presigned-get-url?file_name=${coverUrl}`, null, token)
+    .then((res) => {
+      setCoverSrc(res.response);
+    });
+  }, [coverUrl]);
 
+  useEffect(() => {
+    if (!avatarUrl) return;
     handleFetch('GET', `media/presigned-get-url?file_name=${avatarUrl}`, null, token)
       .then((res) => {
         setAvatarSrc(res.response);
       });
-
-    handleFetch('GET', `media/presigned-get-url?file_name=${coverUrl}`, null, token)
-      .then((res) => {
-        setCoverSrc(res.response);
-      });
-
+  }, [avatarUrl]);
+  
+  useEffect(() => {
+    if (!mediaUrl) return;
+    handlePlay();
   }, [mediaUrl]);
 
   // handlers

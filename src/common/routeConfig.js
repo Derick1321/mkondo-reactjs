@@ -77,10 +77,16 @@ import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/inde
 import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
 
 export const routePaths = {
+  index: '/',
   main: '/app',
-  marketing: '/',
+  
+  marketing: '/marketing',
 
+  guest: '/guest',
+  guestMedia: 'guest/media',
   guestViewMedia: '/guest/media/:id',
+  guestViewMediaCollection: '/guest/media/collection/:id',
+
   login: "/login",
   register: "/register",
   onBoarding: '/on-boarding',
@@ -174,6 +180,8 @@ export const routePaths = {
 };
 
 const roles = {
+  'visitor': ['Visitor', 'User', 'Artist', 'Admin', 'Super Admin'],
+  'user': ['User', 'Artist', 'Admin', 'Super Admin'],
   'artist': ['Artist', 'Super Admin', 'Admin'],
   'admin': ['Admin', 'Super Admin'],
 }
@@ -182,6 +190,12 @@ const redirectFunctions = {
   app: (token, role) => {
     if (!token) {
       return routePaths.marketing;
+    }
+    return false;
+  },
+  guest: (token, role) => {
+    if (token) {
+      return routePaths.home;
     }
     return false;
   },
@@ -205,6 +219,19 @@ const defaultConfig = {
 }
 
 export const routes = [
+  {
+    ...defaultConfig,
+    path: routePaths.index,
+    component: Main,
+    exact: false,
+    routes: [
+      {
+        ...defaultConfig,
+        path: routePaths.index,
+        component: Home,
+      },
+    ]
+  },
   {
     ...defaultConfig,
     path: routePaths.marketing,
@@ -241,11 +268,11 @@ export const routes = [
     path: routePaths.register,
     component: RegisterPage,
   },
-  {
-    ...defaultConfig,
-    path: routePaths.guestViewMedia,
-    component: GuestViewMedia,
-  },
+  // {
+  //   ...defaultConfig,
+  //   path: routePaths.guestViewMedia,
+  //   component: GuestViewMedia,
+  // },
   {
     ...defaultConfig,
     path: routePaths.onBoarding,
@@ -284,6 +311,29 @@ export const routes = [
     redirect: redirectFunctions.app,
   },
 
+  {
+    ...defaultConfig,
+    path: routePaths.guest,
+    component: Main,
+    exact: false,
+    // redirect: redirectFunctions.guest,
+    routes: [
+      {
+        ...defaultConfig,
+        path: routePaths.guestMedia,
+        component: Media,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.guestViewMedia,
+            component: ViewMedia,
+            redirect: redirectFunctions.guest,
+          },
+        ],
+      },
+    ],
+  },
   {
     ...defaultConfig,
     path: routePaths.main,
