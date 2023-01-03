@@ -1668,6 +1668,7 @@ const mediaSlice = createSlice({
         [retrieveMedia.fulfilled]: (state, action) => {
             state.retrieveMedia.loading = false;
             state.retrieveMedia.data = action.payload;
+            state.currentMedia = action.payload;
         },
         [retrieveMedia.rejected]: (state, action) => {
             state.retrieveMedia.loading = false;

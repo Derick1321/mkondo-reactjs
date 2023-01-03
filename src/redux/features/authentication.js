@@ -95,6 +95,7 @@ const initialState = {
         user_id: null,
         publish: false,
         user_type: null,
+        favourites: [],
     },
     loginPending: false,
     loginComplete: false,
@@ -283,6 +284,7 @@ const authenticationSlice = createSlice({
             state.visitorColdStartError = null;
             state.visitorColdStartComplete = true;
             state.visitorToken = action.payload.token;
+            state.token = action.payload.token;
         },
         [visitorColdStart.rejected]: (state, action) => {
             state.visitorColdStartPending = false;

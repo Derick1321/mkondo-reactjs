@@ -105,6 +105,7 @@ const SideMenu = (props) => {
       activeIcon: require('$assets/images/icons/home_side.svg'),
       title: 'home',
       path: routePaths.home,
+      permission: 'visitor',
     },
     {
       icon: require('$assets/images/icons/home_side.svg'),
@@ -187,8 +188,9 @@ const SideMenu = (props) => {
       path: routePaths.configurations,
       permission: 'super admin',
     },
-  ]
+  ];
 
+  const userAccess = getPermissions('user', userRole);
   const artistAccess = getPermissions('artist', userRole);
   const adminAccess = getPermissions('super admin', userRole);
 
@@ -207,47 +209,72 @@ const SideMenu = (props) => {
         <span onClick={() => history.push(routePaths.socialmedia)} className={`${styles.socialButton}`}><span>Switch to <br /></span> Mkondo Social</span>
         <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
         {
-          icons.map((item, idx) => (
-            <NavLink
-              to={item.path}
-              className={styles.sideMenuItem}
-              activeClassName={styles.sideMenuItemTitle}
-              key={`sidemenu-${idx}`}
-            >
-              <img
-                src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                className={styles.sideMenuItemIcon}
-              />
-              <span>{t(item.title)}</span>
-            </NavLink>
-          ))
-        }
-        <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>{t('your_activity')}</p>
-          {
-            userIcons.map((item, idx) => {
-              const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
-              if (!canAccess) {
-                return null;
-              }
-
+          icons.map((item, idx) => {
+            if (item.permission != 'visitor' && !userRole) {
               return (
-                <NavLink
-                  to={item.path}
-                  className={styles.sideMenuItem}
-                  activeClassName={styles.sideMenuItemTitle}
+                <a 
                   key={`sidemenu-${idx}`}
-                >
+                  href='#'
+                  className={styles.sideMenuItem}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    dispatch(showModal('ALERT_MODAL'));
+                  }}>
                   <img
                     src={history.location.pathname === item.path ? item.activeIcon : item.icon}
                     className={styles.sideMenuItemIcon}
                   />
-                  <span>{t(item.title)}</span>
-                </NavLink>
+                <span>{t(item.title)}</span>
+                </a>
               )
-            })
-          }
-        </div>
+            }
+
+            return (
+              <NavLink
+                to={item.path}
+                className={styles.sideMenuItem}
+                activeClassName={styles.sideMenuItemTitle}
+                key={`sidemenu-${idx}`}
+              >
+                <img
+                  src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                  className={styles.sideMenuItemIcon}
+                />
+                <span>{t(item.title)}</span>
+              </NavLink>
+            );
+          })
+        }
+        {
+          userAccess && (
+            <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+              <p className={styles.sideMenuSubtitle}>{t('your_activity')}</p>
+              {
+                userIcons.map((item, idx) => {
+                  const canAccess = !item.permission ? true : getPermissions(item.permission, userRole);
+                  if (!canAccess) {
+                    return null;
+                  }
+
+                  return (
+                    <NavLink
+                      to={item.path}
+                      className={styles.sideMenuItem}
+                      activeClassName={styles.sideMenuItemTitle}
+                      key={`sidemenu-${idx}`}
+                    >
+                      <img
+                        src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                        className={styles.sideMenuItemIcon}
+                      />
+                      <span>{t(item.title)}</span>
+                    </NavLink>
+                  )
+                })
+              }
+            </div>
+          )
+        }
         {
           artistAccess && (
             <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
@@ -281,34 +308,36 @@ const SideMenu = (props) => {
           )
         }
 
-        <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>{t('account')}</p>
-          {
-            accountRoutes.map((item, idx) => {
-              const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
-              if (!canAccess) {
-                return null;
-              }
+        {userAccess && (
+          <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+            <p className={styles.sideMenuSubtitle}>{t('account')}</p>
+            {
+              accountRoutes.map((item, idx) => {
+                const canAccess = !item.permission ? true : getPermissions(item.permission, userRole, { isPublished });
+                if (!canAccess) {
+                  return null;
+                }
 
-              return (
-                <NavLink
-                  to={item.path}
-                  className={styles.sideMenuItem}
-                  activeClassName={styles.sideMenuItemTitle}
-                  key={`sidemenu-${idx}`}
-                >
-                  {
-                    <img
-                      src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                      className={styles.sideMenuItemIcon}
-                    />
-                  }
-                  <span>{t(item.title)}</span>
-                </NavLink>
-              )
-            })
-          }
-        </div>
+                return (
+                  <NavLink
+                    to={item.path}
+                    className={styles.sideMenuItem}
+                    activeClassName={styles.sideMenuItemTitle}
+                    key={`sidemenu-${idx}`}
+                  >
+                    {
+                      <img
+                        src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+                        className={styles.sideMenuItemIcon}
+                      />
+                    }
+                    <span>{t(item.title)}</span>
+                  </NavLink>
+                )
+              })
+            }
+          </div>
+        )}
 
         {
           adminAccess && (
@@ -340,33 +369,38 @@ const SideMenu = (props) => {
             </div>
           )
         }
-        <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
-          <p className={styles.sideMenuSubtitle}>{t('your_playlists')}</p>
-          <div className="m-4 ">
-            <Button
-              onClick={handleNewPlaylist}
-              isSecondary
-            >
-              {t('new_playlist')}
-            </Button>
-          </div>
-          {
-            playlists.map((item, idx) => (
-              <NavLink
-                key={`side-menu-playlist-${idx}`}
-                to={generatePath(routePaths.playlist, { id: item.playlist_id })}
-                className={styles.sideMenuItem}
-                activeClassName="active"
-              >
-                <img
-                  src={playlistIcon}
-                  className={styles.sideMenuItemIcon}
-                />
-                <span>{item.name}</span>
-              </NavLink>
-            ))
-          }
-        </div>
+        
+        {
+          userAccess && (
+            <div className={`d-flex flex-column artist-menus ${styles.artistMenus}`}>
+              <p className={styles.sideMenuSubtitle}>{t('your_playlists')}</p>
+              <div className="m-4 ">
+                <Button
+                  onClick={handleNewPlaylist}
+                  isSecondary
+                >
+                  {t('new_playlist')}
+              </Button>
+              </div>
+              {
+                playlists.map((item, idx) => (
+                  <NavLink
+                    key={`side-menu-playlist-${idx}`}
+                    to={generatePath(routePaths.playlist, { id: item.playlist_id })}
+                    className={styles.sideMenuItem}
+                    activeClassName="active"
+                  >
+                    <img
+                      src={playlistIcon}
+                      className={styles.sideMenuItemIcon}
+                    />
+                    <span>{item.name}</span>
+                  </NavLink>
+                ))
+              }
+            </div>
+          )
+        }
       </div>
     </div>
   )

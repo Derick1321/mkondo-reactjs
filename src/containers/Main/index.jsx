@@ -32,11 +32,11 @@ const Main = (props) => {
   const showFooterPlayer = useSelector((store) => store.nav.showFooterPlayer);
 
   // effects
-  useEffect(() => {
-    if (location.pathname === routePaths.main) {
-      history.push(routePaths.home);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (location.pathname === routePaths.main) {
+  //     history.push(routePaths.home);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (!userId) {

@@ -17,7 +17,7 @@ import {
 } from '$redux/features/media';
 
 import styles from './index.module.scss';
-import media, { addMediaComment, getSimilar, removeCommentLike } from '../../../redux/features/media';
+import media, { addMediaComment, getSimilar, removeCommentLike, retrieveMedia } from '../../../redux/features/media';
 import { COLOR_PRIMARY, COLOR_ACCENT } from '$common/constants'
 import { addHistory, addLikes, removeLikes } from '../../../redux/features/user';
 import { formatDate, getMediaUrl } from '../../../common/utils';
@@ -90,9 +90,9 @@ const ViewMedia = () => {
 
   useEffect(() => {
     if (!currentMedia) return;
-    dispatch(addHistory({
-      media_id: mediaId,
-    }));
+    // dispatch(addHistory({
+    //   media_id: mediaId,
+    // }));
     dispatch(toggleFooterPlayer(false));
   }, []);
 
@@ -134,7 +134,7 @@ const ViewMedia = () => {
         artistId: currentMedia.owner_id
       }));
     })
-  }, [currentMedia])
+  }, [currentMedia]);
 
   useEffect(() => {
     if (!currentMedia.likes) return;
@@ -144,7 +144,12 @@ const ViewMedia = () => {
     } else {
       setIsLiked(false);
     }
-  }, [currentMedia.likes])
+  }, [currentMedia.likes]);
+
+  useEffect(() => {
+    if (currentMedia) return;
+    dispatch(retrieveMedia(mediaId));
+  }, [currentMedia]);
 
   useEffect(() => {
     if (!isMobile || !videoPlayerRef.current) return;

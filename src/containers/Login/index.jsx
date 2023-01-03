@@ -86,20 +86,15 @@ const LoginPage = () => {
   const user = useSelector((store) => store.authentication.user);
 
   // effects
-  useEffect(() => {
-    dispatch(visitorColdStart());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(visitorColdStart());
+  // }, []);
 
   useEffect(() => {
-    if (token) {
-      if (!user.email || !user.phone) {
-        history.push(routePaths.onBoarding);
-        return;
-      }
-      history.push(routePaths.home);
-      return;
-    }
-  }, [token, user]);
+    if (!user.user_id) return;
+    history.push(routePaths.onBoarding);
+    return;
+  }, [user]);
 
   // handlers
   const handleChange = (name, value) => {
