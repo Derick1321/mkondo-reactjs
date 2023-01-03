@@ -8,6 +8,7 @@ import trash from '$assets/images/icons/trash.svg';
 import cogs from '$assets/images/icons/settings.svg';
 import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
+import { showModal } from '$redux/features/modal';
 
 export const ManageSeriesItem = (props) => {
     //props
@@ -88,8 +89,20 @@ export const ManageSeriesItem = (props) => {
         dispatch(removeSeries(series.series_id));
     }
 
+    const handleEdit = () => {
+        dispatch(showModal('FORM_MODAL', {
+            'noWrapper':true,
+            'preventOutsideClick': true,
+            'form': 'series-form',
+            'payload': {
+                'series_id':  null,
+            },
+        }))
+    }
+
     return (
         <div className={styles.wrapper}>
+            <button className="btn btn-outline-primary btn-sm" onClick={handleEdit}>Edit</button>
             <img src={coverUrl ?? placeholder} alt="" onLoad={handleOnLoad} onError={handleOnError} />
             <div className="text-light">{series.title}</div>
             <span className='text-light' style={{ fontSize: 10, }}>{series.episodes.length} episods</span>

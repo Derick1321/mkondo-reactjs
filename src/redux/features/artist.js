@@ -91,17 +91,17 @@ export const deleteArtist = createAsyncThunk(
 export const getManageUserRequests = createAsyncThunk(
   GET_MANAGE_USER_REQUESTS,
   async (params, store) => {
-      console.log("Params", params);
-      const { token } = store.getState().authentication;
-      return await handleFetch('GET', `admin/request-manage-artist?${queryString.stringify(params)}`, null, token);
+    console.log("Params", params);
+    const { token } = store.getState().authentication;
+    return await handleFetch('GET', `admin/request-manage-artist?${queryString.stringify(params)}`, null, token);
   }
 );
 
 export const createManageUserRequest = createAsyncThunk(
   POST_MANAGE_USER_REQUEST,
   async (data, store) => {
-      const { token } = store.getState().authentication;
-      return await handleFetch('POST', 'admin/request-manage-artist', data, token);
+    const { token } = store.getState().authentication;
+    return await handleFetch('POST', 'admin/request-manage-artist', data, token);
   }
 );
 
@@ -142,7 +142,12 @@ const initialState = {
     loading: false,
     error: null,
     data: {},
-  }
+  },
+  getArtistById: {
+    loading: false,
+    data: {},
+    error: null,
+  },
 };
 
 // slice
@@ -179,7 +184,7 @@ const artistSlice = createSlice({
     },
     [deleteArtist.rejected]: (state, action) => {
       state.deleteArtistPendingQueue = state.deleteArtistPendingQueue.filter(artist_id => artist_id != action.meta.arg.id);
-      state.deleteArtistsErrors.push({artist_id: action.meta.arg.id, "error": action.error});
+      state.deleteArtistsErrors.push({ artist_id: action.meta.arg.id, "error": action.error });
     },
     [getArtists.pending]: (state, action) => {
       state.getArtistsPending = true;
@@ -235,17 +240,27 @@ const artistSlice = createSlice({
       state.getArtistByIdPending = true;
       state.getArtistByIdComplete = false;
       state.getArtistByIdError = null;
+      state.getArtistById.loading = true;
+      state.getArtistById.data = null;
+      state.getArtistById.error = null;
     },
     [getArtistById.fulfilled]: (state, action) => {
       state.getArtistByIdPending = false;
       state.getArtistByIdComplete = true;
       state.getArtistByIdError = null;
       state.currentArtist = action.payload.user;
+      state.getArtistById.loading = false;
+      state.getArtistById.data = action.payload.user;
+      state.getArtistById.error = null;
+
     },
     [getArtistById.rejected]: (state, action) => {
       state.getArtistByIdPending = false;
       state.getArtistByIdComplete = false;
+      state.getArtistById.loading = false;
       state.getArtistByIdError = action.error;
+      state.getArtistById.error = action.error;
+      state.getArtistById.data = null;
     },
     [getArtistInsights.pending]: (state, action) => {
       state.getArtistInsights.loading = true;
@@ -277,7 +292,7 @@ const artistSlice = createSlice({
     [updateArtist.fulfilled]: (state, action) => {
       state.updateArtistPending = false;
       state.updateArtistComplete = true;
-      
+
       const index = state.artists.findIndex(artist => artist.user_id == action.meta.arg.id);
       if (index > -1) {
         state.artists[index] = action.payload.artist;

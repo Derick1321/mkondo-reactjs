@@ -30,7 +30,7 @@ const Tabs = (props) => {
   // render
   return (
     <>
-      <div className={`${styles.wrapper} d-flex flex-wrap float-right`}>
+      <div className={`${styles.wrapper} d-flex float-right`}>
         {
           options.map((opt, idx) => (
             <TabMenu

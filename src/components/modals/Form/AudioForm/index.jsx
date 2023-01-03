@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleFetch } from '../../../../common/requestUtils';
 import { updateMedia } from '$redux/features/media';
 import { async } from 'regenerator-runtime';
-import { saveMedia } from '../../../../redux/features/media';
+import { retrieveMedia, saveMedia } from '../../../../redux/features/media';
+import { hideModal } from '$redux/features/modal';
 
 const initialState = {
     name: '',
@@ -22,13 +23,14 @@ const initialState = {
     file: '',
     publisher: '',
     release_date: '',
-  }
+}
 
 export const AudioForm = (props) => {
     //state
     const [coverUrl, setCoverUrl] = useState('')
     const [values, setValues] = useState(initialState)
     const [coverImage, setCoverImage] = useState(null)
+    const [audio, setAudio] = useState({})
 
     //props
     const { payload, closeModal } = props;
@@ -36,11 +38,17 @@ export const AudioForm = (props) => {
 
     //store
     const dispatch = useDispatch();
+    const retrieveMediaState = useSelector(state => state.media.retrieveMedia);
 
-    const audio = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
+    // const audio = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
     const token = useSelector((state) => state.authentication.token)
     const submitting = useSelector((state) => state.media.updateMediaPending)
+    const updated = useSelector((state) => state.media.updateMediaComplete)
 
+    useEffect(() => {
+        if (!mediaId) return;
+        dispatch(retrieveMedia(mediaId, token));
+    }, [mediaId])
 
     useEffect(async () => {
         if (!audio) return;
@@ -59,14 +67,24 @@ export const AudioForm = (props) => {
         setCoverUrl(res.response);
     }, [audio]);
 
+    useEffect(() => {
+        if (!retrieveMediaState.data) return;
+        setAudio(retrieveMediaState.data.media);
+    }, [retrieveMediaState.data]);
+
+    useEffect(() => {
+        if (!updated) return;
+        dispatch(hideModal());
+    }, [updated]);
+
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
         if (name in values) {
             if (name === 'genres') {
-                setValues({...values, 'genres': value.map((val) => val.value)})
+                setValues({ ...values, 'genres': value.map((val) => val.value) })
                 return;
             }
-            setValues({...values, [name]: value});
+            setValues({ ...values, [name]: value });
         }
     }
 
@@ -77,7 +95,7 @@ export const AudioForm = (props) => {
             let response = await dispatch(saveMedia(coverImage))
             payload['cover_url'] = response.payload
         }
-        
+
         dispatch(updateMedia({
             id: audio.media_id,
             payload: payload,
@@ -93,8 +111,10 @@ export const AudioForm = (props) => {
     return (
         <div>
             <div className={styles.card}>
+
                 <h2 className="text-light">Update Song</h2>
-                
+                {retrieveMediaState.loading && <div className="text-light">Loading...</div>}
+                {retrieveMediaState.error && <div className="alert alert-danger">Error: {retrieveMediaState.error}</div>}
                 <div className="row mt-4">
                     <div className="col-md-4">
                         <div className={styles.avatarInputWrapper}>
@@ -102,35 +122,35 @@ export const AudioForm = (props) => {
                         </div>
                     </div>
                     <div className="col-md-8">
-                        <InputField field={{ 
-                            name:'name',
-                            type:'text',
+                        <InputField field={{
+                            name: 'name',
+                            type: 'text',
                             placeholder: 'Audio Name',
                             title: 'Name',
                             value: values.name,
-                         }} onChange={handleChange} />
-                        <InputField field={{ 
-                            name:'genres',
-                            type:'select',
-                            placeholder:'Select Genre',
-                            title:'Genre',
+                        }} onChange={handleChange} />
+                        <InputField field={{
+                            name: 'genres',
+                            type: 'select',
+                            placeholder: 'Select Genre',
+                            title: 'Genre',
                             options: genres,
-                            isMulti:true,
+                            isMulti: true,
                             value: genres.filter((genre) => values.genres.includes(genre.value))
-                         }} onChange={handleChange} />
+                        }} onChange={handleChange} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12">
                         <InputField
-                            field={{ 
-                                name:'description',
-                                type:'area',
-                                placeholder:'Describe the audio',
-                                title:'Description',
+                            field={{
+                                name: 'description',
+                                type: 'area',
+                                placeholder: 'Describe the audio',
+                                title: 'Description',
                                 value: values.description
-                             }}
-                             onChange={handleChange}
+                            }}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -143,8 +163,8 @@ export const AudioForm = (props) => {
                 </div>
                 <div className="row">
                     <div className="col-md-auto ml-auto">
-                            <button className="btn btn-lg btn-primary mr-2" onClick={handleUpdate} disabled={submitting}>Update {submitting && <span className="spinner-border"></span>}</button>
-                            <button className="btn btn-lg btn-outline-primary" onClick={closeModal}>Close</button>
+                        <button className="btn btn-lg btn-primary mr-2" onClick={handleUpdate} disabled={submitting}>Update {submitting && <span className="spinner-border"></span>}</button>
+                        <button className="btn btn-lg btn-outline-primary" onClick={closeModal}>Close</button>
                     </div>
                 </div>
             </div>

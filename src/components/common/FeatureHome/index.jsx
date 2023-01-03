@@ -343,7 +343,7 @@ const FeatureHome = (props) => {
 
   if (media && media.category == "video") {
     return (
-      <div>
+      <div className={styles.f_featureWrapperVideo3}>
         <div className={styles.f_featureWrapperVideo} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
           <FeatureBkg source={avatarUrl}>
           {
