@@ -9,6 +9,9 @@ import { generatePath, useHistory } from 'react-router-dom';
 import { routePaths } from '../../../common/routeConfig';
 import DropDown from '../../../components/common/DropDown';
 import deleteIcon from '$assets/images/icons/delete.svg';
+import { useHistory } from 'react-router-dom';
+import { formatDate } from '$common/utils';
+import { showModal } from '../../../redux/features/modal';
 
 const mediaActions = [
     { name: 'view', title: 'View', },
@@ -21,6 +24,9 @@ export const ManageMediaItem = ( props ) => {
     
     //props
     const { media, key } = props;
+
+    // router
+    const history = useHistory()
 
     //state
     const [mount, setMount] = useState(false);
@@ -148,6 +154,55 @@ export const ManageMediaItem = ( props ) => {
         dispatch(optimize(media.media_id));
     }
 
+    const handleViewLogs = () => {
+        history.push(generatePath(routePaths.managerPanelMediaOptimizationLogs, {media_id: media.media_id}));
+    }
+
+    const handleEditMedia = () => {
+        // trigger different edit media implementation based on media.category
+        console.log("Edit Media", media.media_id);
+        switch (media.category) {
+          case "movie":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "movie-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          case "audio":
+            dispatch(
+              showModal("FORM_MODAL", {
+                noWrapper: true,
+                preventOutsideClick: true,
+                form: "audio-form",
+                payload: {
+                  mediaId: media.media_id,
+                },
+              })
+            );
+            break;
+          case "video":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "video-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          default:
+            break;
+        }
+    }
+
     return (
         <div key={key} className="card h-100" ref={cardRef}>
             {isUpdating && (
@@ -160,6 +215,7 @@ export const ManageMediaItem = ( props ) => {
                 <div className="d-flex">
                     <div className="ml-auto">
                         <button className='btn btn-sm btn-outline-primary' onClick={() => push(generatePath(routePaths.viewMedia, { "id": media.media_id }))}>Play</button>
+                        <button className='btn btn-sm btn-outline-info ml-2' onClick={handleEditMedia}>Edit</button>
                     </div>
                 </div>
                 <div className="d-flex">
@@ -179,6 +235,7 @@ export const ManageMediaItem = ( props ) => {
                         <h6 class="card-subtitle mb-2 text-muted my-0 py-0">{media.category}</h6>
                         <h5 class="card-title my-0 py-0">{media.name}</h5>
                         <p className='text-primary' style={{ fontSize: 11 }}>By {media.owner_name}</p>
+                        <p className='text-secondary' style={{ fontSize: 11 }}>{media.release_date}</p>
                         {/* <p className='text-secondary'>{media.genres.join(', ')}</p> */}
 
                         <div className='d-flex'>
@@ -196,11 +253,12 @@ export const ManageMediaItem = ( props ) => {
                         {media.cover_url_compressed ? <p>Cover Image Compressed</p> : <p>Cover Image Not Compressed</p>}
                         {(media.category != 'audio' && media.video_qualities) ? <p>{Object.keys(media.video_qualities).map(key => `${key}p, `)}</p> : <p>Media has no other qualities</p>}
                         <button onClick={handleOptimize} disabled={optimizeRequested} className='btn btn-primary btn-sm'>Optimize {isOptimizing ? <span className='spinner-border spinner-border-sm'></span> : null}</button>
+                        <button onClick={handleViewLogs} className="btn btn-outline-primary btn-sm ml-2">Logs</button>
                     </div>
                 </div>
             </div>
             <div className="card-footer d-flex">
-                <p class="card-text"><small class="text-muted">Uploaded 3 mins ago</small></p>
+                <p class="card-text"><small class="text-muted text-xs">Uploaded {formatDate(media.added)}</small></p>
                 <div className='ml-auto d-flex'>
                 {!media.published ? <button className='btn btn-success' onClick={() => handleUpdateMedia("published", true)}>Publish</button> : <button className='btn btn-warning' onClick={() => handleUpdateMedia("published", false)}>Draft</button> }
                 <button className='btn btn-danger ml-2' onClick={handleArchive}><img src={deleteIcon} height={18} width={18} /> </button>

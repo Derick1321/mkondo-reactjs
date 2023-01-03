@@ -5,7 +5,7 @@ export const menus = [
     name: 'fullName',
     type: 'text',
     placeholder: 'Enter Full Name',
-    title: 'Full Name',
+    title: 'Username',
   },
   {
     name: 'email',

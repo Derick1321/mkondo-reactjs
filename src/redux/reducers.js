@@ -12,6 +12,7 @@ import croptool from './features/croptool';
 import post from './features/post';
 import theatre from './features/theatre';
 import subscription from './features/subscriptions';
+import withdraw from './features/withdraw';
 
 export default {
   authentication,
@@ -28,4 +29,5 @@ export default {
   post,
   theatre,
   subscription,
+  withdraw,
 };

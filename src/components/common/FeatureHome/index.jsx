@@ -273,7 +273,7 @@ const FeatureHome = (props) => {
     return (
       <div className={styles.rowBg}>
         <RowPro
-          name={media.title}
+          name={media.name}
           avatarUrl={media.cover_url}
           artistName={media.owner_name}
           mediaId={media.media_id}
@@ -343,7 +343,7 @@ const FeatureHome = (props) => {
 
   if (media && media.category == "video") {
     return (
-      <div>
+      <div className={styles.f_featureWrapperVideo3}>
         <div className={styles.f_featureWrapperVideo} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
           <FeatureBkg source={avatarUrl}>
           {

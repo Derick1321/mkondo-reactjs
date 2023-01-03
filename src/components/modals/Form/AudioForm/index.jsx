@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { handleFetch } from '../../../../common/requestUtils';
 import { updateMedia } from '$redux/features/media';
 import { async } from 'regenerator-runtime';
-import { saveMedia } from '../../../../redux/features/media';
+import { retrieveMedia, saveMedia } from '../../../../redux/features/media';
+import { hideModal } from '$redux/features/modal';
 
 const initialState = {
     name: '',
@@ -29,6 +30,7 @@ export const AudioForm = (props) => {
     const [coverUrl, setCoverUrl] = useState('')
     const [values, setValues] = useState(initialState)
     const [coverImage, setCoverImage] = useState(null)
+    const [audio, setAudio] = useState({})
 
     //props
     const { payload, closeModal } = props;
@@ -36,11 +38,17 @@ export const AudioForm = (props) => {
 
     //store
     const dispatch = useDispatch();
+    const retrieveMediaState = useSelector(state => state.media.retrieveMedia);
 
-    const audio = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
+    // const audio = useSelector((state) => state.user.userMedia.filter((media) => media.media_id == mediaId)[0])
     const token = useSelector((state) => state.authentication.token)
     const submitting = useSelector((state) => state.media.updateMediaPending)
+    const updated = useSelector((state) => state.media.updateMediaComplete)
 
+    useEffect(() => {
+        if (!mediaId) return;
+        dispatch(retrieveMedia(mediaId, token));
+    }, [mediaId])
 
     useEffect(async () => {
         if (!audio) return;
@@ -58,6 +66,16 @@ export const AudioForm = (props) => {
         const res = await handleFetch('GET', `media/presigned-get-url?file_name=${audio.cover_url}`, null, token);
         setCoverUrl(res.response);
     }, [audio]);
+
+    useEffect(() => {
+        if (!retrieveMediaState.data) return;
+        setAudio(retrieveMediaState.data.media);
+    }, [retrieveMediaState.data]);
+
+    useEffect(() => {
+        if (!updated) return;
+        dispatch(hideModal());
+    }, [updated]);
 
     const handleChange = (name, value) => {
         console.log('Handle change called: ', name, value)
@@ -93,8 +111,10 @@ export const AudioForm = (props) => {
     return (
         <div>
             <div className={styles.card}>
+
                 <h2 className="text-light">Update Song</h2>
-                
+                {retrieveMediaState.loading && <div className="text-light">Loading...</div>}
+                {retrieveMediaState.error && <div className="alert alert-danger">Error: {retrieveMediaState.error}</div>}
                 <div className="row mt-4">
                     <div className="col-md-4">
                         <div className={styles.avatarInputWrapper}>

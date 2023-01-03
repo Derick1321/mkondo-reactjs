@@ -3,6 +3,11 @@
 .wrapper {
   height: 240px;
   margin-bottom: 2rem;
+  overflow: hidden;
+
+  @media screen and (max-width: 576px) {
+    height: auto;
+  }
 }
 
 .contentWrapper {
@@ -16,8 +21,8 @@
 }
 
 .playerWrapper {
-  height: 60px;
-  padding: 15px 2rem 5px;
+  height: 40px;
+  // padding: 15px 2rem 5px;
   background-color: $primary-color;
 }
 
@@ -36,6 +41,14 @@
   font-size: 2rem;
   color: $white;
   text-shadow: 2px 2px $secondary-black;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  
+  @media screen and (max-width: 576px) {
+    font-size: 1.5rem;
+    width: 250px;
+  }
 }
 
 .artistName {

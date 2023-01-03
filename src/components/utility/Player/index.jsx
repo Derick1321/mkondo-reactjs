@@ -11,7 +11,7 @@ import {
   updateRange,
   updateDuration,
 } from '$redux/features/player';
-import { play, setCurrentIndex } from '../../../redux/features/player';
+import { play, setCurrentIndex, setCurrentMediaId } from '../../../redux/features/player';
 import { toggleFooterPlayer } from '$redux/features/nav';
 
 // hook for handing Audio related commands
@@ -30,6 +30,9 @@ const Player = () => {
   const next = useSelector((store) => store.player.next);
   const prev = useSelector((store) => store.player.prev);
   const skipTo = useSelector((store) => store.player.skipTo);
+
+  // state
+  const [playCounted, setPlayCounted] = useState(false);
 
   // refs
   const audioRef = useRef(null);
@@ -55,9 +58,10 @@ const Player = () => {
   }
 
   const onLoad = (mediaId) => {
-    dispatch(addHistory({
-      media_id: mediaId,
-    }));
+    setPlayCounted(false);
+    // dispatch(addHistory({
+    //   media_id: mediaId,
+    // }));
   }
 
   const getSeekPosition = useCallback(() => {
@@ -68,6 +72,10 @@ const Player = () => {
     }
     // console.log('getSeekPosition ', sound.seek());
     dispatch(updateRange(sound.seek()));
+    if (!playCounted && sound.seek() >= 30) {
+      // console.debug(audioRef.current.playlist[audioRef.current.index].mediaId);
+      setPlayCounted(true);
+    }
   }, [isLoading, audioRef.current]);
 
   const loop = () => {
@@ -117,6 +125,7 @@ const Player = () => {
     }
 
     audioRef.current.play(audioRef.current.index);
+    dispatch(setCurrentMediaId(newPlaylist[audioRef.current.index].media_id || newPlaylist[audioRef.current.index].mediaId));
     // dispatch(updateLoading(true));
   }, [currentPlaylist]);
 
@@ -194,7 +203,13 @@ const Player = () => {
     dispatch(setCurrentIndex(audioRef.current.index));
   }, [skipTo]);
 
-
+  useEffect(() => {
+    if (!playCounted) return;
+    console.log("player: play counted");
+    dispatch(addHistory({
+      media_id: audioRef.current.playlist[audioRef.current.index].mediaId,
+    }));
+  }, [playCounted])
   // render
   return null;
 }

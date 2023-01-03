@@ -1,5 +1,6 @@
 import Marketing from '$containers/Marketing';
 import Home from '$containers/Home';
+import About from '$containers/About';
 import Recommendation from '$containers/Recommendation';
 import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
@@ -22,6 +23,7 @@ import PlaylistPage from '$containers/Playlist';
 import Insights from '$containers/Insights';
 import Profile from '$containers/Profile';
 import NotFound from '../containers/NotFound';
+
 import { Slider } from '../containers/Slider';
 import { AddSliderForm } from '../containers/Slider/AddSliderForm';
 import { EditSliderForm } from '../containers/Slider/EditSliderForm';
@@ -58,10 +60,26 @@ import { WatchMovie } from '../containers/Media/Watch';
 import { SeriesDescriptionPage } from '../containers/Media/SeriesDescription/index';
 import { MediaListPage } from '../containers/Media/MediaList';
 import SocialMediaMessagesPage from '../containers/socialmedia/messages';
+import { MediaOptimizationLogs } from '../containers/ManagerPanel/logs/logs';
+import { AboutPage } from '../containers/About';
+import { ContactPage } from '../containers/Contact';
+import { DisclaimerPage } from '../containers/Disclaimer';
+import { DMCAPage } from '../containers/DMCA';
+import { ManageUsers } from '../containers/ManagerPanel/users';
+import ManagerPanelEditAlbum from '../containers/ManagerPanel/albums/edit';
+import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
+// import ManagerPanelEditMovies from '../containers/ManagerPanel/media/movie';
+// import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
+// import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
+
+import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
+import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
+import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
 
 export const routePaths = {
   main: '/app',
   marketing: '/',
+
   guestViewMedia: '/guest/media/:id',
   login: "/login",
   register: "/register",
@@ -69,6 +87,7 @@ export const routePaths = {
   notFound: '/not-found',
   resetPassword: '/reset-password',
   home: '/app/home',
+  home: '/app/about',
   recommendation: '/app/recommendation',
   newRelease: '/app/new-release',
   topChart: '/app/top-chart',
@@ -103,6 +122,8 @@ export const routePaths = {
   profile: '/app/profile',
   payments: '/app/payments',
   paymentsCreate: '/app/payments/create',
+  withdrawals: '/app/withdrawals',
+  createWithdrawal: '/app/withdrawals/create',
   subscriptions: '/app/subscriptions',
   subscriptionShow: '/app/subscriptions/:id',
   slider: '/app/slider',
@@ -111,14 +132,21 @@ export const routePaths = {
   sliderShow: '/app/slider/:slider_id',
   sliderPictureCreate: 'app/slider/:slider_id/create-picture',
   sliderPictureEdit: 'app/slider/:slider_id/edit-picture/:pictureid',
-  
+
   managerPanel: '/app/manager-panel',
   manageMedia: '/app/manager-panel/media/:category',
+  // manageMediaMovieEdit: '/app/manager-panel/movie/edit',
+  // manageMediaSongEdit: '/app/manager-panel/song/edit',
+  // manageMediaVideoEdit: '/app/manager-panel/video/edit',
   manageArtist: '/app/manager-panel/artists',
+  manageArtistEdit: '/app/manager-panel/artists/edit',
   manageAlbums: '/app/manager-panel/albums',
+  manageAlbumsEdit: '/app/manager-panel/albums/edit',
   manageAlbumSongs: '/app/manager-panel/albums/:id',
   managerPanelManageSeries: '/app/manager-panel/series',
   managerPanelManageSeriesEpisods: '/app/manager-panel/series/:id',
+  managerPanelMediaOptimizationLogs: '/app/manager-panel/media/optimization/:media_id/logs',
+  managerUsers: '/app/manager-panel/users',
 
   //configuration/settings
   configurations: '/app/settings',
@@ -136,6 +164,13 @@ export const routePaths = {
   privacy: '/privacy',
   tos: '/TOS',
   facebook_data_deletion_status: '/facebook-data-deletion-status/:confirmation_code?',
+
+  about: '/about',
+  contact: '/contact',
+  disclaimer: '/disclaimer',
+  cookies: '/cookies',
+  dmca: '/dmca',
+  refund: '/refund',
 };
 
 const roles = {
@@ -174,6 +209,27 @@ export const routes = [
     ...defaultConfig,
     path: routePaths.marketing,
     component: Marketing,
+  },
+
+  {
+    ...defaultConfig,
+    path: routePaths.about,
+    component: AboutPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.contact,
+    component: ContactPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.disclaimer,
+    component: DisclaimerPage,
+  },
+  {
+    ...defaultConfig,
+    path: routePaths.dmca,
+    component: DMCAPage,
   },
   {
     ...defaultConfig,
@@ -227,6 +283,7 @@ export const routes = [
     component: WatchMovie,
     redirect: redirectFunctions.app,
   },
+
   {
     ...defaultConfig,
     path: routePaths.main,
@@ -237,6 +294,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.home,
         component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.About,
+        component: About,
         redirect: redirectFunctions.app
       },
       {
@@ -445,6 +508,27 @@ export const routes = [
       },
       {
         ...defaultConfig,
+        path: routePaths.withdrawals,
+        component: WithdrawalsRoutes,
+        redirect: redirectFunctions.app,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.withdrawals,
+            component: WithdrawalsList,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.createWithdrawal,
+            component: WithdrawalsCreate,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+      {
+        ...defaultConfig,
         path: routePaths.subscriptions,
         component: SubscriptionContainer,
         exact: false,
@@ -457,7 +541,8 @@ export const routes = [
           },
         ],
       },
-      { ...defaultConfig,
+      {
+        ...defaultConfig,
         path: routePaths.slider,
         component: Slider,
         exact: false,
@@ -480,9 +565,10 @@ export const routes = [
             component: ViewSlider,
             redirect: redirectFunctions.app,
           },
-        ] 
+        ]
       },
-      { ...defaultConfig,
+      {
+        ...defaultConfig,
         path: routePaths.configurations,
         component: Configuration,
         exact: false,
@@ -507,19 +593,28 @@ export const routes = [
         component: ManagerPanel,
         exact: false,
         routes: [
+
           {
             ...defaultConfig,
             path: routePaths.manageMedia,
             component: ManageMedia,
             redirect: redirectFunctions.app
           },
+
           {
             ...defaultConfig,
             path: routePaths.manageArtist,
             component: ManageArtists,
             redirect: redirectFunctions.app
           },
+          {
+            ...defaultConfig,
+            path: routePaths.manageArtistEdit,
+            component: ManagerPanelEditArtist,
+            redirect: redirectFunctions.app
+          },
           
+
           {
             ...defaultConfig,
             path: routePaths.manageAlbums,
@@ -528,8 +623,22 @@ export const routes = [
           },
           {
             ...defaultConfig,
+            path: routePaths.manageAlbumsEdit,
+            component: ManagerPanelEditAlbum,
+            redirect: redirectFunctions.app,
+          },
+          
+          
+          {
+            ...defaultConfig,
             path: routePaths.manageAlbumSongs,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerUsers,
+            component: ManageUsers,
             redirect: redirectFunctions.app
           },
           {
@@ -542,6 +651,12 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.managerPanelManageSeriesEpisods,
             component: ManageMedia,
+            redirect: redirectFunctions.app
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.managerPanelMediaOptimizationLogs,
+            component: MediaOptimizationLogs,
             redirect: redirectFunctions.app
           }
         ],

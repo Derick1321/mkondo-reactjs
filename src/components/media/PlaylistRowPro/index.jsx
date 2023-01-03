@@ -126,18 +126,12 @@ const RowPro = (props) => {
   return (
     <div className={`d-flex my-2 ${styles.container}`}>
       <div className={`row align-items-center ${styles.wrapper}`}>
-        <div className="d-flex align-items-center col-12 col-sm-6">
-          {
-            url && (
-              <Image source={url} />
-            )
-          }
-          <span>{name}</span>
-        </div>
-        <div className="col-12 col-sm-3">
-          <span>{artistName}</span>
-        </div>
-        <div className="col-12 col-sm-3">
+        <div className="d-flex align-items-center col-sm-12">
+          <Image source={url} />
+          <div>
+            <span>{name}</span> <br />
+            <span style={{ fontSize: 10 }}>By {artistName}</span>
+          </div>
           <Button
             onClick={handlePlay}
             style={styles.playBtn}
