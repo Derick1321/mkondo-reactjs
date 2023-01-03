@@ -2,6 +2,16 @@
 import { DateTime, Duration } from 'luxon';
 import { handleFetch } from './requestUtils';
 
+
+// import uuidv4
+export const uuidv4 = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
+
 // -> Fisher–Yates shuffle algorithm
 export const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i -= 1) {
@@ -58,6 +68,21 @@ export const formatDate = (value) => {
   });
 
   return relativeFormatter.format(Math.trunc(diff.as(unit)), unit);
+}
+
+export const getFormattedDateTime = (value) => {
+  if (!value) return;
+
+  const dateTime = DateTime.fromISO(value, { zone: "utc" }).toLocal();
+  return `${leadingZeros(dateTime.day, 2)}-${leadingZeros(dateTime.month, 2)}-${dateTime.year} ${leadingZeros(dateTime.hour, 2)}:${leadingZeros(dateTime.minute, 2)}`;
+}
+
+export const getFormattedDateTimeWithRelativity = (value) => {
+  return `${getFormattedDateTime(value)} (${formatDate(value)})`;
+}
+
+export const leadingZeros = (value, length) => {
+  return value.toString().padStart(length, '0');
 }
 
 export const getCurrentYear = () => {
@@ -184,3 +209,10 @@ export const getMediaUrl = async (filename, token) => {
 //   console.debug(allCountries);
 //   return [];
 // }
+
+// generate file name
+export const generateFileName = (file) => {
+  const extension = file.name.split('.').pop();
+  const fileName = `${uuidv4()}.${extension}`;
+  return fileName;
+}

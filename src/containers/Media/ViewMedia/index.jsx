@@ -27,6 +27,7 @@ import styled from 'styled-components';
 import { loadMedia, setCurrentMediaId } from '../../../redux/features/player';
 import { useHistory } from 'react-router-dom';
 import VideoPlayer from '../Watch/player';
+import { toggleFooterPlayer } from '../../../redux/features/nav';
 
 const options = [
   { name: 'comments', title: 'Comments' },
@@ -92,6 +93,7 @@ const ViewMedia = () => {
     dispatch(addHistory({
       media_id: mediaId,
     }));
+    dispatch(toggleFooterPlayer(false));
   }, []);
 
   // effects

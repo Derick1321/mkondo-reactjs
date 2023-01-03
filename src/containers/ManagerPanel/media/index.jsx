@@ -36,15 +36,15 @@ export const ManageMedia = () => {
         console.log("Effect triggered", movies, !movies.length);
         if (!movies.length) {
             console.log("dispatching fetching movies action");
-            dispatch(fetchMovies());
+            dispatch(fetchMovies({ "ignore_release_date": true }));
         }
         if (!audios.length) {
             console.log("dispatching fetching audios action");
-            dispatch(fetchAudios());
+            dispatch(fetchAudios({ "ignore_release_date": true }));
         }
         if (!videos.length) {
             console.log("dispatching fetching videos action");
-            dispatch(fetchVideos());
+            dispatch(fetchVideos({ "ignore_release_date": true }));
         }
     }, []);
 

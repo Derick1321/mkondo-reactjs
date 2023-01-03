@@ -17,7 +17,7 @@ export const ManageAlbum = () => {
   useEffect(() => {
     if (!albums.length) {
       console.log("dispatching fetching albums action");
-      dispatch(fetchAlbums());
+      dispatch(fetchAlbums({"ignore_release_date": true}));
     }
   }, []);
 

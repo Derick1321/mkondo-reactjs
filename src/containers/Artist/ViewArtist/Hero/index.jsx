@@ -5,6 +5,8 @@ import { PropTypes } from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { getArtistMedia } from "../../../../redux/features/artist";
 import Social from "$components/common/Social";
+import { getMediaUrl } from "../../../../common/utils";
+import Button from '../../../../components/common/Button/index';
 
 const defaultAvatar = require("$assets/images/profile-user.svg");
 
@@ -45,33 +47,23 @@ const ArtistHero = ({ artist }) => {
 
   // redux
   const dispatch = useDispatch();
-  const { token } = useSelector(state => state.authentication.token);
+  const { token } = useSelector(state => state.authentication);
 
   useEffect(async () => {
-    if (!currentArtist) {
+    if (!currentArtist || !token) {
       return;
     }
 
     if (currentArtist.avatar_url) {
-      const res = await handleFetch(
-        "GET",
-        `media/presigned-get-url?file_name=${currentArtist.avatar_url}`,
-        null,
-        token
-      );
-      setAvatarUrl(res.response);
+      const res = await getMediaUrl(currentArtist.avatar_url, token);
+      setAvatarUrl(res);
     }
 
     if (currentArtist.cover_url) {
-      const res = await handleFetch(
-        "GET",
-        `media/presigned-get-url?file_name=${currentArtist.cover_url}`,
-        null,
-        token
-      );
-      setCoverUrl(res.response);
+      const res = await getMediaUrl(currentArtist.cover_url, token);
+      setCoverUrl(res);
     }
-  }, [currentArtist]);
+  }, [currentArtist, token]);
 
   return (
     <div>
@@ -94,23 +86,18 @@ const ArtistHero = ({ artist }) => {
           </div>
         </div>
         <div
-          className={`d-flex col-12 col-md-6 ${styles.artistHeaderActionpane}`}
+          className={`d-flex col-12 col-md-6 d-flex ${styles.artistHeaderActionpane}`}
         >
-          {/* <Button
-                onClick={handleFavorite}
+          <div className="flex-grow-1"></div>
+          <div className="d-flex text-light">
+            <span className="mr-5">{currentArtist.followers.length} follower(s)</span>
+            <span className="mr-3">{currentArtist.following.length} following(s)</span>
+          </div>
+          <Button
+                
             >
-            {isFavorite ? 'Following' : 'Follow'}
+            {false ? 'Following' : 'Follow'}
             </Button>
-            <Button
-                onClick={handleShare}
-                isTransparent
-                noBorder
-            >
-            <img
-                src={shareIcon}
-                className={styles.artistActionIcon}
-            />
-            </Button> */}
         </div>
       </div>
     </div>

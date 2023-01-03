@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import styles from './index.module.scss';
+import * as styles from './index.module.scss';
 import FeatureHome from '../FeatureHome';
 import { nanoid } from '@reduxjs/toolkit';
 import { Draggable } from 'gsap/Draggable';
