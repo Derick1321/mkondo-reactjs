@@ -25,7 +25,7 @@ const SideMenu = (props) => {
   const user = useSelector((store) => store.authentication.user);
   const isPublished = useSelector((store) => store.authentication.user.publish);
   const playlists = useSelector((store) => store.playlist.playlists);
-  
+
   const lang = useSelector(store => store.user.language);
   const { t, i18n } = useTranslation('common');
   useEffect(() => { i18n.changeLanguage(lang); }, [lang]);
@@ -107,6 +107,12 @@ const SideMenu = (props) => {
       path: routePaths.home,
       permission: 'visitor',
     },
+    {
+      icon: require('$assets/images/icons/home_side.svg'),
+      activeIcon: require('$assets/images/icons/home_side.svg'),
+      title: 'about',
+      path: routePaths.about,
+    },
     // {
     //   icon: require('$assets/images/icons/radio_signal.svg'),
     //   activeIcon: require('$assets/images/icons/radio_signal.svg'),
@@ -158,6 +164,13 @@ const SideMenu = (props) => {
       title: 'Payment Methods',
       path: routePaths.payments,
     },
+    {
+      icon: require('$assets/images/icons/withdraw.svg'),
+      activeIcon: require('$assets/images/icons/withdraw-active.svg'),
+      title: 'Withdraw',
+      path: routePaths.withdrawals,
+    }
+
   ];
 
   const setupRoutes = [
@@ -193,7 +206,7 @@ const SideMenu = (props) => {
         <img src={logo} alt="" className={styles.sidemenu_logo} />
       </div>
       <div className={`d-flex flex-column ${styles.sideMenusWrapper}`}>
-        <span onClick={() => history.push(routePaths.socialmedia)} className={`${styles.socialButton}`}><span>Switch to <br/></span> Mkondo Social</span>
+        <span onClick={() => history.push(routePaths.socialmedia)} className={`${styles.socialButton}`}><span>Switch to <br /></span> Mkondo Social</span>
         <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
         {
           icons.map((item, idx) => {
