@@ -162,46 +162,44 @@ export const ManageMediaItem = (props) => {
         // trigger different edit media implementation based on media.category
         console.log("Edit Media", media.media_id);
         switch (media.category) {
-            case "movie":
-                break;
-            case "audio":
-                dispatch(
-                    showModal("FORM_MODAL", {
-                        noWrapper: true,
-                        preventOutsideClick: true,
-                        form: "audio-form",
-                        payload: {
-                            mediaId: media.media_id,
-                        },
-                    })
-                );
-                break;
-            case "video":
-                dispatch(
-                    showModal("FORM_MODAL", {
-                        noWrapper: true,
-                        preventOutsideClick: true,
-                        form: "video-form",
-                        payload: {
-                            mediaId: media.media_id,
-                        },
-                    })
-                );
-                break;
-            case "movie":
-                dispatch(
-                    showModal("FORM_MODAL", {
-                        noWrapper: true,
-                        preventOutsideClick: true,
-                        form: "movie-form",
-                        payload: {
-                            mediaId: media.media_id,
-                        },
-                    })
-                );
-                break;
-            default:
-                break;
+          case "movie":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "movie-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          case "audio":
+            dispatch(
+              showModal("FORM_MODAL", {
+                noWrapper: true,
+                preventOutsideClick: true,
+                form: "audio-form",
+                payload: {
+                  mediaId: media.media_id,
+                },
+              })
+            );
+            break;
+          case "video":
+            dispatch(
+                showModal("FORM_MODAL", {
+                  noWrapper: true,
+                  preventOutsideClick: true,
+                  form: "video-form",
+                  payload: {
+                    mediaId: media.media_id,
+                  },
+                })
+              );
+            break;
+          default:
+            break;
         }
     }
 

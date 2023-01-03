@@ -1,5 +1,6 @@
 import Marketing from '$containers/Marketing';
 import Home from '$containers/Home';
+import About from '$containers/About';
 import Recommendation from '$containers/Recommendation';
 import NewRelease from '$containers/NewRelease'
 import OnBoarding from '$containers/OnBoarding';
@@ -71,6 +72,10 @@ import ManagerPanelEditArtist from '../containers/ManagerPanel/artists/edit';
 // import ManagerPanelEditSong from '../containers/ManagerPanel/media/song';
 // import ManagerPanelEditVideo from '../containers/ManagerPanel/media/video';
 
+import { WithdrawalsRoutes } from '../containers/Payment/Withdrawals/routes';
+import { WithdrawalsCreate } from '../containers/Payment/Withdrawals/create/index';
+import { WithdrawalsList } from '../containers/Payment/Withdrawals/list/index';
+
 export const routePaths = {
   main: '/app',
   marketing: '/',
@@ -82,6 +87,7 @@ export const routePaths = {
   notFound: '/not-found',
   resetPassword: '/reset-password',
   home: '/app/home',
+  home: '/app/about',
   recommendation: '/app/recommendation',
   newRelease: '/app/new-release',
   topChart: '/app/top-chart',
@@ -116,6 +122,8 @@ export const routePaths = {
   profile: '/app/profile',
   payments: '/app/payments',
   paymentsCreate: '/app/payments/create',
+  withdrawals: '/app/withdrawals',
+  createWithdrawal: '/app/withdrawals/create',
   subscriptions: '/app/subscriptions',
   subscriptionShow: '/app/subscriptions/:id',
   slider: '/app/slider',
@@ -202,6 +210,7 @@ export const routes = [
     path: routePaths.marketing,
     component: Marketing,
   },
+
   {
     ...defaultConfig,
     path: routePaths.about,
@@ -274,6 +283,7 @@ export const routes = [
     component: WatchMovie,
     redirect: redirectFunctions.app,
   },
+
   {
     ...defaultConfig,
     path: routePaths.main,
@@ -284,6 +294,12 @@ export const routes = [
         ...defaultConfig,
         path: routePaths.home,
         component: Home,
+        redirect: redirectFunctions.app
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.About,
+        component: About,
         redirect: redirectFunctions.app
       },
       {
@@ -486,6 +502,27 @@ export const routes = [
             ...defaultConfig,
             path: routePaths.paymentsCreate,
             component: CreatePaymentMethodContainer,
+            redirect: redirectFunctions.app,
+          },
+        ],
+      },
+      {
+        ...defaultConfig,
+        path: routePaths.withdrawals,
+        component: WithdrawalsRoutes,
+        redirect: redirectFunctions.app,
+        exact: false,
+        routes: [
+          {
+            ...defaultConfig,
+            path: routePaths.withdrawals,
+            component: WithdrawalsList,
+            redirect: redirectFunctions.app,
+          },
+          {
+            ...defaultConfig,
+            path: routePaths.createWithdrawal,
+            component: WithdrawalsCreate,
             redirect: redirectFunctions.app,
           },
         ],
