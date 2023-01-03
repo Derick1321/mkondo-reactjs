@@ -41,7 +41,7 @@ export const buildFormData = (url, data = {}, baseUrl = BASE_URL) => {
     };
 };
 
-export const handleFetch = async(method, path, data, token = '', baseUrl, onProgressCallback) => {
+export const handleFetch = async (method, path, data, token = '', baseUrl, onProgressCallback) => {
     let url, headers;
 
     const props = {};
@@ -61,12 +61,12 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
         return await new Promise((resolve, reject) => {
             // console.log("File Upload -> Promise -> Create Request");
             let request = new XMLHttpRequest();
-            request.open(method,`${URL}/${url}`);
+            request.open(method, `${URL}/${url}`);
 
             //upload progress event
             request.upload.addEventListener('progress', (e) => {
                 //upload progress as percentage
-                let progress = (e.loaded/e.total)*100;
+                let progress = (e.loaded / e.total) * 100;
                 if (onProgressCallback) onProgressCallback(progress, e.loaded, e.total);
                 // console.log(`File Upload -> Progress: ${progress}%`);
             });
@@ -82,12 +82,12 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
                     reject(result);
                     return;
                 }
-            
+
                 if ([204].includes(status)) {
                     resolve(true);
                     return;
                 }
-            
+
                 resolve(JSON.parse(result));
                 return;
             });
@@ -111,28 +111,28 @@ export const handleFetch = async(method, path, data, token = '', baseUrl, onProg
         if (token) {
             headers.Authorization = `Bearer ${token}`;
         }
-        
+
         props.referrerPolicy = 'no-referrer';
         props.mode = "cors";
-        
+
         try {
             const response = await fetch(url, {
                 ...props,
                 headers,
                 method,
             });
-    
+
             const status = response.status;
             const result = await response.text();
-        
+
             if (![200, 201, 204].includes(status)) {
                 throw result;
             }
-        
+
             if ([204].includes(status)) {
                 return true
             }
-        
+
             return JSON.parse(result);
         } catch (e) {
             // console.debug("FAILED TO FETCH", {
