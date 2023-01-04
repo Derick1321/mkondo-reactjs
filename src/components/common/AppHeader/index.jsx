@@ -142,27 +142,9 @@ const AppHeader = (props) => {
         }
         { !showSearch && (<span className={`${styles.mobile_logo_plus} mr-auto`}>Mkondo</span>)}
         
-        <DropDown
-          options={userName ? headerMenus.map(menu => {
-            if (showSearch) {
-              if (menu.name == 'logout') {
-                if (userName) {
-                  return menu;
-                } else {
-                  return { name: 'login', title: 'Log In', style: styles.optSecondary };
-                }
-              }
-              return menu;
-            } else {
-              if (menu.name == 'logout') {
-                if (userName) {
-                  return menu;
-                } else {
-                  return { name: 'login', title: 'Log In', style: styles.optSecondary };
-                }
-              }
-            }
-          }): [{ name: 'login', title: 'Log In', style: styles.optSecondary }]}
+        { userName ? (
+          <DropDown
+          options={headerMenus.filter(menu => showSearch ? true : menu.name == 'logout')}
           handleSelect={handleSelect}
           handleToggle={handleToggle}
         >
@@ -176,6 +158,12 @@ const AppHeader = (props) => {
             <img src={dropdown} alt="" style={{width: '10px', marginRight: '5px'}} />
           </div>
         </DropDown>
+        ) : (
+          <div className='d-flex ml-2'>
+            <button onClick={() => push(routePaths.login)} className="btn btn-primary">Login</button>
+            <button onClick={() => push(routePaths.register)} className="btn btn-primary ml-2">Register</button>
+          </div>
+        )}
    
       {
         search && (
