@@ -160,8 +160,8 @@ const AppHeader = (props) => {
         </DropDown>
         ) : (
           <div className='d-flex ml-2'>
-            <button onClick={() => push(routePaths.login)} className="btn btn-primary">Login</button>
-            <button onClick={() => push(routePaths.register)} className="btn btn-primary ml-2">Register</button>
+            <button onClick={() => history.push(routePaths.login)} className="btn btn-primary">Login</button>
+            <button onClick={() => history.push(routePaths.register)} className="btn btn-primary ml-2">Register</button>
           </div>
         )}
    
