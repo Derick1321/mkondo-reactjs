@@ -204,24 +204,24 @@ const SideMenu = (props) => {
         <p className={styles.sideMenuSubtitle}>{t('browse')}</p>
         {
           icons.map((item, idx) => {
-            if (item.permission != 'visitor' && !userRole) {
-              return (
-                <a 
-                  key={`sidemenu-${idx}`}
-                  href='#'
-                  className={styles.sideMenuItem}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    dispatch(showModal('ALERT_MODAL'));
-                  }}>
-                  <img
-                    src={history.location.pathname === item.path ? item.activeIcon : item.icon}
-                    className={styles.sideMenuItemIcon}
-                  />
-                <span>{t(item.title)}</span>
-                </a>
-              )
-            }
+            // if (item.permission != 'visitor' && !userRole) {
+            //   return (
+            //     <a 
+            //       key={`sidemenu-${idx}`}
+            //       href='#'
+            //       className={styles.sideMenuItem}
+            //       onClick={(e) => {
+            //         e.preventDefault();
+            //         dispatch(showModal('ALERT_MODAL'));
+            //       }}>
+            //       <img
+            //         src={history.location.pathname === item.path ? item.activeIcon : item.icon}
+            //         className={styles.sideMenuItemIcon}
+            //       />
+            //     <span>{t(item.title)}</span>
+            //     </a>
+            //   )
+            // }
 
             return (
               <NavLink
