@@ -20,6 +20,8 @@ import FeatureHome from '../../components/common/FeatureHome';
 import { deleteMedia } from '../../redux/features/media';
 import { showModal } from '$redux/features/modal';
 import { crop } from '../../redux/features/croptool';
+import { deleteUser } from '../../redux/features/user';
+import { logout } from '../../redux/features/authentication';
 
 const options = [
   { name: 'account', title: 'Account' },
@@ -191,12 +193,29 @@ const Profile = () => {
       width: 100, 
       locked: true,
       slung: 'cover',
-    }))
+    }));
+  }
+
+  const handleDeleteAccount = async () => {
+    // ask for confirmation before deleting
+    const confirm = window.confirm('Are you sure you want to delete your account?');
+    if (!confirm) return;
+    const res = await dispatch(deleteUser({id: user.user_id}));
+    console.log(res);
+    if (res.type === 'user/deleteUser/rejected') {
+      return;
+    }
+
+    dispatch(logout());
   }
 
   // render
   return (
     <div className={styles.container}>
+      <div className="d-flex mb-1">
+        <div className="flex-grow-1"></div>
+        <button onClick={handleDeleteAccount} className="btn btn-danger">Delete My Account !!</button>
+      </div>
       <div className={styles.heroContainer}>
         <div className={styles.coverWrapper}>
           <AvatarInput

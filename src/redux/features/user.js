@@ -20,7 +20,7 @@ const GET_ADMIN_INSIGHTS = 'user/GET_ADMIN_INSIGHTS';
 const GET_USER = 'user/GET_USER';
 const GET_USERS = 'user/GET_USERS';
 const GET_USERMORE = 'user/GET_USERMORE';
-
+const DELETE_USER = 'user';
 
 // actions
 export const updateUser = createAsyncThunk(
@@ -153,6 +153,7 @@ export const getUsers = createAsyncThunk(GET_USERS, async (data, store) => {
     const token = store.getState().authentication.token;
     return handleFetch('GET', `users`, null, token);
 })
+
 export const getUserMore = createAsyncThunk(GET_USERMORE, async (data, store) => {
     const token = store.getState().authentication.token;
     const { hasNext, next } = store.getState().user.getUsers.pagination;
@@ -161,8 +162,10 @@ export const getUserMore = createAsyncThunk(GET_USERMORE, async (data, store) =>
 
 });
 
-
-
+export const deleteUser = createAsyncThunk(DELETE_USER, async (data, store) => {
+    const token = store.getState().authentication.token;
+    return await handleFetch('DELETE', `users/${data.id}`, null, token);
+});
 
 const initialState = {
     updateUserPending: false,
