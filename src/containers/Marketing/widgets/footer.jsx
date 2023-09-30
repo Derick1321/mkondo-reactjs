@@ -5,18 +5,53 @@ import React from 'react'
 export const MarketingPageFooterComponent = () => {
   return (
     <div className="bg-dark mt-5">
-        <div className="container py-0 my-0">
-        <div className="row py-0 my-0 text-light">
-            <div className="text-center py-0 my-0">
-            <a href="/about">About Us</a> | <a href="/contact">Contact Us</a> | <a href="/privacy">Privacy</a> | <a href="/disclaimer">Desclaimer</a> | <a href="/dmca">DMCA</a>
-            </div>
-          </div>
-          <div className="row py-0 my-0 text-light">
-            <div className="text-center py-0 my-0">
-              <p className='py-0 my-0'>Copyright &copy; Mkondo {Date.now().getFullYear}, All Rights Reserved.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+<div className="container">
+  <footer className="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 ">
+    <div className="col mb-3">
+      <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
+        {/* <svg className="bi me-2" width="40" height="32"><use xlink:href="#bootstrap" ></use></svg> */}
+      </a>
+      <p className="text-muted">© 2022</p>
+    </div>
+
+    <div className="col mb-3">
+
+    </div>
+
+    <div className="col mb-3">
+      <h5>Section</h5>
+      <ul className="nav flex-column">
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+
+    <div className="col mb-3">
+      <h5>Section</h5>
+      <ul className="nav flex-column">
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+
+    <div className="col mb-3">
+      <h5>Section</h5>
+      <ul className="nav flex-column">
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Home</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Features</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">Pricing</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">FAQs</a></li>
+        <li className="nav-item mb-2"><a href="#" className="nav-link p-0 text-muted">About</a></li>
+      </ul>
+    </div>
+  </footer>
+</div>
+    </div>
   )
 }

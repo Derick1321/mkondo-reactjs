@@ -216,6 +216,7 @@ const NewVideo = () => {
   }
 
   const handleCoverChange = async (files) => {
+
     console.log("Cover photo changed");
     const url = await generatePreview(files[0]);
     setCoverFileName(files[0].name);
@@ -231,6 +232,7 @@ const NewVideo = () => {
   const buildInputPanel = () => {
     return (
       <>
+        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
         {successMessage && <div className={styles.notification}>{successMessage}</div>}
         <p className={styles.paneTitle}>{type}</p>
 
@@ -365,7 +367,7 @@ const NewVideo = () => {
 
     return (
       <div>
-        {/* <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button> */}
+        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.newMediaCategory)}>Back</button>
         <DragDrop
           onChange={handleVideoChange}
           acceptedFiles="video/mp4,video/x-m4v,video/*"

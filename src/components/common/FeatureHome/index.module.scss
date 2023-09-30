@@ -4,6 +4,9 @@
     background-color: #191919;
     overflow: hidden;
     text-overflow: ellipsis;
+    border-radius: 8px;
+    box-shadow: 4px -8px 2px 0px rgba(0, 0, 0, 0.4);
+    // margin: 2px;
 
     .title {
         width: 200px;
@@ -46,6 +49,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 275px;
+    background-color: #191919;
+    border-radius: 8px;
+    box-shadow: 4px -8px 2px 0px rgba(0, 0, 0, 0.4);
 
     @media only screen and (max-width: 768px) {
         width: 346px;
@@ -187,7 +193,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    color: #aaa;
+    color: #884090;
 
     &:hover {
         cursor: pointer;
@@ -270,7 +276,7 @@
 
 .title {
     font-size: 12px;
-    padding: 0 2px;
+    padding:3px;
     cursor: pointer;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -278,7 +284,7 @@
     font-weight: bold;
 
     &::hover {
-        color: red;
+        color: #884090;
     }
 }
 
