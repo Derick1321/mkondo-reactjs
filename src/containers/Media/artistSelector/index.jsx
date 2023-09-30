@@ -5,7 +5,7 @@ import { ArtistListArtistWidget } from '../../Artist/List/widgets/artist/index';
 import { useSelector, useDispatch } from 'react-redux';
 import { getArtists } from '../../../redux/features/artist';
 import { useEffect } from 'react';
-
+import { useState } from 'react';
 
 
 const ArtistSelectorComponent = (props) => {
