@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+// import * as styles from './index.module.scss';
+
 import Alert from '$components/authentication/Alert';
 import Button from '$components/common/Button';
 import TextInput from '$components/common/TextInput';
@@ -159,7 +161,7 @@ const ForgotPasswordModal = () => {
   }
 
   return (
-    <div className="row justify-content-center">
+    <div className={"row justify-content-center"}>
       <div className="col-10 col-md-8">
         <div className="row justify-content-center login-modal-top">
           {
@@ -178,7 +180,7 @@ const ForgotPasswordModal = () => {
               />
             )
           }
-          <InfoPane value="Yo! Forget Your Password" />
+          <InfoPane value="Yoh! Forget Your Password" />
           {forgotPasswordComplete ? (
             <>
               {verifyOtpComplete ? (
@@ -265,7 +267,7 @@ const ForgotPasswordModal = () => {
               )}
             </>
           ) : (
-            <div className="col-12 col-sm-10 col-md-8 mt-4">
+            <div className=" col-sm-10 col-md-6 mt-4">
             <p className="text-center">No worries! Enter Your email and we will send  you a request.</p>
             <TextInput
               name="email"
@@ -274,8 +276,7 @@ const ForgotPasswordModal = () => {
               onChange={handleChange}
             />
             <div className="d-flex justify-content-center my-2">
-              <Button
-                onClick={handleForgot}
+              <Button  onClick={handleForgot}
                 isLoading={forgotPasswordPending}
                 isSecondary
                 isStretch

@@ -1,22 +1,27 @@
 @import '$assets/scss/main.scss';
 
-$slider-height: 600px;
+$slider-height: 400px;
 
 .container {
     position: relative;
     width: 100%;
     overflow: hidden;
+    height: 400;
 }
 
 .wrapper {
     width: 100%;
     overflow: hidden;
     transition: all ease-in-out 0.5s !important;
+    height: 400;
 }
 
 .item {
     position: relative;
     transition: all ease-in 0.5s;
+    height: 400;
+    width: 100%;
+    
 }
 
 .active {

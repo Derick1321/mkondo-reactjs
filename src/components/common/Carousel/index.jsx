@@ -85,7 +85,7 @@ export const Carousel = ({ items, aspect_ratio_x, aspect_ratio_y }) => {
     }, [itemsLoaded])
 
     return (
-        <div ref={containerRef} style={{ height: containerHeight ?? 'auto' }} className={`${styles.container}`}>
+        <div ref={containerRef}  className={`${styles.container}`}>
             <div className={`${styles.indicators}`}>
                 {items.map((item, index) => (
                     <div key={item} onClick={() => setCount(index + 1)} data-slide-to={index} className={`${index + 1 === count && styles.solid }`}></div>

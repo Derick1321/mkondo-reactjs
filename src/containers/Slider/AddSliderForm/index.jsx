@@ -1,4 +1,5 @@
 import { unwrapResult } from '@reduxjs/toolkit'
+import { routePaths } from '../../../common/routeConfig';
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -60,6 +61,8 @@ export const AddSliderForm = () => {
 
     return (
         <div className={`${styles.container}`}>
+        <button className="btn btn-primary mb-3" onClick={() => push(routePaths.slider)}>Back</button>
+
             <div className="col-lg-auto"><h1 className="heading-2">Add Slider</h1></div>
             <div className="row">
                 <div className="col-lg-6">
