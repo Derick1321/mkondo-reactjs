@@ -48,7 +48,7 @@ export const getDuration = (file, type, callback) => {
 
 export const formatDate = (value) => {
   if (!value) return;
-  
+
   const units = [
     'year',
     'month',
@@ -127,16 +127,16 @@ export const getPermissions = (role, userRole, params = {}) => {
 
 // https://gist.github.com/lanqy/5193417
 // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript
-export const bytesToSize = (bytes, decimals=2) => {
+export const bytesToSize = (bytes, decimals = 2) => {
   if (bytes === 0) return '0 Bytes';
 
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
 
@@ -162,6 +162,18 @@ export const mediaSorter = (values = []) => {
   });
   return items;
 }
+
+export const countries = [
+  { value: "Tanzania", label: "Tanzania" },
+  { value: "Uganda", label: "Uganda" },
+  { value: "Kenya", label: "Kenya" },
+  { value: "Algeria", label: "Algeria" },
+  { value: "Angola", label: "Angola" },
+  { value: "Benin", label: "Benin" },
+  { value: "Botswana", label: "Botswana" },
+  { value: "Zimbabwe", label: "Zimbabwe" }
+];
+
 
 export const genres = [
   { value: 'afro', label: 'Afro' },
@@ -194,7 +206,7 @@ export const movieGenres = [
   { value: 'mystery', label: 'Mystery' },
   { value: 'romance', label: 'Romance' },
   { value: 'thriller', label: 'Thriller' },
-  { value: 'animation', label: 'Animation'},
+  { value: 'animation', label: 'Animation' },
 ];
 
 export const getMediaUrl = async (filename, token) => {
